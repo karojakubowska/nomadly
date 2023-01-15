@@ -28,12 +28,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255)),
 
-        initialRoute: initScreen == 0 || initScreen == 1 ? 'onboard' : 'home',
+        initialRoute: initScreen == 0 || initScreen == null ? 'onboard' : 'home',
         routes: {
           'home': (context) => LoginPage(),
           'onboard': (context) => IntroPage(),
         },
-
         navigatorKey: navigatorKey,
         // home:  LoginPage(),
       );
