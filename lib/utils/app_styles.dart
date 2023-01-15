@@ -9,13 +9,13 @@ class Styles{
   static Color pinColor=const Color.fromARGB(255,49, 134, 252);
   static Color backgroundColor=const Color(0xFFeeedf2);
   static TextStyle textStyle=TextStyle(fontSize: 16,color: textColor,fontWeight: FontWeight.w500);
-  static TextStyle headLineStyle=GoogleFonts.playfairDisplay(
+  static TextStyle headLineStyle=GoogleFonts.roboto(
     fontSize: 45,fontWeight: FontWeight.w700,);
-  static TextStyle headLineStyle2=GoogleFonts.playfairDisplay(
+  static TextStyle headLineStyle2=GoogleFonts.roboto(
     fontSize: 24,fontWeight: FontWeight.w500, color: const Color.fromARGB(255, 173, 173, 173));
-  static TextStyle headLineStyle3=GoogleFonts.playfairDisplay(
+  static TextStyle headLineStyle3=GoogleFonts.roboto(
     fontSize: 24,fontWeight: FontWeight.w700);
-    static TextStyle headLineStyle4=GoogleFonts.playfairDisplay(
+    static TextStyle headLineStyle4=GoogleFonts.roboto(
     fontSize: 24,fontWeight: FontWeight.w700,color: Colors.black);
   static TextStyle viewAllStyle=GoogleFonts.roboto(
     fontSize: 15,fontWeight: FontWeight.w500);
