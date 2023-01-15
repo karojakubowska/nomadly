@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "213766810265",
+    "project_id": "nomady-ae4b6",
+    "storage_bucket": "nomady-ae4b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213766810265:android:e00383ecdba9019f452608",
+        "android_client_info": {
+          "package_name": "com.example.nomadly_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213766810265-3e7rgl7c5mkmfddn7ilt2cegsqei0foj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsxIueBfw4hGHHdjmUSaqFZ6dQQwq45J0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213766810265-3e7rgl7c5mkmfddn7ilt2cegsqei0foj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
