@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:nomadly_app/screens/chat_view.dart';
 import 'package:nomadly_app/screens/reservation_view.dart';
+import 'package:nomadly_app/screens/userprofile_view.dart';
 
 import '../utils/app_styles.dart';
 import 'home_view.dart';
@@ -25,6 +26,7 @@ class _BottomNavBarState extends State<BottomNavBar>
     WishlistScreen(),
     ReservationScreen(),
     Chat(),
+    UserProfileScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -38,12 +40,12 @@ class _BottomNavBarState extends State<BottomNavBar>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 4);
+    _tabController = TabController(vsync: this, length:5);
   }
 
   Widget _tabItem(Widget child, {bool isSelected = false}) {
     return AnimatedContainer(
-        margin: EdgeInsets.all(8),
+        margin: EdgeInsets.only(top:4,bottom:15),
         alignment: Alignment.center,
         duration: const Duration(milliseconds: 500),
         decoration: !isSelected
@@ -52,7 +54,7 @@ class _BottomNavBarState extends State<BottomNavBar>
                 borderRadius: BorderRadius.circular(40),
                 color: Styles.pinColor,
               ),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.only(top:12,bottom: 8),
         child: Column(
           children: [
             child,
@@ -76,6 +78,7 @@ class _BottomNavBarState extends State<BottomNavBar>
        ImageIcon(
         AssetImage("assets/images/mail 1.png"),
       ),
+      Icon(Icons.person_outline)
     ];
 
     return Scaffold(
