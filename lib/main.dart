@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
           'home': (context) => LoginPage(),
           'onboard': (context) => IntroPage(),
         },
-
         navigatorKey: navigatorKey,
         // home:  LoginPage(),
       );
