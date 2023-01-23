@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:nomadly_app/screens/chat_view.dart';
-import 'package:nomadly_app/screens/reservation_view.dart';
+import 'package:nomadly_app/screens/travel_view.dart';
+//import 'package:nomadly_app/screens/reservation_view.dart';
 import 'package:nomadly_app/screens/userprofile_view.dart';
 
 import '../utils/app_styles.dart';
@@ -24,7 +25,7 @@ class _BottomNavBarState extends State<BottomNavBar>
   static const List<Widget> _bodyView = <Widget>[
     HomeTest(),
     WishlistScreen(),
-    ReservationScreen(),
+    TravelView(),
     Chat(),
     UserProfileScreen()
   ];
