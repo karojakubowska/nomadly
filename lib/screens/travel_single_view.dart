@@ -65,22 +65,22 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
               child: Text('Name:'+ widget.travel!.get("name")),
             ),
             Container(
-              child: Text('Number of People:' + widget.travel!.get("number_of_people").toString()),
+              //child: Text('Number of People:' + widget.travel!.get("number_of_people").toString()),
             ),
             Container(
               child: Text('Destination:' + widget.travel!.get("destination")),
             ),
             Container(
-              child: Text('Budget:' + widget.travel!.get("budget").toString()),
+              //child: Text('Budget:' + widget.travel!.get("budget").toString()),
             ),
             Container(
-              child: Text('Start date:' + widget.travel!.get("start_date").toDate().toString()),
+              //child: Text('Start date:' + widget.travel!.get("start_date").toDate().toString()),
             ),
             Container(
-              child: Text('End date:' + widget.travel!.get("end_date").toDate().toString()),
+              //child: Text('End date:' + widget.travel!.get("end_date").toDate().toString()),
             ),
             Container(
-              child: Text('To do:' + widget.travel!.get("to_do_list").toString()),
+              //child: Text('To do:' + widget.travel!.get("to_do_list").toString()),
             ),
           ],
         ),
