@@ -1,3 +1,4 @@
+import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -24,8 +25,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   final passwordController = TextEditingController();
   final confPassController = TextEditingController();
 
-  final List<String> _animals = ["Client", "Host"];
-  String? _selectedAnimal;
+  final List<String> _types = ["Client", "Host"];
+  String? _selectedType;
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
@@ -69,7 +70,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           TextField(
             controller: nameController,
             cursorColor: Colors.white,
-            textInputAction: TextInputAction.done,
+            textInputAction: TextInputAction.next,
             decoration: const InputDecoration(
               labelText: 'Name',
               enabledBorder: OutlineInputBorder(
@@ -80,7 +81,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               filled: true,
               fillColor: Color.fromARGB(255, 249, 250, 250),
             ),
-            obscureText: true,
           ),
           const SizedBox(
             height: 20,
@@ -88,7 +88,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           TextField(
             controller: passwordController,
             cursorColor: Colors.white,
-            textInputAction: TextInputAction.done,
+            textInputAction: TextInputAction.next,
             decoration: const InputDecoration(
               labelText: 'Password',
               enabledBorder: OutlineInputBorder(
@@ -130,10 +130,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   width: 1, color: Color.fromARGB(255, 217, 217, 217)),
             ),
             child: DropdownButton<String>(
-              value: _selectedAnimal,
+              value: _selectedType,
               onChanged: (value) {
                 setState(() {
-                  _selectedAnimal = value;
+                  _selectedType = value;
                 });
               },
               hint: Container(
@@ -147,21 +147,20 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 color: Color.fromARGB(255, 57, 57, 57),
               ),
               isExpanded: true,
-              items: _animals
+              items: _types
                   .map((e) => DropdownMenuItem(
                         value: e,
                         child: Container(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             e,
-                            //,
                           ),
                         ),
                       ))
                   .toList(),
 
               // Customize the selected item
-              selectedItemBuilder: (BuildContext context) => _animals
+              selectedItemBuilder: (BuildContext context) => _types
                   .map((e) => Center(
                         child: Text(
                           e,
@@ -211,10 +210,11 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   void addUserToFirestore() {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     var db = FirebaseFirestore.instance;
-    db
-        .collection("Users")
-        .doc(uid)
-        .set({'Name': 'xyz', 'Surname': 'xyz', 'IsHost': false});
+    db.collection("Users").doc(uid).set({
+      'Name': nameController.text,
+      'Email': emailController.text,
+      'AccountType': _selectedType
+    });
     //druga wersja dodania danych do bazy
     /* return users
           .add({
@@ -236,8 +236,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
-      //final uid=FirebaseAuth.instance.currentUser!.uid;
-      //CollectionReference users = FirebaseFirestore.instance.collection('Users');
       addUserToFirestore();
     } on FirebaseAuthException catch (e) {
       print(e);
