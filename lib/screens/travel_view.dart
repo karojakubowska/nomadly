@@ -14,14 +14,15 @@ class TravelView extends StatefulWidget {
 
 class _TravelViewState extends State<TravelView> {
   Future<QuerySnapshot>? allTravelDocumentList =
-      FirebaseFirestore.instance.collectionGroup("Travel").get();
+  FirebaseFirestore.instance.collectionGroup("Travel").get();
   Future<QuerySnapshot>? travelDocumentList;
 
   navigateToDetail(DocumentSnapshot travel) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: ((context) => SingleTravelPage(
+            builder: ((context) =>
+                SingleTravelPage(
                   travel: travel,
                 ))));
   }
@@ -45,14 +46,14 @@ class _TravelViewState extends State<TravelView> {
                   color: Colors.black,
                   fontWeight: FontWeight.w700)),
         ),
-        actions: [
-          IconButton(
-              color: Colors.black,
-              icon: Icon(Icons.delete),
-              onPressed: () async {
-                //usuwanie
-              })
-        ],
+        // actions: [
+        //   IconButton(
+        //       color: Colors.black,
+        //       icon: Icon(Icons.delete),
+        //       onPressed: () async {
+        //         //usuwanie
+        //       })
+        // ],
         backgroundColor: Colors.transparent,
         elevation: 0,
         textTheme: TextTheme(
@@ -97,6 +98,8 @@ class _TravelViewState extends State<TravelView> {
                   snapshot.data!.docs[index].data()! as Map<String, dynamic>);
               return InkWell(
                   onTap: () => navigateToDetail(snapshot.data!.docs[index]),
+                  // onTap: () => deleteTravel(snapshot.data!.docs[index]),
+
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
                     child: Card(
@@ -118,13 +121,23 @@ class _TravelViewState extends State<TravelView> {
                                 SizedBox(height: 5),
                                 Text(
                                   model.destination as String,
-                                  style: Theme.of(context).textTheme.bodyText2,
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .bodyText2,
                                 ),
                               ],
                             ),
                             Padding(
                                 padding: const EdgeInsets.only(left: 100.0)),
                             //Text(model.start_date?.toDate().toString( as String),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                deleteTravel(
+                                    snapshot.data!.docs[index].toString());
+                              },
+                            )
                           ],
                         ),
                       ),
@@ -135,5 +148,30 @@ class _TravelViewState extends State<TravelView> {
         },
       ),
     );
+  }
+
+  void deleteTravel(String documentId) async {
+    // print(snapshot.data!.docs[index]);
+    // var db = FirebaseFirestore.instance;
+    //   db.collection("Travel").doc(documentId).delete().then((_) {
+    //     print("Document successfully deleted!");
+    //   }).catchError((error) {
+    //     print("Error removing document: $error");
+    //   });
+
+    // final documentReference = FirebaseFirestore.instance.collection("Travel").doc("documentId");
+    // documentReference.get().then((documentSnapshot) => {
+    // print(documentSnapshot.id)
+    // });
+    // }
+    var db = FirebaseFirestore.instance;
+    FirebaseFirestore.instance.collection('Travel').snapshots().listen((
+        snapshot) {
+      snapshot.docs.forEach((element) {
+        print(element.id);
+
+      }
+      );
+    });
   }
 }

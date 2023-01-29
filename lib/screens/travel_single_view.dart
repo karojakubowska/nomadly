@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'dart:html';
+import 'dart:html';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Travel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,12 +38,23 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   fontWeight: FontWeight.w700)),
         ),
         actions: [
-          IconButton(
-              color: Colors.black,
-              icon: Icon(Icons.edit),
-              onPressed: () async {
-                //usuwanie
-              })
+          PopupMenuButton(
+            icon: Icon(Icons.more_vert,color: Colors.black),
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem<int>(
+                  value: 0,
+                  child: Text("Edit"),
+                  onTap: editTravel,
+                ),
+                PopupMenuItem<int>(
+                  value: 1,
+                  child: Text("Delete"),
+                  onTap: deleteTravel,
+                ),
+              ];
+            },
+          )
         ],
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -62,29 +78,73 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
         child: Column(
           children: <Widget>[
             Container(
-              child: Text('Name:'+ widget.travel!.get("name")),
+              child: Text('Name:' + widget.travel!.get("name")),
             ),
             Container(
-              //child: Text('Number of People:' + widget.travel!.get("number_of_people").toString()),
-            ),
+                //child: Text('Number of People:' + widget.travel!.get("number_of_people").toString()),
+                ),
             Container(
               child: Text('Destination:' + widget.travel!.get("destination")),
             ),
             Container(
-              //child: Text('Budget:' + widget.travel!.get("budget").toString()),
-            ),
+                //child: Text('Budget:' + widget.travel!.get("budget").toString()),
+                ),
             Container(
-              //child: Text('Start date:' + widget.travel!.get("start_date").toDate().toString()),
-            ),
+                //child: Text('Start date:' + widget.travel!.get("start_date").toDate().toString()),
+                ),
             Container(
-              //child: Text('End date:' + widget.travel!.get("end_date").toDate().toString()),
-            ),
+                //child: Text('End date:' + widget.travel!.get("end_date").toDate().toString()),
+                ),
             Container(
-              //child: Text('To do:' + widget.travel!.get("to_do_list").toString()),
-            ),
+                //child: Text('To do:' + widget.travel!.get("to_do_list").toString()),
+                ),
           ],
         ),
       ),
     );
   }
-}
+
+  void editTravel() async{
+
+  }
+    // FirebaseFirestore.instance.collection('Travel').snapshots().listen((snapshot) {
+    //   snapshot.docs.forEach((element) {
+    //     print(element.id);
+    //   });
+    // });
+  }
+
+  // Future<void> deleteTravel() async {
+  //
+  //   var db = FirebaseFirestore.instance;
+  //
+  //   FirebaseFirestore.instance.collection('Travel').snapshots().listen((snapshot) {
+  //     snapshot.docs.forEach((element) {
+  //       db.collection("Travel").doc(element.id).delete().then((_) {
+  //         print("Document successfully deleted!");
+  //       }).catchError((error) {
+  //         print("Error removing document: $error");
+  //       });
+  //     });
+  //   });
+
+  Future<void> deleteTravel() async {
+    //   var db = FirebaseFirestore.instance;
+    //   String documentId = (widget.travel!.get("documentId"));
+    //   db.collection("Travel").doc(documentId).delete().then((_) {
+    //     print("Document successfully deleted!");
+    //   }).catchError((error) {
+    //     print("Error removing document: $error");
+    //   });
+    // }
+  }
+    // var uid = await Provider.of(context).auth.getCurrentUID();
+    // final doc = Firestore.instance
+    //     .collection('userData')
+    //     .document(uid)
+    //     .collection("trips")
+    //     .document(widget.travel!.documentId);
+    //
+    // return await doc.delete();
+
+

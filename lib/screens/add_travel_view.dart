@@ -27,7 +27,7 @@ class _AddTravelViewState extends State<AddTravelView> {
   //     'destination': destinationController.text,
   //   });
   // }
-  
+
   CollectionReference travel = FirebaseFirestore.instance.collection('Travel');
 
   Future<void> addTravel() {
