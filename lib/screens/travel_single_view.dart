@@ -129,15 +129,15 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
   //   });
 
   Future<void> deleteTravel() async {
-    //   var db = FirebaseFirestore.instance;
-    //   String documentId = (widget.travel!.get("documentId"));
-    //   db.collection("Travel").doc(documentId).delete().then((_) {
-    //     print("Document successfully deleted!");
-    //   }).catchError((error) {
-    //     print("Error removing document: $error");
-    //   });
-    // }
-  }
+  //     var db = FirebaseFirestore.instance;
+  //     String documentId = (widget.travel!.get("documentId"));
+  //     db.collection("Travel").doc(documentId).delete().then((_) {
+  //       print("Document successfully deleted!");
+  //     }).catchError((error) {
+  //       print("Error removing document: $error");
+  //     });
+  //   }
+   }
     // var uid = await Provider.of(context).auth.getCurrentUID();
     // final doc = Firestore.instance
     //     .collection('userData')

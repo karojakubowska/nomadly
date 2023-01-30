@@ -135,7 +135,7 @@ class _TravelViewState extends State<TravelView> {
                               icon: Icon(Icons.delete),
                               onPressed: () {
                                 deleteTravel(
-                                    snapshot.data!.docs[index].toString());
+                                    snapshot.data!.docs[index].id);
                               },
                             )
                           ],
@@ -150,28 +150,27 @@ class _TravelViewState extends State<TravelView> {
     );
   }
 
-  void deleteTravel(String documentId) async {
-    // print(snapshot.data!.docs[index]);
-    // var db = FirebaseFirestore.instance;
-    //   db.collection("Travel").doc(documentId).delete().then((_) {
-    //     print("Document successfully deleted!");
-    //   }).catchError((error) {
-    //     print("Error removing document: $error");
-    //   });
+  void deleteTravel(documentId) async {
+
+    var db = FirebaseFirestore.instance;
+      db.collection("Travel").doc(documentId).delete().then((_) {
+        print("Document successfully deleted!");
+      }).catchError((error) {
+        print("Error removing document: $error");
+      });
 
     // final documentReference = FirebaseFirestore.instance.collection("Travel").doc("documentId");
     // documentReference.get().then((documentSnapshot) => {
     // print(documentSnapshot.id)
     // });
     // }
-    var db = FirebaseFirestore.instance;
-    FirebaseFirestore.instance.collection('Travel').snapshots().listen((
-        snapshot) {
-      snapshot.docs.forEach((element) {
-        print(element.id);
-
-      }
-      );
-    });
+    // var db = FirebaseFirestore.instance;
+    // FirebaseFirestore.instance.collection('Travel').snapshots().listen((
+    //     snapshot) {
+    //   snapshot.docs.forEach((element) {
+    //     print(element.id);
+    //   }
+    //   );
+    // });
   }
 }
