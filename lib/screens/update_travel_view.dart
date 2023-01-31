@@ -19,6 +19,7 @@ class UpdateTravelView extends StatefulWidget {
 class _UpdateTravelViewState extends State<UpdateTravelView> {
   final nameController=TextEditingController();
   final destinationController=TextEditingController();
+  final budgetController=TextEditingController();
 
   CollectionReference travel = FirebaseFirestore.instance.collection('Travel');
 
@@ -27,8 +28,11 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
   Future<void>updateTravel(id) async {
     //await FirebaseFirestore.instance.collection('Travel').doc((widget.travel!.get("id"))).updateData({'name': nameController.text});
     final db = FirebaseFirestore.instance;
-    final washingtonRef = db.collection("Travel").doc(id);
-    washingtonRef.update({"name": nameController.text}).then(
+    final travel = db.collection("Travel").doc(id);
+    travel.update({
+      "name": nameController.text,
+      "destination": destinationController.text,
+      "budget": int.parse(budgetController.text)}).then(
             (value) => print("DocumentSnapshot successfully updated!"),
         onError: (e) => print("Error updating document $e"));
     print(id);
@@ -38,6 +42,8 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
     super.initState();
     nameController.text =(widget.travel!.get("name"));
     destinationController.text =(widget.travel!.get("destination"));
+    budgetController.text =(widget.travel!.get("budget").toString());
+
   }
 
   @override
@@ -92,6 +98,21 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
               cursorColor: Colors.white,
               textInputAction: TextInputAction.done,
               decoration: const InputDecoration(labelText: 'Destination',
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(width: 1,color: Color.fromARGB(255, 217, 217, 217)),
+                ),
+                filled: true,
+                fillColor: Color.fromARGB(255, 249, 250, 250),
+              ),
+            ),
+            const SizedBox(height: 20,),
+            TextField(
+              controller: budgetController,
+              cursorColor: Colors.white,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(labelText: 'Budget',
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   borderSide: BorderSide(width: 1,color: Color.fromARGB(255, 217, 217, 217)),

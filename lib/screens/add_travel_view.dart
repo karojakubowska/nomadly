@@ -18,6 +18,7 @@ class AddTravelView extends StatefulWidget {
 class _AddTravelViewState extends State<AddTravelView> {
   final nameController=TextEditingController();
   final destinationController=TextEditingController();
+  final budgetController=TextEditingController();
 
   // Future addTravel() async {
   //   final uid=FirebaseAuth.instance.currentUser!.uid;
@@ -35,6 +36,7 @@ class _AddTravelViewState extends State<AddTravelView> {
         .add({
       'name': nameController.text,
       'destination': destinationController.text,
+      'budget': int.parse(budgetController.text),
     })
         .then((value) => print("Add Travel"))
         .catchError((error) => print("Error"));
@@ -93,6 +95,21 @@ class _AddTravelViewState extends State<AddTravelView> {
             textInputAction: TextInputAction.done,
             decoration: const InputDecoration(labelText: 'Destination',
               enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(width: 1,color: Color.fromARGB(255, 217, 217, 217)),
+              ),
+              filled: true,
+              fillColor: Color.fromARGB(255, 249, 250, 250),
+            ),
+          ),
+          const SizedBox(height: 20,),
+          TextField(
+            controller: budgetController,
+            cursorColor: Colors.white,
+            textInputAction: TextInputAction.done,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(labelText: 'Budget',
+                enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 borderSide: BorderSide(width: 1,color: Color.fromARGB(255, 217, 217, 217)),
               ),

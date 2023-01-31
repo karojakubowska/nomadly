@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:html';
-import 'dart:html';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -87,7 +84,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
               child: Text('Destination:' + widget.travel!.get("destination")),
             ),
             Container(
-                //child: Text('Budget:' + widget.travel!.get("budget").toString()),
+              child: Text('Budget:' + widget.travel!.get("budget").toString()),
                 ),
             Container(
                 //child: Text('Start date:' + widget.travel!.get("start_date").toDate().toString()),
