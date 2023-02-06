@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Travel.dart';
+import 'package:nomadly_app/utils/app_styles.dart';
 
 class AddTravelView extends StatefulWidget {
 
@@ -45,11 +46,14 @@ class _AddTravelViewState extends State<AddTravelView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      backgroundColor: Styles.backgroundColor,
+      appBar: AppBar(
           leading: IconButton(
             color: Colors.black,
             icon: Icon(Icons.arrow_back),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
           ),
           title: Text(
             'Add Travel',

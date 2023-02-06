@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Travel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:nomadly_app/utils/app_styles.dart';
 
 class SingleTravelPage extends StatefulWidget {
   final DocumentSnapshot? travel;
@@ -18,11 +19,14 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
         leading: IconButton(
           color: Colors.black,
           icon: Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          },
         ),
         title: Text(
           (widget.travel!.get("name")),

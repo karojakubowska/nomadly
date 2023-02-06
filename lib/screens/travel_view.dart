@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nomadly_app/screens/add_travel_view.dart';
 import 'package:nomadly_app/screens/travel_single_view.dart';
 import 'package:nomadly_app/screens/update_travel_view.dart';
+import 'package:nomadly_app/utils/app_styles.dart';
 
 class TravelView extends StatefulWidget {
   const TravelView({Key? key}) : super(key: key);
@@ -39,6 +40,7 @@ class _TravelViewState extends State<TravelView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
         leading: IconButton(
           color: Colors.black,
@@ -113,19 +115,36 @@ class _TravelViewState extends State<TravelView> {
                                 ),
                               ],
                             ),
-                            Padding(
-                                padding: const EdgeInsets.only(left: 100.0)),
+                            // Padding(
+                            //     padding: const EdgeInsets.only(left: 100.0)),
                             //Text(model.start_date?.toDate().toString( as String),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                deleteTravel(snapshot.data!.docs[index].id);
-                              },
+                            // IconButton(
+                            //   icon: Icon(Icons.delete),
+                            //   onPressed: () {
+                            //     deleteTravel(snapshot.data!.docs[index].id);
+                            //   },
+                            // ),
+                            // IconButton(
+                            //   icon: Icon(Icons.edit),
+                            //   onPressed: () => navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id),
+                            // )
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  deleteTravel(snapshot.data!.docs[index].id);
+                                },
+                              ),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () => navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () => navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id),
+                              ),
                             )
+
                           ],
                         ),
                       ),
