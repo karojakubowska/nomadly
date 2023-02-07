@@ -7,19 +7,18 @@ import 'package:nomadly_app/models/Travel.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 
 class AddTravelView extends StatefulWidget {
-
   const AddTravelView({
     Key? key,
-  }):super(key:key);
+  }) : super(key: key);
 
   @override
   State<AddTravelView> createState() => _AddTravelViewState();
 }
 
 class _AddTravelViewState extends State<AddTravelView> {
-  final nameController=TextEditingController();
-  final destinationController=TextEditingController();
-  final budgetController=TextEditingController();
+  final nameController = TextEditingController();
+  final destinationController = TextEditingController();
+  final budgetController = TextEditingController();
 
   // Future addTravel() async {
   //   final uid=FirebaseAuth.instance.currentUser!.uid;
@@ -35,10 +34,10 @@ class _AddTravelViewState extends State<AddTravelView> {
   Future<void> addTravel() {
     return travel
         .add({
-      'name': nameController.text,
-      'destination': destinationController.text,
-      'budget': int.parse(budgetController.text),
-    })
+          'name': nameController.text,
+          'destination': destinationController.text,
+          'budget': int.parse(budgetController.text),
+        })
         .then((value) => print("Add Travel"))
         .catchError((error) => print("Error"));
   }
@@ -46,8 +45,8 @@ class _AddTravelViewState extends State<AddTravelView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Styles.backgroundColor,
-      appBar: AppBar(
+        backgroundColor: Styles.backgroundColor,
+        appBar: AppBar(
           leading: IconButton(
             color: Colors.black,
             icon: Icon(Icons.arrow_back),
@@ -75,63 +74,145 @@ class _AddTravelViewState extends State<AddTravelView> {
             ),
           ),
         ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(height: 50,),
-          TextField(
-            controller: nameController,
-            cursorColor: Colors.white,
-            textInputAction: TextInputAction.next,
-            decoration: const InputDecoration(labelText: 'Name',
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                borderSide: BorderSide(width: 1,color: Color.fromARGB(255, 217, 217, 217)),
-              ),
-              filled: true,
-              fillColor:  Color.fromARGB(255, 249, 250, 250),
-            ),
+        // body: Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     const SizedBox(height: 50,),
+        //     TextField(
+        //       controller: nameController,
+        //       cursorColor: Colors.white,
+        //       textInputAction: TextInputAction.next,
+        //       decoration: const InputDecoration(labelText: 'Name',
+        //         enabledBorder: OutlineInputBorder(
+        //           borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        //           borderSide: BorderSide(width: 1,color: Color.fromARGB(255, 217, 217, 217)),
+        //         ),
+        //         filled: true,
+        //         fillColor:  Color.fromARGB(255, 249, 250, 250),
+        //       ),
+        //     ),
+        //     const SizedBox(height: 20,),
+        //     TextField(
+        //       controller: destinationController,
+        //       cursorColor: Colors.white,
+        //       textInputAction: TextInputAction.done,
+        //       decoration: const InputDecoration(labelText: 'Destination',
+        //         enabledBorder: OutlineInputBorder(
+        //           borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        //           borderSide: BorderSide(width: 1,color: Color.fromARGB(255, 217, 217, 217)),
+        //         ),
+        //         filled: true,
+        //         fillColor: Color.fromARGB(255, 249, 250, 250),
+        //       ),
+        //     ),
+        //     const SizedBox(height: 20,),
+        //     TextField(
+        //       controller: budgetController,
+        //       cursorColor: Colors.white,
+        //       textInputAction: TextInputAction.done,
+        //       keyboardType: TextInputType.number,
+        //       decoration: const InputDecoration(labelText: 'Budget',
+        //           enabledBorder: OutlineInputBorder(
+        //           borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        //           borderSide: BorderSide(width: 1,color: Color.fromARGB(255, 217, 217, 217)),
+        //         ),
+        //         filled: true,
+        //         fillColor: Color.fromARGB(255, 249, 250, 250),
+        //       ),
+        //     ),
+        //     const SizedBox(height: 20,),
+        //     ElevatedButton.icon(style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(60),
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(10.0)),
+        //         backgroundColor: const Color.fromARGB(255, 50, 134, 252)),
+        //       onPressed: addTravel,
+        //       icon: const Icon(Icons.lock_open, size: 0),
+        //       label: const Text('Add Travel',
+        //           style: TextStyle(fontSize: 20)),
+        //     ),
+        //   ],
+        // )
+        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const SizedBox(
+            height: 50,
           ),
-          const SizedBox(height: 20,),
-          TextField(
-            controller: destinationController,
-            cursorColor: Colors.white,
-            textInputAction: TextInputAction.done,
-            decoration: const InputDecoration(labelText: 'Destination',
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                borderSide: BorderSide(width: 1,color: Color.fromARGB(255, 217, 217, 217)),
-              ),
-              filled: true,
-              fillColor: Color.fromARGB(255, 249, 250, 250),
-            ),
-          ),
-          const SizedBox(height: 20,),
-          TextField(
-            controller: budgetController,
-            cursorColor: Colors.white,
-            textInputAction: TextInputAction.done,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'Budget',
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextField(
+              controller: nameController,
+              cursorColor: Colors.white,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'Name',
                 enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                borderSide: BorderSide(width: 1,color: Color.fromARGB(255, 217, 217, 217)),
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                      width: 1, color: Color.fromARGB(255, 217, 217, 217)),
+                ),
+                filled: true,
+                fillColor: Color.fromARGB(255, 249, 250, 250),
               ),
-              filled: true,
-              fillColor: Color.fromARGB(255, 249, 250, 250),
             ),
           ),
-          const SizedBox(height: 20,),
-          ElevatedButton.icon(style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(60),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              backgroundColor: const Color.fromARGB(255, 50, 134, 252)),
-            onPressed: addTravel,
-            icon: const Icon(Icons.lock_open, size: 0),
-            label: const Text('Add Travel',
-                style: TextStyle(fontSize: 20)),
+          const SizedBox(
+            height: 20,
           ),
-        ],
-      )
-  ) ;
-}}
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextField(
+              controller: destinationController,
+              cursorColor: Colors.white,
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(
+                labelText: 'Destination',
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                      width: 1, color: Color.fromARGB(255, 217, 217, 217)),
+                ),
+                filled: true,
+                fillColor: Color.fromARGB(255, 249, 250, 250),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextField(
+              controller: budgetController,
+              cursorColor: Colors.white,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(
+                labelText: 'Budget',
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                      width: 1, color: Color.fromARGB(255, 217, 217, 217)),
+                ),
+                filled: true,
+                fillColor: Color.fromARGB(255, 249, 250, 250),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: EdgeInsets.all(20.0),
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(60),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  backgroundColor: const Color.fromARGB(255, 50, 134, 252)),
+              onPressed: addTravel,
+              icon: const Icon(Icons.lock_open, size: 0),
+              label: const Text('Add Travel', style: TextStyle(fontSize: 20)),
+            ),
+          )
+        ]));
+  }
+}

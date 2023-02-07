@@ -77,13 +77,13 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
             ),
           ),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            TextField(
+        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const SizedBox(
+            height: 50,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextField(
               controller: nameController,
               cursorColor: Colors.white,
               textInputAction: TextInputAction.next,
@@ -98,10 +98,13 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 fillColor: Color.fromARGB(255, 249, 250, 250),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextField(
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextField(
               controller: destinationController,
               cursorColor: Colors.white,
               textInputAction: TextInputAction.done,
@@ -116,10 +119,13 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 fillColor: Color.fromARGB(255, 249, 250, 250),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextField(
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextField(
               controller: budgetController,
               cursorColor: Colors.white,
               keyboardType: TextInputType.number,
@@ -135,10 +141,13 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 fillColor: Color.fromARGB(255, 249, 250, 250),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton.icon(
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: EdgeInsets.all(20.0),
+            child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(60),
                   shape: RoundedRectangleBorder(
@@ -151,7 +160,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
               label:
                   const Text('Update Travel', style: TextStyle(fontSize: 20)),
             ),
-          ],
-        ));
+          )
+        ]));
   }
 }

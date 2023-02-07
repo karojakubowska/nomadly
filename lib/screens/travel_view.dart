@@ -32,11 +32,9 @@ class _TravelViewState extends State<TravelView> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: ((context) => UpdateTravelView(
-              travel: travel,
-              id: id
-            ))));
+            builder: ((context) => UpdateTravelView(travel: travel, id: id))));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,57 +93,54 @@ class _TravelViewState extends State<TravelView> {
                     child: Card(
                       child: Padding(
                         padding: EdgeInsets.all(15),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // CircleAvatar(
-                            //   radius: 30,
-                            //   backgroundImage: NetworkImage(model.photo as String
-                            //   ),
-                            // ),
-                            SizedBox(width: 15),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(model.name as String),
-                                SizedBox(height: 5),
-                                Text(
-                                  model.destination as String,
-                                  style: Theme.of(context).textTheme.bodyText2,
-                                ),
-                              ],
-                            ),
-                            // Padding(
-                            //     padding: const EdgeInsets.only(left: 100.0)),
-                            //Text(model.start_date?.toDate().toString( as String),
-                            // IconButton(
-                            //   icon: Icon(Icons.delete),
-                            //   onPressed: () {
-                            //     deleteTravel(snapshot.data!.docs[index].id);
-                            //   },
-                            // ),
-                            // IconButton(
-                            //   icon: Icon(Icons.edit),
-                            //   onPressed: () => navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id),
-                            // )
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () {
-                                  deleteTravel(snapshot.data!.docs[index].id);
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                //backgroundImage: NetworkImage(model.photo as String),
+                              ),
+                              SizedBox(width: 15),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(model.name as String),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    model.destination as String,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  ),
+                                ],
+                              ),
+                              Expanded(
+                                child: Container(),
+                              ),
+                              PopupMenuButton(
+                                icon:
+                                    Icon(Icons.more_vert, color: Colors.black),
+                                itemBuilder: (BuildContext context) => [
+                                  PopupMenuItem(
+                                    child: Text("Edit"),
+                                    value: "edit",
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text("Delete"),
+                                    value: "delete",
+                                  ),
+                                ],
+                                onSelected: (value) {
+                                  if (value == "edit") {
+                                    navigateToUpdate(snapshot.data!.docs[index],
+                                        snapshot.data!.docs[index].id);
+                                  } else {
+                                    deleteTravel(snapshot.data!.docs[index].id);
+                                  }
                                 },
                               ),
-                            ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: IconButton(
-                                icon: Icon(Icons.edit),
-                                onPressed: () => navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id),
-                              ),
-                            )
-
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
