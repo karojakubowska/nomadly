@@ -2,7 +2,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Travel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:nomadly_app/screens/add_travel_view.dart';
 import 'package:nomadly_app/screens/travel_single_view.dart';
+import 'package:nomadly_app/screens/update_travel_view.dart';
+import 'package:nomadly_app/utils/app_styles.dart';
 
 class TravelView extends StatefulWidget {
   const TravelView({Key? key}) : super(key: key);
@@ -25,9 +28,19 @@ class _TravelViewState extends State<TravelView> {
                 ))));
   }
 
+  navigateToUpdate(DocumentSnapshot travel, String id) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) => UpdateTravelView(
+              travel: travel,
+              id: id
+            ))));
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
         leading: IconButton(
           color: Colors.black,
@@ -44,14 +57,6 @@ class _TravelViewState extends State<TravelView> {
                   color: Colors.black,
                   fontWeight: FontWeight.w700)),
         ),
-        actions: [
-          IconButton(
-              color: Colors.black,
-              icon: Icon(Icons.delete),
-              onPressed: () async {
-                //usuwanie
-              })
-        ],
         backgroundColor: Colors.transparent,
         elevation: 0,
         textTheme: TextTheme(
@@ -60,6 +65,17 @@ class _TravelViewState extends State<TravelView> {
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 90.0, right: 20.0),
+        child: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: Colors.blue,
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: ((context) => AddTravelView())));
+          },
         ),
       ),
       body: FutureBuilder<QuerySnapshot>(
@@ -82,11 +98,11 @@ class _TravelViewState extends State<TravelView> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(model.photo as String
-                              ),
-                            ),
+                            // CircleAvatar(
+                            //   radius: 30,
+                            //   backgroundImage: NetworkImage(model.photo as String
+                            //   ),
+                            // ),
                             SizedBox(width: 15),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,10 +115,36 @@ class _TravelViewState extends State<TravelView> {
                                 ),
                               ],
                             ),
-                            Padding(
-                                padding: const EdgeInsets.only(left: 100.0)),
-                            Text(model.start_date?.toDate().toString()
-                                as String),
+                            // Padding(
+                            //     padding: const EdgeInsets.only(left: 100.0)),
+                            //Text(model.start_date?.toDate().toString( as String),
+                            // IconButton(
+                            //   icon: Icon(Icons.delete),
+                            //   onPressed: () {
+                            //     deleteTravel(snapshot.data!.docs[index].id);
+                            //   },
+                            // ),
+                            // IconButton(
+                            //   icon: Icon(Icons.edit),
+                            //   onPressed: () => navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id),
+                            // )
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  deleteTravel(snapshot.data!.docs[index].id);
+                                },
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () => navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id),
+                              ),
+                            )
+
                           ],
                         ),
                       ),
@@ -113,5 +155,14 @@ class _TravelViewState extends State<TravelView> {
         },
       ),
     );
+  }
+
+  void deleteTravel(documentId) async {
+    var db = FirebaseFirestore.instance;
+    db.collection("Travel").doc(documentId).delete().then((_) {
+      print("Document successfully deleted!");
+    }).catchError((error) {
+      print("Error removing document: $error");
+    });
   }
 }
