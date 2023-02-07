@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:nomadly_app/models/Accomodation.dart';
+import 'package:nomadly_app/screens/all_accommodations.dart';
 import 'package:nomadly_app/screens/details_view.dart';
 
+import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 import 'foryou_view.dart';
 import 'popular_view.dart';
@@ -17,9 +20,11 @@ class HomeTest extends StatefulWidget {
 
 class _HomeTestState extends State<HomeTest> {
   String svg = 'assets/images/notification-svgrepo-com.svg';
+  List<ForYouCard> all_accommodations = <ForYouCard>[];
 
   @override
   Widget build(BuildContext context) {
+    final size = AppLayout.getSize(context);
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       body: ListView(
@@ -74,7 +79,14 @@ class _HomeTestState extends State<HomeTest> {
                     children: <Widget>[
                       Text('For You', style: Styles.headLineStyle3),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const AllAccommodationsScreen()),
+                          );
+                        },
                         child: Text('See all', style: Styles.viewAllStyle),
                       ),
                     ]),
@@ -85,12 +97,39 @@ class _HomeTestState extends State<HomeTest> {
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: [
-                  ForYouCard(),
-                  ForYouCard(),
-                  ForYouCard(),
-                ],
-              )),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 210,
+                      width: size.width,
+                      child: FutureBuilder<QuerySnapshot>(
+                          future: FirebaseFirestore.instance
+                              .collectionGroup('Accommodations')
+                              .get(),
+                          builder: (context, snapshot) {
+                            if (snapshot.data == null) {
+                              return const Center(
+                                child: Text('Loading'),
+                              );
+                            }
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                Acommodation model = Acommodation.fromJson(
+                                    snapshot.data!.docs[index].data()
+                                        as Map<String, dynamic>);
+                                return ForYouCard(
+                                  accomodation: model,
+                                  accommodationCity: model.city!,
+                                  accommodationName: model.title!,
+                                  index: index,
+                                );
+                              },
+                            );
+                          }),
+                    ),
+                  ])),
           Container(
             padding: const EdgeInsets.only(left: 30, right: 28),
             child: Row(
@@ -98,7 +137,14 @@ class _HomeTestState extends State<HomeTest> {
                 children: <Widget>[
                   Text('Popular', style: Styles.headLineStyle3),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const AllAccommodationsScreen()),
+                      );
+                    },
                     child: Text('See all', style: Styles.viewAllStyle),
                   ),
                 ]),
@@ -116,4 +162,59 @@ class _HomeTestState extends State<HomeTest> {
       ),
     );
   }
+
+  // Future<List<Acommodation>> geta() async {
+  //   List<Acommodation> a = <Acommodation>[];
+  //   final QuerySnapshot result =
+  //       await FirebaseFirestore.instance.collection('Accommodations').get();
+  //   final List<DocumentSnapshot> documents = result.docs;
+  //   documents.forEach((doc) => a.add(Acommodation.fromSnapshot(doc)));
+  //   return a;
+  // }
+
+  // Future getAccomodationsList() async {
+  //   var data =
+  //       await FirebaseFirestore.instance.collection('Accommodations').get();
+  //   all_accommodations =
+  //       List.from(data.docs.map((doc) => Acommodation.fromSnapshot(doc).));
+  //   return all_accommodations;
+  // }
+
+  // Future<List<ForYouCard>> getForYouCards()
+  //  async {
+  //   List<ForYouCard> x = <ForYouCard>[];
+  //   List<Acommodation> a = <Acommodation>[];
+  //   final QuerySnapshot result =
+  //       await FirebaseFirestore.instance.collection('Accommodations').get();
+  //   final List<DocumentSnapshot> documents = result.docs;
+  //   documents.forEach((doc) => (Acommodation.fromSnapshot(doc)));
+
+  // var _db=FirebaseFirestore.instance;
+  // final result2 = await _db
+  //       .collection("collectionName")
+  //       .get();
+
+  //   List<Object> toReturn = [];
+  //   for (int i = 0; i < result2.docs.length; i++) {
+  //    // add data to list you want to return.
+  //     toReturn.add(ForYouCard(accommodationCity: result2.docs., accommodationName: accommodationName));
+  //       }
+  // ForYouCard fyc = ForYouCard(
+  //   accommodationCity: 'Melbourne',
+  //   accommodationName: 'Cottage House',
+  // );
+  // x.add(fyc);
+  // ForYouCard fyc1 = ForYouCard(
+  //   accommodationCity: 'Warsaw',
+  //   accommodationName: 'Apartment',
+  // );
+  // x.add(fyc1);
+  // ForYouCard fyc2 = ForYouCard(
+  //   accommodationCity: 'Paris',
+  //   accommodationName: 'House',
+  // );
+  // x.add(fyc2);
+  //   List<ForYouCard>fyc=<ForYouCard>[];
+  //   return fyc;
+  // }
 }

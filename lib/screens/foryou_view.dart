@@ -1,14 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/screens/details_view.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 
-class ForYouCard extends StatelessWidget {
-  final String locationsvg = 'assets/images/location-pin-svgrepo-com.svg';
+class ForYouCard extends StatefulWidget {
+  Acommodation accomodation;
+  String accommodationName = '';
+  String accommodationCity = '';
+  int index;
 
-  ForYouCard({super.key});
+  ForYouCard(
+      {required this.accomodation,
+      required this.accommodationCity,
+      required this.accommodationName,
+      required this.index});
+
+  @override
+  State<ForYouCard> createState() => _ForYouCardState();
+}
+
+class _ForYouCardState extends State<ForYouCard> {
+  final String locationsvg = 'assets/images/location-pin-svgrepo-com.svg';
+  navigateToDetail(Acommodation accommodation) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) => DetailScreen(
+                  acommodation: accommodation,
+                ))));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +63,14 @@ class ForYouCard extends StatelessWidget {
             Container(
               color: Styles.backgroundColor,
               margin: const EdgeInsets.only(left: 20),
-              child: Text("Little House", style: Styles.houseNameStyle),
+              child:
+                  Text(widget.accommodationName, style: Styles.houseNameStyle),
+            ),
+            Container(
+              color: Styles.backgroundColor,
+              margin: const EdgeInsets.only(left: 20),
+              child:
+                  Text(widget.index.toString(), style: Styles.houseNameStyle),
             ),
             Container(
               padding: const EdgeInsets.only(left: 20, top: 3),
@@ -51,8 +82,8 @@ class ForYouCard extends StatelessWidget {
                       child: SvgPicture.asset(locationsvg,
                           color: Styles.pinColor, height: 15, width: 15),
                     ),
-                    const TextSpan(
-                      text: "Ottawa",
+                    TextSpan(
+                      text: widget.accommodationCity,
                       style: TextStyle(color: Colors.blue),
                     )
                   ],
@@ -63,11 +94,7 @@ class ForYouCard extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DetailScreen()),
-        );
-        print("Tapped on container");
+        navigateToDetail(widget.accomodation);
       },
     );
   }
