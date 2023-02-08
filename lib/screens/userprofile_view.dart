@@ -220,36 +220,75 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           const SizedBox(
             height: 32,
           ),
+          // Center(
+          //   child: GestureDetector(
+          //     onTap: () {
+          //       _showPicker(context);
+          //     },
+          //     child: CircleAvatar(
+          //       radius: 55,
+          //       backgroundColor: const Color(0xffFDCF09),
+          //       child: _photo != null
+          //           ? ClipRRect(
+          //         borderRadius: BorderRadius.circular(50),
+          //         child: Image.file(
+          //           _photo!,
+          //           width: 100,
+          //           height: 100,
+          //           fit: BoxFit.fitHeight,
+          //         ),
+          //       )
+          //           : Container(
+          //         decoration: BoxDecoration(
+          //             color: Colors.grey[200],
+          //            borderRadius: BorderRadius.circular(50)),
+          //         width: 100,
+          //         height: 100,
+          //         child: Icon(
+          //           Icons.camera_alt,
+          //           color: Colors.grey[800],
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // )
           Center(
-            child: GestureDetector(
-              onTap: () {
-                _showPicker(context);
-              },
-              child: CircleAvatar(
-                radius: 55,
-                backgroundColor: const Color(0xffFDCF09),
-                child: _photo != null
-                    ? ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image.file(
-                    _photo!,
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.fitHeight,
-                  ),
-                )
-                    : Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                     borderRadius: BorderRadius.circular(50)),
-                  width: 100,
-                  height: 100,
-                  child: Icon(
-                    Icons.camera_alt,
-                    color: Colors.grey[800],
+            child: Column(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    _showPicker(context);
+                  },
+                  child: Container(
+                    width: 250,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff000000),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: _photo != null
+                        ? ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: Image.file(
+                        _photo!,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.fitHeight,
+                      ),
+                    )
+                        : Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.grey[800],
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           )
         ],
