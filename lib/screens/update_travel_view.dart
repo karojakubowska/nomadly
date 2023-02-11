@@ -21,6 +21,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
   final nameController = TextEditingController();
   final destinationController = TextEditingController();
   final budgetController = TextEditingController();
+  final number_of_peopleController = TextEditingController();
 
   CollectionReference travel = FirebaseFirestore.instance.collection('Travel');
 
@@ -32,7 +33,8 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
     travel.update({
       "name": nameController.text,
       "destination": destinationController.text,
-      "budget": int.parse(budgetController.text)
+      "budget": int.parse(budgetController.text),
+      "number_of_people": int.parse(number_of_peopleController.text)
     }).then((value) => print("DocumentSnapshot successfully updated!"),
         onError: (e) => print("Error updating document $e"));
     print(id);
@@ -43,6 +45,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
     nameController.text = (widget.travel!.get("name"));
     destinationController.text = (widget.travel!.get("destination"));
     budgetController.text = (widget.travel!.get("budget").toString());
+    number_of_peopleController.text = (widget.travel!.get("number_of_people").toString());
   }
 
   @override
@@ -132,6 +135,28 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
               textInputAction: TextInputAction.done,
               decoration: const InputDecoration(
                 labelText: 'Budget',
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                      width: 1, color: Color.fromARGB(255, 217, 217, 217)),
+                ),
+                filled: true,
+                fillColor: Color.fromARGB(255, 249, 250, 250),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextField(
+              controller: number_of_peopleController,
+              cursorColor: Colors.white,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(
+                labelText: 'Number of People',
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   borderSide: BorderSide(

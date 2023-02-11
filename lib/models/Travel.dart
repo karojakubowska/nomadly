@@ -11,6 +11,7 @@ class Travel{
   int? number_of_people;
   List<dynamic>? to_do_list;
   String? documentId;
+  String? userId;
 
 //funkcja mapująca dane na json
   Map<String,dynamic> toJson()=>{
@@ -24,6 +25,7 @@ class Travel{
     'number_of_people': number_of_people,
     'to_do_list': to_do_list,
     'documentId': documentId,
+    'userId': userId,
   };
 
   Travel.fromSnapshot(DocumentSnapshot snapshot) :
@@ -43,6 +45,7 @@ class Travel{
     number_of_people=json['number_of_people'];
     to_do_list=json['to_do_list'];
     documentId = json['documentId'];
+    userId = json['userId'];
   }
 }
 

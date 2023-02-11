@@ -151,6 +151,7 @@
 
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
@@ -197,14 +198,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Future uploadFile() async {
+    var user = await FirebaseAuth.instance.currentUser!;
+    var uid = user.uid;
     if (_photo == null) return;
     final fileName = basename(_photo!.path);
-    final destination = 'files/$fileName';
+    final destination = '$uid/$fileName';
 
     try {
       final ref = firebase_storage.FirebaseStorage.instance
           .ref(destination)
-          .child('file/');
+          .child('');
       await ref.putFile(_photo!);
     } catch (e) {
       print('error occured');

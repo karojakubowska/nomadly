@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Travel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,7 +19,6 @@ class _TravelViewState extends State<TravelView> {
   Future<QuerySnapshot>? allTravelDocumentList =
       FirebaseFirestore.instance.collectionGroup("Travel").get();
   Future<QuerySnapshot>? travelDocumentList;
-
   navigateToDetail(DocumentSnapshot travel) {
     Navigator.push(
         context,
@@ -33,6 +33,10 @@ class _TravelViewState extends State<TravelView> {
         context,
         MaterialPageRoute(
             builder: ((context) => UpdateTravelView(travel: travel, id: id))));
+  }
+
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -77,10 +81,19 @@ class _TravelViewState extends State<TravelView> {
         ),
       ),
       body: FutureBuilder<QuerySnapshot>(
-        future: FirebaseFirestore.instance.collectionGroup("Travel").get(),
+        future: FirebaseAuth.instance.currentUser != null
+            ? FirebaseFirestore.instance
+            .collection("Travel")
+            .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid )
+            .get()
+            : FirebaseFirestore.instance.collectionGroup("Travel").get(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return Center(child: Text("Loading..."));
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
