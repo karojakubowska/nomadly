@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Travel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -112,6 +113,7 @@ class _TravelViewState extends State<TravelView> {
                             children: [
                               CircleAvatar(
                                 radius: 30,
+                                //backgroundImage: NetworkImage(FirebaseStorage.instance.ref().child(model.photo as String).getDownloadURL() as String),
                                 //backgroundImage: NetworkImage(model.photo as String),
                               ),
                               SizedBox(width: 15),

@@ -170,34 +170,47 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   File? _photo;
   final ImagePicker _picker = ImagePicker();
+  final pickedFile ="";
 
-  Future imgFromGallery() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
+  Future imgFromGallery(pickedFile) async {
+    pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      if (pickedFile != null) {
-        _photo = File(pickedFile.path);
-        uploadFile();
-      } else {
-        print('No image selected.');
-      }
+      _photo = File(pickedFile.path);
     });
+    // pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    //
+    // setState(() {
+    //   if (pickedFile != null) {
+    //     _photo = File(pickedFile.path);
+    //     //uploadFile();
+    //     var user = FirebaseAuth.instance.currentUser!;
+    //     var uid = user.uid;
+    //     if (_photo == null) return;
+    //     final fileName = basename(_photo!.path);
+    //     final destination = '$uid/$fileName';
+    //
+    //     try {
+    //       final ref = firebase_storage.FirebaseStorage.instance
+    //           .ref(destination)
+    //           .child('');
+    //       ref.putFile(_photo!);
+    //     } catch (e) {
+    //       print('error occured');
+    //     }
+    //   } else {
+    //     print('No image selected.');
+    //   }
+    // });
   }
 
-  Future imgFromCamera() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
-
+  Future imgFromCamera(pickedFile) async {
+    pickedFile = await _picker.pickImage(source: ImageSource.camera);
     setState(() {
-      if (pickedFile != null) {
-        _photo = File(pickedFile.path);
-        uploadFile();
-      } else {
-        print('No image selected.');
-      }
+      _photo = File(pickedFile.path);
     });
-  }
+    }
 
-  Future uploadFile() async {
+  Future uploadFile(pickedFile) async {
     var user = await FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
     if (_photo == null) return;
@@ -215,6 +228,58 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(),
+  //     body: Column(
+  //       children: <Widget>[
+  //         const SizedBox(
+  //           height: 32,
+  //         ),
+  //         Center(
+  //           child: Column(
+  //             children: <Widget>[
+  //               GestureDetector(
+  //                 onTap: () {
+  //                   _showPicker(context);
+  //                 },
+  //                 child: Container(
+  //                   width: 250,
+  //                   height: 250,
+  //                   decoration: BoxDecoration(
+  //                     color: const Color(0xff000000),
+  //                     borderRadius: BorderRadius.all(Radius.circular(10)),
+  //                   ),
+  //                   child: _photo != null
+  //                       ? ClipRRect(
+  //                     borderRadius: BorderRadius.all(Radius.circular(10)),
+  //                     child: Image.file(
+  //                       _photo!,
+  //                       width: 100,
+  //                       height: 100,
+  //                       fit: BoxFit.fitHeight,
+  //                     ),
+  //                   )
+  //                       : Container(
+  //                     decoration: BoxDecoration(
+  //                       color: Colors.grey[200],
+  //                       borderRadius: BorderRadius.all(Radius.circular(10)),
+  //                     ),
+  //                     child: Icon(
+  //                       Icons.camera_alt,
+  //                       color: Colors.grey[800],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
@@ -223,38 +288,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           const SizedBox(
             height: 32,
           ),
-          // Center(
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       _showPicker(context);
-          //     },
-          //     child: CircleAvatar(
-          //       radius: 55,
-          //       backgroundColor: const Color(0xffFDCF09),
-          //       child: _photo != null
-          //           ? ClipRRect(
-          //         borderRadius: BorderRadius.circular(50),
-          //         child: Image.file(
-          //           _photo!,
-          //           width: 100,
-          //           height: 100,
-          //           fit: BoxFit.fitHeight,
-          //         ),
-          //       )
-          //           : Container(
-          //         decoration: BoxDecoration(
-          //             color: Colors.grey[200],
-          //            borderRadius: BorderRadius.circular(50)),
-          //         width: 100,
-          //         height: 100,
-          //         child: Icon(
-          //           Icons.camera_alt,
-          //           color: Colors.grey[800],
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // )
           Center(
             child: Column(
               children: <Widget>[
@@ -293,11 +326,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
               ],
             ),
-          )
+          ),
+          const SizedBox(
+            height: 32,
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                uploadFile(pickedFile);
+              },
+              child: Text('Upload'),
+            ),
+          ),
         ],
       ),
     );
   }
+
 
   void _showPicker(context) {
     showModalBottomSheet(
@@ -310,14 +355,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     leading: const Icon(Icons.photo_library),
                     title: const Text('Gallery'),
                     onTap: () {
-                      imgFromGallery();
+                      imgFromGallery(pickedFile);
                       Navigator.of(context).pop();
                     }),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
                   title: const Text('Camera'),
                   onTap: () {
-                    imgFromCamera();
+                    imgFromCamera(pickedFile);
                     Navigator.of(context).pop();
                   },
                 ),
