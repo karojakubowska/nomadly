@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:nomadly_app/models/User.dart';
+import 'package:nomadly_app/screens/home_view.dart';
+import 'package:nomadly_app/screens/wishlist_card.dart';
+import 'package:nomadly_app/screens/wishlist_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'screens/authentication/auth_page.dart';
@@ -28,7 +33,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255)),
 
-        initialRoute: initScreen == 0 || initScreen == null ? 'onboard' : 'home',
+        initialRoute:
+            initScreen == 0 || initScreen == null ? 'onboard' : 'home',
         routes: {
           'home': (context) => LoginPage(),
           'onboard': (context) => IntroPage(),
@@ -44,26 +50,50 @@ class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: StreamBuilder<User?>(
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              print(snapshot.data);
-              getpref();
-              return BottomNavBar();
-            } else {
-              getpref();
-              return const AuthPage();
+            if (snapshot.connectionState != ConnectionState.active) {
+              return Center(child: CircularProgressIndicator());
             }
-          },
-        ),
-      );
-}
-
-Future<Map<String, String>> getpref() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  return <String, String>{
-    for (String key in prefs.getKeys()) ...{key: prefs.get(key).toString()}
-  };
+            final user = snapshot.data;
+            if (user != null) {
+              final uid = user.uid;
+              CollectionReference users =
+                  FirebaseFirestore.instance.collection('Users');
+              return FutureBuilder<DocumentSnapshot>(
+                future: users.doc(uid).get(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text("Something went wrong.");
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    UserModel user = UserModel.fromSnapshot(snapshot.data);
+                    if (user.accountType == 'Client') return BottomNavBar();
+                    return WishlistScreen();
+                  }
+                  return Text("Loading");
+                },
+              );
+            } else {
+              return AuthPage();
+            }
+          }),
+    );
+    // body: StreamBuilder<User?>(
+    //   stream: FirebaseAuth.instance.authStateChanges(),
+    //   builder: (context, snapshot) {
+    //     if (snapshot.hasData) {
+    //       //getpref();
+    //       return const BottomNavBar();
+    //     } else {
+    //       //getpref();
+    //       return const AuthPage();
+    //     }
+    //   },
+    // ),
+  }
 }

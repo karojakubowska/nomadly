@@ -59,12 +59,10 @@ class _BottomNavBarState extends State<BottomNavBar>
         child: Column(
           children: [
             child,
-            //Text(label, style: TextStyle(fontSize: 8)),
           ],
         ));
   }
 
-  // final List<String> _labels = ['Home', 'Fav', 'Travel','Chat'];
 
   @override
   Widget build(BuildContext context) {
