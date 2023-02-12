@@ -111,7 +111,8 @@ class _AddTravelViewState extends State<AddTravelView> {
       print(destination);
       print("photo");
       print(_photo);
-      gowno = _photo.toString();
+      //gowno = _photo.toString();
+      gowno = ("gs://nomady-ae4b6.appspot.com/" + destination.toString()).toString();
     } catch (e) {
       print('error occured');
     };
@@ -121,7 +122,7 @@ class _AddTravelViewState extends State<AddTravelView> {
       'destination': destinationController.text,
       'budget': int.parse(budgetController.text),
       'userId': FirebaseAuth.instance.currentUser!.uid,
-      'photo': gowno,
+      'photo': gowno.toString(),
     })
         .then((value) => print("Add Travel"))
         .catchError((error) => print("Error"));

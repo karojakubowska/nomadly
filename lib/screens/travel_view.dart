@@ -20,6 +20,7 @@ class _TravelViewState extends State<TravelView> {
   Future<QuerySnapshot>? allTravelDocumentList =
       FirebaseFirestore.instance.collectionGroup("Travel").get();
   Future<QuerySnapshot>? travelDocumentList;
+
   navigateToDetail(DocumentSnapshot travel) {
     Navigator.push(
         context,
@@ -84,9 +85,10 @@ class _TravelViewState extends State<TravelView> {
       body: FutureBuilder<QuerySnapshot>(
         future: FirebaseAuth.instance.currentUser != null
             ? FirebaseFirestore.instance
-            .collection("Travel")
-            .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid )
-            .get()
+                .collection("Travel")
+                .where("userId",
+                    isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                .get()
             : FirebaseFirestore.instance.collectionGroup("Travel").get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -111,10 +113,29 @@ class _TravelViewState extends State<TravelView> {
                           padding: EdgeInsets.all(5),
                           child: Row(
                             children: [
-                              CircleAvatar(
-                                radius: 30,
-                                //backgroundImage: NetworkImage(FirebaseStorage.instance.ref().child(model.photo as String).getDownloadURL() as String),
-                                //backgroundImage: NetworkImage(model.photo as String),
+                              // CircleAvatar(
+                              //   radius: 30,
+                              //   backgroundImage: NetworkImage(model.photo as String),
+                              // backgroundImage: NetworkImage((FirebaseStorage.instance.ref().child(model.photo as String).getDownloadURL()).toString())
+                              // ),
+                              FutureBuilder(
+                                future: FirebaseStorage.instance
+                                    .refFromURL(model.photo as String)
+                                    .getDownloadURL(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
+                                  print('snapshot:');
+                                  print(snapshot);
+                                  if (snapshot.hasData) {
+                                    return CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: NetworkImage(
+                                          snapshot.data.toString()),
+                                    );
+                                  } else {
+                                    return CircleAvatar();
+                                  }
+                                },
                               ),
                               SizedBox(width: 15),
                               Column(
