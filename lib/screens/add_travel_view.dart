@@ -112,7 +112,9 @@ class _AddTravelViewState extends State<AddTravelView> {
       print("photo");
       print(_photo);
       //gowno = _photo.toString();
+      //gowno = (destination.toString()).toString();
       gowno = ("gs://nomady-ae4b6.appspot.com/" + destination.toString()).toString();
+
     } catch (e) {
       print('error occured');
     };

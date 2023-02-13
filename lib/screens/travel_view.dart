@@ -21,6 +21,8 @@ class _TravelViewState extends State<TravelView> {
       FirebaseFirestore.instance.collectionGroup("Travel").get();
   Future<QuerySnapshot>? travelDocumentList;
 
+  var gowno = "";
+
   navigateToDetail(DocumentSnapshot travel) {
     Navigator.push(
         context,
@@ -124,9 +126,9 @@ class _TravelViewState extends State<TravelView> {
                                     .getDownloadURL(),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<dynamic> snapshot) {
-                                  print('snapshot:');
-                                  print(snapshot);
                                   if (snapshot.hasData) {
+                                    gowno = (model.photo as String);
+                                    //gowno = (snapshot.data.toString());
                                     return CircleAvatar(
                                       radius: 30,
                                       backgroundImage: NetworkImage(
@@ -171,7 +173,7 @@ class _TravelViewState extends State<TravelView> {
                                     navigateToUpdate(snapshot.data!.docs[index],
                                         snapshot.data!.docs[index].id);
                                   } else {
-                                    deleteTravel(snapshot.data!.docs[index].id);
+                                    deleteTravel(snapshot.data!.docs[index].id, gowno);
                                   }
                                 },
                               ),
@@ -188,12 +190,20 @@ class _TravelViewState extends State<TravelView> {
     );
   }
 
-  void deleteTravel(documentId) async {
-    var db = FirebaseFirestore.instance;
-    db.collection("Travel").doc(documentId).delete().then((_) {
-      print("Document successfully deleted!");
-    }).catchError((error) {
-      print("Error removing document: $error");
-    });
+  void deleteTravel(documentId, String imageId) async {
+
+      var db = FirebaseFirestore.instance;
+      FirebaseStorage.instance.refFromURL(imageId).delete().then((_) {
+        print("Image successfully deleted!");
+        }).catchError((error) {
+        print("Error removing image: $error");
+        });
+
+      db.collection("Travel").doc(documentId).delete().then((_) {
+        print("Document successfully deleted!");
+      }).catchError((error) {
+        print("Error removing document: $error");
+      });
+    }
   }
-}
+
