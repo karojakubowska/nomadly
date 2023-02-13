@@ -105,12 +105,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                         image: NetworkImage(snapshot.data.toString()),
                       );
                     } else {
-                      return Image(
-                        height: 400,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
-                        image: NetworkImage(snapshot.data.toString()),
-                      );
+                      return Center(child: CircularProgressIndicator());
                     }
                   },
                 ),
