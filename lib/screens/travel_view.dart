@@ -193,6 +193,7 @@ class _TravelViewState extends State<TravelView> {
   void deleteTravel(documentId, String imageId) async {
 
       var db = FirebaseFirestore.instance;
+      //dodac if że ten imageId musi być równe tego co jest w bazie by usunac to co jest w ID w bazie firebase
       FirebaseStorage.instance.refFromURL(imageId).delete().then((_) {
         print("Image successfully deleted!");
         }).catchError((error) {
