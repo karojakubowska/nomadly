@@ -130,25 +130,34 @@ class _TravelViewState extends State<TravelView> {
                                     gowno = (model.photo as String);
                                     //gowno = (snapshot.data.toString());
                                     return CircleAvatar(
-                                      radius: 30,
+                                      radius: 40,
                                       backgroundImage: NetworkImage(
                                           snapshot.data.toString()),
                                     );
                                   } else {
-                                    return CircleAvatar();
+                                    return Center(
+                                        child: CircularProgressIndicator());
                                   }
                                 },
                               ),
-                              SizedBox(width: 15),
+                              SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(model.name as String),
+                                  Text(
+                                    model.name as String,
+                                    style: GoogleFonts.roboto(
+                                        color: Color.fromARGB(255, 24, 24, 24),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                   SizedBox(height: 5),
                                   Text(
                                     model.destination as String,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
+                                    style: GoogleFonts.roboto(
+                                        color: Color.fromARGB(255, 24, 24, 24),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w300),
                                   ),
                                 ],
                               ),
@@ -173,7 +182,8 @@ class _TravelViewState extends State<TravelView> {
                                     navigateToUpdate(snapshot.data!.docs[index],
                                         snapshot.data!.docs[index].id);
                                   } else {
-                                    deleteTravel(snapshot.data!.docs[index].id, gowno);
+                                    deleteTravel(
+                                        snapshot.data!.docs[index].id, gowno);
                                   }
                                 },
                               ),
@@ -191,20 +201,18 @@ class _TravelViewState extends State<TravelView> {
   }
 
   void deleteTravel(documentId, String imageId) async {
+    var db = FirebaseFirestore.instance;
+    //dodac if że ten imageId musi być równe tego co jest w bazie by usunac to co jest w ID w bazie firebase
+    FirebaseStorage.instance.refFromURL(imageId).delete().then((_) {
+      print("Image successfully deleted!");
+    }).catchError((error) {
+      print("Error removing image: $error");
+    });
 
-      var db = FirebaseFirestore.instance;
-      //dodac if że ten imageId musi być równe tego co jest w bazie by usunac to co jest w ID w bazie firebase
-      FirebaseStorage.instance.refFromURL(imageId).delete().then((_) {
-        print("Image successfully deleted!");
-        }).catchError((error) {
-        print("Error removing image: $error");
-        });
-
-      db.collection("Travel").doc(documentId).delete().then((_) {
-        print("Document successfully deleted!");
-      }).catchError((error) {
-        print("Error removing document: $error");
-      });
-    }
+    db.collection("Travel").doc(documentId).delete().then((_) {
+      print("Document successfully deleted!");
+    }).catchError((error) {
+      print("Error removing document: $error");
+    });
   }
-
+}
