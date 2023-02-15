@@ -39,8 +39,11 @@ class _TravelViewState extends State<TravelView> {
             builder: ((context) => UpdateTravelView(travel: travel, id: id))));
   }
 
+  late Stream<QuerySnapshot> travelStream;
+
   void initState() {
     super.initState();
+    travelStream = FirebaseFirestore.instance.collection("Travel").snapshots();
   }
 
   @override
