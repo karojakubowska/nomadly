@@ -5,6 +5,7 @@ import 'package:nomadly_app/models/Travel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
+import 'package:intl/intl.dart';
 
 class SingleTravelPage extends StatefulWidget {
   final DocumentSnapshot? travel;
@@ -161,6 +162,34 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                 children: [
                   Text(
                     (widget.travel!.get("name")),
+                    style: GoogleFonts.roboto(
+                        color: Color.fromARGB(255, 24, 24, 24),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Text(
+                    (widget.travel!.get("destination")),
+                    style: GoogleFonts.roboto(
+                        color: Color.fromARGB(255, 24, 24, 24),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Text(
+                    (widget.travel!.get("budget").toString()),
+                    style: GoogleFonts.roboto(
+                        color: Color.fromARGB(255, 24, 24, 24),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Text(
+                    (widget.travel!.get("start_date").toDate().toString()),
+                    style: GoogleFonts.roboto(
+                        color: Color.fromARGB(255, 24, 24, 24),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Text(
+                    (widget.travel!.get("end_date").toDate().toString()),
                     style: GoogleFonts.roboto(
                         color: Color.fromARGB(255, 24, 24, 24),
                         fontSize: 22,
