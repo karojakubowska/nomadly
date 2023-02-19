@@ -19,6 +19,7 @@ class Acommodation {
   bool? kitchen;
   String? host_id;
   String? rate;
+  String? photo;
 
    Map<String,dynamic> toJson()=>{
     'title': title,
@@ -41,6 +42,7 @@ class Acommodation {
     'kitchen': kitchen,
     'host_id': host_id,
     'rate': rate,
+    'photo': photo,
   };
 
   Acommodation.fromJson(Map<String,dynamic> json)
@@ -65,6 +67,7 @@ class Acommodation {
     kitchen=json['kitchen'];
     host_id=json['host_id'];
     rate=json['rate'];
+    photo=json['photo'];
   }
 
   Acommodation.fromSnapshot(snapshot)
@@ -72,6 +75,7 @@ class Acommodation {
   city=snapshot.data()['city'],
   street=snapshot.data()['street'],
   price_per_night=snapshot.data()['price_per_night'],
-  rate=snapshot.data()['rate']
+  rate=snapshot.data()['rate'],
+  photo=snapshot.data()['photo']
   ;
 }

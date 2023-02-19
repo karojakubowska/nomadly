@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,11 +39,23 @@ class _DetailScreenState extends State<DetailScreen> {
           children: [
             Stack(
               children: [
-                Image.asset(
-                  "assets/images/a-modern-living-room-style 2-2.png",
-                  height: 400,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
+                FutureBuilder(
+                  future: FirebaseStorage.instance
+                      .refFromURL((widget.acommodation!.photo!))
+                      .getDownloadURL(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasData) {
+                      return Image(
+                        height: 400,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                        image: NetworkImage(snapshot.data.toString()),
+                      );
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
                 ),
                 Container(
                   height: 400,
