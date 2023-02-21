@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Travel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +10,8 @@ import 'package:nomadly_app/screens/add_travel_view.dart';
 import 'package:nomadly_app/screens/travel_single_view.dart';
 import 'package:nomadly_app/screens/update_travel_view.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 
 class TravelView extends StatefulWidget {
   const TravelView({Key? key}) : super(key: key);
@@ -123,23 +127,40 @@ class _TravelViewState extends State<TravelView> {
                               //   backgroundImage: NetworkImage(model.photo as String),
                               // backgroundImage: NetworkImage((FirebaseStorage.instance.ref().child(model.photo as String).getDownloadURL()).toString())
                               // ),
+                              // FutureBuilder(
+                              //   future: FirebaseStorage.instance
+                              //       .refFromURL(model.photo as String)
+                              //       .getDownloadURL(),
+                              //   builder: (BuildContext context,
+                              //       AsyncSnapshot<dynamic> snapshot) {
+                              //     if (snapshot.hasData) {
+                              //       gowno = (model.photo as String);
+                              //       return CircleAvatar(
+                              //         radius: 40,
+                              //         backgroundImage: NetworkImage(
+                              //             snapshot.data.toString()),
+                              //       );
+                              //     } else {
+                              //       return Center(
+                              //           child: CircularProgressIndicator());
+                              //     }
+                              //   },
+                              // ),
                               FutureBuilder(
                                 future: FirebaseStorage.instance
                                     .refFromURL(model.photo as String)
                                     .getDownloadURL(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<dynamic> snapshot) {
+                                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                                   if (snapshot.hasData) {
                                     gowno = (model.photo as String);
-                                    //gowno = (snapshot.data.toString());
                                     return CircleAvatar(
                                       radius: 40,
-                                      backgroundImage: NetworkImage(
-                                          snapshot.data.toString()),
+                                      backgroundImage: CachedNetworkImageProvider(
+                                        snapshot.data.toString(),
+                                      ),
                                     );
                                   } else {
-                                    return Center(
-                                        child: CircularProgressIndicator());
+                                    return Center(child: CircularProgressIndicator());
                                   }
                                 },
                               ),

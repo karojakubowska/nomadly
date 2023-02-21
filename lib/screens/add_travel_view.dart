@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Travel.dart';
+import 'package:nomadly_app/screens/todo_view.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -101,13 +102,15 @@ class _AddTravelViewState extends State<AddTravelView> {
           return SafeArea(
             child: Wrap(
               children: <Widget>[
+                SizedBox(height: 8.0),
                 ListTile(
-                    leading: const Icon(Icons.photo_library),
-                    title: const Text('Gallery'),
-                    onTap: () {
-                      imgFromGallery(pickedFile);
-                      Navigator.of(context).pop();
-                    }),
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text('Gallery'),
+                  onTap: () {
+                    imgFromGallery(pickedFile);
+                    Navigator.of(context).pop();
+                  },
+                ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
                   title: const Text('Camera'),
@@ -200,47 +203,50 @@ class _AddTravelViewState extends State<AddTravelView> {
             SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      _showPicker(context);
-                    },
-                    child: Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 249, 250, 250),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        border: Border.all(
-                          color: Color.fromARGB(255, 217, 217, 217),
-                          width: 0.5,
+                  Padding(
+                    padding: EdgeInsets.only(top: 0.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        _showPicker(context);
+                      },
+                      child: Container(
+                        width: 150,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 249, 250, 250),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            color: Color.fromARGB(255, 217, 217, 217),
+                            width: 0.5,
+                          ),
                         ),
-                      ),
-                      child: _photo != null
-                          ? ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              child: Image.file(
-                                _photo!,
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.fitHeight,
-                              ),
-                            )
-                          : Container(
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 249, 250, 250),
+                        child: _photo != null
+                            ? ClipRRect(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
-                                border: Border.all(
-                                  color: Color.fromARGB(255, 217, 217, 217),
-                                  width: 0.5,
+                                child: Image.file(
+                                  _photo!,
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 249, 250, 250),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  border: Border.all(
+                                    color: Color.fromARGB(255, 217, 217, 217),
+                                    width: 0.5,
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.grey[800],
                                 ),
                               ),
-                              child: Icon(
-                                Icons.camera_alt,
-                                color: Colors.grey[800],
-                              ),
-                            ),
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -380,9 +386,31 @@ class _AddTravelViewState extends State<AddTravelView> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.all(20.0),
+                          padding: EdgeInsets.all(15.0),
+                          child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size.fromHeight(60),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                backgroundColor:
+                                    const Color.fromARGB(211, 211, 211, 211)),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) =>
+                                          ToDoListScreen())));
+                            },
+                            icon: const Icon(Icons.lock_open, size: 0),
+                            label: const Text('Add To do list',
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white)),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(15.0),
                           child: ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size.fromHeight(60),
