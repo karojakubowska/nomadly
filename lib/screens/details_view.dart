@@ -159,7 +159,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                 size: 25,
                               ),
                               Text(
-                                widget.acommodation!.rate!,
+                                widget.acommodation!.rate!.toString(),
                                 style: GoogleFonts.roboto(
                                     fontSize: 19,
                                     fontWeight: FontWeight.w600,

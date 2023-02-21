@@ -156,6 +156,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key) ;
@@ -211,7 +212,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     }
 
   Future uploadFile(pickedFile) async {
-    var user = await FirebaseAuth.instance.currentUser!;
+    var user =  FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
     if (_photo == null) return;
     final fileName = basename(_photo!.path);
@@ -281,6 +282,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   // }
 
   Widget build(BuildContext context) {
+  
     return Scaffold(
       appBar: AppBar(),
       body: Column(
