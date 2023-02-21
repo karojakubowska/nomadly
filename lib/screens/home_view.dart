@@ -5,7 +5,9 @@ import 'package:gap/gap.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/screens/all_accommodations.dart';
 import 'package:nomadly_app/screens/details_view.dart';
+import 'package:provider/provider.dart';
 
+import '../services/accommodation_provider.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 import 'foryou_view.dart';
@@ -20,11 +22,24 @@ class HomeTest extends StatefulWidget {
 
 class _HomeTestState extends State<HomeTest> {
   String svg = 'assets/images/notification-svgrepo-com.svg';
-  List<ForYouCard> all_accommodations = <ForYouCard>[];
+  late Future<QuerySnapshot<Object>> accommodations;
+
+  @override
+  void initState() {
+    accommodations = fetchAccommodations();
+    super.initState();
+  }
+
+  Future<QuerySnapshot<Object>> fetchAccommodations() async {
+    var value =
+        FirebaseFirestore.instance.collectionGroup('Accommodations').get();
+    return value;
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = AppLayout.getSize(context);
+    List<Acommodation> accommodationList=Provider.of<List<Acommodation>>(context);
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       body: ListView(
@@ -102,32 +117,36 @@ class _HomeTestState extends State<HomeTest> {
                     SizedBox(
                       height: 210,
                       width: size.width,
-                      child: FutureBuilder<QuerySnapshot>(
-                          future: FirebaseFirestore.instance
-                              .collectionGroup('Accommodations')
-                              .get(),
-                          builder: (context, snapshot) {
-                            if (snapshot.data == null) {
-                              return const Center(
-                                child: Text('Loading'),
-                              );
-                            }
-                            return ListView.builder(
+                      child:
+                      //  FutureBuilder<QuerySnapshot>(
+                      //     future: accommodations,
+                      //     builder: (context, snapshot) {
+                      //       if (snapshot.data == null) {
+                      //         return const Center(
+                      //           child: Text('Loading'),
+                      //         );
+                      //       }
+
+                           // return
+                             ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: snapshot.data!.docs.length,
+                              itemCount: accommodationList.length,
                               itemBuilder: (context, index) {
-                                Acommodation model = Acommodation.fromJson(
-                                    snapshot.data!.docs[index].data()
-                                        as Map<String, dynamic>);
+                                
+                                Acommodation model = 
+                                   accommodationList[index];
+                                 
                                 return ForYouCard(
                                   accomodation: model,
                                   accommodationCity: model.city!,
                                   accommodationName: model.title!,
+                                  accommodationPhoto: model.photo!,
                                   index: index,
+                                 // accommodationPhoto: model.photo!,
                                 );
                               },
-                            );
-                          }),
+                            )
+                         // }),
                     ),
                   ])),
           Container(
@@ -151,13 +170,45 @@ class _HomeTestState extends State<HomeTest> {
           ),
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  PopularCard(),
-                  Gap(12),
-                  PopularCard(),
-                ],
-              )),
+              child: Column(children: <Widget>[
+                SizedBox(
+                  height: 210,
+                  width: size.width * 0.9,
+                  child: 
+                  // FutureBuilder<QuerySnapshot>(
+                  //     future: accommodations,
+                  //     builder: (context, snapshot) {
+                  //       if (snapshot.data == null) {
+                  //         return const Center(
+                  //           child: Text('Loading'),
+                  //         );
+                  //       }
+
+                  //       return 
+                        ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: accommodationList.length,
+                          itemBuilder: (context, index) {
+                           Acommodation model = 
+                                   accommodationList[index];
+                            return PopularCard(
+                              accomodation: model,
+                              accommodationCity: model.city!,
+                              accommodationName: model.title!,
+                              index: index,
+                              accommodationPhoto: model.photo!,
+                            );
+                          },
+                        //);
+                      ),
+                ),
+              ]
+                  // children: [
+                  //   PopularCard(),
+                  //   Gap(12),
+                  //   PopularCard(),
+                  // ],
+                  )),
         ],
       ),
     );

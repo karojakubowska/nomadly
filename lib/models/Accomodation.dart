@@ -1,3 +1,7 @@
+
+
+import 'package:firebase_storage/firebase_storage.dart';
+
 class Acommodation {
   String? title;
   String? type;
@@ -18,8 +22,24 @@ class Acommodation {
   bool? air_conditioning;
   bool? kitchen;
   String? host_id;
-  String? rate;
+  num? rate;
   String? photo;
+
+  Acommodation({
+    this.title,
+    this.city,
+    this.photo,
+    this.country,
+    this.rate,
+    this.price_per_night,
+    this.description
+  });
+
+  Future<String> convertPathToURL(String path){
+     return FirebaseStorage.instance
+        .refFromURL(path)
+        .getDownloadURL();
+  }
 
    Map<String,dynamic> toJson()=>{
     'title': title,
