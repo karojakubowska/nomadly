@@ -39,7 +39,8 @@ class _HomeTestState extends State<HomeTest> {
   @override
   Widget build(BuildContext context) {
     final size = AppLayout.getSize(context);
-    List<Acommodation> accommodationList=Provider.of<List<Acommodation>>(context);
+    List<Acommodation> accommodationList =
+        Provider.of<List<Acommodation>>(context);
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       body: ListView(
@@ -115,39 +116,25 @@ class _HomeTestState extends State<HomeTest> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
-                      height: 210,
-                      width: size.width,
-                      child:
-                      //  FutureBuilder<QuerySnapshot>(
-                      //     future: accommodations,
-                      //     builder: (context, snapshot) {
-                      //       if (snapshot.data == null) {
-                      //         return const Center(
-                      //           child: Text('Loading'),
-                      //         );
-                      //       }
+                        height: 210,
+                        width: size.width,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: accommodationList.length,
+                          itemBuilder: (context, index) {
+                            Acommodation model = accommodationList[index];
 
-                           // return
-                             ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: accommodationList.length,
-                              itemBuilder: (context, index) {
-                                
-                                Acommodation model = 
-                                   accommodationList[index];
-                                 
-                                return ForYouCard(
-                                  accomodation: model,
-                                  accommodationCity: model.city!,
-                                  accommodationName: model.title!,
-                                  accommodationPhoto: model.photo!,
-                                  index: index,
-                                 // accommodationPhoto: model.photo!,
-                                );
-                              },
-                            )
-                         // }),
-                    ),
+                            return ForYouCard(
+                              accomodation: model,
+                              accommodationCity: model.city!,
+                              accommodationName: model.title!,
+                              accommodationPhoto: model.photo!,
+                              index: index,
+                            );
+                          },
+                        )
+                        // }),
+                        ),
                   ])),
           Container(
             padding: const EdgeInsets.only(left: 30, right: 28),
@@ -174,98 +161,25 @@ class _HomeTestState extends State<HomeTest> {
                 SizedBox(
                   height: 210,
                   width: size.width * 0.9,
-                  child: 
-                  // FutureBuilder<QuerySnapshot>(
-                  //     future: accommodations,
-                  //     builder: (context, snapshot) {
-                  //       if (snapshot.data == null) {
-                  //         return const Center(
-                  //           child: Text('Loading'),
-                  //         );
-                  //       }
-
-                  //       return 
-                        ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: accommodationList.length,
-                          itemBuilder: (context, index) {
-                           Acommodation model = 
-                                   accommodationList[index];
-                            return PopularCard(
-                              accomodation: model,
-                              accommodationCity: model.city!,
-                              accommodationName: model.title!,
-                              index: index,
-                              accommodationPhoto: model.photo!,
-                            );
-                          },
-                        //);
-                      ),
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: accommodationList.length,
+                    itemBuilder: (context, index) {
+                      Acommodation model = accommodationList[index];
+                      return PopularCard(
+                        accomodation: model,
+                        accommodationCity: model.city!,
+                        accommodationName: model.title!,
+                        index: index,
+                        accommodationPhoto: model.photo!,
+                      );
+                    },
+                    //);
+                  ),
                 ),
-              ]
-                  // children: [
-                  //   PopularCard(),
-                  //   Gap(12),
-                  //   PopularCard(),
-                  // ],
-                  )),
+              ])),
         ],
       ),
     );
   }
-
-  // Future<List<Acommodation>> geta() async {
-  //   List<Acommodation> a = <Acommodation>[];
-  //   final QuerySnapshot result =
-  //       await FirebaseFirestore.instance.collection('Accommodations').get();
-  //   final List<DocumentSnapshot> documents = result.docs;
-  //   documents.forEach((doc) => a.add(Acommodation.fromSnapshot(doc)));
-  //   return a;
-  // }
-
-  // Future getAccomodationsList() async {
-  //   var data =
-  //       await FirebaseFirestore.instance.collection('Accommodations').get();
-  //   all_accommodations =
-  //       List.from(data.docs.map((doc) => Acommodation.fromSnapshot(doc).));
-  //   return all_accommodations;
-  // }
-
-  // Future<List<ForYouCard>> getForYouCards()
-  //  async {
-  //   List<ForYouCard> x = <ForYouCard>[];
-  //   List<Acommodation> a = <Acommodation>[];
-  //   final QuerySnapshot result =
-  //       await FirebaseFirestore.instance.collection('Accommodations').get();
-  //   final List<DocumentSnapshot> documents = result.docs;
-  //   documents.forEach((doc) => (Acommodation.fromSnapshot(doc)));
-
-  // var _db=FirebaseFirestore.instance;
-  // final result2 = await _db
-  //       .collection("collectionName")
-  //       .get();
-
-  //   List<Object> toReturn = [];
-  //   for (int i = 0; i < result2.docs.length; i++) {
-  //    // add data to list you want to return.
-  //     toReturn.add(ForYouCard(accommodationCity: result2.docs., accommodationName: accommodationName));
-  //       }
-  // ForYouCard fyc = ForYouCard(
-  //   accommodationCity: 'Melbourne',
-  //   accommodationName: 'Cottage House',
-  // );
-  // x.add(fyc);
-  // ForYouCard fyc1 = ForYouCard(
-  //   accommodationCity: 'Warsaw',
-  //   accommodationName: 'Apartment',
-  // );
-  // x.add(fyc1);
-  // ForYouCard fyc2 = ForYouCard(
-  //   accommodationCity: 'Paris',
-  //   accommodationName: 'House',
-  // );
-  // x.add(fyc2);
-  //   List<ForYouCard>fyc=<ForYouCard>[];
-  //   return fyc;
-  // }
 }
