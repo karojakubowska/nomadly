@@ -26,7 +26,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           leading: IconButton(
             color: Colors.black,
             icon: Icon(Icons.arrow_back),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
           ),
           title: Text(
             'Change Password',

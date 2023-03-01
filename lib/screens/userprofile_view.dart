@@ -183,7 +183,7 @@ class UserProfileScreen extends StatelessWidget {
                   title,
                   style: GoogleFonts.roboto(
                       textStyle: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 16.0,
                           color: Colors.black,
                           fontWeight: FontWeight.w400)),
                 ),

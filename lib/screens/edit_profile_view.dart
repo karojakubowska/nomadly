@@ -26,7 +26,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           leading: IconButton(
             color: Colors.black,
             icon: Icon(Icons.arrow_back),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
           ),
           title: Text(
             'Edit Profile',
@@ -140,7 +142,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           backgroundColor: const Color.fromARGB(255, 50, 134, 252),
                         ),
                         onPressed: () {
-                          
+
                         },
                         child: const Text('Save',
                             style: TextStyle(
