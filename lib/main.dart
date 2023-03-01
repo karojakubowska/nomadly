@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/User.dart';
+import 'package:nomadly_app/screens/bottomnavbarhost.dart';
 import 'package:nomadly_app/screens/home_view.dart';
 import 'package:nomadly_app/screens/wishlist_card.dart';
 import 'package:nomadly_app/screens/wishlist_view.dart';
@@ -94,7 +95,7 @@ class LoginPage extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.done) {
                     UserModel user = UserModel.fromSnapshot(snapshot.data);
                     if (user.accountType == 'Client') return BottomNavBar();
-                    return WishlistScreen();
+                    return BottomNavBarHost();
                   }
                   return Text("Loading");
                 },

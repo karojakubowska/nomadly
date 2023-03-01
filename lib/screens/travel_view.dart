@@ -69,6 +69,7 @@ class _TravelViewState extends State<TravelView> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        centerTitle: true,
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 90.0, right: 20.0),

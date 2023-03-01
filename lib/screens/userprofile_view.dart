@@ -1,376 +1,199 @@
-// import 'dart:io';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:permission_handler/permission_handler.dart';
-// import 'package:device_info_plus/device_info_plus.dart';
-//
-// class UserProfileScreen extends StatefulWidget {
-//   const UserProfileScreen({super.key});
-//
-//   @override
-//   _UserProfileScreenState createState() => _UserProfileScreenState();
-// }
-//
-// class _UserProfileScreenState extends State<UserProfileScreen> {
-//   late String imageUrl = '';
-//
-//   Future uploadImage() async {
-//     final _firebaseStorage = FirebaseStorage.instance;
-//     final _imagePicker = ImagePicker();
-//     PickedFile? image;
-//     //Check Permissions
-//     await Permission.photos.request();
-//
-//     var permissionStatus = await Permission.photos.status;
-//
-//     if (Platform.isAndroid) {
-//       final androidInfo = await DeviceInfoPlugin().androidInfo;
-//       if (androidInfo.version.sdkInt <= 32) {
-//         await Permission.storage.request();
-//
-//         var permissionStatus = await Permission.storage.status;
-//         if (permissionStatus.isGranted) {
-//           //Select Image
-//           image = await _imagePicker.getImage(source: ImageSource.gallery);
-//           var file = File(image!.path);
-//
-//           var user = await FirebaseAuth.instance.currentUser!;
-//           if (user != null) {
-//             final destination = 'files/$file';
-//             // final ref = _firebaseStorage.instance
-//             //     .ref(destination)
-//             //     .child('file/');
-//             // await ref.putFile(_photo!);
-//             var snapshot = await _firebaseStorage.ref(destination).child('file/').putFile(file);
-//
-//             //User is logged in, perform desired action
-//             // var snapshot = await _firebaseStorage.ref().child('images').putFile(file);
-//
-//             var downloadUrl = await snapshot.ref.getDownloadURL();
-//             setState(() {
-//               imageUrl = downloadUrl;
-//             });
-//
-//           } else {
-//             //User is not logged in, show error message
-//             print('User is not authorized, please log in first');
-//           }
-//           // } else {
-//           //       print('No Image Path Received');
-//           //     }
-//           //   } else {
-//           //     print('Permission not granted. Try Again with permission access');
-//           //   }
-//           // }  else {
-//           //   /// use [Permissions.photos.status]
-//         }
-//       } else {
-//         await Permission.photos.request();
-//
-//         var permissionStatus = await Permission.photos.status;
-//         if (permissionStatus.isGranted) {
-//           //Select Image
-//
-//           image = await _imagePicker.getImage(source: ImageSource.gallery);
-//           var file = File(image!.path);
-//
-//           var user = await FirebaseAuth.instance.currentUser!;
-//           if (user != null) {
-//             //User is logged in, perform desired action
-//             var snapshot = await _firebaseStorage.ref().child('').putFile(file);
-//             var downloadUrl = await snapshot.ref.getDownloadURL();
-//             setState(() {
-//               imageUrl = downloadUrl;
-//             });
-//           } else {
-//             //User is not logged in, show error message
-//             print('User is not authorized, please log in first');
-//           }
-//         }
-//       }
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(
-//           'Upload Image',
-//           style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
-//         ),
-//         centerTitle: true,
-//         elevation: 0.0,
-//         backgroundColor: Colors.white,
-//       ),
-//       body: Container(
-//         color: Colors.white,
-//         child: Column(
-//           children: <Widget>[
-//             Container(
-//                 margin: EdgeInsets.all(15),
-//                 padding: EdgeInsets.all(15),
-//                 decoration: BoxDecoration(
-//                   color: Colors.white,
-//                   borderRadius: BorderRadius.all(
-//                     Radius.circular(15),
-//                   ),
-//                   border: Border.all(color: Colors.white),
-//                   boxShadow: [
-//                     BoxShadow(
-//                       color: Colors.black12,
-//                       offset: Offset(2, 2),
-//                       spreadRadius: 2,
-//                       blurRadius: 1,
-//                     ),
-//                   ],
-//                 ),
-//                 child: (imageUrl != null)
-//                     ? Image.network(imageUrl)
-//                     : Image.network('')),
-//             SizedBox(
-//               height: 20.0,
-//             ),
-//             ElevatedButton(
-//               child: Text("Upload Image",
-//                   style: TextStyle(
-//                       color: Colors.white,
-//                       fontWeight: FontWeight.bold,
-//                       fontSize: 20)),
-//               onPressed: () => {uploadImage()},
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
-import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:nomadly_app/screens/change_password_view.dart';
+import 'package:nomadly_app/screens/edit_profile_view.dart';
+import 'package:nomadly_app/utils/app_styles.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({Key? key}) : super(key: key) ;
-
-  @override
-  _UserProfileScreenState createState() => _UserProfileScreenState();
-}
-
-class _UserProfileScreenState extends State<UserProfileScreen> {
-  firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
-
-  File? _photo;
-  final ImagePicker _picker = ImagePicker();
-  final pickedFile ="";
-
-  Future imgFromGallery(pickedFile) async {
-    pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _photo = File(pickedFile.path);
-    });
-    // pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    //
-    // setState(() {
-    //   if (pickedFile != null) {
-    //     _photo = File(pickedFile.path);
-    //     //uploadFile();
-    //     var user = FirebaseAuth.instance.currentUser!;
-    //     var uid = user.uid;
-    //     if (_photo == null) return;
-    //     final fileName = basename(_photo!.path);
-    //     final destination = '$uid/$fileName';
-    //
-    //     try {
-    //       final ref = firebase_storage.FirebaseStorage.instance
-    //           .ref(destination)
-    //           .child('');
-    //       ref.putFile(_photo!);
-    //     } catch (e) {
-    //       print('error occured');
-    //     }
-    //   } else {
-    //     print('No image selected.');
-    //   }
-    // });
-  }
-
-  Future imgFromCamera(pickedFile) async {
-    pickedFile = await _picker.pickImage(source: ImageSource.camera);
-    setState(() {
-      _photo = File(pickedFile.path);
-    });
-    }
-
-  Future uploadFile(pickedFile) async {
-    var user =  FirebaseAuth.instance.currentUser!;
-    var uid = user.uid;
-    if (_photo == null) return;
-    final fileName = basename(_photo!.path);
-    final destination = '$uid/$fileName';
-
-    try {
-      final ref = firebase_storage.FirebaseStorage.instance
-          .ref(destination)
-          .child('');
-      await ref.putFile(_photo!);
-    } catch (e) {
-      print('error occured');
-    }
-  }
+class UserProfileScreen extends StatelessWidget {
+  const UserProfileScreen({Key? key}) : super(key: key);
 
   @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(),
-  //     body: Column(
-  //       children: <Widget>[
-  //         const SizedBox(
-  //           height: 32,
-  //         ),
-  //         Center(
-  //           child: Column(
-  //             children: <Widget>[
-  //               GestureDetector(
-  //                 onTap: () {
-  //                   _showPicker(context);
-  //                 },
-  //                 child: Container(
-  //                   width: 250,
-  //                   height: 250,
-  //                   decoration: BoxDecoration(
-  //                     color: const Color(0xff000000),
-  //                     borderRadius: BorderRadius.all(Radius.circular(10)),
-  //                   ),
-  //                   child: _photo != null
-  //                       ? ClipRRect(
-  //                     borderRadius: BorderRadius.all(Radius.circular(10)),
-  //                     child: Image.file(
-  //                       _photo!,
-  //                       width: 100,
-  //                       height: 100,
-  //                       fit: BoxFit.fitHeight,
-  //                     ),
-  //                   )
-  //                       : Container(
-  //                     decoration: BoxDecoration(
-  //                       color: Colors.grey[200],
-  //                       borderRadius: BorderRadius.all(Radius.circular(10)),
-  //                     ),
-  //                     child: Icon(
-  //                       Icons.camera_alt,
-  //                       color: Colors.grey[800],
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget build(BuildContext context) {
-  
     return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: <Widget>[
-          const SizedBox(
-            height: 32,
+        backgroundColor: Styles.backgroundColor,
+        appBar: AppBar(
+          title: Text(
+            'Profile',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.roboto(
+                textStyle: TextStyle(
+                    fontSize: 20.0,
+                    height: 1.2,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700)),
           ),
-          Center(
-            child: Column(
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    _showPicker(context);
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 40.0,
+                    backgroundImage: NetworkImage(
+                        'https://www.example.com/images/profile.jpg'),
+                  ),
+                  SizedBox(width: 30.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Name Surname',
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                fontSize: 20.0,
+                                height: 1.2,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500)),
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'email@example.com',
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                fontSize: 16.0,
+                                height: 1.2,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w300)),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => EditProfilePage())));
+                    },
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Expanded(
+              child: ListView(children: [
+                _buildProfileSection(
+                  context,
+                  title: 'Change Password',
+                  icon: Icons.lock_outline,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => ChangePasswordPage())));
                   },
-                  child: Container(
-                    width: 250,
-                    height: 250,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff000000),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                _buildProfileSection(
+                  context,
+                  title: 'Language',
+                  icon: Icons.language,
+                  onPressed: () {},
+                ),
+                _buildProfileSection(
+                  context,
+                  title: 'Notifications',
+                  icon: Icons.notifications_active_outlined,
+                  onPressed: () {},
+                ),
+                _buildProfileSection(
+                  context,
+                  title: 'Terms and Conditions',
+                  icon: Icons.security,
+                  onPressed: () {},
+                ),
+                _buildProfileSection(
+                  context,
+                  title: 'Privacy Policy',
+                  icon: Icons.local_police,
+                  onPressed: () {},
+                ),
+                _buildProfileSection(
+                  context,
+                  title: 'Help & Support',
+                  icon: Icons.help,
+                  onPressed: () {},
+                ),
+                SizedBox(height: 16),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(55),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                      backgroundColor: const Color.fromARGB(255, 50, 134, 252),
                     ),
-                    child: _photo != null
-                        ? ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      child: Image.file(
-                        _photo!,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.fitHeight,
-                      ),
-                    )
-                        : Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Icon(
-                        Icons.camera_alt,
-                        color: Colors.grey[800],
-                      ),
-                    ),
+                    onPressed: _signOut,
+                    child: const Text('Log out',
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            height: 1.2,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500)),
                   ),
                 ),
-              ],
+              ]),
             ),
-          ),
-          const SizedBox(
-            height: 32,
-          ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                uploadFile(pickedFile);
-              },
-              child: Text('Upload'),
-            ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ));
   }
 
+  void _signOut() {
+    FirebaseAuth.instance.signOut();
+  }
 
-  void _showPicker(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Wrap(
-              children: <Widget>[
-                ListTile(
-                    leading: const Icon(Icons.photo_library),
-                    title: const Text('Gallery'),
-                    onTap: () {
-                      imgFromGallery(pickedFile);
-                      Navigator.of(context).pop();
-                    }),
-                ListTile(
-                  leading: const Icon(Icons.photo_camera),
-                  title: const Text('Camera'),
-                  onTap: () {
-                    imgFromCamera(pickedFile);
-                    Navigator.of(context).pop();
-                  },
+  Widget _buildProfileSection(
+    BuildContext context, {
+    required String title,
+    required IconData icon,
+    required VoidCallback onPressed,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
+      child: InkWell(
+        onTap: onPressed,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(25.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Icon(icon, color: Colors.black),
+                SizedBox(width: 16.0),
+                Text(
+                  title,
+                  style: GoogleFonts.roboto(
+                      textStyle: TextStyle(
+                          fontSize: 18.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400)),
                 ),
+                Spacer(),
+                Icon(Icons.keyboard_arrow_right),
               ],
             ),
-          );
-        });
+          ),
+        ),
+      ),
+    );
   }
 }
