@@ -6,7 +6,7 @@ class Travel{
   String? destination;
   Timestamp? start_date;
   Timestamp? end_date;
-  String? notes;
+  String? note;
   String? photo;
   int? number_of_people;
   List<dynamic>? to_do_list;
@@ -20,7 +20,7 @@ class Travel{
     'destination': destination,
     'start_date': start_date,
     'end_date': end_date,
-    'notes': notes,
+    'note': note,
     'photo': photo,
     'number_of_people': number_of_people,
     'to_do_list': to_do_list,
@@ -40,7 +40,7 @@ class Travel{
     destination=json['destination'];
     start_date=json['start_date'];
     end_date=json['end_date'];
-    notes=json['notes'];
+    note=json['note'];
     photo=json['photo'];
     number_of_people=json['number_of_people'];
     to_do_list=json['to_do_list'];

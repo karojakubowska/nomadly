@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Travel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +9,6 @@ import 'package:nomadly_app/screens/travel_single_view.dart';
 import 'package:nomadly_app/screens/update_travel_view.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 
 class TravelView extends StatefulWidget {
   const TravelView({Key? key}) : super(key: key);
@@ -25,7 +22,7 @@ class _TravelViewState extends State<TravelView> {
       FirebaseFirestore.instance.collectionGroup("Travel").get();
   Future<QuerySnapshot>? travelDocumentList;
 
-  var gowno = "";
+  var img = "";
 
   navigateToDetail(DocumentSnapshot travel) {
     Navigator.push(
@@ -72,13 +69,6 @@ class _TravelViewState extends State<TravelView> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        textTheme: TextTheme(
-          subtitle1: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 90.0, right: 20.0),
@@ -91,14 +81,11 @@ class _TravelViewState extends State<TravelView> {
           },
         ),
       ),
-      body: FutureBuilder<QuerySnapshot>(
-        future: FirebaseAuth.instance.currentUser != null
-            ? FirebaseFirestore.instance
-                .collection("Travel")
-                .where("userId",
-                    isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                .get()
-            : FirebaseFirestore.instance.collectionGroup("Travel").get(),
+      body: StreamBuilder<QuerySnapshot>(
+    stream: FirebaseFirestore.instance
+        .collection("Travel")
+        .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -114,10 +101,10 @@ class _TravelViewState extends State<TravelView> {
               return InkWell(
                   onTap: () => navigateToDetail(snapshot.data!.docs[index]),
                   child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
+                    margin: EdgeInsets.symmetric(vertical: 5),
                     child: Card(
                       child: Padding(
-                        padding: EdgeInsets.all(15),
+                        padding: EdgeInsets.all(5),
                         child: Container(
                           padding: EdgeInsets.all(5),
                           child: Row(
@@ -150,17 +137,20 @@ class _TravelViewState extends State<TravelView> {
                                 future: FirebaseStorage.instance
                                     .refFromURL(model.photo as String)
                                     .getDownloadURL(),
-                                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
                                   if (snapshot.hasData) {
-                                    gowno = (model.photo as String);
+                                    img = (model.photo as String);
                                     return CircleAvatar(
-                                      radius: 40,
-                                      backgroundImage: CachedNetworkImageProvider(
+                                      radius: 50,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
                                         snapshot.data.toString(),
                                       ),
                                     );
                                   } else {
-                                    return Center(child: CircularProgressIndicator());
+                                    return Center(
+                                        child: CircularProgressIndicator());
                                   }
                                 },
                               ),
@@ -206,8 +196,33 @@ class _TravelViewState extends State<TravelView> {
                                     navigateToUpdate(snapshot.data!.docs[index],
                                         snapshot.data!.docs[index].id);
                                   } else {
-                                    deleteTravel(
-                                        snapshot.data!.docs[index].id, gowno);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Delete Travel'),
+                                          content: const Text(
+                                              'Are you sure you want to delete this travel?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: const Text('No'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                deleteTravel(
+                                                    snapshot.data!.docs[index].id, img);
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Yes'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    // deleteTravel(
+                                    //     snapshot.data!.docs[index].id, gowno);
                                   }
                                 },
                               ),
