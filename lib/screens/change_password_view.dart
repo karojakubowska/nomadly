@@ -25,7 +25,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         appBar: AppBar(
           leading: IconButton(
             color: Colors.black,
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               Navigator.of(context).popUntil((route) => route.isFirst);
             },

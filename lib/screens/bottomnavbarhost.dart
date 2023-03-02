@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:nomadly_app/screens/add_accommodation_view.dart';
+import 'package:nomadly_app/screens/all_bookings_view.dart';
 import 'package:nomadly_app/screens/chat_view.dart';
+import 'package:nomadly_app/screens/home_host_view.dart';
 import 'package:nomadly_app/screens/travel_view.dart';
 //import 'package:nomadly_app/screens/reservation_view.dart';
 import 'package:nomadly_app/screens/userprofile_view.dart';
@@ -23,9 +26,9 @@ class _BottomNavBarHostState extends State<BottomNavBarHost>
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _bodyView = <Widget>[
-    HomeTest(),
-    WishlistScreen(),
-    TravelView(),
+    HomeHostScreen(),
+    AllBookingsScreen(),
+    AddAccommodationScreen(),
     Chat(),
     UserProfileScreen()
   ];
@@ -63,18 +66,15 @@ class _BottomNavBarHostState extends State<BottomNavBarHost>
         ));
   }
 
-
   @override
   Widget build(BuildContext context) {
     List<Widget> _icons = const [
       ImageIcon(
         AssetImage("assets/images/home 2.png"),
       ),
-      Icon(Icons.favorite_border_outlined),
-       ImageIcon(
-        AssetImage("assets/images/luggage 1.png"),
-      ),
-       ImageIcon(
+      Icon(Icons.calendar_month_outlined),
+      Icon(Icons.add_rounded),
+      ImageIcon(
         AssetImage("assets/images/mail 1.png"),
       ),
       Icon(Icons.person_outline)

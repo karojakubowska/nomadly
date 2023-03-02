@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/screens/change_password_view.dart';
 import 'package:nomadly_app/screens/edit_profile_view.dart';
+import 'package:nomadly_app/screens/privacy_policy_view.dart';
+import 'package:nomadly_app/screens/terms_conditions_view.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 
 class UserProfileScreen extends StatelessWidget {
@@ -94,7 +96,8 @@ class UserProfileScreen extends StatelessWidget {
                   context,
                   title: 'Language',
                   icon: Icons.language,
-                  onPressed: () {},
+                  onPressed: () {
+                  },
                 ),
                 _buildProfileSection(
                   context,
@@ -106,13 +109,23 @@ class UserProfileScreen extends StatelessWidget {
                   context,
                   title: 'Terms and Conditions',
                   icon: Icons.security,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => TermsConditionsScreen())));
+                  },
                 ),
                 _buildProfileSection(
                   context,
                   title: 'Privacy Policy',
                   icon: Icons.local_police,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => PrivacyPolicyScreen())));
+                  },
                 ),
                 _buildProfileSection(
                   context,
@@ -197,3 +210,4 @@ class UserProfileScreen extends StatelessWidget {
     );
   }
 }
+
