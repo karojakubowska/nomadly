@@ -3,6 +3,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 
 class Acommodation {
+  String? id;
   String? title;
   String? type;
   int? number_of_rooms;
@@ -26,6 +27,7 @@ class Acommodation {
   String? photo;
 
   Acommodation({
+    this.id,
     this.title,
     this.city,
     this.photo,

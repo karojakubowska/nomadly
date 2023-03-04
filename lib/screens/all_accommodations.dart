@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/screens/accommodation_card.dart';
-import 'package:nomadly_app/screens/popular_view.dart';
 import 'package:nomadly_app/utils/app_layout.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +35,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
           children: [
             Column(
               children: [
+                
                 Gap(20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -69,7 +69,6 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                               borderRadius: BorderRadius.circular(10)),
                           child: Center(
                             child: SvgPicture.asset("assets/images/sliders.svg",color: Colors.white,width: 20,height: 20,),
-                            //Icon(Icons.arrow_forward)
                             ),
                         ))
                   ],
@@ -91,7 +90,6 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                               index: index,
                             );
                           },
-                          //);
                         ),
                       ),
                     ])),
@@ -100,4 +98,6 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
           ],
         ));
   }
+
+
 }

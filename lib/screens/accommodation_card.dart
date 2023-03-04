@@ -1,27 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 import 'details_view.dart';
 
 class AccommodationCard extends StatefulWidget {
-  Acommodation accomodation;
-  // String accommodationName = '';
-  // String accommodationCity = '';
-  // String accommodationPhoto = '';
-  int index;
-  AccommodationCard(
+  final Acommodation accomodation;
+  final int index;
+
+  const AccommodationCard(
       {super.key,
       required this.accomodation,
-      // required this.accommodationCity,
-      // required this.accommodationName,
-      // required this.accommodationPhoto,
       required this.index});
 
   @override
@@ -45,7 +39,7 @@ class _AccommodationCardState extends State<AccommodationCard> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
         width: size.width,
-        height: size.height * 0.3,
+        height: size.height * 0.31,
         decoration: BoxDecoration(
           color: Styles.whiteColor,
           borderRadius: BorderRadius.circular(20),
@@ -127,6 +121,28 @@ class _AccommodationCardState extends State<AccommodationCard> {
                           ),
                         ],
                       )),
+                  StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection("Wishlists")
+                          .doc(FirebaseAuth.instance.currentUser?.uid)
+                          .collection("favs")
+                          .where("accommodationId",
+                              isEqualTo: widget.accomodation.id)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.data == null) return Text("no data");
+                        return IconButton(
+                            onPressed: () async {
+                              snapshot.data!.docs.length == 0
+                                  ? await addToFavorites(
+                                      widget.accomodation.id!)
+                                  : deleteFromFavorites(
+                                      widget.accomodation.id!);
+                            },
+                            icon: snapshot.data!.docs.length == 0
+                                ? Icon(Icons.favorite_border_outlined)
+                                : Icon(Icons.favorite));
+                      })
                 ],
               ),
             ),
@@ -137,5 +153,42 @@ class _AccommodationCardState extends State<AccommodationCard> {
         navigateToDetail(widget.accomodation);
       },
     );
+  }
+
+  Future addToFavorites(String accommodationId) async {
+    var userId = FirebaseAuth.instance.currentUser?.uid;
+    CollectionReference wishlist =
+        FirebaseFirestore.instance.collection("Wishlists");
+    return wishlist
+        .doc(userId)
+        .collection("favs")
+        .doc()
+        .set({'accommodationId': accommodationId})
+        .then((value) => print("liked"))
+        .catchError((error) => print("Something went wrong when liking"));
+  }
+
+  Future deleteFromFavorites(String accommodationId) async {
+    var userId = FirebaseAuth.instance.currentUser?.uid;
+    var wishlist = FirebaseFirestore.instance
+        .collection("Wishlists")
+        .doc(userId)
+        .collection("favs")
+        .where('accommodationId', isEqualTo: widget.accomodation.id)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        FirebaseFirestore.instance
+            .collection("Wishlists")
+            .doc(userId)
+            .collection("favs")
+            .doc(element.id)
+            .delete()
+            .then((value) {
+          print("unliked");
+        });
+      });
+    });
+    return wishlist;
   }
 }
