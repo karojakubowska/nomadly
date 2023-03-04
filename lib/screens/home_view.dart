@@ -6,8 +6,6 @@ import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/screens/all_accommodations.dart';
 import 'package:nomadly_app/screens/details_view.dart';
 import 'package:provider/provider.dart';
-
-import '../services/accommodation_provider.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 import 'foryou_view.dart';
@@ -23,6 +21,14 @@ class HomeTest extends StatefulWidget {
 class _HomeTestState extends State<HomeTest> {
   String svg = 'assets/images/notification-svgrepo-com.svg';
   late Future<QuerySnapshot<Object>> accommodations;
+  navigateToDetail(Acommodation accommodation) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) => DetailScreen(
+                  acommodation: accommodation,
+                ))));
+  }
 
   @override
   void initState() {
@@ -39,6 +45,7 @@ class _HomeTestState extends State<HomeTest> {
   @override
   Widget build(BuildContext context) {
     final size = AppLayout.getSize(context);
+    final String locationsvg = 'assets/images/location-pin-svgrepo-com.svg';
     List<Acommodation> accommodationList =
         Provider.of<List<Acommodation>>(context);
     return Scaffold(
@@ -118,19 +125,24 @@ class _HomeTestState extends State<HomeTest> {
                     SizedBox(
                         height: 210,
                         width: size.width,
-                        child: ListView.builder(
+                        child:
+                            //  FutureBuilder<QuerySnapshot>(
+                            //     future: accommodations,
+                            //     builder: (context, snapshot) {
+                            //       if (snapshot.data == null) {
+                            //         return const Center(
+                            //           child: Text('Loading'),
+                            //         );
+                            //       }
+
+                            // return
+                            ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: accommodationList.length,
                           itemBuilder: (context, index) {
                             Acommodation model = accommodationList[index];
-
                             return ForYouCard(
-                              accomodation: model,
-                              accommodationCity: model.city!,
-                              accommodationName: model.title!,
-                              accommodationPhoto: model.photo!,
-                              index: index,
-                            );
+                                accomodation: model, index: index);
                           },
                         )
                         // }),

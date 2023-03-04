@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -7,22 +8,15 @@ import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/screens/details_view.dart';
 import 'package:nomadly_app/services/accommodation_provider.dart';
 import 'package:provider/provider.dart';
+import '../shimmer_load.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 
 class ForYouCard extends StatefulWidget {
-  Acommodation accomodation;
-  String accommodationName = '';
-  String accommodationCity = '';
-  String accommodationPhoto = '';
-  int index;
+  final Acommodation accomodation;
+  final int index;
 
-  ForYouCard(
-      {required this.accomodation,
-      required this.accommodationCity,
-      required this.accommodationName,
-      required this.accommodationPhoto,
-      required this.index});
+  const ForYouCard({super.key, required this.accomodation, required this.index});
 
   @override
   State<ForYouCard> createState() => _ForYouCardState();
@@ -31,7 +25,7 @@ class ForYouCard extends StatefulWidget {
 class _ForYouCardState extends State<ForYouCard> {
   final String locationsvg = 'assets/images/location-pin-svgrepo-com.svg';
   late Future<String> photoPath;
-  
+
   navigateToDetail(Acommodation accommodation) {
     Navigator.push(
         context,
@@ -41,18 +35,6 @@ class _ForYouCardState extends State<ForYouCard> {
                 ))));
   }
 
-// @override
-//   void initState() {
-//     photoPath = fetchPhotoPath();
-//     super.initState();
-//   }
-//   Future<String> fetchPhotoPath() async {
-//     var value =
-//          FirebaseStorage.instance
-//                   .refFromURL(widget.accommodationPhoto)
-//                   .getDownloadURL();
-//     return value;
-//   }
   @override
   Widget build(BuildContext context) {
     final size = AppLayout.getSize(context);
@@ -73,9 +55,9 @@ class _ForYouCardState extends State<ForYouCard> {
           children: [
             FutureBuilder(
               future: FirebaseStorage.instance
-                  .refFromURL(widget.accommodationPhoto)
+                  .refFromURL(widget.accomodation.photo!)
                   .getDownloadURL(),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Container(
                     height: 120,
@@ -83,14 +65,13 @@ class _ForYouCardState extends State<ForYouCard> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         image: DecorationImage(
-                          //  image: AssetImage(
-                          // "assets/images/beautiful-view-of-a-blue-lake-captured-from-the-inside-of-a-villa 1.png")
                           image: NetworkImage(snapshot.data.toString()),
-                         fit: BoxFit.cover,
+                          fit: BoxFit.cover,
                         )),
                   );
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                      child: ShimmerLoad(height: 120, width: 110));
                 }
               },
             ),
@@ -98,8 +79,8 @@ class _ForYouCardState extends State<ForYouCard> {
             Container(
               color: Styles.backgroundColor,
               margin: const EdgeInsets.only(left: 15),
-              child:
-                  Text(widget.accommodationName, style: Styles.houseNameStyle),
+              child: Text(widget.accomodation.title!,
+                  style: Styles.houseNameStyle),
             ),
             // Container(
             //   color: Styles.backgroundColor,
@@ -118,7 +99,7 @@ class _ForYouCardState extends State<ForYouCard> {
                           color: Styles.pinColor, height: 15, width: 15),
                     ),
                     TextSpan(
-                      text: widget.accommodationCity,
+                      text: widget.accomodation.city,
                       style: TextStyle(color: Colors.blue),
                     )
                   ],
