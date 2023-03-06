@@ -52,11 +52,6 @@ class _TravelViewState extends State<TravelView> {
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
-        leading: IconButton(
-          color: Colors.black,
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {},
-        ),
         title: Text(
           'Travels',
           textAlign: TextAlign.center,

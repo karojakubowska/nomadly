@@ -21,8 +21,6 @@ class _HomeHostScreenState extends State<HomeHostScreen> {
   @override
   Widget build(BuildContext context) {
     final currentUser = FirebaseAuth.instance.currentUser?.uid;
-    print('gowno');
-    print(currentUser);
     List<Acommodation> accommodationList =
         Provider.of<List<Acommodation>>(context);
     var size = AppLayout.getSize(context);
@@ -49,9 +47,6 @@ class _HomeHostScreenState extends State<HomeHostScreen> {
                           itemCount: accommodationList.length,
                           itemBuilder: (context, index) {
                             Acommodation model = accommodationList[index];
-                            // Dodaj warunek, czy host_id jest równy currentUser
-                            print('co to');
-                            print(model.host_id);
                             if (model.host_id == currentUser) {
                               return AccommodationCardHost(
                                 accomodation: model,
@@ -62,7 +57,6 @@ class _HomeHostScreenState extends State<HomeHostScreen> {
                               return SizedBox.shrink(); // pusta przestrzeń
                             }
                           },
-                          //);
                         ),
                       ),
                     ])),
