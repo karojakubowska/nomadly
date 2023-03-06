@@ -16,6 +16,7 @@ class AccommodationProvider {
                 country: documentSnapshot["city"],
                 rate: documentSnapshot["rate"],
                 price_per_night: documentSnapshot["price_per_night"],
+                host_id: documentSnapshot['host_id'],
                 description: documentSnapshot["description"],))
             .toList());
     return list;

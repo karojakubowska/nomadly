@@ -34,7 +34,8 @@ class Acommodation {
     this.country,
     this.rate,
     this.price_per_night,
-    this.description
+    this.description,
+    this.host_id
   });
 
   Future<String> convertPathToURL(String path){
@@ -98,6 +99,7 @@ class Acommodation {
   street=snapshot.data()['street'],
   price_per_night=snapshot.data()['price_per_night'],
   rate=snapshot.data()['rate'],
-  photo=snapshot.data()['photo']
+  photo=snapshot.data()['photo'],
+  host_id=snapshot.data()['host_id']
   ;
 }
