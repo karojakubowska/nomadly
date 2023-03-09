@@ -96,9 +96,9 @@ class Acommodation {
   Acommodation.fromSnapshot(snapshot)
   : title=snapshot.data()['title'],
   city=snapshot.data()['city'],
-  street=snapshot.data()['street'],
+  //street=snapshot.data()['street'],
   price_per_night=snapshot.data()['price_per_night'],
-  rate=snapshot.data()['rate'],
+  //rate=snapshot.data()['rate'],
   photo=snapshot.data()['photo'],
   host_id=snapshot.data()['host_id']
   ;

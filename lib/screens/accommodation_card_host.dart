@@ -84,50 +84,50 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
-                      Text(
-                        "\$${widget.accomodation.price_per_night}",
-                        style: GoogleFonts.roboto(
-                            color: Color.fromARGB(255, 24, 24, 24),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
-                      ),
+                      // Text(
+                      //   "\$${widget.accomodation.price_per_night}",
+                      //   style: GoogleFonts.roboto(
+                      //       color: Color.fromARGB(255, 24, 24, 24),
+                      //       fontSize: 18,
+                      //       fontWeight: FontWeight.w500),
+                      // ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  margin: EdgeInsets.only(left: 20, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          height: 30,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 50, 134, 252),
-                              shape: BoxShape.rectangle,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Icon(
-                                Icons.star,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                              Text(
-                                widget.accomodation.rate!.toString(),
-                                style: GoogleFonts.roboto(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white),
-                              ),
-                            ],
-                          )),
-                    ],
-                  ),
-                ),
+                const SizedBox(height: 5),
+                // Container(
+                //   margin: EdgeInsets.only(left: 20, right: 20),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Container(
+                //           height: 30,
+                //           width: 50,
+                //           decoration: BoxDecoration(
+                //               color: Color.fromARGB(255, 50, 134, 252),
+                //               shape: BoxShape.rectangle,
+                //               borderRadius:
+                //                   BorderRadius.all(Radius.circular(5))),
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //             children: [
+                //               Icon(
+                //                 Icons.star,
+                //                 color: Colors.white,
+                //                 size: 16,
+                //               ),
+                //               // Text(
+                //               //   widget.accomodation.rate!.toString(),
+                //               //   style: GoogleFonts.roboto(
+                //               //       fontSize: 14,
+                //               //       fontWeight: FontWeight.w600,
+                //               //       color: Colors.white),
+                //               // ),
+                //             ],
+                //           )),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),
