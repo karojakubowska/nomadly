@@ -23,6 +23,11 @@ class AccommodationCardHost extends StatefulWidget {
 }
 
 class _AccommodationCardHostState extends State<AccommodationCardHost> {
+
+  Future<QuerySnapshot>? allAccommodationDocumentList =
+  FirebaseFirestore.instance.collectionGroup("Accommodations").get();
+  Future<QuerySnapshot>? accommodationDocumentList;
+
   navigateToDetail(Acommodation accommodation) {
     Navigator.push(
         context,
@@ -30,6 +35,13 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
             builder: ((context) => DetailScreen(
                   acommodation: accommodation,
                 ))));
+  }
+
+  navigateToUpdate(DocumentSnapshot accommodation, String id) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) => UpdateAccommodationScreen(accommodation: accommodation, id: id))));
   }
 
   @override
@@ -55,7 +67,8 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasData) {
-                      return Container(
+                      return
+                      Container(
                           height: 180,
                           width: size.width,
                           decoration: BoxDecoration(
@@ -66,6 +79,7 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                                 image: NetworkImage(snapshot.data.toString()),
                                 fit: BoxFit.fill,
                               )));
+
                     } else {
                       return const Center(child: CircularProgressIndicator());
                     }
@@ -95,39 +109,6 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                   ),
                 ),
                 const SizedBox(height: 5),
-                // Container(
-                //   margin: EdgeInsets.only(left: 20, right: 20),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Container(
-                //           height: 30,
-                //           width: 50,
-                //           decoration: BoxDecoration(
-                //               color: Color.fromARGB(255, 50, 134, 252),
-                //               shape: BoxShape.rectangle,
-                //               borderRadius:
-                //                   BorderRadius.all(Radius.circular(5))),
-                //           child: Row(
-                //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //             children: [
-                //               Icon(
-                //                 Icons.star,
-                //                 color: Colors.white,
-                //                 size: 16,
-                //               ),
-                //               // Text(
-                //               //   widget.accomodation.rate!.toString(),
-                //               //   style: GoogleFonts.roboto(
-                //               //       fontSize: 14,
-                //               //       fontWeight: FontWeight.w600,
-                //               //       color: Colors.white),
-                //               // ),
-                //             ],
-                //           )),
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -136,10 +117,6 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
             right: 15,
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => UpdateAccommodationScreen())));
               },
               child: Container(
                 width: 50,
@@ -148,9 +125,48 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                   color: Colors.grey.withOpacity(0.5),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.edit_outlined,
-                  color: Colors.white,
+                child: PopupMenuButton(
+                  icon:
+                  Icon(Icons.more_vert, color: Colors.white),
+                  itemBuilder: (BuildContext context) => [
+                    PopupMenuItem(
+                      child: Text("Edit"),
+                      value: "edit",
+                    ),
+                    PopupMenuItem(
+                      child: Text("Delete"),
+                      value: "delete",
+                    ),
+                  ],
+                  onSelected: (value) {
+                    if (value == "edit") {
+                      //navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id);
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Delete Accommodation'),
+                            content: const Text(
+                                'Are you sure you want to delete this accommodation?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context),
+                                child: const Text('No'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+
+                                },
+                                child: const Text('Yes'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
                 ),
               ),
             ),
@@ -161,5 +177,20 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
         navigateToDetail(widget.accomodation);
       },
     );
+  }
+
+  void deleteAccommodation(documentId, String imageId) async {
+    var db = FirebaseFirestore.instance;
+    FirebaseStorage.instance.refFromURL(imageId).delete().then((_) {
+      print("Image successfully deleted!");
+    }).catchError((error) {
+      print("Error removing image: $error");
+    });
+
+    db.collection("Accommodations").doc(documentId).delete().then((_) {
+      print("Document successfully deleted!");
+    }).catchError((error) {
+      print("Error removing document: $error");
+    });
   }
 }

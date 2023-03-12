@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
@@ -11,11 +12,26 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final passwordController = TextEditingController();
   final password2Controller = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    passwordController.text = '';
-    password2Controller.text = '';
+  void _updatePassword() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (passwordController.text != password2Controller.text) {
+        throw FirebaseAuthException(
+          code: 'password-mismatch',
+          message: 'The passwords do not match.',
+        );
+      }
+      await user?.updatePassword(passwordController.text);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password updated successfully.')),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message ?? 'An error occurred.')),
+      );
+    }
   }
 
   @override
@@ -58,6 +74,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       child: TextField(
                         controller: passwordController,
                         cursorColor: Colors.white,
+                        obscureText: true,
                         textInputAction: TextInputAction.next,
                         decoration: const InputDecoration(
                           labelText: 'New Password',
@@ -80,6 +97,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       child: TextField(
                         controller: password2Controller,
                         cursorColor: Colors.white,
+                        obscureText: true,
                         textInputAction: TextInputAction.next,
                         decoration: const InputDecoration(
                           labelText: 'Confirm New Password',
@@ -107,9 +125,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           ),
                           backgroundColor: const Color.fromARGB(255, 50, 134, 252),
                         ),
-                        onPressed: () {
-
-                        },
+                        onPressed: _updatePassword,
                         child: const Text('Save',
                             style: TextStyle(
                                 fontSize: 18.0,
