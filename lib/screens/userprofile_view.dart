@@ -1,14 +1,35 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/screens/change_password_view.dart';
-import 'package:nomadly_app/screens/edit_profile_view.dart';
+import 'package:nomadly_app/screens/help_support_view.dart';
+import 'package:nomadly_app/screens/update_userprofile_view.dart';
 import 'package:nomadly_app/screens/privacy_policy_view.dart';
 import 'package:nomadly_app/screens/terms_conditions_view.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 
-class UserProfileScreen extends StatelessWidget {
+class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  _UserProfileScreenState createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends State<UserProfileScreen> {
+  late String name, email;
+
+  var img= "";
+
+  @override
+  void initState() {
+    super.initState();
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    name = currentUser?.displayName ?? '';
+    email = currentUser?.email ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +59,35 @@ class UserProfileScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 40.0,
                     backgroundImage: NetworkImage(
-                        'https://www.example.com/images/profile.jpg'),
+                       'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'),
                   ),
+                  // FutureBuilder(
+                  //   future: FirebaseStorage.instance
+                  //       .refFromURL(model.photo as String)
+                  //       .getDownloadURL(),
+                  //   builder: (BuildContext context,
+                  //       AsyncSnapshot<dynamic> snapshot) {
+                  //     if (snapshot.hasData) {
+                  //       img = (model.photo as String);
+                  //       return CircleAvatar(
+                  //         radius: 50,
+                  //         backgroundImage:
+                  //         CachedNetworkImageProvider(
+                  //           snapshot.data.toString(),
+                  //         ),
+                  //       );
+                  //     } else {
+                  //       return Center(
+                  //           child: CircularProgressIndicator());
+                  //     }
+                  //   },
+                  // ),
                   SizedBox(width: 30.0),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Name Surname',
+                        name,
                         style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 fontSize: 20.0,
@@ -55,7 +97,7 @@ class UserProfileScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 8.0),
                       Text(
-                        'email@example.com',
+                        email,
                         style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 fontSize: 16.0,
@@ -131,7 +173,12 @@ class UserProfileScreen extends StatelessWidget {
                   context,
                   title: 'Help & Support',
                   icon: Icons.help,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => HelpSupportScreen())));
+                  },
                 ),
                 SizedBox(height: 16),
                 Padding(

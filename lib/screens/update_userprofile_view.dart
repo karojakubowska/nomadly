@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
@@ -8,14 +10,41 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+
   final nameController = TextEditingController();
   final emailController = TextEditingController();
+
+  void _updateUserProfile() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser != null) {
+      try {
+        await currentUser.updateDisplayName(nameController.text);
+        await currentUser.updateEmail(emailController.text);
+
+        final uid = FirebaseAuth.instance.currentUser!.uid;
+        var db = FirebaseFirestore.instance;
+        db.collection("Users").doc(uid).update({
+          'Name': nameController.text,
+          'Email': emailController.text,
+        });
+
+        nameController.text = currentUser.displayName ?? '';
+        emailController.text = currentUser.email ?? '';
+
+      } catch (e) {
+        print('Error updating user profile: $e');
+      }
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    nameController.text = 'Name';
-    emailController.text = 'example@gmail.com';
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    nameController.text = currentUser?.displayName ?? '';
+    emailController.text = currentUser?.email ?? '';
   }
 
   @override
@@ -52,7 +81,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 SizedBox(height: 24),
                 CircleAvatar(
                   radius: 80,
-                  backgroundImage: AssetImage('assets/profile_pic.jpg'),
+                  //backgroundImage: AssetImage('assets/profile_pic.jpg'),
                 ),
                 SizedBox(height: 24),
                 Padding(
@@ -141,9 +170,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                           backgroundColor: const Color.fromARGB(255, 50, 134, 252),
                         ),
-                        onPressed: () {
-
-                        },
+                        onPressed: _updateUserProfile,
                         child: const Text('Save',
                             style: TextStyle(
                                 fontSize: 18.0,

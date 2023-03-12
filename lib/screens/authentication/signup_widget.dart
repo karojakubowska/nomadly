@@ -213,7 +213,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     db.collection("Users").doc(uid).set({
       'Name': nameController.text,
       'Email': emailController.text,
-      'AccountType': _selectedType
+      'AccountType': _selectedType,
+      'AccountImage': 'gs://nomady-ae4b6.appspot.com/example/user.png',
     });
     //druga wersja dodania danych do bazy
     /* return users
