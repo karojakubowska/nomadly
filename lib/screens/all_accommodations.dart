@@ -98,6 +98,4 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
           ],
         ));
   }
-
-
 }
