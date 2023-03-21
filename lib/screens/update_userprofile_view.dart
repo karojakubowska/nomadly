@@ -10,7 +10,6 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-
   final nameController = TextEditingController();
   final emailController = TextEditingController();
 
@@ -31,7 +30,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
         nameController.text = currentUser.displayName ?? '';
         emailController.text = currentUser.email ?? '';
-
       } catch (e) {
         print('Error updating user profile: $e');
       }
@@ -94,8 +92,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child:
-                          Padding(
+                          child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 75.0),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -103,9 +100,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25.0),
                                 ),
-                                backgroundColor: const Color.fromARGB(255, 50, 134, 252),
+                                backgroundColor:
+                                    const Color.fromARGB(255, 50, 134, 252),
                               ),
-                              onPressed: () {  },
+                              onPressed: () {},
                               child: const Text('Edit Photo',
                                   style: TextStyle(
                                       fontSize: 16.0,
@@ -164,25 +162,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 const SizedBox(
                   height: 30,
                 ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(55),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          backgroundColor: const Color.fromARGB(255, 50, 134, 252),
-                        ),
-                        onPressed: _updateUserProfile,
-                        child: const Text('Save',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                height: 1.2,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(55),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
+                      backgroundColor: const Color.fromARGB(255, 50, 134, 252),
                     ),
+                    onPressed: _updateUserProfile,
+                    child: const Text('Save',
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            height: 1.2,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                ),
               ]))
             ]));
   }
