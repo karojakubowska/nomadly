@@ -61,80 +61,80 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           centerTitle: true,
         ),
         body: ListView(
-          // mainAxisAlignment: MainAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SingleChildScrollView(
                   child: Column(children: <Widget>[
-                    SizedBox(height: 24),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: TextField(
-                        controller: passwordController,
-                        cursorColor: Colors.white,
-                        obscureText: true,
-                        textInputAction: TextInputAction.next,
-                        decoration: const InputDecoration(
-                          labelText: 'New Password',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: Color.fromARGB(255, 217, 217, 217)),
-                          ),
-                          filled: true,
-                          fillColor: Color.fromARGB(255, 249, 250, 250),
-                        ),
+                SizedBox(height: 24),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: passwordController,
+                    cursorColor: Colors.white,
+                    obscureText: true,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                      labelText: 'New Password',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
                       ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: TextField(
-                        controller: password2Controller,
-                        cursorColor: Colors.white,
-                        obscureText: true,
-                        textInputAction: TextInputAction.next,
-                        decoration: const InputDecoration(
-                          labelText: 'Confirm New Password',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: Color.fromARGB(255, 217, 217, 217)),
-                          ),
-                          filled: true,
-                          fillColor: Color.fromARGB(255, 249, 250, 250),
-                        ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: password2Controller,
+                    cursorColor: Colors.white,
+                    obscureText: true,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                      labelText: 'Confirm New Password',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
                       ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(55),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          backgroundColor: const Color.fromARGB(255, 50, 134, 252),
-                        ),
-                        onPressed: _updatePassword,
-                        child: const Text('Save',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                height: 1.2,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500)),
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(55),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
+                      backgroundColor: const Color.fromARGB(255, 50, 134, 252),
                     ),
-                  ]))
+                    onPressed: _updatePassword,
+                    child: const Text('Save',
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            height: 1.2,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                ),
+              ]))
             ]));
   }
 }

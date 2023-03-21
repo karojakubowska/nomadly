@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -18,17 +19,26 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  late String name, email;
-
   var img= "";
+  late String name, email;
 
   @override
   void initState() {
     super.initState();
-    final currentUser = FirebaseAuth.instance.currentUser;
+    fetchUserData();
+  }
 
-    name = currentUser?.displayName ?? '';
-    email = currentUser?.email ?? '';
+  void fetchUserData() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final userDoc = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(currentUser!.uid)
+        .get();
+
+    setState(() {
+      name = userDoc.get('Name');
+      email = userDoc.get('Email');
+    });
   }
 
   @override

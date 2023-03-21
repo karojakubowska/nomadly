@@ -42,9 +42,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
     final currentUser = FirebaseAuth.instance.currentUser;
-
-    nameController.text = currentUser?.displayName ?? '';
-    emailController.text = currentUser?.email ?? '';
+    var db = FirebaseFirestore.instance;
+    db.collection("Users").doc(currentUser?.uid).get().then((doc) {
+      if (doc.exists) {
+        nameController.text = doc['Name'];
+        emailController.text = doc['Email'];
+      }
+    });
   }
 
   @override
