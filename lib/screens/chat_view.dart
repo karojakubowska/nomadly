@@ -14,7 +14,6 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   late String _userId;
 
   @override
@@ -54,267 +53,130 @@ class _ChatState extends State<Chat> {
           stream: _firestore
               .collection('ChatMessage')
               .where('recipientId', isEqualTo: _userId)
-              .orderBy('timestamp', descending: true)
+              // .orderBy('timestamp', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return CircularProgressIndicator();
             } else {
-              final List<DocumentSnapshot> documents = snapshot.data!.docs;
+              final List<QueryDocumentSnapshot> documents = snapshot.data!.docs;
+              final Map<String, QueryDocumentSnapshot> lastMessages = {};
+              for (final document in documents) {
+                final senderId = document.get('senderId');
+                if (!lastMessages.containsKey(senderId)) {
+                  lastMessages[senderId] = document;
+                }
+              }
+              final List<QueryDocumentSnapshot> lastMessagesList =
+                  lastMessages.values.toList();
               return ListView.builder(
-                itemCount: documents.length,
-                itemBuilder: (context, index) {
-                  final DocumentSnapshot document = documents[index];
-                  final bool is_read = document.get('isRead');
-                  final FontWeight fontWeight =
-                      is_read ? FontWeight.w400 : FontWeight.w700;
-                  //to nie działa
-                  return InkWell(
-                    onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) =>
-                      //         SingleChatPage(name: '', avatarUrl: ''),
-                      //   ),
-                      // );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(15),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(
-                                  'https://pbs.twimg.com/profile_images/1132273809079554048/CNV5-_GG_400x400.jpg',
+                  itemCount: lastMessagesList.length,
+                  itemBuilder: (context, index) {
+                    final QueryDocumentSnapshot document =
+                        lastMessagesList[index];
+                    final bool is_read = document.get('isRead');
+                    final FontWeight fontWeight =
+                        is_read ? FontWeight.w400 : FontWeight.w700;
+
+                    final senderId = document.get('senderId');
+                    return FutureBuilder<DocumentSnapshot>(
+                        future:
+                            _firestore.collection('Users').doc(senderId).get(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Container();
+                          } else {
+                            final String senderName =
+                                snapshot.data!.get('Name').toString();
+                            return InkWell(
+                              onTap: () {
+                                print("gowno");
+                                print(snapshot.data![index].id);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ChatSingleView(chatId: '5gFCA5AwBrDNW5hBTdmC'),
+                                    // tu trzeba poprawić
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: Card(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(15),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 30,
+                                          backgroundImage: NetworkImage(
+                                            'https://pbs.twimg.com/profile_images/1132273809079554048/CNV5-_GG_400x400.jpg',
+                                          ),
+                                        ),
+                                        SizedBox(width: 15),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(senderName,
+                                                  style: GoogleFonts.roboto(
+                                                      color: Color.fromARGB(
+                                                          255, 24, 24, 24),
+                                                      fontSize: 12,
+                                                      fontWeight: fontWeight)),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                document.get('text').length > 10
+                                                    ? '${document.get('text').substring(0, 10)}...'
+                                                    : document.get('text'),
+                                                style: GoogleFonts.roboto(
+                                                    color: Color.fromARGB(
+                                                        255, 24, 24, 24),
+                                                    fontSize: 12,
+                                                    fontWeight: fontWeight),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        // Text(document.get('send_date').toString()),
+                                        Positioned(
+                                          right: -30,
+                                          top: 50,
+                                          child: PopupMenuButton(
+                                            itemBuilder:
+                                                (BuildContext context) =>
+                                                    <PopupMenuEntry>[
+                                              PopupMenuItem(
+                                                child: Text("Delete"),
+                                                value: 1,
+                                              ),
+                                              PopupMenuItem(
+                                                child: Text("Report"),
+                                                value: 2,
+                                              ),
+                                            ],
+                                            onSelected: (value) {
+                                              // Do something
+                                            },
+                                            icon: Icon(Icons.more_vert),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                              SizedBox(width: 15),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(document.get('senderId')),
-                                    SizedBox(height: 5),
-                                    Text(
-                                      document.get('text')
-                                              .substring(0,10) +
-                                          '...',
-                                      //substring co zrobic jesli wiadomosc bedzie bardzo krótka?
-                                      style:
-                                          Theme.of(context).textTheme.bodyText2,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                             // Text(document.get('send_date').toString()),
-                              Positioned(
-                                right: -30,
-                                top: 50,
-                                child: PopupMenuButton(
-                                  itemBuilder: (BuildContext context) =>
-                                      <PopupMenuEntry>[
-                                    PopupMenuItem(
-                                      child: Text("Delete"),
-                                      value: 1,
-                                    ),
-                                    PopupMenuItem(
-                                      child: Text("Report"),
-                                      value: 2,
-                                    ),
-                                  ],
-                                  onSelected: (value) {
-                                    // Do something
-                                  },
-                                  icon: Icon(Icons.more_vert),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
+                            );
+                          }
+                          ;
+                        });
+                  });
             }
           }));
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:nomadly_app/screens/chat_single_view.dart';
-//
-// class Chat extends StatefulWidget {
-//   const Chat({Key? key}) : super(key: key);
-//
-//   @override
-//   _ChatState createState() => _ChatState();
-// }
-//
-// class _ChatState extends State<Chat> {
-//   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-//   final User? _user = FirebaseAuth.instance.currentUser;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Chats'),
-//       ),
-//       body: StreamBuilder<QuerySnapshot>(
-//         stream: _firestore.collection('ChatMessage').where('Users', arrayContains: _user!.uid).snapshots(),
-//         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-//           if (!snapshot.hasData) {
-//             return const Center(
-//               child: CircularProgressIndicator(),
-//             );
-//           }
-//
-//           final List<QueryDocumentSnapshot> chats = snapshot.data!.docs;
-//
-//           return ListView.builder(
-//             itemCount: chats.length,
-//             itemBuilder: (BuildContext context, int index) {
-//               final Map<String, dynamic> data = chats[index].data() as Map<String, dynamic>;
-//               final String chatId = chats[index].id;
-//
-//               String recipientName = '';
-//
-//               if (_user!.uid == data['Users'][0]) {
-//                 recipientName = data['Name'][1];
-//               } else {
-//                 recipientName = data['Name'][0];
-//               }
-//
-//               return ListTile(
-//                 title: Text(recipientName),
-//                 subtitle: Text(data['Name']),
-//                 onTap: () {
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                       builder: (context) => SingleChatPage(
-//                         //name: chatId,
-//                         //avatarUrl: recipientName,
-//                       ),
-//                     ),
-//                   );
-//                 },
-//               );
-//             },
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-//
-//
-// import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-//
-// import '../models/ChatMessage.dart';
-//
-// class ChatPage extends StatefulWidget {
-//   const ChatPage({Key? key}) : super(key: key);
-//
-//   @override
-//   _ChatPageState createState() => _ChatPageState();
-// }
-//
-// class _ChatPageState extends State<ChatPage> {
-//   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-//   final FirebaseAuth _auth = FirebaseAuth.instance;
-//   late final String _currentUserId;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _currentUserId = _auth.currentUser!.uid;
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Chat'),
-//       ),
-//       body: StreamBuilder<QuerySnapshot<ChatMessage>>(
-//         stream: _firestore
-//             .collection('messages')
-//             .orderBy('timestamp', descending: true)
-//             .snapshots()
-//
-//         builder: (context, snapshot) {
-//           if (snapshot.hasError) {
-//             return const Center(
-//               child: Text('Something went wrong'),
-//             );
-//           }
-//
-//           if (!snapshot.hasData) {
-//             return const Center(
-//               child: CircularProgressIndicator(),
-//             );
-//           }
-//
-//           final messages = snapshot.data!;
-//
-//           return ListView.builder(
-//             itemCount: messages.length,
-//             itemBuilder: (context, index) {
-//               final message = messages[index];
-//
-//               return Padding(
-//                 padding: const EdgeInsets.all(8.0),
-//                 child: Column(
-//                   crossAxisAlignment: message.senderId == _currentUserId
-//                       ? CrossAxisAlignment.end
-//                       : CrossAxisAlignment.start,
-//                   children: [
-//                     Text(
-//                       message.senderName,
-//                       style: const TextStyle(
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                     Text(
-//                       message.timestamp.toDate().toString(),
-//                       style: const TextStyle(
-//                         fontStyle: FontStyle.italic,
-//                       ),
-//                     ),
-//                     Container(
-//                       decoration: BoxDecoration(
-//                         color: message.senderId == _currentUserId
-//                             ? Colors.blue
-//                             : Colors.grey[300],
-//                         borderRadius: BorderRadius.circular(8.0),
-//                       ),
-//                       padding: const EdgeInsets.all(8.0),
-//                       margin: const EdgeInsets.only(top: 4.0),
-//                       child: Text(
-//                         message.text,
-//                         style: const TextStyle(
-//                           color: Colors.white,
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               );
-//             },
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
