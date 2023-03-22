@@ -90,13 +90,11 @@ class _ChatState extends State<Chat> {
                                 snapshot.data!.get('Name').toString();
                             return InkWell(
                               onTap: () {
-                                print("gowno");
-                                print(snapshot.data![index].id);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        ChatSingleView(chatId: '5gFCA5AwBrDNW5hBTdmC'),
+                                        ChatSingleView(chatId: 'HDQ7oOhqYlf5ZhtTOhossDLiP3G2'),
                                     // tu trzeba poprawić
                                   ),
                                 );
