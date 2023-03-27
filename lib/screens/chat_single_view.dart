@@ -170,7 +170,7 @@ class _ChatSingleViewState extends State<ChatSingleView> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(20),
@@ -181,8 +181,8 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                   child: TextField(
                     controller: _messageController,
                     decoration: InputDecoration(
-                      hintText: 'Enter a message...',
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      hintText: ' Write Something...',
+                      contentPadding: EdgeInsets.symmetric(horizontal: 5),
                       border: InputBorder.none,
                     ),
                   ),
@@ -195,6 +195,20 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                   icon: Icon(Icons.send),
                   color: Theme.of(context).primaryColor,
                 ),
+                // Expanded(
+                //   child: TextFormField(
+                //     controller: _messageController,
+                //     decoration: InputDecoration(
+                //       hintText: 'Write Something...',
+                //       contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                //       border: InputBorder.none,
+                //       hintMaxLines: null,
+                //     ),
+                //     keyboardType: TextInputType.multiline,
+                //     maxLines: null,
+                //     textInputAction: TextInputAction.newline,
+                //   ),
+                // ),
               ],
             ),
           ),
