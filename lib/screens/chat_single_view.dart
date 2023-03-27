@@ -3,18 +3,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ChatSingleView extends StatefulWidget {
-  final String chatId;
+import '../utils/app_styles.dart';
 
-  const ChatSingleView({Key? key, required this.chatId})
-      : super(key: key);
+class ChatSingleView extends StatefulWidget {
+  final String userId;
+  final String otherUserId;
+
+  const ChatSingleView({
+    Key? key,
+    required this.userId,
+    required this.otherUserId,
+  }) : super(key: key);
 
   @override
   _ChatSingleViewState createState() => _ChatSingleViewState();
 }
 
 class _ChatSingleViewState extends State<ChatSingleView> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late String _userId;
 
@@ -23,20 +28,19 @@ class _ChatSingleViewState extends State<ChatSingleView> {
   @override
   void initState() {
     super.initState();
-    final User? user = _auth.currentUser;
+    final User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       _userId = user.uid;
     }
   }
-  DateTime now = DateTime.now();
 
   Future<void> _sendMessage() async {
     await _firestore.collection('ChatMessage').add({
       'senderId': _userId,
-      'recipientId': widget.chatId,
+      'recipientId': widget.otherUserId,
       'text': _messageController.text,
       'isRead': false,
-      'timestamp': now,
+      'timestamp': Timestamp.now(),
     });
 
     _messageController.clear();
@@ -45,55 +49,151 @@ class _ChatSingleViewState extends State<ChatSingleView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Styles.backgroundColor,
+      appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(
+          color: Colors.black,
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+        ),
+        title: StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('Users')
+              .doc(widget.otherUserId)
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Text(
+                widget.otherUserId,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.roboto(
+                    textStyle: TextStyle(
+                        fontSize: 20.0,
+                        height: 1.2,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700)),
+              );
+            }
+            final String otherUserName = snapshot.data!.get('Name').toString();
+            return Text(
+              otherUserName,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.roboto(
+                  textStyle: TextStyle(
+                      fontSize: 20.0,
+                      height: 1.2,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700)),
+            );
+          },
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        textTheme: TextTheme(
+          subtitle1: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: _firestore
                   .collection('ChatMessage')
-                  .where('recipientId', isEqualTo: 'HDQ7oOhqYlf5ZhtTOhossDLiP3G2')
-                  //.orderBy('timestamp', descending: true)
+                  .where('senderId', isEqualTo: widget.userId)
+                  .where('recipientId', isEqualTo: widget.otherUserId)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Center(child: CircularProgressIndicator());
                 }
-                return ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (context, index) {
-                    final DocumentSnapshot message = snapshot.data!.docs[index];
-                    final bool isMe = message['senderId'] == _userId;
-                    return Align(
-                      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: isMe ? Colors.green[100] : Colors.grey[200],
-                        ),
-                        child: Text(message['text']),
-                      ),
+                final List<DocumentSnapshot> senderMessages =
+                    snapshot.data!.docs;
+                return StreamBuilder<QuerySnapshot>(
+                  stream: _firestore
+                      .collection('ChatMessage')
+                      .where('senderId', isEqualTo: widget.otherUserId)
+                      .where('recipientId', isEqualTo: widget.userId)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    final List<DocumentSnapshot> otherUserMessages =
+                        snapshot.data!.docs;
+                    final List<DocumentSnapshot> allMessages = [
+                      ...senderMessages,
+                      ...otherUserMessages
+                    ];
+                    allMessages.sort(
+                        (a, b) => a['timestamp'].compareTo(b['timestamp']));
+                    return ListView.builder(
+                      reverse: false,
+                      itemCount: allMessages.length,
+                      itemBuilder: (context, index) {
+                        final DocumentSnapshot message = allMessages[index];
+                        final bool isMe = message['senderId'] == _userId;
+                        return Align(
+                          alignment: isMe
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: isMe ? Colors.blue : Colors.grey[300],
+                            ),
+                            child: Text(
+                              message['text'],
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: isMe ? Colors.white : Colors.black,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
                 );
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(20),
+            ),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: InputDecoration(hintText: 'Wpisz wiadomość...'),
+                    decoration: InputDecoration(
+                      hintText: 'Enter a message...',
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
                 IconButton(
+                  // onPressed: _messageController.text.trim().isEmpty
+                  //     ? null
+                  //     : _sendMessage,
                   onPressed: _sendMessage,
                   icon: Icon(Icons.send),
+                  color: Theme.of(context).primaryColor,
                 ),
               ],
             ),
