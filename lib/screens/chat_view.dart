@@ -132,9 +132,60 @@ class _ChatState extends State<Chat> {
       //                             ),
       //                           );
       //                         },
+      // body: StreamBuilder<QuerySnapshot>(
+      //     stream: _firestore
+      //         .collection('ChatMessage')
+      //         .snapshots(),
+      //     builder: (context, snapshot) {
+      //       if (!snapshot.hasData) {
+      //         return const Center(
+      //           child: CircularProgressIndicator(),
+      //         );
+      //       } else {
+      //         final List<QueryDocumentSnapshot> documents = snapshot.data!.docs
+      //             .where((doc) =>
+      //         doc.get('recipientId') == _userId ||
+      //             doc.get('senderId') == _userId)
+      //             .toList();
+      //         return ListView.builder(
+      //             itemCount: documents.length,
+      //             itemBuilder: (context, index) {
+      //               final QueryDocumentSnapshot document = documents[index];
+      //               final bool is_read = document.get('isRead');
+      //               final FontWeight fontWeight =
+      //               is_read ? FontWeight.w400 : FontWeight.w700;
+      //
+      //               final senderId = document.get('senderId');
+      //               final otherUserId = senderId == _userId
+      //                   ? document.get('recipientId')
+      //                   : document.get('senderId');
+      //               return FutureBuilder<DocumentSnapshot>(
+      //                   future: _firestore
+      //                       .collection('Users')
+      //                       .doc(otherUserId)
+      //                       .get(),
+      //                   builder: (context, snapshot) {
+      //                     if (!snapshot.hasData) {
+      //                       return Container();
+      //                     } else {
+      //                       final String otherUserName =
+      //                       snapshot.data!.get('Name').toString();
+      //                       return InkWell(
+      //                         onTap: () {
+      //                           Navigator.push(
+      //                             context,
+      //                             MaterialPageRoute(
+      //                               builder: (context) => ChatSingleView(
+      //                                 userId: _userId,
+      //                                 otherUserId: otherUserId,
+      //                               ),
+      //                             ),
+      //                           );
+      //                         },
       body: StreamBuilder<QuerySnapshot>(
           stream: _firestore
               .collection('ChatMessage')
+              .orderBy('timestamp', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -142,23 +193,35 @@ class _ChatState extends State<Chat> {
                 child: CircularProgressIndicator(),
               );
             } else {
-              final List<QueryDocumentSnapshot> documents = snapshot.data!.docs
-                  .where((doc) =>
-              doc.get('recipientId') == _userId ||
-                  doc.get('senderId') == _userId)
-                  .toList();
+              final Map<String, QueryDocumentSnapshot> latestMessages = {};
+              for (final doc in snapshot.data!.docs) {
+                final String senderId = doc.get('senderId');
+                final String recipientId = doc.get('recipientId');
+                final String messageId = doc.id;
+                if (senderId == _userId || recipientId == _userId) {
+                  final String otherUserId =
+                      senderId == _userId ? recipientId : senderId;
+                  final String key = '$otherUserId:$messageId';
+                  if (!latestMessages.containsKey(otherUserId)) {
+                    latestMessages[otherUserId] = doc;
+                  }
+                }
+              }
+
+              final List<QueryDocumentSnapshot> latestMessagesList =
+                  latestMessages.values.toList();
               return ListView.builder(
-                  itemCount: documents.length,
+                  itemCount: latestMessagesList.length,
                   itemBuilder: (context, index) {
-                    final QueryDocumentSnapshot document = documents[index];
+                    final QueryDocumentSnapshot document =
+                        latestMessagesList[index];
+                    final String senderId = document.get('senderId');
                     final bool is_read = document.get('isRead');
                     final FontWeight fontWeight =
-                    is_read ? FontWeight.w400 : FontWeight.w700;
-
-                    final senderId = document.get('senderId');
-                    final otherUserId = senderId == _userId
+                        is_read ? FontWeight.w400 : FontWeight.w700;
+                    final String otherUserId = senderId == _userId
                         ? document.get('recipientId')
-                        : document.get('senderId');
+                        : senderId;
                     return FutureBuilder<DocumentSnapshot>(
                         future: _firestore
                             .collection('Users')
@@ -169,7 +232,7 @@ class _ChatState extends State<Chat> {
                             return Container();
                           } else {
                             final String otherUserName =
-                            snapshot.data!.get('Name').toString();
+                                snapshot.data!.get('Name').toString();
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -182,61 +245,61 @@ class _ChatState extends State<Chat> {
                                   ),
                                 );
                               },
-      // body: StreamBuilder<QuerySnapshot>(
-      //     stream: _firestore
-      //         .collection('ChatMessage')
-      //     //.where('recipientId', isEqualTo: _userId)
-      //     //.orderBy('timestamp', descending: true)
-      //         .snapshots(),
-      //     builder: (context, snapshot) {
-      //       if (!snapshot.hasData) {
-      //         return const Center(
-      //           child: CircularProgressIndicator(),
-      //         );
-      //       } else {
-      //         final List<QueryDocumentSnapshot> documents = snapshot.data!.docs.where((doc) =>
-      //         doc.get('recipientId') == _userId ||
-      //             doc.get('senderId') == _userId).toList();
-      //         final Map<String, QueryDocumentSnapshot> lastMessages = {};
-      //         for (final document in documents) {
-      //           final senderId = document.get('senderId');
-      //           if (!lastMessages.containsKey(senderId)) {
-      //             lastMessages[senderId] = document;
-      //           }
-      //         }
-      //         final List<QueryDocumentSnapshot> lastMessagesList =
-      //         lastMessages.values.toList();
-      //         // lastMessagesList.sort(
-      //         //       (a, b) => b.get('timestamp').compareTo(a.get('timestamp')),
-      //         // );
-      //         return ListView.builder(
-      //             itemCount: 1,
-      //             itemBuilder: (context, index) {
-      //               final QueryDocumentSnapshot document = lastMessagesList.first;
-      //               final bool is_read = document.get('isRead');
-      //               final FontWeight fontWeight =
-      //               is_read ? FontWeight.w400 : FontWeight.w700;
-      //
-      //               final senderId = document.get('senderId');
-      //               final otherUserId =  senderId == _userId ? document.get('recipientId') : document.get('senderId');
-      //               return FutureBuilder<DocumentSnapshot>(
-      //                   future: _firestore.collection('Users').doc(otherUserId).get(),
-      //                   builder: (context, snapshot) {
-      //                     if (!snapshot.hasData) {
-      //                       return Container();
-      //                     } else {
-      //                       final String otherUserName = snapshot.data!.get('Name').toString();
-      //                       return InkWell(
-      //                         onTap: () {
-      //                           Navigator.push(
-      //                             context,
-      //                             MaterialPageRoute(
-      //                               builder: (context) =>
-      //                                   ChatSingleView(userId: _userId, otherUserId: otherUserId),
-      //                               // tu trzeba poprawić
-      //                             ),
-      //                           );
-      //                         },
+                              // body: StreamBuilder<QuerySnapshot>(
+                              //     stream: _firestore
+                              //         .collection('ChatMessage')
+                              //     //.where('recipientId', isEqualTo: _userId)
+                              //     //.orderBy('timestamp', descending: true)
+                              //         .snapshots(),
+                              //     builder: (context, snapshot) {
+                              //       if (!snapshot.hasData) {
+                              //         return const Center(
+                              //           child: CircularProgressIndicator(),
+                              //         );
+                              //       } else {
+                              //         final List<QueryDocumentSnapshot> documents = snapshot.data!.docs.where((doc) =>
+                              //         doc.get('recipientId') == _userId ||
+                              //             doc.get('senderId') == _userId).toList();
+                              //         final Map<String, QueryDocumentSnapshot> lastMessages = {};
+                              //         for (final document in documents) {
+                              //           final senderId = document.get('senderId');
+                              //           if (!lastMessages.containsKey(senderId)) {
+                              //             lastMessages[senderId] = document;
+                              //           }
+                              //         }
+                              //         final List<QueryDocumentSnapshot> lastMessagesList =
+                              //         lastMessages.values.toList();
+                              //         // lastMessagesList.sort(
+                              //         //       (a, b) => b.get('timestamp').compareTo(a.get('timestamp')),
+                              //         // );
+                              //         return ListView.builder(
+                              //             itemCount: 1,
+                              //             itemBuilder: (context, index) {
+                              //               final QueryDocumentSnapshot document = lastMessagesList.first;
+                              //               final bool is_read = document.get('isRead');
+                              //               final FontWeight fontWeight =
+                              //               is_read ? FontWeight.w400 : FontWeight.w700;
+                              //
+                              //               final senderId = document.get('senderId');
+                              //               final otherUserId =  senderId == _userId ? document.get('recipientId') : document.get('senderId');
+                              //               return FutureBuilder<DocumentSnapshot>(
+                              //                   future: _firestore.collection('Users').doc(otherUserId).get(),
+                              //                   builder: (context, snapshot) {
+                              //                     if (!snapshot.hasData) {
+                              //                       return Container();
+                              //                     } else {
+                              //                       final String otherUserName = snapshot.data!.get('Name').toString();
+                              //                       return InkWell(
+                              //                         onTap: () {
+                              //                           Navigator.push(
+                              //                             context,
+                              //                             MaterialPageRoute(
+                              //                               builder: (context) =>
+                              //                                   ChatSingleView(userId: _userId, otherUserId: otherUserId),
+                              //                               // tu trzeba poprawić
+                              //                             ),
+                              //                           );
+                              //                         },
                               child: Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 child: Card(
