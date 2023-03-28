@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
+import 'package:nomadly_app/models/Travel.dart';
 import 'package:nomadly_app/screens/accommodation_card.dart';
+import 'package:nomadly_app/screens/filter_screen.dart';
 import 'package:nomadly_app/utils/app_layout.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +20,14 @@ class AllAccommodationsScreen extends StatefulWidget {
 }
 
 class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
+  Query query = FirebaseFirestore.instance.collection("Accommodations");
+
+  void updateQuery(Query newQuery) {
+    setState(() {
+      query = newQuery;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Acommodation> accommodationList =
@@ -35,7 +46,6 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
           children: [
             Column(
               children: [
-                
                 Gap(20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -60,7 +70,17 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                       ),
                     ),
                     GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          showModalBottomSheet<dynamic>(
+                              backgroundColor: Colors.transparent,
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (BuildContext bc) {
+                                return FiltersScreen(
+                                  onQueryChanged: updateQuery,
+                                );
+                              });
+                        },
                         child: Container(
                           height: 50.0,
                           width: 50.0,
@@ -68,8 +88,13 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                               color: Styles.pinColor,
                               borderRadius: BorderRadius.circular(10)),
                           child: Center(
-                            child: SvgPicture.asset("assets/images/sliders.svg",color: Colors.white,width: 20,height: 20,),
+                            child: SvgPicture.asset(
+                              "assets/images/sliders.svg",
+                              color: Colors.white,
+                              width: 20,
+                              height: 20,
                             ),
+                          ),
                         ))
                   ],
                 ),
@@ -78,20 +103,44 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                     scrollDirection: Axis.vertical,
                     child: Column(children: <Widget>[
                       SizedBox(
-                        height: size.height*0.78,
+                        height: size.height * 0.78,
                         width: size.width * 0.9,
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: accommodationList.length,
-                          itemBuilder: (context, index) {
-                            Acommodation model = accommodationList[index];
-                            return AccommodationCard(
-                              accomodation: model,
-                              index: index,
-                            );
-                          },
-                        ),
-                      ),
+                        child: StreamBuilder<QuerySnapshot>(
+                            stream: query.snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              if (snapshot.hasError) {
+                                return Center(
+                                    child: Text("Error: ${snapshot.error}"));
+                              }
+                              return ListView.builder(
+                                  itemCount: snapshot.data!.docs.length,
+                                  itemBuilder: (context, index) {
+                                    Acommodation model = Acommodation.fromJson(
+                                        snapshot.data!.docs[index].data()!
+                                            as Map<String, dynamic>);
+                                    return AccommodationCard(
+                                        accomodation: model, index: index);
+                                  });
+                            }
+                            // ListView.builder(
+                            //   scrollDirection: Axis.vertical,
+                            //   //itemCount: accommodationList.length,
+                            //   itemCount: list.length,
+                            //   itemBuilder: (context, index) {
+                            //     Acommodation model = list[index];
+                            //     return AccommodationCard(
+                            //       accomodation: model,
+                            //       index: index,
+                            //     );
+                            //   },
+                            // ),
+                            ),
+                      )
                     ])),
               ],
             ),

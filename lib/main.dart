@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/User.dart';
 import 'package:nomadly_app/screens/bottomnavbarhost.dart';
+import 'package:nomadly_app/screens/filter_screen.dart';
 import 'package:nomadly_app/screens/home_view.dart';
 import 'package:nomadly_app/screens/new_bottomnavbar.dart';
 import 'package:nomadly_app/screens/travel_view.dart';
@@ -34,9 +35,10 @@ Future<void> main() async {
       initialData: null,
     ),
     StreamProvider<List<Acommodation>>.value(
-        value: AccommodationProvider().allAccommodations,
-        initialData: [],
-        child: HomeTest()),
+      value: AccommodationProvider().allAccommodations,
+      initialData: [],
+      child: HomeTest(),
+    ),
   ], child: MyApp()));
 }
 
@@ -47,27 +49,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-        //  MultiProvider(
-        //   providers: [
-        //     Provider<AuthenticationProvider>(
-        //       create: (_) => AuthenticationProvider(FirebaseAuth.instance),
-        //     ),
-        //     StreamProvider(
-        //       create: (context) => context.read<AuthenticationProvider>().authState,
-        //       initialData: null,
-        //     ),
-        //     StreamProvider<List<Acommodation>>.value(
-        //         value: AccommodationProvider().allAccommodations,
-        //         initialData: [],
-        //         child: HomeTest()),
-        //   ],
-
-        MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255)),
-
       initialRoute: initScreen == 0 || initScreen == null ? 'onboard' : 'home',
       routes: {
         'home': (context) => LoginPage(),
