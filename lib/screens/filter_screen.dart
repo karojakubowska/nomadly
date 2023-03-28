@@ -11,7 +11,9 @@ import 'package:intl/src/intl/date_format.dart';
 import 'package:provider/provider.dart';
 
 import '../models/Accomodation.dart';
+
 typedef void QueryCallback(Query query);
+
 enum AccommodationTypeFilter {
   All,
   Apartment,
@@ -26,21 +28,27 @@ enum AccommodationTypeFilter {
 enum AmenitiesFilter { wifi, tv, airconditioning, kitchen }
 
 class FiltersScreen extends StatefulWidget {
- // const FiltersScreen({super.key});
-final QueryCallback onQueryChanged;
-  const FiltersScreen({ required this.onQueryChanged });
+  List<String> currentFilters = [];
+  RangeValues currentPriceRange = RangeValues(0, 2000);
+  final QueryCallback onQueryChanged;
+  final void Function(List<String>, RangeValues) onApplyFilters;
+  FiltersScreen(
+      {required this.onApplyFilters,
+      required this.onQueryChanged,
+      required this.currentFilters,
+      required this.currentPriceRange});
   @override
   State<FiltersScreen> createState() => _FiltersScreenState();
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
-  RangeValues _currentRangeValues = const RangeValues(0, 2000);
+  RangeValues _priceRange = const RangeValues(0, 2000);
 
   late DateTime startDate;
   late DateTime endDate;
   int? _value = 1;
   //List<String> accommodationType=["All","Apartment","Hotel","Hostel","Cabin","Bungalow","Private room"];
-  final List<String> _filters = <String>[];
+  List<String> _filters = <String>[];
 
   Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -73,6 +81,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
     super.initState();
     startDate = DateTime.now();
     endDate = DateTime.now();
+    _filters = widget.currentFilters;
+    _priceRange = widget.currentPriceRange;
   }
 
   @override
@@ -154,11 +164,11 @@ class _FiltersScreenState extends State<FiltersScreen> {
             ],
           ),
           Divider(
-            color: Styles.greyColor, 
-            height: 30, 
-            thickness: 1, 
-            indent: 25, 
-            endIndent: 25, 
+            color: Styles.greyColor,
+            height: 30,
+            thickness: 1,
+            indent: 25,
+            endIndent: 25,
           ),
           Gap(10),
           Text("Price",
@@ -168,21 +178,21 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   fontWeight: FontWeight.w500)),
           RangeSlider(
             activeColor: Color.fromARGB(255, 135, 135, 135),
-            values: _currentRangeValues,
+            values: _priceRange,
             max: 2000,
             divisions: 2000,
             labels: RangeLabels(
-              _currentRangeValues.start.round().toString(),
-              _currentRangeValues.end.round().toString(),
+              _priceRange.start.round().toString(),
+              _priceRange.end.round().toString(),
             ),
             onChanged: (RangeValues values) {
               setState(() {
-                _currentRangeValues = values;
+                _priceRange = values;
               });
             },
           ),
           Divider(
-            color: Styles.greyColor, 
+            color: Styles.greyColor,
             height: 30,
             thickness: 1,
             indent: 25,
@@ -238,8 +248,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
             color: Styles.greyColor,
             height: 30,
             thickness: 1,
-            indent: 25, 
-            endIndent: 25, 
+            indent: 25,
+            endIndent: 25,
           ),
           Gap(20),
           Text("Amenities",
@@ -254,10 +264,16 @@ class _FiltersScreenState extends State<FiltersScreen> {
               return FilterChip(
                 label: Text(exercise.name),
                 selected: _filters.contains(exercise.name),
+                // selected: _filters.contains(exercise.name),
                 onSelected: (bool value) {
                   setState(() {
                     if (value) {
+                      // if (!_filters.contains(exercise.name)) {
+                      //  // ||!widget.currentFilters.contains(exercise.name)
+                      //   _filters.add(exercise.name);
+                      // }
                       if (!_filters.contains(exercise.name)) {
+                        // ||!widget.currentFilters.contains(exercise.name)
                         _filters.add(exercise.name);
                       }
                     } else {
@@ -275,9 +291,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
           ElevatedButton(
             child: const Text('Search'),
             onPressed: () => {
-               widget.onQueryChanged(buildFilterQuery()),
-            Navigator.pop(context)
-          
+              widget.onApplyFilters(_filters, _priceRange),
+              widget.onQueryChanged(buildFilterQuery()),
+              Navigator.pop(context)
             },
           )
         ],
@@ -285,35 +301,29 @@ class _FiltersScreenState extends State<FiltersScreen> {
     );
   }
 
-  Query buildFilterQuery()  {
+  Query buildFilterQuery() {
     Query query = FirebaseFirestore.instance.collection('Accommodations');
-    if (_currentRangeValues.start >= 0 && _currentRangeValues.end <=2000) {
+    if (_priceRange.start >= 0 && _priceRange.end <= 2000) {
       query = query
-          .where("price_per_night", isGreaterThanOrEqualTo: _currentRangeValues.start)
-          .where("price_per_night", isLessThanOrEqualTo: _currentRangeValues.end);
+          .where("price_per_night", isGreaterThanOrEqualTo: _priceRange.start)
+          .where("price_per_night", isLessThanOrEqualTo: _priceRange.end);
     }
     // if(startDate!=null&&endDate!=null){
     //   query=query.where(field)
     // }
-    if(_filters==AccommodationTypeFilter.All){
-      
+    if (_filters == AccommodationTypeFilter.All) {}
+    if (_filters.contains(AmenitiesFilter.wifi.name)) {
+      query = query.where("wifi", isEqualTo: true);
     }
-    if(_filters.contains(AmenitiesFilter.wifi.name)){
-      query=query.where("wifi",isEqualTo: true);
+    if (_filters.contains(AmenitiesFilter.tv.name)) {
+      query = query.where("tv", isEqualTo: true);
     }
-    if(_filters.contains(AmenitiesFilter.tv.name)){
-      query=query.where("tv",isEqualTo: true);
+    if (_filters.contains(AmenitiesFilter.airconditioning.name)) {
+      query = query.where("air_conditioning", isEqualTo: true);
     }
-    if(_filters.contains(AmenitiesFilter.airconditioning.name)){
-      query=query.where("air_conditioning",isEqualTo: true);
+    if (_filters.contains(AmenitiesFilter.kitchen.name)) {
+      query = query.where("kitchen", isEqualTo: true);
     }
-    if(_filters.contains(AmenitiesFilter.kitchen.name)){
-      query=query.where("kitchen",isEqualTo: true);
-    }
-    // QuerySnapshot snapshot =  query.get();
-    // Iterable<Acommodation> apartments = snapshot.docChanges.map(
-    //   (result) => Acommodation.fromSnapshot(result.doc),
-    // );
     return query;
   }
 }

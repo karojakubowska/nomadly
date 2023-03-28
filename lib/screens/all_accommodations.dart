@@ -21,7 +21,16 @@ class AllAccommodationsScreen extends StatefulWidget {
 
 class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
   Query query = FirebaseFirestore.instance.collection("Accommodations");
+   List<String> filters=[];
+    RangeValues priceRange=RangeValues(0, 2000);
 
+   void getFilter(List<String> currentfilters,RangeValues priceRangeFilter) {
+    setState(() {
+      filters = currentfilters;
+      priceRange=priceRangeFilter;
+      });
+    }
+  
   void updateQuery(Query newQuery) {
     setState(() {
       query = newQuery;
@@ -77,7 +86,10 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                               context: context,
                               builder: (BuildContext bc) {
                                 return FiltersScreen(
+                                  onApplyFilters: getFilter,
                                   onQueryChanged: updateQuery,
+                                  currentFilters: filters,
+                                  currentPriceRange: priceRange,
                                 );
                               });
                         },
@@ -123,7 +135,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                                     Acommodation model = Acommodation.fromJson(
                                         snapshot.data!.docs[index].data()!
                                             as Map<String, dynamic>);
-                                           model.id= snapshot.data!.docs[index].id;
+                                    model.id = snapshot.data!.docs[index].id;
                                     return AccommodationCard(
                                         accomodation: model, index: index);
                                   });
