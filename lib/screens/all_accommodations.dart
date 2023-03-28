@@ -123,6 +123,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                                     Acommodation model = Acommodation.fromJson(
                                         snapshot.data!.docs[index].data()!
                                             as Map<String, dynamic>);
+                                           model.id= snapshot.data!.docs[index].id;
                                     return AccommodationCard(
                                         accomodation: model, index: index);
                                   });
