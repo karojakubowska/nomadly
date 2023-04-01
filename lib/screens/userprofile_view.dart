@@ -10,6 +10,7 @@ import 'package:nomadly_app/screens/update_userprofile_view.dart';
 import 'package:nomadly_app/screens/privacy_policy_view.dart';
 import 'package:nomadly_app/screens/terms_conditions_view.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
+import 'package:nomadly_app/models/User.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -20,9 +21,8 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   var img = "";
-
   late Stream<DocumentSnapshot> userStream;
-  late String name, email;
+  late String name, email, accountImage;
 
   @override
   void initState() {
@@ -59,43 +59,33 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
-
               final userDoc = snapshot.data!;
               name = userDoc.get('Name');
               email = userDoc.get('Email');
-
+              accountImage = userDoc.get('AccountImage');
               return Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(25.0),
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          radius: 40.0,
-                          backgroundImage: NetworkImage(
-                              'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'),
+                        FutureBuilder(
+                          future: FirebaseStorage.instance
+                              .refFromURL(accountImage)
+                              .getDownloadURL(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<dynamic> snapshot) {
+                            if (snapshot.hasData) {
+                              return CircleAvatar(
+                                  radius: 40.0,
+                                  backgroundImage:
+                                      NetworkImage(snapshot.data.toString()));
+                            } else {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+                          },
                         ),
-                        // FutureBuilder(
-                        //   future: FirebaseStorage.instance
-                        //       .refFromURL(model.photo as String)
-                        //       .getDownloadURL(),
-                        //   builder: (BuildContext context,
-                        //       AsyncSnapshot<dynamic> snapshot) {
-                        //     if (snapshot.hasData) {
-                        //       img = (model.photo as String);
-                        //       return CircleAvatar(
-                        //         radius: 50,
-                        //         backgroundImage:
-                        //         CachedNetworkImageProvider(
-                        //           snapshot.data.toString(),
-                        //         ),
-                        //       );
-                        //     } else {
-                        //       return Center(
-                        //           child: CircularProgressIndicator());
-                        //     }
-                        //   },
-                        // ),
                         SizedBox(width: 30.0),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

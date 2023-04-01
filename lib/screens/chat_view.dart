@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/screens/chat_single_view.dart';
 
 import '../utils/app_styles.dart';
+import 'report_form_view.dart';
 
 class Chat extends StatefulWidget {
   const Chat({Key? key}) : super(key: key);
@@ -17,6 +19,8 @@ class _ChatState extends State<Chat> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late String _userId;
+  late Stream<DocumentSnapshot> userStream;
+  late String accountImage;
 
   @override
   void initState() {
@@ -25,6 +29,11 @@ class _ChatState extends State<Chat> {
     if (user != null) {
       _userId = user.uid;
     }
+    final currentUser = FirebaseAuth.instance.currentUser;
+    userStream = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(currentUser!.uid)
+        .snapshots();
   }
 
   @override
@@ -52,136 +61,6 @@ class _ChatState extends State<Chat> {
           ),
         ),
       ),
-      // body: StreamBuilder<QuerySnapshot>(
-      //     stream: _firestore
-      //         .collection('ChatMessage')
-      //         //.where('recipientId', isEqualTo: _userId)
-      //         //.orderBy('timestamp', descending: true)
-      //         .snapshots(),
-      //     builder: (context, snapshot) {
-      //       if (!snapshot.hasData) {
-      //         return const Center(
-      //           child: CircularProgressIndicator(),
-      //         );
-      //       } else {
-      //         final List<QueryDocumentSnapshot> documents = snapshot.data!.docs
-      //             .where((doc) =>
-      //                 doc.get('recipientId') == _userId ||
-      //                 doc.get('senderId') == _userId)
-      //             .toList();
-      //         // final Map<String, QueryDocumentSnapshot> lastMessages = {};
-      //         // for (final document in documents) {
-      //         //   final senderId = document.get('senderId');
-      //         //   if (!lastMessages.containsKey(senderId)) {
-      //         //     lastMessages[senderId] = document;
-      //         //   }
-      //         // }
-      //         // final List<QueryDocumentSnapshot> lastMessagesList =
-      //         //     lastMessages.values.toList();
-      //         // lastMessagesList.sort(
-      //         //       (a, b) => b.get('timestamp').compareTo(a.get('timestamp')),
-      //         // );
-      //         QueryDocumentSnapshot? lastDocument;
-      //         for (final document in documents) {
-      //           if (lastDocument == null) {
-      //             lastDocument = document;
-      //           } else {
-      //             final lastTimestamp = lastDocument.get('timestamp');
-      //             final currentTimestamp = document.get('timestamp');
-      //             if (currentTimestamp.compareTo(lastTimestamp) > 0) {
-      //               lastDocument = document;
-      //             }
-      //           }
-      //         }
-      //         if (lastDocument == null) {
-      //           return Container();
-      //         }
-      //         return ListView.builder(
-      //             itemCount: 1,
-      //             itemBuilder: (context, index) {
-      //               final QueryDocumentSnapshot document =
-      //                   lastDocument!;
-      //               final bool is_read = document.get('isRead');
-      //               final FontWeight fontWeight =
-      //                   is_read ? FontWeight.w400 : FontWeight.w700;
-      //
-      //               final senderId = document.get('senderId');
-      //               final otherUserId = senderId == _userId
-      //                   ? document.get('recipientId')
-      //                   : document.get('senderId');
-      //               return FutureBuilder<DocumentSnapshot>(
-      //                   future: _firestore
-      //                       .collection('Users')
-      //                       .doc(otherUserId)
-      //                       .get(),
-      //                   builder: (context, snapshot) {
-      //                     if (!snapshot.hasData) {
-      //                       return Container();
-      //                     } else {
-      //                       final String otherUserName =
-      //                           snapshot.data!.get('Name').toString();
-      //                       return InkWell(
-      //                         onTap: () {
-      //                           Navigator.push(
-      //                             context,
-      //                             MaterialPageRoute(
-      //                               builder: (context) => ChatSingleView(
-      //                                   userId: _userId,
-      //                                   otherUserId: otherUserId),
-      //                               // tu trzeba poprawić
-      //                             ),
-      //                           );
-      //                         },
-      // body: StreamBuilder<QuerySnapshot>(
-      //     stream: _firestore
-      //         .collection('ChatMessage')
-      //         .snapshots(),
-      //     builder: (context, snapshot) {
-      //       if (!snapshot.hasData) {
-      //         return const Center(
-      //           child: CircularProgressIndicator(),
-      //         );
-      //       } else {
-      //         final List<QueryDocumentSnapshot> documents = snapshot.data!.docs
-      //             .where((doc) =>
-      //         doc.get('recipientId') == _userId ||
-      //             doc.get('senderId') == _userId)
-      //             .toList();
-      //         return ListView.builder(
-      //             itemCount: documents.length,
-      //             itemBuilder: (context, index) {
-      //               final QueryDocumentSnapshot document = documents[index];
-      //               final bool is_read = document.get('isRead');
-      //               final FontWeight fontWeight =
-      //               is_read ? FontWeight.w400 : FontWeight.w700;
-      //
-      //               final senderId = document.get('senderId');
-      //               final otherUserId = senderId == _userId
-      //                   ? document.get('recipientId')
-      //                   : document.get('senderId');
-      //               return FutureBuilder<DocumentSnapshot>(
-      //                   future: _firestore
-      //                       .collection('Users')
-      //                       .doc(otherUserId)
-      //                       .get(),
-      //                   builder: (context, snapshot) {
-      //                     if (!snapshot.hasData) {
-      //                       return Container();
-      //                     } else {
-      //                       final String otherUserName =
-      //                       snapshot.data!.get('Name').toString();
-      //                       return InkWell(
-      //                         onTap: () {
-      //                           Navigator.push(
-      //                             context,
-      //                             MaterialPageRoute(
-      //                               builder: (context) => ChatSingleView(
-      //                                 userId: _userId,
-      //                                 otherUserId: otherUserId,
-      //                               ),
-      //                             ),
-      //                           );
-      //                         },
       body: StreamBuilder<QuerySnapshot>(
           stream: _firestore
               .collection('ChatMessage')
@@ -207,7 +86,6 @@ class _ChatState extends State<Chat> {
                   }
                 }
               }
-
               final List<QueryDocumentSnapshot> latestMessagesList =
                   latestMessages.values.toList();
               return ListView.builder(
@@ -245,61 +123,6 @@ class _ChatState extends State<Chat> {
                                   ),
                                 );
                               },
-                              // body: StreamBuilder<QuerySnapshot>(
-                              //     stream: _firestore
-                              //         .collection('ChatMessage')
-                              //     //.where('recipientId', isEqualTo: _userId)
-                              //     //.orderBy('timestamp', descending: true)
-                              //         .snapshots(),
-                              //     builder: (context, snapshot) {
-                              //       if (!snapshot.hasData) {
-                              //         return const Center(
-                              //           child: CircularProgressIndicator(),
-                              //         );
-                              //       } else {
-                              //         final List<QueryDocumentSnapshot> documents = snapshot.data!.docs.where((doc) =>
-                              //         doc.get('recipientId') == _userId ||
-                              //             doc.get('senderId') == _userId).toList();
-                              //         final Map<String, QueryDocumentSnapshot> lastMessages = {};
-                              //         for (final document in documents) {
-                              //           final senderId = document.get('senderId');
-                              //           if (!lastMessages.containsKey(senderId)) {
-                              //             lastMessages[senderId] = document;
-                              //           }
-                              //         }
-                              //         final List<QueryDocumentSnapshot> lastMessagesList =
-                              //         lastMessages.values.toList();
-                              //         // lastMessagesList.sort(
-                              //         //       (a, b) => b.get('timestamp').compareTo(a.get('timestamp')),
-                              //         // );
-                              //         return ListView.builder(
-                              //             itemCount: 1,
-                              //             itemBuilder: (context, index) {
-                              //               final QueryDocumentSnapshot document = lastMessagesList.first;
-                              //               final bool is_read = document.get('isRead');
-                              //               final FontWeight fontWeight =
-                              //               is_read ? FontWeight.w400 : FontWeight.w700;
-                              //
-                              //               final senderId = document.get('senderId');
-                              //               final otherUserId =  senderId == _userId ? document.get('recipientId') : document.get('senderId');
-                              //               return FutureBuilder<DocumentSnapshot>(
-                              //                   future: _firestore.collection('Users').doc(otherUserId).get(),
-                              //                   builder: (context, snapshot) {
-                              //                     if (!snapshot.hasData) {
-                              //                       return Container();
-                              //                     } else {
-                              //                       final String otherUserName = snapshot.data!.get('Name').toString();
-                              //                       return InkWell(
-                              //                         onTap: () {
-                              //                           Navigator.push(
-                              //                             context,
-                              //                             MaterialPageRoute(
-                              //                               builder: (context) =>
-                              //                                   ChatSingleView(userId: _userId, otherUserId: otherUserId),
-                              //                               // tu trzeba poprawić
-                              //                             ),
-                              //                           );
-                              //                         },
                               child: Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 child: Card(
@@ -311,11 +134,38 @@ class _ChatState extends State<Chat> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        CircleAvatar(
-                                          radius: 30,
-                                          backgroundImage: NetworkImage(
-                                            'https://pbs.twimg.com/profile_images/1132273809079554048/CNV5-_GG_400x400.jpg',
-                                          ),
+                                        StreamBuilder<DocumentSnapshot>(
+                                          stream: userStream,
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            }
+                                            final userDoc = snapshot.data!;
+                                            accountImage =
+                                                userDoc.get('AccountImage');
+                                            return FutureBuilder(
+                                              future: FirebaseStorage.instance
+                                                  .refFromURL(accountImage)
+                                                  .getDownloadURL(),
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<dynamic>?
+                                                      snapshot) {
+                                                if (snapshot?.hasData == true) {
+                                                  return CircleAvatar(
+                                                      radius: 30.0,
+                                                      backgroundImage:
+                                                      NetworkImage(snapshot!.data.toString()));
+                                                } else {
+                                                  return const Center(
+                                                      child:
+                                                          CircularProgressIndicator());
+                                                }
+                                              },
+                                            );
+                                          },
                                         ),
                                         SizedBox(width: 15),
                                         Expanded(
@@ -362,6 +212,17 @@ class _ChatState extends State<Chat> {
                                             ],
                                             onSelected: (value) {
                                               // Do something
+                                              if (value == 2) {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ReportFormView(
+                                                      otherUserId: otherUserId,
+                                                    ),
+                                                  ),
+                                                );
+                                              }
                                             },
                                             icon: Icon(Icons.more_vert),
                                           ),

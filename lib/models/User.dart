@@ -1,3 +1,5 @@
+import 'package:firebase_storage/firebase_storage.dart';
+
 class UserModel{
   String? name;
   String? email;
@@ -11,7 +13,13 @@ class UserModel{
     'AccountImage':accountImage,
     };
 
-UserModel.fromJson(Map<String,dynamic> json)
+  Future<String> convertPathToURL(String path){
+    return FirebaseStorage.instance
+        .refFromURL(path)
+        .getDownloadURL();
+  }
+
+  UserModel.fromJson(Map<String,dynamic> json)
   {
     name=json['Name'];
     email=json['Email'];
@@ -30,6 +38,5 @@ UserModel(snapshot)
   accountType=snapshot.data()['AccountType'],
   accountImage=snapshot.data()['AccountImage']
   ;
-  
 
 }
