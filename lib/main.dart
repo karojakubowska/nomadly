@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/User.dart';
 import 'package:nomadly_app/screens/bottomnavbarhost.dart';
+import 'package:nomadly_app/screens/chat_view.dart';
 import 'package:nomadly_app/screens/filter_screen.dart';
 import 'package:nomadly_app/screens/home_view.dart';
 import 'package:nomadly_app/screens/new_bottomnavbar.dart';
@@ -95,6 +96,7 @@ class LoginPage extends StatelessWidget {
                           HomeTest(),
                           WishlistScreen(),
                           TravelView(),
+                          Chat(),
                           UserProfileScreen()
                         ],
                       );

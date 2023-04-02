@@ -36,7 +36,7 @@ class _ChatState extends State<Chat> {
         .snapshots();
   }
 
-  @override
+    @override
   Widget build(BuildContext context) => Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
@@ -201,10 +201,10 @@ class _ChatState extends State<Chat> {
                                             itemBuilder:
                                                 (BuildContext context) =>
                                                     <PopupMenuEntry>[
-                                              PopupMenuItem(
-                                                child: Text("Delete"),
-                                                value: 1,
-                                              ),
+                                              // PopupMenuItem(
+                                              //   child: Text("Delete"),
+                                              //   value: 1,
+                                              // ),
                                               PopupMenuItem(
                                                 child: Text("Report"),
                                                 value: 2,
@@ -212,6 +212,8 @@ class _ChatState extends State<Chat> {
                                             ],
                                             onSelected: (value) {
                                               // Do something
+                                              // if (value == 1) {
+                                              // }
                                               if (value == 2) {
                                                 Navigator.push(
                                                   context,
