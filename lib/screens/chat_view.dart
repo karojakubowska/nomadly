@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/screens/chat_single_view.dart';
+import 'package:intl/intl.dart';
 
 import '../utils/app_styles.dart';
 import 'report_form_view.dart';
@@ -36,7 +37,7 @@ class _ChatState extends State<Chat> {
         .snapshots();
   }
 
-    @override
+  @override
   Widget build(BuildContext context) => Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
@@ -95,6 +96,9 @@ class _ChatState extends State<Chat> {
                         latestMessagesList[index];
                     final String senderId = document.get('senderId');
                     final bool is_read = document.get('isRead');
+                    DateTime timestamp = document.get('timestamp').toDate();
+                    String formattedDate =
+                        DateFormat('dd/MM/yyyy').format(timestamp);
                     final FontWeight fontWeight =
                         is_read ? FontWeight.w400 : FontWeight.w700;
                     final String otherUserId = senderId == _userId
@@ -157,7 +161,9 @@ class _ChatState extends State<Chat> {
                                                   return CircleAvatar(
                                                       radius: 30.0,
                                                       backgroundImage:
-                                                      NetworkImage(snapshot!.data.toString()));
+                                                          NetworkImage(snapshot!
+                                                              .data
+                                                              .toString()));
                                                 } else {
                                                   return const Center(
                                                       child:
@@ -179,7 +185,7 @@ class _ChatState extends State<Chat> {
                                                           255, 24, 24, 24),
                                                       fontSize: 16,
                                                       fontWeight: fontWeight)),
-                                              SizedBox(height: 5),
+                                              SizedBox(height: 7),
                                               Text(
                                                 document.get('text').length > 30
                                                     ? '${document.get('text').substring(0, 30)}...'
@@ -190,6 +196,14 @@ class _ChatState extends State<Chat> {
                                                     fontSize: 12,
                                                     fontWeight: fontWeight),
                                               ),
+                                              SizedBox(height: 7),
+                                              Text(formattedDate,
+                                                  style: GoogleFonts.roboto(
+                                                      color: Color.fromARGB(
+                                                          130, 30, 30, 30),
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w300)),
                                             ],
                                           ),
                                         ),
