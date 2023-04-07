@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
@@ -10,6 +11,8 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  late String accountImage;
+  late Stream<DocumentSnapshot> userStream;
   final nameController = TextEditingController();
   final emailController = TextEditingController();
 
@@ -47,6 +50,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
         emailController.text = doc['Email'];
       }
     });
+    userStream = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(currentUser!.uid)
+        .snapshots();
   }
 
   @override
@@ -75,17 +82,38 @@ class _EditProfilePageState extends State<EditProfilePage> {
           elevation: 0,
           centerTitle: true,
         ),
-        body: ListView(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SingleChildScrollView(
-                  child: Column(children: <Widget>[
-                SizedBox(height: 24),
-                CircleAvatar(
-                  radius: 80,
-                  //backgroundImage: AssetImage('assets/profile_pic.jpg'),
-                ),
-                SizedBox(height: 24),
+        body: StreamBuilder<DocumentSnapshot>(
+            stream: userStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              final userDoc = snapshot.data!;
+              final accountImage = userDoc.get('AccountImage');
+              return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.all(25.0),
+                        child: Expanded(
+                            child: FutureBuilder(
+                              future: FirebaseStorage.instance
+                                  .refFromURL(accountImage)
+                                  .getDownloadURL(),
+                              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                if (snapshot.hasData) {
+                                  return CircleAvatar(
+                                    radius: 80.0,
+                                    backgroundImage: NetworkImage(snapshot.data.toString()),
+                                  );
+                                } else {
+                                  return const Center(child: CircularProgressIndicator());
+                                }
+                              },
+                            ),
+                        ),
+                    ),
+                SizedBox(width: 30.0),
                 Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
@@ -180,8 +208,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             color: Colors.white,
                             fontWeight: FontWeight.w500)),
                   ),
-                ),
-              ]))
-            ]));
+                )
+              ]);
+            }));
   }
 }
