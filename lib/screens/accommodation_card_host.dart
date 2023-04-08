@@ -98,13 +98,13 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
-                      // Text(
-                      //   "\$${widget.accomodation.price_per_night}",
-                      //   style: GoogleFonts.roboto(
-                      //       color: Color.fromARGB(255, 24, 24, 24),
-                      //       fontSize: 18,
-                      //       fontWeight: FontWeight.w500),
-                      // ),
+                      Text(
+                        "\$${widget.accomodation.price_per_night}",
+                        style: GoogleFonts.roboto(
+                            color: Color.fromARGB(255, 24, 24, 24),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      ),
                     ],
                   ),
                 ),
