@@ -130,7 +130,7 @@ class _AddTravelViewState extends State<AddTravelView> {
 
   CollectionReference travel = FirebaseFirestore.instance.collection('Travel');
 
-  Future<void> addTravel(pickedFile) async {
+  Future<void> addTravel(BuildContext context,pickedFile) async {
     var user = await FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
     if (_photo == null) return;
@@ -160,8 +160,15 @@ class _AddTravelViewState extends State<AddTravelView> {
           'end_date': endDate,
           'number_of_people': int.parse(number_of_peopleController.text),
         })
-        .then((value) => print("Add Travel"))
-        .catchError((error) => print("Error"));
+        .then((value){
+      print("DocumentSnapshot successfully updated!");
+      Navigator.pop(context as BuildContext);
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        SnackBar(content: Text('Travel added')),
+      );
+    },
+        onError: (e) => print("Error updating document $e"));
+
   }
 
   @override
@@ -471,7 +478,7 @@ class _AddTravelViewState extends State<AddTravelView> {
                         backgroundColor:
                             const Color.fromARGB(255, 50, 134, 252)),
                     onPressed: () {
-                      addTravel(pickedFile);
+                      addTravel(context,pickedFile);
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
                     label: const Text('Add Travel',

@@ -234,12 +234,12 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
     var user = await FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
     if (_photo == null) return;
-    try {
-      await firebase_storage.FirebaseStorage.instance.ref(PickedFile).delete();
-      print('File deleted successfully.');
-    } catch (e) {
-      print('Error occurred while deleting file: $e');
-    }
+
+    FirebaseStorage.instance.refFromURL(imageOld).delete().then((_) {
+      print("Image successfully deleted!");
+    }).catchError((error) {
+      print("Error removing image: $error");
+    });
     String uuid = Uuid().v4();
     String uniqueFileName = '$uid/$uuid.jpg';
     final destination = uniqueFileName;
