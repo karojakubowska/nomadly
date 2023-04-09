@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
@@ -38,9 +39,11 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
   late String pickedFile = "";
 
   var imageURL = "";
-  late String imageOld=" ";
+  late String imageOld = " ";
   late DateTime startDate;
   late DateTime endDate;
+
+  String _photoUrl = "";
 
   void initState() {
     super.initState();
@@ -49,10 +52,29 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
     noteController.text = (widget.travel!.get("note"));
     budgetController.text = (widget.travel!.get("budget").toString());
     number_of_peopleController.text =
-    (widget.travel!.get("number_of_people").toString());
+        (widget.travel!.get("number_of_people").toString());
     imageOld = (widget.travel!.get("photo"));
     startDate = (widget.travel!.get("start_date") as Timestamp).toDate();
     endDate = (widget.travel!.get("end_date") as Timestamp).toDate();
+
+    // FirebaseFirestore.instance
+    //     .collection("Travel")
+    //     .doc(widget.id)
+    //     .get()
+    //     .then((DocumentSnapshot documentSnapshot) {
+    //   if (documentSnapshot.exists) {
+    //     setState(() {
+    //       _photoUrl = (documentSnapshot.data() as Map<String, dynamic>)['photo'] as String;
+    //     });
+    //   }
+    // });
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref = storage.refFromURL(widget.travel!.get("photo") as String);
+    ref.getDownloadURL().then((value) {
+      setState(() {
+        _photoUrl = value;
+      });
+    });
   }
 
   Future<void> _selectStartDate(BuildContext context) async {
@@ -84,55 +106,21 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
   Future imgFromGallery(pickedFile) async {
     pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _photo = File(pickedFile.path);
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+      }
     });
   }
 
   Future imgFromCamera(pickedFile) async {
     pickedFile = await _picker.pickImage(source: ImageSource.camera);
     setState(() {
-      _photo = File(pickedFile.path);
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+      }
     });
   }
-  //
-  // Future uploadFile(pickedFile, String oldImagePath) async {
-  //   var user = await FirebaseAuth.instance.currentUser!;
-  //   var uid = user.uid;
-  //   if (pickedFile == null) return;
-  //   final fileName = basename(pickedFile);
-  //   final destination = '$uid/$fileName';
-  //
-  //   if (oldImagePath.isNotEmpty) {
-  //     await firebase_storage.FirebaseStorage.instance.ref(oldImagePath).delete();
-  //   }
-  //
-  //   try {
-  //     final ref = firebase_storage.FirebaseStorage.instance.ref(destination).child('');
-  //     await ref.putFile(File(pickedFile));
-  //   } catch (e) {
-  //     print('error occurred');
-  //   }
-  // }
-  // Future uploadFile(File imageFile, String oldImagePath) async {
-  //   var user = await FirebaseAuth.instance.currentUser!;
-  //   var uid = user.uid;
-  //   if (imageFile == null) return;
-  //   final fileName = basename(imageFile.path);
-  //   final destination = '$uid/$fileName';
-  //
-  //   if (oldImagePath.isNotEmpty) {
-  //     await firebase_storage.FirebaseStorage.instance.ref(oldImagePath).delete();
-  //   }
-  //
-  //   try {
-  //     final ref = firebase_storage.FirebaseStorage.instance.ref(destination).child('');
-  //     await ref.putFile(imageFile);
-  //     return destination;
-  //   } catch (e) {
-  //     print('error occurred');
-  //     return null;
-  //   }
-  // }
+
   void _showPicker(context) {
     showModalBottomSheet(
         context: context,
@@ -163,57 +151,6 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
         });
   }
 
-  //get id => String id;
-
-  // Future<void> updateTravel(id, String oldImagePath) async {
-  //   final db = FirebaseFirestore.instance;
-  //   final travel = db.collection("Travel").doc(id);
-  //   travel.update({
-  //     "name": nameController.text,
-  //     "destination": destinationController.text,
-  //     "budget": int.parse(budgetController.text),
-  //     "number_of_people": int.parse(number_of_peopleController.text),
-  //     "note": noteController.text,
-  //     'start_date': startDate,
-  //     'end_date': endDate,
-  //   }).then((value) => print("DocumentSnapshot successfully updated!"),
-  //       onError: (e) => print("Error updating document $e"));
-  //   print(id);
-  //   if (_photo != null) {
-  //     pickedFile = _photo!.path;
-  //     await uploadFile(pickedFile, oldImagePath);
-  //   }
-  // }
-
-  // Future<void> updateTravel(id, String oldImagePath) async {
-  //   final db = FirebaseFirestore.instance;
-  //   final travel = db.collection("Travel").doc(id);
-  //   String? newImagePath;
-  //
-  //   if (_photo != null) {
-  //     newImagePath = await uploadFile(_photo!, oldImagePath);
-  //   }
-  //
-  //   Map<String, dynamic> dataToUpdate = {
-  //     "name": nameController.text,
-  //     "destination": destinationController.text,
-  //     "budget": int.parse(budgetController.text),
-  //     "number_of_people": int.parse(number_of_peopleController.text),
-  //     "note": noteController.text,
-  //     'start_date': startDate,
-  //     'end_date': endDate,
-  //   };
-  //
-  //   if (newImagePath != null) {
-  //     dataToUpdate['photo'] = newImagePath;
-  //   }
-  //
-  //   travel.update(dataToUpdate).then(
-  //           (value) => print("DocumentSnapshot successfully updated!"),
-  //       onError: (e) => print("Error updating document $e"));
-  //   print(id);
-  // }
-
   Future uploadFile(pickedFile) async {
     var user = await FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
@@ -223,7 +160,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
 
     try {
       final ref =
-      firebase_storage.FirebaseStorage.instance.ref(destination).child('');
+          firebase_storage.FirebaseStorage.instance.ref(destination).child('');
       await ref.putFile(_photo!);
     } catch (e) {
       print('error occured');
@@ -245,9 +182,11 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
     final destination = uniqueFileName;
 
     try {
-      final ref = firebase_storage.FirebaseStorage.instance.ref(destination).child('');
+      final ref =
+          firebase_storage.FirebaseStorage.instance.ref(destination).child('');
       await ref.putFile(_photo!);
-      imageURL = ("gs://nomady-ae4b6.appspot.com/"+destination.toString()).toString();
+      imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
+          .toString();
     } catch (e) {
       print('error occurred');
     }
@@ -267,84 +206,41 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
         onError: (e) => print("Error updating document $e"));
   }
 
-  // Future<void> updateTravel(id, PickedFile) async {
-  //   var user = await FirebaseAuth.instance.currentUser!;
-  //   var uid = user.uid;
-  //   if (_photo == null) return;
-  //
-  //   String uuid = Uuid().v4();
-  //   String uniqueFileName = '$uid/$uuid.jpg';
-  //   final destination = uniqueFileName;
-  //
-  //   final db = FirebaseFirestore.instance;
-  //   final travel = db.collection("Travel").doc(id);
-  //
-  //   // pobranie starej ścieżki zdjęcia
-  //   final document = await travel.get();
-  //   final oldImagePath = document['photo'];
-  //
-  //   // usunięcie starego zdjęcia
-  //   if (oldImagePath.isNotEmpty) {
-  //     await firebase_storage.FirebaseStorage.instance.ref(oldImagePath).delete();
-  //   }
-  //
-  //   try {
-  //     final ref = firebase_storage.FirebaseStorage.instance.ref(destination).child('');
-  //     await ref.putFile(_photo!);
-  //     imageURL = ("gs://nomady-ae4b6.appspot.com/"+destination.toString()).toString();
-  //   } catch (e) {
-  //     print('error occurred');
-  //   }
-  //
-  //   travel.update({
-  //     "name": nameController.text,
-  //     "destination": destinationController.text,
-  //     "budget": int.parse(budgetController.text),
-  //     "number_of_people": int.parse(number_of_peopleController.text),
-  //     "note": noteController.text,
-  //     'start_date': startDate,
-  //     'end_date': endDate,
-  //     'photo': imageURL.toString(),
-  //   }).then((value) => print("DocumentSnapshot successfully updated!"),
-  //       onError: (e) => print("Error updating document $e"));
-  // }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Styles.backgroundColor,
-      appBar: AppBar(
-        leading: IconButton(
-          color: Colors.black,
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).popUntil((route) => route.isFirst);
-          },
-        ),
-        title: Text(
-          'Update Travel',
-          textAlign: TextAlign.center,
-          style: GoogleFonts.roboto(
-              textStyle: TextStyle(
-                  fontSize: 20.0,
-                  height: 1.2,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700)),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        textTheme: TextTheme(
-          subtitle1: TextStyle(
+        backgroundColor: Styles.backgroundColor,
+        appBar: AppBar(
+          leading: IconButton(
             color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+          ),
+          title: Text(
+            'Update Travel',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.roboto(
+                textStyle: TextStyle(
+                    fontSize: 20.0,
+                    height: 1.2,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700)),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          textTheme: TextTheme(
+            subtitle1: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
-      ),
-      body: ListView(children: [
-        SingleChildScrollView(
-          child: Column(children: <Widget>[
+        body: ListView(children: [
+          SingleChildScrollView(
+              child: Column(children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: 0.0),
               child: GestureDetector(
@@ -364,33 +260,64 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                   ),
                   child: _photo != null
                       ? ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: Image.file(
-                      _photo!,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.fitHeight,
-                    ),
-                  )
-                      : Container(
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 249, 250, 250),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(
-                        color: Color.fromARGB(255, 217, 217, 217),
-                        width: 0.5,
-                      ),
-                    ),
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: Colors.grey[800],
-                    ),
-                  ),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          child: Image.file(
+                            _photo!,
+                            width: 150,
+                            height: 150,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        )
+                      : _photoUrl.isNotEmpty
+                          ? ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              child: Image.network(
+                                _photoUrl,
+                                fit: BoxFit.cover,
+                              ))
+                          : Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 249, 250, 250),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(
+                                  color: Color.fromARGB(255, 217, 217, 217),
+                                  width: 0.5,
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.camera_alt,
+                                    color: Colors.grey[800],
+                                  ),
+                                ],
+                              ),
+                            ),
                 ),
               ),
             ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Click to edit photo",
+                      style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                              fontSize: 14.0,
+                              height: 1.2,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                  ],
+                ),
             const SizedBox(
-              height: 50,
+              height: 20,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -467,11 +394,10 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(10.0)),
+                                  BorderRadius.all(Radius.circular(10.0)),
                               borderSide: BorderSide(
                                   width: 1,
-                                  color:
-                                  Color.fromARGB(255, 217, 217, 217)),
+                                  color: Color.fromARGB(255, 217, 217, 217)),
                             ),
                             filled: true,
                             fillColor: Color.fromARGB(255, 249, 250, 250),
@@ -483,8 +409,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                           controller: TextEditingController(
                             text: startDate == null
                                 ? ''
-                                : DateFormat('dd-MM-yyyy')
-                                .format(startDate),
+                                : DateFormat('dd-MM-yyyy').format(startDate),
                           ),
                         ),
                       ),
@@ -496,11 +421,10 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(10.0)),
+                                  BorderRadius.all(Radius.circular(10.0)),
                               borderSide: BorderSide(
                                   width: 1,
-                                  color:
-                                  Color.fromARGB(255, 217, 217, 217)),
+                                  color: Color.fromARGB(255, 217, 217, 217)),
                             ),
                             filled: true,
                             fillColor: Color.fromARGB(255, 249, 250, 250),

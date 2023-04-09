@@ -128,8 +128,12 @@ class _ChatState extends State<Chat> {
                                 );
                               },
                               child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 10),
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 10),
                                 child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
                                   child: Padding(
                                     padding: EdgeInsets.all(15),
                                     child: Row(

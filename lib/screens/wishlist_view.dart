@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Favorites.dart';
 import 'package:provider/provider.dart';
 
@@ -62,6 +63,24 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) return const Text("Loading...");
+                  if (snapshot.data!.docs.isEmpty)
+                    return Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "No accommodations found",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                                color: Color.fromARGB(255, 24, 24, 24),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   return ListView.builder(
                       scrollDirection: Axis.vertical,
                       //shrinkWrap: true,

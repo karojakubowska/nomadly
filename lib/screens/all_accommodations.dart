@@ -21,16 +21,16 @@ class AllAccommodationsScreen extends StatefulWidget {
 
 class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
   Query query = FirebaseFirestore.instance.collection("Accommodations");
-   List<String> filters=[];
-    RangeValues priceRange=RangeValues(0, 2000);
+  List<String> filters = [];
+  RangeValues priceRange = RangeValues(0, 2000);
 
-   void getFilter(List<String> currentfilters,RangeValues priceRangeFilter) {
+  void getFilter(List<String> currentfilters, RangeValues priceRangeFilter) {
     setState(() {
       filters = currentfilters;
-      priceRange=priceRangeFilter;
-      });
-    }
-  
+      priceRange = priceRangeFilter;
+    });
+  }
+
   void updateQuery(Query newQuery) {
     setState(() {
       query = newQuery;
@@ -139,20 +139,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                                     return AccommodationCard(
                                         accomodation: model, index: index);
                                   });
-                            }
-                            // ListView.builder(
-                            //   scrollDirection: Axis.vertical,
-                            //   //itemCount: accommodationList.length,
-                            //   itemCount: list.length,
-                            //   itemBuilder: (context, index) {
-                            //     Acommodation model = list[index];
-                            //     return AccommodationCard(
-                            //       accomodation: model,
-                            //       index: index,
-                            //     );
-                            //   },
-                            // ),
-                            ),
+                            }),
                       )
                     ])),
               ],

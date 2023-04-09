@@ -42,6 +42,32 @@ class _AddTravelViewState extends State<AddTravelView> {
   late DateTime startDate;
   late DateTime endDate;
 
+  // Future<void> _selectStartDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //       context: context,
+  //       initialDate: startDate ?? DateTime.now(),
+  //       firstDate: DateTime(2015, 8),
+  //       lastDate: DateTime(2101));
+  //   if (picked != null && picked != startDate) {
+  //     setState(() {
+  //       startDate = picked;
+  //     });
+  //   }
+  // }
+  //
+  // Future<void> _selectEndDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //       context: context,
+  //       initialDate: endDate ?? DateTime.now(),
+  //       firstDate: DateTime(2015, 8),
+  //       lastDate: DateTime(2101));
+  //   if (picked != null && picked != endDate) {
+  //     setState(() {
+  //       endDate = picked;
+  //     });
+  //   }
+  // }
+
   Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -52,6 +78,11 @@ class _AddTravelViewState extends State<AddTravelView> {
       setState(() {
         startDate = picked;
       });
+    } else {
+      // jeśli użytkownik nie wybrał daty, pokaż komunikat o błędzie
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select a start date')),
+      );
     }
   }
 
@@ -65,6 +96,11 @@ class _AddTravelViewState extends State<AddTravelView> {
       setState(() {
         endDate = picked;
       });
+    } else {
+      // jeśli użytkownik nie wybrał daty, pokaż komunikat o błędzie
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select an end date')),
+      );
     }
   }
 
@@ -130,45 +166,56 @@ class _AddTravelViewState extends State<AddTravelView> {
 
   CollectionReference travel = FirebaseFirestore.instance.collection('Travel');
 
-  Future<void> addTravel(BuildContext context,pickedFile) async {
+  Future<void> addTravel(BuildContext context, pickedFile) async {
+    if (nameController.text.isEmpty ||
+        noteController.text.isEmpty ||
+        destinationController.text.isEmpty ||
+        budgetController.text.isEmpty ||
+        startDate == null ||
+        endDate == null ||
+        number_of_peopleController.text.isEmpty ||
+        _photo == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('All fields are required')),
+      );
+      return;
+    }
+
     var user = await FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
     if (_photo == null) return;
 
-    //String dateTime = DateTime.now().toString();
     String uuid = Uuid().v4();
     String uniqueFileName = '$uid/$uuid.jpg';
-    //final fileName = basename(_photo!.path);
     final destination = uniqueFileName;
 
     try {
-      final ref = firebase_storage.FirebaseStorage.instance.ref(destination).child('');
+      final ref =
+          firebase_storage.FirebaseStorage.instance.ref(destination).child('');
       await ref.putFile(_photo!);
-      imageURL = ("gs://nomady-ae4b6.appspot.com/"+destination.toString()).toString();
+      imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
+          .toString();
     } catch (e) {
       print('error occured');
-    };
-    return travel
-        .add({
-          'name': nameController.text,
-          'note': noteController.text,
-          'destination': destinationController.text,
-          'budget': int.parse(budgetController.text),
-          'userId': FirebaseAuth.instance.currentUser!.uid,
-          'photo': imageURL.toString(),
-          'start_date': startDate,
-          'end_date': endDate,
-          'number_of_people': int.parse(number_of_peopleController.text),
-        })
-        .then((value){
+    }
+    ;
+    return travel.add({
+      'name': nameController.text,
+      'note': noteController.text,
+      'destination': destinationController.text,
+      'budget': int.parse(budgetController.text),
+      'userId': FirebaseAuth.instance.currentUser!.uid,
+      'photo': imageURL.toString(),
+      'start_date': startDate,
+      'end_date': endDate,
+      'number_of_people': int.parse(number_of_peopleController.text),
+    }).then((value) {
       print("DocumentSnapshot successfully updated!");
       Navigator.pop(context as BuildContext);
       ScaffoldMessenger.of(context as BuildContext).showSnackBar(
         SnackBar(content: Text('Travel added')),
       );
-    },
-        onError: (e) => print("Error updating document $e"));
-
+    }, onError: (e) => print("Error updating document $e"));
   }
 
   @override
@@ -478,7 +525,7 @@ class _AddTravelViewState extends State<AddTravelView> {
                         backgroundColor:
                             const Color.fromARGB(255, 50, 134, 252)),
                     onPressed: () {
-                      addTravel(context,pickedFile);
+                      addTravel(context, pickedFile);
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
                     label: const Text('Add Travel',
@@ -493,4 +540,3 @@ class _AddTravelViewState extends State<AddTravelView> {
     );
   }
 }
-
