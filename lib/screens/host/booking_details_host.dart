@@ -9,12 +9,16 @@ import 'package:nomadly_app/screens/change_password_view.dart';
 import 'package:nomadly_app/screens/checkout_confirmed.dart';
 import 'package:nomadly_app/screens/home_host_view.dart';
 import '../../utils/app_styles.dart';
+import '../chat_single_view.dart';
+import '../report_form_view.dart';
 
 class BookingDetailsHostScreen extends StatefulWidget {
   Acommodation accommodation;
   Booking booking;
+
   BookingDetailsHostScreen(
       {required this.accommodation, required this.booking});
+
   @override
   State<BookingDetailsHostScreen> createState() => _BookingDetailsScreenState();
 }
@@ -130,11 +134,21 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
               child: Column(
                 children: [
                   Container(
-                    //  height: 190,
+                      //  height: 190,
                       padding: const EdgeInsets.only(top: 30, bottom: 30),
                       child: statusButtonSwitch()),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatSingleView(
+                            userId: widget.booking.hostId!,
+                            otherUserId: widget.booking.userId!,
+                          ),
+                        ),
+                      );
+                    },
                     style: ButtonStyle(
                       elevation: MaterialStateProperty.all(0),
                       backgroundColor:
@@ -192,7 +206,16 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
           ),
           Gap(30),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ReportFormView(
+                    otherUserId: widget.booking.userId!,
+                  ),
+                ),
+              );
+            },
             style: ButtonStyle(
               elevation: MaterialStateProperty.all(0),
               backgroundColor: MaterialStateProperty.all<Color>(
