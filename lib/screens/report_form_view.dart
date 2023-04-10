@@ -22,24 +22,31 @@ class _ReportFormViewState extends State<ReportFormView> {
   final textController = TextEditingController();
 
   Future<void> addReport() async {
-    CollectionReference report =
-        FirebaseFirestore.instance.collection('Report');
+    final title = titleController.text.trim();
+    final text = textController.text.trim();
+    if (title.isEmpty || text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('All fields are required')),
+      );
+      return;
+    }
+    final report = FirebaseFirestore.instance.collection('Report');
     try {
       await report.add({
-        'title': titleController.text,
-        'text': textController.text,
+        'title': title,
+        'text': text,
         'userId': FirebaseAuth.instance.currentUser!.uid,
         'otherUserId': widget.otherUserId,
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('You have successfully reported the user'),
+          content: Text('Report added successfully.'),
         ),
       );
+      Navigator.of(context).pop();
     } catch (e) {
-      print('error occured');
+      print('error occurred');
     }
-    ;
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:intl/intl.dart';
 import '../utils/app_styles.dart';
 
 class ChatSingleView extends StatefulWidget {
@@ -134,30 +134,82 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                     ];
                     allMessages.sort(
                         (a, b) => a['timestamp'].compareTo(b['timestamp']));
+                    // return ListView.builder(
+                    //   reverse: false,
+                    //   itemCount: allMessages.length,
+                    //   itemBuilder: (context, index) {
+                    //     final DocumentSnapshot message = allMessages[index];
+                    //     final bool isMe = message['senderId'] == _userId;
+                    //     return Align(
+                    //       alignment: isMe
+                    //           ? Alignment.centerRight
+                    //           : Alignment.centerLeft,
+                    //       child: Container(
+                    //         margin: EdgeInsets.symmetric(
+                    //             vertical: 5, horizontal: 10),
+                    //         padding: EdgeInsets.symmetric(
+                    //             vertical: 10, horizontal: 15),
+                    //         decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(15),
+                    //           color: isMe ? Colors.blue : Colors.grey[300],
+                    //         ),
+                    //         child: Text(
+                    //           message['text'],
+                    //           style: TextStyle(
+                    //             fontSize: 16,
+                    //             color: isMe ? Colors.white : Colors.black,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    // );
                     return ListView.builder(
                       reverse: false,
                       itemCount: allMessages.length,
                       itemBuilder: (context, index) {
                         final DocumentSnapshot message = allMessages[index];
                         final bool isMe = message['senderId'] == _userId;
+                        DateTime timestamp = message['timestamp'].toDate();
+                        String formattedDate = DateFormat('HH:mm \n dd/MM/yyyy').format(timestamp);
                         return Align(
-                          alignment: isMe
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: isMe ? Colors.blue : Colors.grey[300],
-                            ),
-                            child: Text(
-                              message['text'],
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: isMe ? Colors.white : Colors.black,
+                          alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+                          child: SizedBox(
+                            width: 250,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: isMe ? Colors.blue : Colors.grey[300],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    message['text'],
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: isMe ? Colors.white : Colors.black,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(child: Container()),
+                                      Expanded(
+                                        child: Text(
+                                          formattedDate,
+                                          textAlign: TextAlign.right,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: isMe ? Colors.white : Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                           ),

@@ -153,31 +153,77 @@ class _TravelViewState extends State<TravelView> {
                               Expanded(
                                 child: Container(),
                               ),
+                              // PopupMenuButton(
+                              //     icon: Icon(Icons.more_vert,
+                              //         color: Colors.black),
+                              //     itemBuilder: (BuildContext context) => [
+                              //           PopupMenuItem(
+                              //             child: Text("Edit"),
+                              //             value: "edit",
+                              //           ),
+                              //           PopupMenuItem(
+                              //             child: Text("Delete"),
+                              //             value: "delete",
+                              //           ),
+                              //         ],
+                              //     onSelected: (value) {
+                              //       if (value == "edit") {
+                              //         navigateToUpdate(
+                              //             snapshot.data!.docs[index],
+                              //             snapshot.data!.docs[index].id);
+                              //       } else if (value == "delete") {
+                              //         deleteTravel(
+                              //             snapshot.data!.docs[index].id,
+                              //             snapshot.data!.docs[index]["photo"]
+                              //                 as String);
+                              //       }
+                              //     }),
                               PopupMenuButton(
-                                  icon: Icon(Icons.more_vert,
-                                      color: Colors.black),
-                                  itemBuilder: (BuildContext context) => [
-                                        PopupMenuItem(
-                                          child: Text("Edit"),
-                                          value: "edit",
-                                        ),
-                                        PopupMenuItem(
-                                          child: Text("Delete"),
-                                          value: "delete",
-                                        ),
-                                      ],
-                                  onSelected: (value) {
-                                    if (value == "edit") {
-                                      navigateToUpdate(
-                                          snapshot.data!.docs[index],
-                                          snapshot.data!.docs[index].id);
-                                    } else if (value == "delete") {
-                                      deleteTravel(
-                                          snapshot.data!.docs[index].id,
-                                          snapshot.data!.docs[index]["photo"]
-                                              as String);
-                                    }
-                                  }),
+                                icon: Icon(Icons.more_vert, color: Colors.black),
+                                itemBuilder: (BuildContext context) => [
+                                  PopupMenuItem(
+                                    child: Text("Edit"),
+                                    value: "edit",
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text("Delete"),
+                                    value: "delete",
+                                  ),
+                                ],
+                                onSelected: (value) {
+                                  if (value == "edit") {
+                                    navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id);
+                                  } else if (value == "delete") {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("Confirm Delete"),
+                                          content: Text("Are you sure you want to delete this item?"),
+                                          actions: [
+                                            TextButton(
+                                              child: Text("Cancel"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text("Delete"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                deleteTravel(
+                                                  snapshot.data!.docs[index].id,
+                                                  snapshot.data!.docs[index]["photo"] as String,
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                              )
                             ],
                           ),
                         ),

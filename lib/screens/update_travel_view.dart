@@ -57,17 +57,6 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
     startDate = (widget.travel!.get("start_date") as Timestamp).toDate();
     endDate = (widget.travel!.get("end_date") as Timestamp).toDate();
 
-    // FirebaseFirestore.instance
-    //     .collection("Travel")
-    //     .doc(widget.id)
-    //     .get()
-    //     .then((DocumentSnapshot documentSnapshot) {
-    //   if (documentSnapshot.exists) {
-    //     setState(() {
-    //       _photoUrl = (documentSnapshot.data() as Map<String, dynamic>)['photo'] as String;
-    //     });
-    //   }
-    // });
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.refFromURL(widget.travel!.get("photo") as String);
     ref.getDownloadURL().then((value) {
@@ -230,6 +219,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
+          centerTitle: true,
           textTheme: TextTheme(
             subtitle1: TextStyle(
               color: Colors.black,
