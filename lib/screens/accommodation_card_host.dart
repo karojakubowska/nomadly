@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nomadly_app/utils/shimmer_load_photos.dart';
 import 'package:nomadly_app/screens/update_accommodation_view.dart';
 import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';
@@ -81,7 +80,7 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                               )));
 
                     } else {
-                      return const Center(child: CircularProgressIndicator());
+                      return Center(child: ShimmerLoadCardPhotos(height: 180, width: size.width));
                     }
                   },
                 ),

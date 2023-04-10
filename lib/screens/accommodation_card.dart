@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nomadly_app/utils/shimmer_load_photos.dart';
 import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
@@ -14,9 +15,7 @@ class AccommodationCard extends StatefulWidget {
   final int index;
 
   const AccommodationCard(
-      {super.key,
-      required this.accomodation,
-      required this.index});
+      {super.key, required this.accomodation, required this.index});
 
   @override
   State<AccommodationCard> createState() => _AccommodationCardState();
@@ -64,7 +63,8 @@ class _AccommodationCardState extends State<AccommodationCard> {
                             fit: BoxFit.fill,
                           )));
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(
+                      child: ShimmerLoadCardPhotos(height: 180, width: size.width));
                 }
               },
             ),
@@ -82,7 +82,7 @@ class _AccommodationCardState extends State<AccommodationCard> {
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    "\$${widget.accomodation.price_per_night}",
+                    "\$${widget.accomodation.price_per_night?.toStringAsFixed(2)}",
                     style: GoogleFonts.roboto(
                         color: Color.fromARGB(255, 24, 24, 24),
                         fontSize: 18,
