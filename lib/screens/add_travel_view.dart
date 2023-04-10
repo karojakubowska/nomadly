@@ -42,32 +42,6 @@ class _AddTravelViewState extends State<AddTravelView> {
   late DateTime startDate;
   late DateTime endDate;
 
-  // Future<void> _selectStartDate(BuildContext context) async {
-  //   final DateTime? picked = await showDatePicker(
-  //       context: context,
-  //       initialDate: startDate ?? DateTime.now(),
-  //       firstDate: DateTime(2015, 8),
-  //       lastDate: DateTime(2101));
-  //   if (picked != null && picked != startDate) {
-  //     setState(() {
-  //       startDate = picked;
-  //     });
-  //   }
-  // }
-  //
-  // Future<void> _selectEndDate(BuildContext context) async {
-  //   final DateTime? picked = await showDatePicker(
-  //       context: context,
-  //       initialDate: endDate ?? DateTime.now(),
-  //       firstDate: DateTime(2015, 8),
-  //       lastDate: DateTime(2101));
-  //   if (picked != null && picked != endDate) {
-  //     setState(() {
-  //       endDate = picked;
-  //     });
-  //   }
-  // }
-
   Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -79,7 +53,6 @@ class _AddTravelViewState extends State<AddTravelView> {
         startDate = picked;
       });
     } else {
-      // jeśli użytkownik nie wybrał daty, pokaż komunikat o błędzie
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please select a start date')),
       );
@@ -97,7 +70,6 @@ class _AddTravelViewState extends State<AddTravelView> {
         endDate = picked;
       });
     } else {
-      // jeśli użytkownik nie wybrał daty, pokaż komunikat o błędzie
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please select an end date')),
       );
@@ -248,6 +220,7 @@ class _AddTravelViewState extends State<AddTravelView> {
                   fontWeight: FontWeight.w700)),
         ),
         backgroundColor: Colors.transparent,
+        centerTitle: true,
         elevation: 0,
         textTheme: TextTheme(
           subtitle1: TextStyle(
