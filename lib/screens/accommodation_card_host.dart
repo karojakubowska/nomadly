@@ -138,25 +138,24 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                     ),
                   ],
                   onSelected: (value) {
-                    if (value == "edit") {
-                      //navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id);
-                    } else {
+                    if (value == 'edit') {
+                      // navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id);
+                    } else if (value == 'delete') {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: const Text('Delete Accommodation'),
-                            content: const Text(
-                                'Are you sure you want to delete this accommodation?'),
+                            content: const Text('Are you sure you want to delete this accommodation?'),
                             actions: [
                               TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context),
+                                onPressed: () => Navigator.pop(context),
                                 child: const Text('No'),
                               ),
                               TextButton(
                                 onPressed: () {
-
+                                  deleteAccommodation(widget.accomodation.id!, widget.accomodation.photo!);
+                                  Navigator.pop(context);
                                 },
                                 child: const Text('Yes'),
                               ),
@@ -166,6 +165,35 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                       );
                     }
                   },
+                  // onSelected: (value) {
+                  //   if (value == "edit") {
+                  //     //navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id);
+                  //   } else {
+                  //     showDialog(
+                  //       context: context,
+                  //       builder: (BuildContext context) {
+                  //         return AlertDialog(
+                  //           title: const Text('Delete Accommodation'),
+                  //           content: const Text(
+                  //               'Are you sure you want to delete this accommodation?'),
+                  //           actions: [
+                  //             TextButton(
+                  //               onPressed: () =>
+                  //                   Navigator.pop(context),
+                  //               child: const Text('No'),
+                  //             ),
+                  //             TextButton(
+                  //               onPressed: () {
+                  //
+                  //               },
+                  //               child: const Text('Yes'),
+                  //             ),
+                  //           ],
+                  //         );
+                  //       },
+                  //     );
+                  //   }
+                  // },
                 ),
               ),
             ),
@@ -178,18 +206,35 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
     );
   }
 
-  void deleteAccommodation(documentId, String imageId) async {
-    var db = FirebaseFirestore.instance;
-    FirebaseStorage.instance.refFromURL(imageId).delete().then((_) {
-      print("Image successfully deleted!");
-    }).catchError((error) {
-      print("Error removing image: $error");
-    });
+  void deleteAccommodation(String documentId, String imageId) async {
+    try {
+      // delete image from Firebase Storage
+      await FirebaseStorage.instance.refFromURL(imageId).delete();
+      print('Image successfully deleted!');
 
-    db.collection("Accommodations").doc(documentId).delete().then((_) {
-      print("Document successfully deleted!");
-    }).catchError((error) {
-      print("Error removing document: $error");
-    });
+      // delete document from Firestore
+      await FirebaseFirestore.instance
+          .collection('Accommodations')
+          .doc(documentId)
+          .delete();
+      print('Document successfully deleted!');
+    } catch (e) {
+      print('Error deleting accommodation: $e');
+    }
   }
+
+// void deleteAccommodation(documentId, String imageId) async {
+  //   var db = FirebaseFirestore.instance;
+  //   FirebaseStorage.instance.refFromURL(imageId).delete().then((_) {
+  //     print("Image successfully deleted!");
+  //   }).catchError((error) {
+  //     print("Error removing image: $error");
+  //   });
+  //
+  //   db.collection("Accommodations").doc(documentId).delete().then((_) {
+  //     print("Document successfully deleted!");
+  //   }).catchError((error) {
+  //     print("Error removing document: $error");
+  //   });
+  // }
 }

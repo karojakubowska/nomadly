@@ -183,11 +183,13 @@ class _AddTravelViewState extends State<AddTravelView> {
       'number_of_people': int.parse(number_of_peopleController.text),
     }).then((value) {
       print("DocumentSnapshot successfully updated!");
-      Navigator.pop(context as BuildContext);
-      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-        SnackBar(content: Text('Travel added')),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('New travel added')),
       );
-    }, onError: (e) => print("Error updating document $e"));
+    }, onError: (e) {
+      print("Error updating document $e");
+    });
+
   }
 
   @override

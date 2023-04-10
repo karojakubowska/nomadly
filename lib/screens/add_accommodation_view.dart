@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class AddAccommodationScreen extends StatefulWidget {
+
   const AddAccommodationScreen({
     Key? key,
   }) : super(key: key);
@@ -28,6 +29,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
   final countryController = TextEditingController();
   final descriptionController = TextEditingController();
   final price_per_nightController = TextEditingController();
+  // final boolController = TextEditingController();
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
@@ -99,7 +101,19 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
 
   CollectionReference accommodation = FirebaseFirestore.instance.collection('Accommodations');
 
-  Future<void> addTravel(pickedFile) async {
+  Future<void> addAccommodation(BuildContext context, pickedFile) async {
+    if (titleController.text.isEmpty ||
+        countryController.text.isEmpty ||
+        cityController.text.isEmpty ||
+        streetController.text.isEmpty ||
+        descriptionController.text.isEmpty ||
+        price_per_nightController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('All fields are required')),
+      );
+      return;
+    }
+
     var user = await FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
     if (_photo == null) return;
@@ -117,9 +131,9 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString()).toString();
     } catch (e) {
       print('error occured');
-    };
-    return accommodation
-        .add({
+    }
+    ;
+    return accommodation.add({
       'title': titleController.text,
       'country': countryController.text,
       'city': cityController.text,
@@ -127,11 +141,18 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       'description': descriptionController.text,
       'price_per_night': int.parse(price_per_nightController.text),
       'host_id': FirebaseAuth.instance.currentUser!.uid,
+      'rate': 0.0,
       'photo': imageURL.toString(),
-    })
-        .then((value) => print("Add Accommodation"))
-        .catchError((error) => print("Error"));
+    }).then((value) {
+      print("DocumentSnapshot successfully updated!");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('New accommodation added')),
+      );
+    }, onError: (e) {
+      print("Error updating document $e");
+    });
   }
+
 
   @override
   void initState() {
@@ -351,6 +372,20 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     ),
                   ),
                 ),
+                // const SizedBox(height: 10),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                //   child: CheckboxListTile(
+                //     title: const Text('Value'),
+                //     value: boolController.text == 'true',
+                //     onChanged: (bool? value) {
+                //       setState(() {
+                //         boolController.text = value.toString();
+                //       });
+                //     },
+                //     controlAffinity: ListTileControlAffinity.leading,
+                //   ),
+                // ),
                 const SizedBox(height: 10),
                 Padding(
                   padding: EdgeInsets.all(15.0),
@@ -362,7 +397,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                         backgroundColor:
                         const Color.fromARGB(255, 50, 134, 252)),
                     onPressed: () {
-                      addTravel(pickedFile);
+                      addAccommodation(context,pickedFile);
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
                     label: const Text('Add Accommodation',

@@ -15,6 +15,10 @@ import 'package:nomadly_app/screens/wishlist_view.dart';
 import 'package:nomadly_app/services/accommodation_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'screens/add_accommodation_view.dart';
+import 'screens/home_host_view.dart';
+import 'screens/host/all_bookings_view.dart';
+import 'screens/new_bottomnavbarhost.dart';
 import 'services/authentication_provider.dart';
 import 'firebase_options.dart';
 import 'screens/authentication/auth_page.dart';
@@ -100,7 +104,15 @@ class LoginPage extends StatelessWidget {
                           UserProfileScreen()
                         ],
                       );
-                    return BottomNavBarHost();
+                    return NewBottomNavBarHost(
+                      screens: [
+                        HomeHostScreen(),
+                        AllBookingsScreen(),
+                        AddAccommodationScreen(),
+                        Chat(),
+                        UserProfileScreen()
+                      ],
+                    );
                   }
                   return Text("Loading");
                 },
