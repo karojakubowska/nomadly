@@ -70,7 +70,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "No accommodations found",
+                            "Find your new favourites!",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.roboto(
                                 color: Color.fromARGB(255, 24, 24, 24),

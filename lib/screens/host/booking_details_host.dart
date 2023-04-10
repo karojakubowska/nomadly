@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/Booking.dart';
@@ -9,15 +10,16 @@ import 'package:nomadly_app/screens/checkout_confirmed.dart';
 import 'package:nomadly_app/screens/home_host_view.dart';
 import '../../utils/app_styles.dart';
 
-class BookingDetailsScreen extends StatefulWidget {
+class BookingDetailsHostScreen extends StatefulWidget {
   Acommodation accommodation;
   Booking booking;
-  BookingDetailsScreen({required this.accommodation, required this.booking});
+  BookingDetailsHostScreen(
+      {required this.accommodation, required this.booking});
   @override
-  State<BookingDetailsScreen> createState() => _BookingDetailsScreenState();
+  State<BookingDetailsHostScreen> createState() => _BookingDetailsScreenState();
 }
 
-class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
+class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,65 +129,11 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
               ),
               child: Column(
                 children: [
-                  
                   Container(
-                      height: 190,
+                    //  height: 190,
                       padding: const EdgeInsets.only(top: 30, bottom: 30),
-                      child: widget.booking.status != 'Finished'
-                          ? Container()
-                          : Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            const Color.fromARGB(
-                                                255, 50, 134, 252)),
-                                    elevation: MaterialStateProperty.all(0),
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                    minimumSize: MaterialStateProperty.all(
-                                        const Size(320, 50)),
-                                  ),
-                                  child: Text(
-                                    'Rate the user',
-                                    style: GoogleFonts.roboto(
-                                        textStyle: TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700)),
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                    elevation: MaterialStateProperty.all(0),
-                                    backgroundColor: MaterialStateProperty.all<
-                                            Color>(
-                                        const Color.fromARGB(255, 255, 58, 65)),
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                    minimumSize: MaterialStateProperty.all(
-                                        const Size(320, 50)),
-                                  ),
-                                  child: Text(
-                                    'Report the user',
-                                    style: GoogleFonts.roboto(
-                                        textStyle: const TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700)),
-                                  ),
-                                ),
-                              ],
-                            )),
-                            ElevatedButton(
+                      child: statusButtonSwitch()),
+                  ElevatedButton(
                     onPressed: () {},
                     style: ButtonStyle(
                       elevation: MaterialStateProperty.all(0),
@@ -218,15 +166,74 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     );
   }
 
-  Color statusButtonSwitch() {
+  Widget statusButtonSwitch() {
     if (widget.booking.status == "Finished") {
-      return Colors.grey.shade600;
-    } else if (widget.booking.status == "In progress") {
-      return Styles.pinColor;
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ElevatedButton(
+            onPressed: () {},
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color.fromARGB(255, 50, 134, 252)),
+              elevation: MaterialStateProperty.all(0),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10))),
+              minimumSize: MaterialStateProperty.all(const Size(320, 50)),
+            ),
+            child: Text(
+              'Rate the user',
+              style: GoogleFonts.roboto(
+                  textStyle: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700)),
+            ),
+          ),
+          Gap(30),
+          ElevatedButton(
+            onPressed: () {},
+            style: ButtonStyle(
+              elevation: MaterialStateProperty.all(0),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color.fromARGB(255, 255, 58, 65)),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10))),
+              minimumSize: MaterialStateProperty.all(const Size(320, 50)),
+            ),
+            child: Text(
+              'Report the user',
+              style: GoogleFonts.roboto(
+                  textStyle: const TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700)),
+            ),
+          ),
+        ],
+      );
     } else if (widget.booking.status == "Waiting for confirmation") {
-      return Colors.yellow.shade700;
+      return ElevatedButton(
+        onPressed: () {},
+        style: ButtonStyle(
+          elevation: MaterialStateProperty.all(0),
+          backgroundColor: MaterialStateProperty.all<Color>(
+              const Color.fromARGB(255, 50, 134, 252)),
+          shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+          minimumSize: MaterialStateProperty.all(const Size(320, 50)),
+        ),
+        child: Text(
+          'Confirm',
+          style: GoogleFonts.roboto(
+              textStyle: const TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700)),
+        ),
+      );
     } else {
-      return Colors.green.shade600;
+      return Container();
     }
   }
 }

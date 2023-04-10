@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nomadly_app/models/User.dart';
-import 'package:nomadly_app/screens/host/booking_details.dart';
+import 'package:nomadly_app/screens/host/booking_details_host.dart';
 import 'package:nomadly_app/utils/shimmer_load_photos.dart';
 
 import '../../models/Accomodation.dart';
@@ -32,7 +32,7 @@ class _BookingCardState extends State<BookingCard> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: ((context) => BookingDetailsScreen(
+            builder: ((context) => BookingDetailsHostScreen(
                   accommodation: accommodation,
                   booking: booking,
                 ))));
