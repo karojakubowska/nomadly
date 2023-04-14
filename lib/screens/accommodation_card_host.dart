@@ -15,16 +15,18 @@ class AccommodationCardHost extends StatefulWidget {
   final String? host_id;
 
   const AccommodationCardHost(
-      {super.key, required this.accomodation, required this.index, required this.host_id});
+      {super.key,
+      required this.accomodation,
+      required this.index,
+      required this.host_id});
 
   @override
   State<AccommodationCardHost> createState() => _AccommodationCardHostState();
 }
 
 class _AccommodationCardHostState extends State<AccommodationCardHost> {
-
   Future<QuerySnapshot>? allAccommodationDocumentList =
-  FirebaseFirestore.instance.collectionGroup("Accommodations").get();
+      FirebaseFirestore.instance.collectionGroup("Accommodations").get();
   Future<QuerySnapshot>? accommodationDocumentList;
 
   navigateToDetail(Acommodation accommodation) {
@@ -36,12 +38,23 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                 ))));
   }
 
-  navigateToUpdate(DocumentSnapshot accommodation, String id) {
+  navigateToUpdate(Acommodation accommodation, String id) async {
+    DocumentSnapshot<Object?> snapshot = await FirebaseFirestore.instance
+        .collection('Accommodations')
+        .doc(id)
+        .get();
+    navigateToUpdateScreen(snapshot, id);
+  }
+
+  navigateToUpdateScreen(DocumentSnapshot<Object?> accommodation, String id) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: ((context) => UpdateAccommodationScreen(accommodation: accommodation, id: id))));
+            builder: ((context) =>
+                UpdateAccommodationScreen(accommodation: accommodation, id: id))));
   }
+
+  CollectionReference accommodation = FirebaseFirestore.instance.collection('Accommodations');
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +79,7 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasData) {
-                      return
-                      Container(
+                      return Container(
                           height: 180,
                           width: size.width,
                           decoration: BoxDecoration(
@@ -78,9 +90,10 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                                 image: NetworkImage(snapshot.data.toString()),
                                 fit: BoxFit.fill,
                               )));
-
                     } else {
-                      return Center(child: ShimmerLoadCardPhotos(height: 180, width: size.width));
+                      return Center(
+                          child: ShimmerLoadCardPhotos(
+                              height: 180, width: size.width));
                     }
                   },
                 ),
@@ -115,8 +128,7 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
             top: 5,
             right: 15,
             child: GestureDetector(
-              onTap: () {
-              },
+              onTap: () {},
               child: Container(
                 width: 50,
                 height: 50,
@@ -125,8 +137,7 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                   shape: BoxShape.circle,
                 ),
                 child: PopupMenuButton(
-                  icon:
-                  Icon(Icons.more_vert, color: Colors.white),
+                  icon: Icon(Icons.more_vert, color: Colors.white),
                   itemBuilder: (BuildContext context) => [
                     PopupMenuItem(
                       child: Text("Edit"),
@@ -139,14 +150,15 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                   ],
                   onSelected: (value) {
                     if (value == 'edit') {
-                      // navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id);
+                      navigateToUpdate(widget.accomodation, widget.accomodation.id!);
                     } else if (value == 'delete') {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: const Text('Delete Accommodation'),
-                            content: const Text('Are you sure you want to delete this accommodation?'),
+                            content: const Text(
+                                'Are you sure you want to delete this accommodation?'),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
@@ -154,7 +166,8 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  deleteAccommodation(widget.accomodation.id!, widget.accomodation.photo!);
+                                  deleteAccommodation(widget.accomodation.id!,
+                                      widget.accomodation.photo!);
                                   Navigator.pop(context);
                                 },
                                 child: const Text('Yes'),
@@ -165,35 +178,6 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                       );
                     }
                   },
-                  // onSelected: (value) {
-                  //   if (value == "edit") {
-                  //     //navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id);
-                  //   } else {
-                  //     showDialog(
-                  //       context: context,
-                  //       builder: (BuildContext context) {
-                  //         return AlertDialog(
-                  //           title: const Text('Delete Accommodation'),
-                  //           content: const Text(
-                  //               'Are you sure you want to delete this accommodation?'),
-                  //           actions: [
-                  //             TextButton(
-                  //               onPressed: () =>
-                  //                   Navigator.pop(context),
-                  //               child: const Text('No'),
-                  //             ),
-                  //             TextButton(
-                  //               onPressed: () {
-                  //
-                  //               },
-                  //               child: const Text('Yes'),
-                  //             ),
-                  //           ],
-                  //         );
-                  //       },
-                  //     );
-                  //   }
-                  // },
                 ),
               ),
             ),
@@ -208,11 +192,9 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
 
   void deleteAccommodation(String documentId, String imageId) async {
     try {
-      // delete image from Firebase Storage
       await FirebaseStorage.instance.refFromURL(imageId).delete();
       print('Image successfully deleted!');
 
-      // delete document from Firestore
       await FirebaseFirestore.instance
           .collection('Accommodations')
           .doc(documentId)
@@ -222,19 +204,4 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
       print('Error deleting accommodation: $e');
     }
   }
-
-// void deleteAccommodation(documentId, String imageId) async {
-  //   var db = FirebaseFirestore.instance;
-  //   FirebaseStorage.instance.refFromURL(imageId).delete().then((_) {
-  //     print("Image successfully deleted!");
-  //   }).catchError((error) {
-  //     print("Error removing image: $error");
-  //   });
-  //
-  //   db.collection("Accommodations").doc(documentId).delete().then((_) {
-  //     print("Document successfully deleted!");
-  //   }).catchError((error) {
-  //     print("Error removing document: $error");
-  //   });
-  // }
 }

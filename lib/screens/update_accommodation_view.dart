@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,12 +14,16 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class UpdateAccommodationScreen extends StatefulWidget {
-  const UpdateAccommodationScreen({
-    Key? key, required accommodation, required String id,
-  }) : super(key: key);
+  final DocumentSnapshot? accommodation;
+  final String id;
+
+  const UpdateAccommodationScreen(
+      {Key? key, this.accommodation, required this.id})
+      : super(key: key);
 
   @override
-  State<UpdateAccommodationScreen> createState() => _UpdateAccommodationScreenState();
+  State<UpdateAccommodationScreen> createState() =>
+      _UpdateAccommodationScreenState();
 }
 
 class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
@@ -28,14 +33,37 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
   final countryController = TextEditingController();
   final descriptionController = TextEditingController();
   final price_per_nightController = TextEditingController();
-  firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
+
+  CollectionReference accommodation =
+      FirebaseFirestore.instance.collection('Acccommodations');
 
   File? _photo;
   final ImagePicker _picker = ImagePicker();
   final pickedFile = "";
 
   var imageURL = "";
+  late String imageOld = " ";
+  String _photoUrl = "";
+
+  void initState() {
+    super.initState();
+    titleController.text = (widget.accommodation!.get("title"));
+    cityController.text = (widget.accommodation!.get("city"));
+    streetController.text = (widget.accommodation!.get("street"));
+    countryController.text = (widget.accommodation!.get("country"));
+    descriptionController.text = (widget.accommodation!.get("description"));
+    price_per_nightController.text =
+        (widget.accommodation!.get("price_per_night").toString());
+    imageOld = (widget.accommodation!.get("photo"));
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref =
+        storage.refFromURL(widget.accommodation!.get("photo") as String);
+    ref.getDownloadURL().then((value) {
+      setState(() {
+        _photoUrl = value;
+      });
+    });
+  }
 
   Future imgFromGallery(pickedFile) async {
     pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -60,7 +88,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
 
     try {
       final ref =
-      firebase_storage.FirebaseStorage.instance.ref(destination).child('');
+          firebase_storage.FirebaseStorage.instance.ref(destination).child('');
       await ref.putFile(_photo!);
     } catch (e) {
       print('error occured');
@@ -97,29 +125,33 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         });
   }
 
-  CollectionReference accommodation = FirebaseFirestore.instance.collection('Accommodations');
-
-  Future<void> addTravel(pickedFile) async {
+  Future<void> updateAccommodation(id, PickedFile) async {
     var user = await FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
     if (_photo == null) return;
 
-    String dateTime = DateTime.now().toString();
+    FirebaseStorage.instance.refFromURL(imageOld).delete().then((_) {
+      print("Image successfully deleted!");
+    }).catchError((error) {
+      print("Error removing image: $error");
+    });
     String uuid = Uuid().v4();
-    String uniqueFileName = '$uid/$dateTime-$uuid.jpg';
-
-    //final fileName = basename(_photo!.path);
+    String uniqueFileName = '$uid/$uuid.jpg';
     final destination = uniqueFileName;
 
     try {
-      final ref = firebase_storage.FirebaseStorage.instance.ref(destination).child('');
+      final ref =
+          firebase_storage.FirebaseStorage.instance.ref(destination).child('');
       await ref.putFile(_photo!);
-      imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString()).toString();
+      imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
+          .toString();
     } catch (e) {
-      print('error occured');
-    };
-    return accommodation
-        .add({
+      print('error occurred');
+    }
+
+    final db = FirebaseFirestore.instance;
+    final accommodation = db.collection("Accommodations").doc(id);
+    accommodation.update({
       'title': titleController.text,
       'country': countryController.text,
       'city': cityController.text,
@@ -128,14 +160,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
       'price_per_night': int.parse(price_per_nightController.text),
       'host_id': FirebaseAuth.instance.currentUser!.uid,
       'photo': imageURL.toString(),
-    })
-        .then((value) => print("Add Accommodation"))
-        .catchError((error) => print("Error"));
-  }
-
-  @override
-  void initState() {
-    super.initState();
+    }).then((value) => print("DocumentSnapshot successfully updated!"),
+        onError: (e) => print("Error updating document $e"));
   }
 
   @override
@@ -144,7 +170,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
         title: Text(
-          'Add Accommodation',
+          'Edit Accommodation',
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
               textStyle: TextStyle(
@@ -189,15 +215,22 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                       ),
                       child: _photo != null
                           ? ClipRRect(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(10)),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
                         child: Image.file(
                           _photo!,
-                          width: 50,
-                          height: 50,
+                          width: 150,
+                          height: 150,
                           fit: BoxFit.fitHeight,
                         ),
                       )
+                          : _photoUrl.isNotEmpty
+                          ? ClipRRect(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10)),
+                          child: Image.network(
+                            _photoUrl,
+                            fit: BoxFit.cover,
+                          ))
                           : Container(
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 249, 250, 250),
@@ -208,9 +241,14 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                             width: 0.5,
                           ),
                         ),
-                        child: Icon(
-                          Icons.camera_alt,
-                          color: Colors.grey[800],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.camera_alt,
+                              color: Colors.grey[800],
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -360,12 +398,12 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0)),
                         backgroundColor:
-                        const Color.fromARGB(255, 50, 134, 252)),
+                            const Color.fromARGB(255, 50, 134, 252)),
                     onPressed: () {
-                      addTravel(pickedFile);
+                      updateAccommodation(widget.id, pickedFile);
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
-                    label: const Text('Add Accommodation',
+                    label: const Text('Update Accommodation',
                         style: TextStyle(fontSize: 20)),
                   ),
                 ),
@@ -377,5 +415,3 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
     );
   }
 }
-
-

@@ -148,16 +148,20 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('New accommodation added')),
       );
+      setState(() {
+        _photo = null;
+      });
+      titleController.clear();
+      countryController.clear();
+      cityController.clear();
+      streetController.clear();
+      descriptionController.clear();
+      price_per_nightController.clear();
     }, onError: (e) {
       print("Error updating document $e");
     });
   }
 
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -172,13 +172,38 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
 
     try {
       final ref =
-          firebase_storage.FirebaseStorage.instance.ref(destination).child('');
+      firebase_storage.FirebaseStorage.instance.ref(destination).child('');
       await ref.putFile(_photo!);
       imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
           .toString();
     } catch (e) {
       print('error occurred');
     }
+    //
+    // if (_photo != null) {
+    //   await updateTravelField(id, 'photo', imageURL);
+    // }
+    // if (nameController.text.isNotEmpty) {
+    //   await updateTravelField(id, 'name', nameController.text);
+    // }
+    // if (destinationController.text.isNotEmpty) {
+    //   await updateTravelField(id, 'destination', destinationController.text);
+    // }
+    // if (budgetController.text.isNotEmpty) {
+    //   await updateTravelField(id, 'budget', int.parse(budgetController.text));
+    // }
+    // if (number_of_peopleController.text.isNotEmpty) {
+    //   await updateTravelField(id, 'number_of_people', int.parse(number_of_peopleController.text));
+    // }
+    // if (noteController.text.isNotEmpty) {
+    //   await updateTravelField(id, 'note', noteController.text);
+    // }
+    // if (startDate != null) {
+    //   await updateTravelField(id, 'start_date', startDate);
+    // }
+    // if (endDate != null) {
+    //   await updateTravelField(id, 'end_date', endDate);
+    // }
 
     final db = FirebaseFirestore.instance;
     final travel = db.collection("Travel").doc(id);
@@ -193,6 +218,17 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
       'photo': imageURL.toString(),
     }).then((value) => print("DocumentSnapshot successfully updated!"),
         onError: (e) => print("Error updating document $e"));
+  }
+
+
+
+  Future<void> updateTravelField(String id, String field, dynamic newValue) async {
+    final db = FirebaseFirestore.instance;
+    final travel = db.collection("Travel").doc(id);
+    await travel.update({ field: newValue }).then(
+            (value) => print("DocumentSnapshot successfully updated!"),
+        onError: (e) => print("Error updating document $e")
+    );
   }
 
   @override
