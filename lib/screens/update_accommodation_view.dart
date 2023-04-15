@@ -128,40 +128,55 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
   Future<void> updateAccommodation(id, PickedFile) async {
     var user = await FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
-    if (_photo == null) return;
-
+    if (_photo == null) {
+      final db = FirebaseFirestore.instance;
+      final accommodation = db.collection("Accommodations").doc(id);
+      accommodation.update({
+        'title': titleController.text,
+        'country': countryController.text,
+        'city': cityController.text,
+        'street': streetController.text,
+        'description': descriptionController.text,
+        'price_per_night': int.parse(price_per_nightController.text),
+        'host_id': FirebaseAuth.instance.currentUser!.uid,
+        'photo': imageOld.toString(),
+      }).then((value) => print("DocumentSnapshot successfully updated!"),
+          onError: (e) => print("Error updating document $e"));
+    }
+    else {
     FirebaseStorage.instance.refFromURL(imageOld).delete().then((_) {
-      print("Image successfully deleted!");
+    print("Image successfully deleted!");
     }).catchError((error) {
-      print("Error removing image: $error");
+    print("Error removing image: $error");
     });
     String uuid = Uuid().v4();
     String uniqueFileName = '$uid/$uuid.jpg';
     final destination = uniqueFileName;
 
     try {
-      final ref =
-          firebase_storage.FirebaseStorage.instance.ref(destination).child('');
-      await ref.putFile(_photo!);
-      imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
-          .toString();
+    final ref =
+    firebase_storage.FirebaseStorage.instance.ref(destination).child('');
+    await ref.putFile(_photo!);
+    imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
+        .toString();
     } catch (e) {
-      print('error occurred');
+    print('error occurred');
     }
 
     final db = FirebaseFirestore.instance;
     final accommodation = db.collection("Accommodations").doc(id);
     accommodation.update({
-      'title': titleController.text,
-      'country': countryController.text,
-      'city': cityController.text,
-      'street': streetController.text,
-      'description': descriptionController.text,
-      'price_per_night': int.parse(price_per_nightController.text),
-      'host_id': FirebaseAuth.instance.currentUser!.uid,
-      'photo': imageURL.toString(),
+    'title': titleController.text,
+    'country': countryController.text,
+    'city': cityController.text,
+    'street': streetController.text,
+    'description': descriptionController.text,
+    'price_per_night': int.parse(price_per_nightController.text),
+    'host_id': FirebaseAuth.instance.currentUser!.uid,
+    'photo': imageURL.toString(),
     }).then((value) => print("DocumentSnapshot successfully updated!"),
-        onError: (e) => print("Error updating document $e"));
+    onError: (e) => print("Error updating document $e"));
+    }
   }
 
   @override
@@ -170,7 +185,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
         title: Text(
-          'Edit Accommodation',
+          'Update Accommodation',
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
               textStyle: TextStyle(
@@ -253,6 +268,23 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                       ),
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Click to edit photo",
+                      style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                              fontSize: 14.0,
+                              height: 1.2,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 20,
