@@ -23,11 +23,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   var img = "";
   late Stream<DocumentSnapshot> userStream;
   late String name, email, accountImage;
+  String id = "";
+  late final user;
 
   @override
   void initState() {
     super.initState();
     final currentUser = FirebaseAuth.instance.currentUser;
+    id =  FirebaseAuth.instance.currentUser!.uid.toString();
+    user =  FirebaseAuth.instance.currentUser;
     userStream = FirebaseFirestore.instance
         .collection('Users')
         .doc(currentUser!.uid)
@@ -118,7 +122,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: ((context) => EditProfilePage())));
+                                    builder: ((context) => EditProfilePage(id:id, image: accountImage))));
                           },
                         ),
                       ],
