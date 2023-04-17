@@ -197,7 +197,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size.fromHeight(55),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                             backgroundColor:
                                 const Color.fromARGB(255, 50, 134, 252),
@@ -235,7 +235,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(25.0),
+            borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.1),
