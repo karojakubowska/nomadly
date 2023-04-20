@@ -12,8 +12,9 @@ import 'package:path/path.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-class AddAccommodationScreen extends StatefulWidget {
+import '../utils/app_layout.dart';
 
+class AddAccommodationScreen extends StatefulWidget {
   const AddAccommodationScreen({
     Key? key,
   }) : super(key: key);
@@ -29,6 +30,11 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
   final countryController = TextEditingController();
   final descriptionController = TextEditingController();
   final price_per_nightController = TextEditingController();
+  bool kitchen = false;
+  bool wifi = false;
+  bool tv = false;
+  bool air_conditioning = false;
+
   // final boolController = TextEditingController();
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
@@ -62,7 +68,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
 
     try {
       final ref =
-      firebase_storage.FirebaseStorage.instance.ref(destination).child('');
+          firebase_storage.FirebaseStorage.instance.ref(destination).child('');
       await ref.putFile(_photo!);
     } catch (e) {
       print('error occured');
@@ -99,7 +105,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
         });
   }
 
-  CollectionReference accommodation = FirebaseFirestore.instance.collection('Accommodations');
+  CollectionReference accommodation =
+      FirebaseFirestore.instance.collection('Accommodations');
 
   Future<void> addAccommodation(BuildContext context, pickedFile) async {
     if (titleController.text.isEmpty ||
@@ -126,9 +133,11 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
     final destination = uniqueFileName;
 
     try {
-      final ref = firebase_storage.FirebaseStorage.instance.ref(destination).child('');
+      final ref =
+          firebase_storage.FirebaseStorage.instance.ref(destination).child('');
       await ref.putFile(_photo!);
-      imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString()).toString();
+      imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
+          .toString();
     } catch (e) {
       print('error occured');
     }
@@ -143,6 +152,10 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       'host_id': FirebaseAuth.instance.currentUser!.uid,
       'rate': 0.0,
       'photo': imageURL.toString(),
+      'kitchen': kitchen ? true : false,
+      'wifi': wifi ? true : false,
+      'tv': tv ? true : false,
+      'air_conditioning': air_conditioning ? true : false,
     }).then((value) {
       print("DocumentSnapshot successfully updated!");
       ScaffoldMessenger.of(context).showSnackBar(
@@ -157,14 +170,18 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       streetController.clear();
       descriptionController.clear();
       price_per_nightController.clear();
+      kitchen = false;
+      wifi = false;
+      tv = false;
+      air_conditioning = false;
     }, onError: (e) {
       print("Error updating document $e");
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final size = AppLayout.getSize(context);
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
@@ -196,14 +213,14 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 0.0),
+                  padding: EdgeInsets.only(bottom: 10, right: 20, left: 20),
                   child: GestureDetector(
                     onTap: () {
                       _showPicker(context);
                     },
                     child: Container(
-                      width: 150,
-                      height: 150,
+                      width: size.width,
+                      height: size.height * 0.31,
                       decoration: BoxDecoration(
                         color: Color.fromARGB(255, 249, 250, 250),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -214,31 +231,65 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                       ),
                       child: _photo != null
                           ? ClipRRect(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(10)),
-                        child: Image.file(
-                          _photo!,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      )
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              child: Image.file(
+                                _photo!,
+                                width: size.width,
+                                height: size.height * 0.31,
+                                fit: BoxFit.fitHeight,
+                              ),
+                            )
                           : Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 249, 250, 250),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(
-                            color: Color.fromARGB(255, 217, 217, 217),
-                            width: 0.5,
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.camera_alt,
-                          color: Colors.grey[800],
-                        ),
-                      ),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 249, 250, 250),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(
+                                  color: Color.fromARGB(255, 217, 217, 217),
+                                  width: 0.5,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.camera_alt,
+                                color: Colors.grey[800],
+                              ),
+                            ),
                     ),
+                  ),
+                ),
+                // Column(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Text(
+                //       "Click to add photo",
+                //       style: GoogleFonts.roboto(
+                //           textStyle: TextStyle(
+                //               fontSize: 14.0,
+                //               height: 1.2,
+                //               color: Colors.grey,
+                //               fontWeight: FontWeight.w400)),
+                //     ),
+                //   ],
+                // ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Basic Information:",
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                fontSize: 20.0,
+                                height: 1.2,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500)),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(
@@ -353,7 +404,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -376,20 +427,97 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     ),
                   ),
                 ),
-                // const SizedBox(height: 10),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                //   child: CheckboxListTile(
-                //     title: const Text('Value'),
-                //     value: boolController.text == 'true',
-                //     onChanged: (bool? value) {
-                //       setState(() {
-                //         boolController.text = value.toString();
-                //       });
-                //     },
-                //     controlAffinity: ListTileControlAffinity.leading,
-                //   ),
-                // ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Other:",
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                fontSize: 20.0,
+                                height: 1.2,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500)),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: CheckboxListTile(
+                    title: Text("Kitchen",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            height: 1.2,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300)),
+                    value: kitchen,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        kitchen = value!;
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: CheckboxListTile(
+                    title: Text("Wifi",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            height: 1.2,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300)),
+                    value: wifi,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        wifi = value!;
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: CheckboxListTile(
+                    title: Text("TV",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            height: 1.2,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300)),
+                    value: tv,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        tv = value!;
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: CheckboxListTile(
+                    title: Text("Air Conditioning",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            height: 1.2,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300)),
+                    value: air_conditioning,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        air_conditioning = value!;
+                      });
+                    },
+                  ),
+                ),
                 const SizedBox(height: 10),
                 Padding(
                   padding: EdgeInsets.all(15.0),
@@ -399,9 +527,9 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0)),
                         backgroundColor:
-                        const Color.fromARGB(255, 50, 134, 252)),
+                            const Color.fromARGB(255, 50, 134, 252)),
                     onPressed: () {
-                      addAccommodation(context,pickedFile);
+                      addAccommodation(context, pickedFile);
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
                     label: const Text('Add Accommodation',
@@ -416,5 +544,3 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
     );
   }
 }
-
-

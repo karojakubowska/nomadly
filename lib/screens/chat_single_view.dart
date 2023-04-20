@@ -171,7 +171,7 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                         final DocumentSnapshot message = allMessages[index];
                         final bool isMe = message['senderId'] == _userId;
                         DateTime timestamp = message['timestamp'].toDate();
-                        String formattedDate = DateFormat('HH:mm \n dd/MM/yyyy').format(timestamp);
+                        String formattedDate = DateFormat('HH:mm\n dd/MM/yyyy').format(timestamp);
                         return Align(
                           alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
                           child: SizedBox(
