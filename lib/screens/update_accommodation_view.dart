@@ -13,6 +13,8 @@ import 'package:path/path.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
+import '../utils/app_layout.dart';
+
 class UpdateAccommodationScreen extends StatefulWidget {
   final DocumentSnapshot? accommodation;
   final String id;
@@ -33,6 +35,11 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
   final countryController = TextEditingController();
   final descriptionController = TextEditingController();
   final price_per_nightController = TextEditingController();
+
+  bool kitchen = false;
+  bool wifi = false;
+  bool tv = false;
+  bool air_conditioning = false;
 
   CollectionReference accommodation =
       FirebaseFirestore.instance.collection('Acccommodations');
@@ -55,6 +62,10 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
     price_per_nightController.text =
         (widget.accommodation!.get("price_per_night").toString());
     imageOld = (widget.accommodation!.get("photo"));
+    kitchen = (widget.accommodation!.get("kitchen"));
+    wifi = (widget.accommodation!.get("wifi"));
+    tv = (widget.accommodation!.get("tv"));
+    air_conditioning = (widget.accommodation!.get("air_conditioning"));
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref =
         storage.refFromURL(widget.accommodation!.get("photo") as String);
@@ -140,47 +151,56 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         'price_per_night': int.parse(price_per_nightController.text),
         'host_id': FirebaseAuth.instance.currentUser!.uid,
         'photo': imageOld.toString(),
+        'kitchen': kitchen ? true : false,
+        'wifi': wifi ? true : false,
+        'tv': tv ? true : false,
+        'air_conditioning': air_conditioning ? true : false,
       }).then((value) => print("DocumentSnapshot successfully updated!"),
           onError: (e) => print("Error updating document $e"));
-    }
-    else {
-    FirebaseStorage.instance.refFromURL(imageOld).delete().then((_) {
-    print("Image successfully deleted!");
-    }).catchError((error) {
-    print("Error removing image: $error");
-    });
-    String uuid = Uuid().v4();
-    String uniqueFileName = '$uid/$uuid.jpg';
-    final destination = uniqueFileName;
+    } else {
+      FirebaseStorage.instance.refFromURL(imageOld).delete().then((_) {
+        print("Image successfully deleted!");
+      }).catchError((error) {
+        print("Error removing image: $error");
+      });
+      String uuid = Uuid().v4();
+      String uniqueFileName = '$uid/$uuid.jpg';
+      final destination = uniqueFileName;
 
-    try {
-    final ref =
-    firebase_storage.FirebaseStorage.instance.ref(destination).child('');
-    await ref.putFile(_photo!);
-    imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
-        .toString();
-    } catch (e) {
-    print('error occurred');
-    }
+      try {
+        final ref = firebase_storage.FirebaseStorage.instance
+            .ref(destination)
+            .child('');
+        await ref.putFile(_photo!);
+        imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
+            .toString();
+      } catch (e) {
+        print('error occurred');
+      }
 
-    final db = FirebaseFirestore.instance;
-    final accommodation = db.collection("Accommodations").doc(id);
-    accommodation.update({
-    'title': titleController.text,
-    'country': countryController.text,
-    'city': cityController.text,
-    'street': streetController.text,
-    'description': descriptionController.text,
-    'price_per_night': int.parse(price_per_nightController.text),
-    'host_id': FirebaseAuth.instance.currentUser!.uid,
-    'photo': imageURL.toString(),
-    }).then((value) => print("DocumentSnapshot successfully updated!"),
-    onError: (e) => print("Error updating document $e"));
+      final db = FirebaseFirestore.instance;
+      final accommodation = db.collection("Accommodations").doc(id);
+      accommodation.update({
+        'title': titleController.text,
+        'country': countryController.text,
+        'city': cityController.text,
+        'street': streetController.text,
+        'description': descriptionController.text,
+        'price_per_night': int.parse(price_per_nightController.text),
+        'host_id': FirebaseAuth.instance.currentUser!.uid,
+        'photo': imageURL.toString(),
+        'kitchen': kitchen ? true : false,
+        'wifi': wifi ? true : false,
+        'tv': tv ? true : false,
+        'air_conditioning': air_conditioning ? true : false,
+      }).then((value) => print("DocumentSnapshot successfully updated!"),
+          onError: (e) => print("Error updating document $e"));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = AppLayout.getSize(context);
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
@@ -212,14 +232,14 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 0.0),
+                  padding: EdgeInsets.only(bottom: 10, right: 20, left: 20),
                   child: GestureDetector(
                     onTap: () {
                       _showPicker(context);
                     },
                     child: Container(
-                      width: 150,
-                      height: 150,
+                      width: size.width,
+                      height: size.height * 0.31,
                       decoration: BoxDecoration(
                         color: Color.fromARGB(255, 249, 250, 250),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -230,42 +250,43 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                       ),
                       child: _photo != null
                           ? ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        child: Image.file(
-                          _photo!,
-                          width: 150,
-                          height: 150,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      )
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              child: Image.file(
+                                _photo!,
+                                width: size.width,
+                                height: size.height * 0.31,
+                                fit: BoxFit.fitHeight,
+                              ),
+                            )
                           : _photoUrl.isNotEmpty
-                          ? ClipRRect(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10)),
-                          child: Image.network(
-                            _photoUrl,
-                            fit: BoxFit.cover,
-                          ))
-                          : Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 249, 250, 250),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(
-                            color: Color.fromARGB(255, 217, 217, 217),
-                            width: 0.5,
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.camera_alt,
-                              color: Colors.grey[800],
-                            ),
-                          ],
-                        ),
-                      ),
+                              ? ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  child: Image.network(
+                                    _photoUrl,
+                                    fit: BoxFit.cover,
+                                  ))
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 249, 250, 250),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    border: Border.all(
+                                      color: Color.fromARGB(255, 217, 217, 217),
+                                      width: 0.5,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.camera_alt,
+                                        color: Colors.grey[800],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                     ),
                   ),
                 ),
@@ -285,6 +306,26 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                               fontWeight: FontWeight.w400)),
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Basic Information:",
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                fontSize: 20.0,
+                                height: 1.2,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500)),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
@@ -419,6 +460,97 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                       filled: true,
                       fillColor: Color.fromARGB(255, 249, 250, 250),
                     ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Other:",
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                fontSize: 20.0,
+                                height: 1.2,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500)),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: CheckboxListTile(
+                    title: Text("Kitchen",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            height: 1.2,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300)),
+                    value: kitchen,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        kitchen = value!;
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: CheckboxListTile(
+                    title: Text("Wifi",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            height: 1.2,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300)),
+                    value: wifi,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        wifi = value!;
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: CheckboxListTile(
+                    title: Text("TV",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            height: 1.2,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300)),
+                    value: tv,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        tv = value!;
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: CheckboxListTile(
+                    title: Text("Air Conditioning",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            height: 1.2,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300)),
+                    value: air_conditioning,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        air_conditioning = value!;
+                      });
+                    },
                   ),
                 ),
                 const SizedBox(height: 10),
