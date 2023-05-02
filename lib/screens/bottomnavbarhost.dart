@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:nomadly_app/screens/add_accommodation_view.dart';
-import 'package:nomadly_app/screens/host/all_bookings_view.dart';
+import 'package:nomadly_app/screens/host/all_bookings_host_view.dart';
 import 'package:nomadly_app/screens/chat_view.dart';
 import 'package:nomadly_app/screens/home_host_view.dart';
 import 'package:nomadly_app/screens/travel_view.dart';
@@ -27,7 +27,7 @@ class _BottomNavBarHostState extends State<BottomNavBarHost>
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _bodyView = <Widget>[
     HomeHostScreen(),
-    AllBookingsScreen(),
+    AllBookingsHostScreen(),
     AddAccommodationScreen(),
     Chat(),
     UserProfileScreen()

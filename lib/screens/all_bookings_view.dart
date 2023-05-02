@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:gap/gap.dart';
-import 'package:nomadly_app/screens/host/booking_card.dart';
 
-import '../../models/Accomodation.dart';
-import '../../models/Booking.dart';
-import '../../utils/app_layout.dart';
-import '../../utils/app_styles.dart';
+import '../models/Accomodation.dart';
+import '../models/Booking.dart';
+import '../utils/app_layout.dart';
+import '../utils/app_styles.dart';
+import 'booking_card.dart';
+import 'host/booking_card_host.dart';
 
 class AllBookingsScreen extends StatefulWidget {
   const AllBookingsScreen({super.key});
@@ -17,13 +20,13 @@ class AllBookingsScreen extends StatefulWidget {
 }
 
 class _AllBookingsScreenState extends State<AllBookingsScreen> {
-  Query query = FirebaseFirestore.instance.collection("Bookings");
+
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final String userID = user!.uid;
-
+Query query = FirebaseFirestore.instance.collection("Bookings");
     var size = AppLayout.getSize(context);
     return Scaffold(
         backgroundColor: Styles.backgroundColor,
@@ -47,7 +50,7 @@ class _AllBookingsScreenState extends State<AllBookingsScreen> {
                         child: StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
                               .collection("Bookings")
-                              .where('host_id',
+                              .where('user_id',
                                   isEqualTo: userID)
                               .snapshots(),
                           builder: (context, snapshot) {
@@ -73,11 +76,11 @@ class _AllBookingsScreenState extends State<AllBookingsScreen> {
                                             Acommodation.fromJson(
                                                 snap.data!.docs[0].data()
                                                     as Map<String, dynamic>);
-                                        Booking bookin = Booking.fromJson(
+                                        Booking booking = Booking.fromJson(
                                             snapshot.data!.docs[0].data()
                                                 as Map<String, dynamic>);
                                         return BookingCard(
-                                          booking: bookin,
+                                          booking: booking,
                                           index: index,
                                           accommodation: model,
                                         );
@@ -92,55 +95,5 @@ class _AllBookingsScreenState extends State<AllBookingsScreen> {
           ],
         ));
   }
+  
 }
-// import 'package:flutter/material.dart';
-
-// class AllBookingsScreen extends StatefulWidget {
-//   const AllBookingsScreen({
-//     Key? key,
-//   }) : super(key: key);
-
-//   @override
-//   State<AllBookingsScreen> createState() => _AllBookingsScreenState();
-// }
-
-// class _AllBookingsScreenState extends State<AllBookingsScreen> {
-//   List<String> images = [
-//     "https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU",
-//     "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-//     "https://fastly.picsum.photos/id/17/2500/1667.jpg?hmac=HD-JrnNUZjFiP2UZQvWcKrgLoC_pc_ouUSWv8kHsJJY"
-//   ];
-//   int _currentIndex = 0;
-//   PageController _pageController = PageController(initialPage: 0);
-
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         backgroundColor: Colors.white,
-//         body: SingleChildScrollView(
-//           child: Column(
-//             children: [
-//               Stack(
-//                 children: [
-//                   Container(
-//                     height: 400,
-//                     child: ListView.builder(
-//                       scrollDirection: Axis.horizontal,
-//                       physics: const PageScrollPhysics(),
-//                       itemCount: 5,
-//                       itemBuilder: (BuildContext context, int index) {
-//                         return Image.network(
-//                           'https://picsum.photos/id/$index/200/300',
-//                         );
-//                       },
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             ],
-//           ),
-//         )
-//     );
-//   }
-// }
-
-

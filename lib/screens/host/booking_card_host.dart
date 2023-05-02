@@ -13,20 +13,20 @@ import '../../models/Booking.dart';
 import '../../utils/app_layout.dart';
 import '../../utils/app_styles.dart';
 
-class BookingCard extends StatefulWidget {
+class BookingCardHost extends StatefulWidget {
   Booking booking;
   int index;
   Acommodation accommodation;
-  //const BookingCard({super.key});
-  BookingCard(
+  //const BookingCardHost({super.key});
+  BookingCardHost(
       {required this.booking,
       required this.index,
       required this.accommodation});
   @override
-  State<BookingCard> createState() => _BookingCardState();
+  State<BookingCardHost> createState() => _BookingCardState();
 }
 
-class _BookingCardState extends State<BookingCard> {
+class _BookingCardState extends State<BookingCardHost> {
   var user;
   navigateToDetail(Acommodation accommodation, Booking booking) {
     Navigator.push(

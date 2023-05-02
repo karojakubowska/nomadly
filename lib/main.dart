@@ -4,12 +4,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/User.dart';
+import 'package:nomadly_app/screens/all_bookings_view.dart';
 import 'package:nomadly_app/screens/bottomnavbarhost.dart';
+import 'package:nomadly_app/screens/calendar.dart';
 import 'package:nomadly_app/screens/chat_view.dart';
 import 'package:nomadly_app/screens/filter_screen.dart';
 import 'package:nomadly_app/screens/home_view.dart';
+import 'package:nomadly_app/screens/host/all_bookings_host_view.dart';
 import 'package:nomadly_app/screens/new_bottomnavbar.dart';
 import 'package:nomadly_app/screens/travel_view.dart';
+import 'package:nomadly_app/screens/user_review_view.dart';
 import 'package:nomadly_app/screens/userprofile_view.dart';
 import 'package:nomadly_app/screens/wishlist_view.dart';
 import 'package:nomadly_app/services/accommodation_provider.dart';
@@ -17,7 +21,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/add_accommodation_view.dart';
 import 'screens/home_host_view.dart';
-import 'screens/host/all_bookings_view.dart';
 import 'screens/new_bottomnavbarhost.dart';
 import 'services/authentication_provider.dart';
 import 'firebase_options.dart';
@@ -99,15 +102,16 @@ class LoginPage extends StatelessWidget {
                         screens: [
                           HomeTest(),
                           WishlistScreen(),
+                          AllBookingsScreen(),
                           TravelView(),
                           Chat(),
-                          UserProfileScreen()
+                          CalendarScreen()
                         ],
                       );
                     return NewBottomNavBarHost(
                       screens: [
                         HomeHostScreen(),
-                        AllBookingsScreen(),
+                        AllBookingsHostScreen(),
                         AddAccommodationScreen(),
                         Chat(),
                         UserProfileScreen()
