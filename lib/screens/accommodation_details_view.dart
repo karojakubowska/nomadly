@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
+import 'package:nomadly_app/screens/booking_request_view.dart';
 import 'package:nomadly_app/screens/home_view.dart';
 import 'package:nomadly_app/utils/app_layout.dart';
 
@@ -18,24 +19,33 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  
   @override
   Widget build(BuildContext context) {
+     var size = AppLayout.getSize(context);
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: Text('     Book now     ',
-            style: GoogleFonts.roboto(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w700)),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        backgroundColor: Color.fromARGB(255, 50, 134, 252),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () {
+      //      Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: ((context) => BookingRequestScreen(
+      //           ))));
+      //   },
+      //   label: Text('     Book now     ',
+      //       style: GoogleFonts.roboto(
+      //           color: Colors.white,
+      //           fontSize: 16,
+      //           fontWeight: FontWeight.w700)),
+      //   shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.all(Radius.circular(10.0))),
+      //   backgroundColor: Color.fromARGB(255, 50, 134, 252),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
+          
           children: [
             Stack(
               children: [
@@ -43,8 +53,8 @@ class _DetailScreenState extends State<DetailScreen> {
                   future: FirebaseStorage.instance
                       .refFromURL((widget.acommodation!.photo!))
                       .getDownloadURL(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<dynamic> snapshot) {
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasData) {
                       return Image(
                         height: 400,
@@ -103,6 +113,7 @@ class _DetailScreenState extends State<DetailScreen> {
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
+              height: size.height*0.5,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,6 +206,36 @@ class _DetailScreenState extends State<DetailScreen> {
                         height: 1.6,
                         letterSpacing: .5),
                   ),
+                  Expanded(
+                      child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    BookingRequestScreen())));
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromARGB(255, 50, 134, 252)),
+                        elevation: MaterialStateProperty.all(0),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(340, 50)),
+                      ),
+                      child: Text(
+                        'Book now',
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700)),
+                      ),
+                    ),
+                  ))
                 ],
               ),
             ),

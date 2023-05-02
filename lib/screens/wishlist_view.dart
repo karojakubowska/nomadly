@@ -33,7 +33,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
-        // leading: BackButton(color: Colors.black),
+       leading: BackButton(color: Colors.black),
         backgroundColor: Styles.backgroundColor,
         title: Text('Wishlist', style: Styles.headLineStyle4),
         elevation: 0,
@@ -52,7 +52,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            SizedBox(
+            Container(
               height: size.height*0.78 ,
               width: size.width,
               child: StreamBuilder<QuerySnapshot>(

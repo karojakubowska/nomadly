@@ -32,8 +32,8 @@ class _NewBottomNavBarState extends State<NewBottomNavBar> {
           BottomNavigationBarItem(icon: new Icon(Icons.home), label: ""),
           BottomNavigationBarItem(
               icon: new Icon(Icons.favorite_border_outlined), label: ""),
-          // BottomNavigationBarItem(
-          //     icon: new Icon(Icons.bed_sharp), label: ""),
+          BottomNavigationBarItem(
+              icon: new Icon(Icons.bed_sharp), label: ""),
           BottomNavigationBarItem(
               icon: new Icon(Icons.card_travel_rounded), label: ""),
           BottomNavigationBarItem(icon: new Icon(Icons.chat_outlined), label: ""),

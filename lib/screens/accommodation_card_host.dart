@@ -7,7 +7,7 @@ import 'package:nomadly_app/screens/update_accommodation_view.dart';
 import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
-import 'details_view.dart';
+import 'accommodation_details_view.dart';
 
 class AccommodationCardHost extends StatefulWidget {
   final Acommodation accomodation;

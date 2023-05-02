@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
-import 'package:nomadly_app/models/Travel.dart';
 import 'package:nomadly_app/screens/accommodation_card.dart';
 import 'package:nomadly_app/screens/filter_screen.dart';
 import 'package:nomadly_app/utils/app_layout.dart';

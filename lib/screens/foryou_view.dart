@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
-import 'package:nomadly_app/screens/details_view.dart';
+import 'package:nomadly_app/screens/accommodation_details_view.dart';
 import 'package:nomadly_app/services/accommodation_provider.dart';
 import 'package:provider/provider.dart';
 import '../utils/shimmer_load.dart';

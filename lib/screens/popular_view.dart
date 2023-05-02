@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
-import 'details_view.dart';
+import 'accommodation_details_view.dart';
 
 class PopularCard extends StatefulWidget {
   Acommodation accomodation;

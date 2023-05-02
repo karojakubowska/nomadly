@@ -8,7 +8,7 @@ import 'package:nomadly_app/utils/shimmer_load_photos.dart';
 import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
-import 'details_view.dart';
+import 'accommodation_details_view.dart';
 
 class AccommodationCard extends StatefulWidget {
   final Acommodation accomodation;
@@ -36,7 +36,7 @@ class _AccommodationCardState extends State<AccommodationCard> {
     final size = AppLayout.getSize(context);
     return InkWell(
       child: Container(
-        margin: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
+       margin: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
         width: size.width,
         height: size.height * 0.31,
         decoration: BoxDecoration(
