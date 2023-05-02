@@ -23,11 +23,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   var img = "";
   late Stream<DocumentSnapshot> userStream;
   late String name, email, accountImage;
+  String id = "";
+  late final user;
 
   @override
   void initState() {
     super.initState();
     final currentUser = FirebaseAuth.instance.currentUser;
+    id =  FirebaseAuth.instance.currentUser!.uid.toString();
+    user =  FirebaseAuth.instance.currentUser;
     userStream = FirebaseFirestore.instance
         .collection('Users')
         .doc(currentUser!.uid)
@@ -118,7 +122,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: ((context) => EditProfilePage())));
+                                    builder: ((context) => EditProfilePage(id:id, image: accountImage))));
                           },
                         ),
                       ],
@@ -193,7 +197,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size.fromHeight(55),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                             backgroundColor:
                                 const Color.fromARGB(255, 50, 134, 252),
@@ -231,7 +235,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(25.0),
+            borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.1),

@@ -159,76 +159,56 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
   Future<void> updateTravel(id, PickedFile) async {
     var user = await FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
-    if (_photo == null) return;
-
-    FirebaseStorage.instance.refFromURL(imageOld).delete().then((_) {
-      print("Image successfully deleted!");
-    }).catchError((error) {
-      print("Error removing image: $error");
-    });
-    String uuid = Uuid().v4();
-    String uniqueFileName = '$uid/$uuid.jpg';
-    final destination = uniqueFileName;
-
-    try {
-      final ref =
-      firebase_storage.FirebaseStorage.instance.ref(destination).child('');
-      await ref.putFile(_photo!);
-      imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
-          .toString();
-    } catch (e) {
-      print('error occurred');
+    print(imageOld);
+    if (_photo == null) {
+      final db = FirebaseFirestore.instance;
+      final travel = db.collection("Travel").doc(id);
+      travel.update({
+        "name": nameController.text,
+        "destination": destinationController.text,
+        "budget": int.parse(budgetController.text),
+        "number_of_people": int.parse(number_of_peopleController.text),
+        "note": noteController.text,
+        'start_date': startDate,
+        'end_date': endDate,
+        'photo': imageOld.toString(),
+      }).then((value) => print("DocumentSnapshot successfully updated!"),
+          onError: (e) => print("Error updating document $e"));
     }
-    //
-    // if (_photo != null) {
-    //   await updateTravelField(id, 'photo', imageURL);
-    // }
-    // if (nameController.text.isNotEmpty) {
-    //   await updateTravelField(id, 'name', nameController.text);
-    // }
-    // if (destinationController.text.isNotEmpty) {
-    //   await updateTravelField(id, 'destination', destinationController.text);
-    // }
-    // if (budgetController.text.isNotEmpty) {
-    //   await updateTravelField(id, 'budget', int.parse(budgetController.text));
-    // }
-    // if (number_of_peopleController.text.isNotEmpty) {
-    //   await updateTravelField(id, 'number_of_people', int.parse(number_of_peopleController.text));
-    // }
-    // if (noteController.text.isNotEmpty) {
-    //   await updateTravelField(id, 'note', noteController.text);
-    // }
-    // if (startDate != null) {
-    //   await updateTravelField(id, 'start_date', startDate);
-    // }
-    // if (endDate != null) {
-    //   await updateTravelField(id, 'end_date', endDate);
-    // }
+    else {
+      FirebaseStorage.instance.refFromURL(imageOld).delete().then((_) {
+        print("Image successfully deleted!");
+      }).catchError((error) {
+        print("Error removing image: $error");
+      });
+      String uuid = Uuid().v4();
+      String uniqueFileName = '$uid/$uuid.jpg';
+      final destination = uniqueFileName;
 
-    final db = FirebaseFirestore.instance;
-    final travel = db.collection("Travel").doc(id);
-    travel.update({
-      "name": nameController.text,
-      "destination": destinationController.text,
-      "budget": int.parse(budgetController.text),
-      "number_of_people": int.parse(number_of_peopleController.text),
-      "note": noteController.text,
-      'start_date': startDate,
-      'end_date': endDate,
-      'photo': imageURL.toString(),
-    }).then((value) => print("DocumentSnapshot successfully updated!"),
-        onError: (e) => print("Error updating document $e"));
-  }
+      try {
+        final ref =
+        firebase_storage.FirebaseStorage.instance.ref(destination).child('');
+        await ref.putFile(_photo!);
+        imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
+            .toString();
+      } catch (e) {
+        print('error occurred');
+      }
 
-
-
-  Future<void> updateTravelField(String id, String field, dynamic newValue) async {
-    final db = FirebaseFirestore.instance;
-    final travel = db.collection("Travel").doc(id);
-    await travel.update({ field: newValue }).then(
-            (value) => print("DocumentSnapshot successfully updated!"),
-        onError: (e) => print("Error updating document $e")
-    );
+      final db = FirebaseFirestore.instance;
+      final travel = db.collection("Travel").doc(id);
+      travel.update({
+        "name": nameController.text,
+        "destination": destinationController.text,
+        "budget": int.parse(budgetController.text),
+        "number_of_people": int.parse(number_of_peopleController.text),
+        "note": noteController.text,
+        'start_date': startDate,
+        'end_date': endDate,
+        'photo': imageURL.toString(),
+      }).then((value) => print("DocumentSnapshot successfully updated!"),
+          onError: (e) => print("Error updating document $e"));
+    }
   }
 
   @override

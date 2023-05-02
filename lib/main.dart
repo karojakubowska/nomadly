@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:nomadly_app/main-web.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/User.dart';
 import 'package:nomadly_app/screens/all_bookings_view.dart';
@@ -26,28 +27,49 @@ import 'services/authentication_provider.dart';
 import 'firebase_options.dart';
 import 'screens/authentication/auth_page.dart';
 import 'screens/introduction_view.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 int? initScreen;
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  initScreen = preferences.getInt('initScreen');
-  await preferences.setInt('initScreen', 1); //if already shown  1 else 0
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(MultiProvider(providers: [
-    Provider<AuthenticationProvider>(
-      create: (_) => AuthenticationProvider(FirebaseAuth.instance),
-    ),
-    StreamProvider(
-      create: (context) => context.read<AuthenticationProvider>().authState,
-      initialData: null,
-    ),
-    StreamProvider<List<Acommodation>>.value(
-      value: AccommodationProvider().allAccommodations,
-      initialData: [],
-      child: HomeTest(),
-    ),
-  ], child: MyApp()));
+  if (kIsWeb) {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+    runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Container(
+          child: MyWebView(),
+        ),
+      ),
+    ));
+  }
+  else {
+    WidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    initScreen = preferences.getInt('initScreen');
+    await preferences.setInt('initScreen', 1); //if already shown  1 else 0
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+    runApp(MultiProvider(providers: [
+      Provider<AuthenticationProvider>(
+        create: (_) => AuthenticationProvider(FirebaseAuth.instance),
+      ),
+      StreamProvider(
+        create: (context) =>
+        context
+            .read<AuthenticationProvider>()
+            .authState,
+        initialData: null,
+      ),
+      StreamProvider<List<Acommodation>>.value(
+        value: AccommodationProvider().allAccommodations,
+        initialData: [],
+        child: HomeTest(),
+      ),
+    ], child: MyApp()));
+  }
 }
 
 final navigatorKey = GlobalKey<NavigatorState>();
