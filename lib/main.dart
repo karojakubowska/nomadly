@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:nomadly_app/home-web.dart';
 import 'package:nomadly_app/main-web.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/User.dart';
 import 'package:nomadly_app/screens/all_bookings_view.dart';
 import 'package:nomadly_app/screens/bottomnavbarhost.dart';
-import 'package:nomadly_app/screens/calendar.dart';
+//import 'package:nomadly_app/screens/calendar.dart';
 import 'package:nomadly_app/screens/chat_view.dart';
 import 'package:nomadly_app/screens/filter_screen.dart';
 import 'package:nomadly_app/screens/home_view.dart';
@@ -127,10 +128,11 @@ class LoginPage extends StatelessWidget {
                           AllBookingsScreen(),
                           TravelView(),
                           Chat(),
-                          CalendarScreen()
+                          //CalendarScreen()
+                          UserProfileScreen()
                         ],
                       );
-                    return NewBottomNavBarHost(
+                      return NewBottomNavBarHost(
                       screens: [
                         HomeHostScreen(),
                         AllBookingsHostScreen(),

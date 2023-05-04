@@ -1,8 +1,10 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:nomadly_app/home-web.dart';
 
 // void main() => runApp(MyWebView());
 
@@ -71,18 +73,21 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Panel Admin',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  'Panel Admin',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               SizedBox(height: 16),
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
-                  hintText: 'Username',
+                  hintText: 'Email',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -98,9 +103,19 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: signIn,
-                  child: Text('Log in'),
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(55),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      backgroundColor:
+                      const Color.fromARGB(255, 50, 134, 252)),
+                  onPressed: () {
+                    signIn();
+                  },
+                  icon: const Icon(Icons.lock_open, size: 0),
+                  label: const Text('Log in',
+                      style: TextStyle(fontSize: 18)),
                 ),
               ),
             ],
@@ -112,17 +127,31 @@ class _LoginPageState extends State<LoginPage> {
 
 
   Future signIn() async {
-    // showDialog(
-    //     context: context,
-    //     builder: (context) => const Center(child: CircularProgressIndicator()));
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
+
+      // Check if user is an adminr
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final userDoc = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user.uid)
+            .get();
+        final userData = userDoc.data();
+        final accountType = userData?['AccountType'];
+        if (accountType == 'Admin') {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) => HomeWeb(
+                  ))));
+        }
+      }
     } on FirebaseAuthException catch (e) {
       print(e);
     }
-    // navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }
