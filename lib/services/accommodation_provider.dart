@@ -17,7 +17,8 @@ class AccommodationProvider {
                 rate: documentSnapshot["rate"],
                 price_per_night: documentSnapshot["price_per_night"],
                 host_id: documentSnapshot['host_id'],
-                description: documentSnapshot["description"],))
+                description: documentSnapshot["description"],
+                reviews: documentSnapshot["reviews"],))
             .toList());
     return list;
   }

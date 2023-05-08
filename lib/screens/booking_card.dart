@@ -1,4 +1,4 @@
-import 'dart:ui';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,7 +13,7 @@ import '../models/Booking.dart';
 import '../models/User.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
-import '../utils/shimmer_load_photos.dart';
+import '../utils/shimmers/shimmer_load_photos.dart';
 import 'booking_details.dart';
 import 'host/booking_details_host.dart';
 

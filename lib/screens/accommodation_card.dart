@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nomadly_app/utils/shimmer_load_photos.dart';
+import 'package:nomadly_app/utils/shimmers/shimmer_load_photos.dart';
 import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
@@ -27,7 +27,7 @@ class _AccommodationCardState extends State<AccommodationCard> {
         context,
         MaterialPageRoute(
             builder: ((context) => DetailScreen(
-                  acommodation: accommodation,
+                  accommodation: accommodation,
                 ))));
   }
 

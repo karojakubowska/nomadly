@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nomadly_app/screens/accommodation_review_view.dart';
 
 import '../models/Accomodation.dart';
 import '../models/Booking.dart';
@@ -132,6 +133,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                   Container(
                       padding: const EdgeInsets.only(top: 30, bottom: 30),
                       child: statusButtonSwitch()),
+                      if( widget.booking.rated==false)
                   ElevatedButton(
                     onPressed: () {},
                     style: ButtonStyle(
@@ -166,12 +168,18 @@ class _BookingDetailsState extends State<BookingDetails> {
   }
 
   Widget statusButtonSwitch() {
-    if (widget.booking.status == "Finished") {
+    if (widget.booking.status == "Finished"&& widget.booking.rated==false ) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+               Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) => AccommodationReviewScreen(accommodation: widget.accommodation,booking:widget.booking)
+                )));
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(
                   const Color.fromARGB(255, 50, 134, 252)),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 class Booking {
+  String? id;
   String? accommodationId;
   String? hostId;
   String? userId;
@@ -10,6 +11,7 @@ class Booking {
   double? totalPrice;
   String? status;
   String? username;
+  bool? rated;
 
   Booking(
       {this.accommodationId,
@@ -20,7 +22,8 @@ class Booking {
       this.guestNumber,
       this.totalPrice,
       this.status,
-      this.username});
+      this.username,
+      this.rated});
 
   Booking.fromJson(Map<String, dynamic> json) {
     accommodationId = json['accommodation_id'];
@@ -32,6 +35,7 @@ class Booking {
     endDate = json['end_date'];
     guestNumber = json['guest_number'];
     totalPrice = (json['total_price']).toDouble();
+    rated = json['rated'];
     
   }
 }

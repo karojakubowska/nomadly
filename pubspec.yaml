@@ -56,7 +56,7 @@ dependencies:
   carousel_slider: ^4.2.1
   url_launcher: ^6.1.10
   flutter_rating_bar: ^4.0.1
-  syncfusion_flutter_datepicker: ^20.4.44
+  syncfusion_flutter_datepicker: ^21.1.41
 
 dependency_overrides:
     firebase_core_platform_interface: 4.5.2

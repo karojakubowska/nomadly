@@ -4,25 +4,38 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
+import 'package:nomadly_app/screens/accommodation_review_view.dart';
 import 'package:nomadly_app/screens/booking_request_view.dart';
 import 'package:nomadly_app/screens/home_view.dart';
+import 'package:nomadly_app/screens/reviews_view.dart';
 import 'package:nomadly_app/utils/app_layout.dart';
 
 import '../utils/app_styles.dart';
 
 class DetailScreen extends StatefulWidget {
-  final Acommodation? acommodation;
-  DetailScreen({this.acommodation});
+  final Acommodation? accommodation;
+
+  DetailScreen({
+    this.accommodation,
+  });
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  
+  navigateToDetail(Acommodation accommodation) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) => ReviewScreen(
+                accommodationId: accommodation.id!,
+                rate: accommodation.rate!.toDouble()))));
+  }
+
   @override
   Widget build(BuildContext context) {
-     var size = AppLayout.getSize(context);
+    var size = AppLayout.getSize(context);
     return Scaffold(
       // floatingActionButton: FloatingActionButton.extended(
       //   onPressed: () {
@@ -45,13 +58,12 @@ class _DetailScreenState extends State<DetailScreen> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
-          
           children: [
             Stack(
               children: [
                 FutureBuilder(
                   future: FirebaseStorage.instance
-                      .refFromURL((widget.acommodation!.photo!))
+                      .refFromURL((widget.accommodation!.photo!))
                       .getDownloadURL(),
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -113,13 +125,13 @@ class _DetailScreenState extends State<DetailScreen> {
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
-              height: size.height*0.5,
+              height: size.height * 0.5,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.acommodation!.title!,
+                    widget.accommodation!.title!,
                     style: GoogleFonts.roboto(
                         color: Color.fromARGB(255, 24, 24, 24),
                         fontSize: 22,
@@ -131,7 +143,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   Row(
                     children: [
                       Text(
-                        "${widget.acommodation!.city!},",
+                        "${widget.accommodation!.city!},",
                         style: GoogleFonts.roboto(
                             color: Color.fromARGB(255, 24, 24, 24),
                             fontSize: 14,
@@ -141,7 +153,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         width: 8,
                       ),
                       Text(
-                        widget.acommodation!.country!,
+                        widget.accommodation!.country!,
                         style: GoogleFonts.roboto(
                             color: Color.fromARGB(255, 24, 24, 24),
                             fontSize: 14,
@@ -153,38 +165,56 @@ class _DetailScreenState extends State<DetailScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                          height: 40,
-                          width: 70,
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 50, 134, 252),
-                              shape: BoxShape.rectangle,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Icon(
-                                Icons.star,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                              Text(
-                                widget.acommodation!.rate!.toString(),
-                                style: GoogleFonts.roboto(
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white),
-                              ),
-                            ],
-                          )),
+                      InkWell(
+                        onTap: () {
+                          navigateToDetail(widget.accommodation!);
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                                height: 40,
+                                width: 70,
+                                decoration: const BoxDecoration(
+                                    color: Color.fromARGB(255, 50, 134, 252),
+                                    shape: BoxShape.rectangle,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    const Icon(
+                                      Icons.star,
+                                      color: Colors.white,
+                                      size: 25,
+                                    ),
+                                    Text(
+                                      widget.accommodation!.rate!.toString(),
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white),
+                                    ),
+                                  ],
+                                )),
+                                Gap(10),
+                            Text(
+                              "(${widget.accommodation!.reviews.toString()} reviews)",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ),
                       Text(
-                        "\$${widget.acommodation!.price_per_night!}/night",
+                        "\$${widget.accommodation!.price_per_night!}/night",
                         style: GoogleFonts.roboto(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                             color: Colors.black),
-                      )
+                      ),
                     ],
                   ),
                   Gap(20),
@@ -197,7 +227,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         color: Color.fromARGB(255, 135, 135, 135)),
                   ),
                   Text(
-                    widget.acommodation!.description!,
+                    widget.accommodation!.description!,
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 14,

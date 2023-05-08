@@ -76,9 +76,11 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
                                             Acommodation.fromJson(
                                                 snap.data!.docs[0].data()
                                                     as Map<String, dynamic>);
+                                                    model.id= snap.data!.docs[0].id;
                                         Booking booking = Booking.fromJson(
                                             snapshot.data!.docs[0].data()
                                                 as Map<String, dynamic>);
+                                                booking.id= snapshot.data!.docs[0].id;
                                         return BookingCard(
                                           booking: booking,
                                           index: index,

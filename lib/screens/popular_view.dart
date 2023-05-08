@@ -30,7 +30,7 @@ class _PopularCardState extends State<PopularCard> {
         context,
         MaterialPageRoute(
             builder: ((context) => DetailScreen(
-                  acommodation: accommodation,
+                  accommodation: accommodation,
                 ))));
   }
   @override

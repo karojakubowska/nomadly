@@ -23,6 +23,7 @@ class Acommodation {
   String? host_id;
   num? rate;
   String? photo;
+  num? reviews;
 
   Acommodation({
     this.id,
@@ -33,14 +34,16 @@ class Acommodation {
     this.rate,
     this.price_per_night,
     this.description,
-    this.host_id
+    this.host_id,
+    this.reviews
+
   });
 
-  Future<String> convertPathToURL(String path){
-     return FirebaseStorage.instance
-        .refFromURL(path)
-        .getDownloadURL();
-  }
+  // Future<String> convertPathToURL(String path){
+  //    return FirebaseStorage.instance
+  //       .refFromURL(path)
+  //       .getDownloadURL();
+  // }
 
    Map<String,dynamic> toJson()=>{
     'title': title,
@@ -64,6 +67,7 @@ class Acommodation {
     'host_id': host_id,
     'rate': rate,
     'photo': photo,
+    'reviews': reviews,
   };
 
   Acommodation.fromJson(Map<String,dynamic> json)
@@ -89,6 +93,7 @@ class Acommodation {
     host_id=json['host_id'];
     rate=json['rate'];
     photo=json['photo'];
+    reviews=json['reviews'];
   }
 
   Acommodation.fromSnapshot(snapshot)

@@ -8,7 +8,7 @@ import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/screens/accommodation_details_view.dart';
 import 'package:nomadly_app/services/accommodation_provider.dart';
 import 'package:provider/provider.dart';
-import '../utils/shimmer_load.dart';
+import '../utils/shimmers/shimmer_load.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 
@@ -31,7 +31,7 @@ class _ForYouCardState extends State<ForYouCard> {
         context,
         MaterialPageRoute(
             builder: ((context) => DetailScreen(
-                  acommodation: accommodation,
+                  accommodation: accommodation,
                 ))));
   }
 
@@ -82,12 +82,6 @@ class _ForYouCardState extends State<ForYouCard> {
               child: Text(widget.accomodation.title!,
                   style: Styles.houseNameStyle),
             ),
-            // Container(
-            //   color: Styles.backgroundColor,
-            //   margin: const EdgeInsets.only(left: 20),
-            //   child:
-            //       Text(widget.index.toString(), style: Styles.houseNameStyle),
-            // ),
             Container(
               padding: const EdgeInsets.only(left: 20, top: 3),
               child: RichText(

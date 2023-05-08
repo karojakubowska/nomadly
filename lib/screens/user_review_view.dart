@@ -10,16 +10,13 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../utils/app_styles.dart';
 
-class UserReviewScreen extends StatefulWidget {
-  const UserReviewScreen({super.key});
+class UserReviewScreen extends StatelessWidget {
+  UserReviewScreen({super.key});
 
-  @override
-  State<UserReviewScreen> createState() => _UserReviewScreenState();
-}
-
-class _UserReviewScreenState extends State<UserReviewScreen> {
   final descriptionController = TextEditingController();
+
   var userRating;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

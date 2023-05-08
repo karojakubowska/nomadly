@@ -26,21 +26,21 @@ class _HomeTestState extends State<HomeTest> {
         context,
         MaterialPageRoute(
             builder: ((context) => DetailScreen(
-                  acommodation: accommodation,
+                  accommodation: accommodation,
                 ))));
   }
 
-  @override
-  void initState() {
-    accommodations = fetchAccommodations();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   accommodations = fetchAccommodations();
+  //   super.initState();
+  // }
 
-  Future<QuerySnapshot<Object>> fetchAccommodations() async {
-    var value =
-        FirebaseFirestore.instance.collectionGroup('Accommodations').get();
-    return value;
-  }
+  // Future<QuerySnapshot<Object>> fetchAccommodations() async {
+  //   var value =
+  //       FirebaseFirestore.instance.collectionGroup('Accommodations').get();
+  //   return value;
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nomadly_app/utils/shimmer_load_photos.dart';
+import 'package:nomadly_app/utils/shimmers/shimmer_load_photos.dart';
 import 'package:nomadly_app/screens/update_accommodation_view.dart';
 import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';
@@ -34,7 +34,7 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
         context,
         MaterialPageRoute(
             builder: ((context) => DetailScreen(
-                  acommodation: accommodation,
+                  accommodation: accommodation,
                 ))));
   }
 

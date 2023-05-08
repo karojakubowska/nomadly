@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nomadly_app/models/User.dart';
 import 'package:nomadly_app/screens/host/booking_details_host.dart';
-import 'package:nomadly_app/utils/shimmer_load_photos.dart';
+import 'package:nomadly_app/utils/shimmers/shimmer_load_photos.dart';
 
 import '../../models/Accomodation.dart';
 import '../../models/Booking.dart';
