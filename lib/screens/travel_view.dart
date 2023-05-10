@@ -89,6 +89,26 @@ class _TravelViewState extends State<TravelView> {
           if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));
           }
+          if (!snapshot.hasData) {
+            return const Text("Loading...");
+          }
+          if (snapshot.data!.docs.isEmpty)
+            return Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Click on the plus - blue button and add a new travel!",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.roboto(
+                        color: Color.fromARGB(255, 24, 24, 24),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500
+                    ),
+                  ),
+                ],
+              ),
+            );
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
@@ -97,8 +117,7 @@ class _TravelViewState extends State<TravelView> {
               return InkWell(
                   onTap: () => navigateToDetail(snapshot.data!.docs[index]),
                   child: Container(
-                    margin: EdgeInsets.symmetric(
-                        vertical: 5, horizontal: 10),
+                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
@@ -153,33 +172,9 @@ class _TravelViewState extends State<TravelView> {
                               Expanded(
                                 child: Container(),
                               ),
-                              // PopupMenuButton(
-                              //     icon: Icon(Icons.more_vert,
-                              //         color: Colors.black),
-                              //     itemBuilder: (BuildContext context) => [
-                              //           PopupMenuItem(
-                              //             child: Text("Edit"),
-                              //             value: "edit",
-                              //           ),
-                              //           PopupMenuItem(
-                              //             child: Text("Delete"),
-                              //             value: "delete",
-                              //           ),
-                              //         ],
-                              //     onSelected: (value) {
-                              //       if (value == "edit") {
-                              //         navigateToUpdate(
-                              //             snapshot.data!.docs[index],
-                              //             snapshot.data!.docs[index].id);
-                              //       } else if (value == "delete") {
-                              //         deleteTravel(
-                              //             snapshot.data!.docs[index].id,
-                              //             snapshot.data!.docs[index]["photo"]
-                              //                 as String);
-                              //       }
-                              //     }),
                               PopupMenuButton(
-                                icon: Icon(Icons.more_vert, color: Colors.black),
+                                icon:
+                                    Icon(Icons.more_vert, color: Colors.black),
                                 itemBuilder: (BuildContext context) => [
                                   PopupMenuItem(
                                     child: Text("Edit"),
@@ -192,14 +187,16 @@ class _TravelViewState extends State<TravelView> {
                                 ],
                                 onSelected: (value) {
                                   if (value == "edit") {
-                                    navigateToUpdate(snapshot.data!.docs[index], snapshot.data!.docs[index].id);
+                                    navigateToUpdate(snapshot.data!.docs[index],
+                                        snapshot.data!.docs[index].id);
                                   } else if (value == "delete") {
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
                                           title: Text("Confirm Delete"),
-                                          content: Text("Are you sure you want to delete this item?"),
+                                          content: Text(
+                                              "Are you sure you want to delete this item?"),
                                           actions: [
                                             TextButton(
                                               child: Text("Cancel"),
@@ -213,7 +210,8 @@ class _TravelViewState extends State<TravelView> {
                                                 Navigator.pop(context);
                                                 deleteTravel(
                                                   snapshot.data!.docs[index].id,
-                                                  snapshot.data!.docs[index]["photo"] as String,
+                                                  snapshot.data!.docs[index]
+                                                      ["photo"] as String,
                                                 );
                                               },
                                             ),
@@ -244,8 +242,11 @@ class _TravelViewState extends State<TravelView> {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        FirebaseStorage.instance.refFromURL(imageId).delete().then((_) {
-        }).catchError((error) {
+        FirebaseStorage.instance
+            .refFromURL(imageId)
+            .delete()
+            .then((_) {})
+            .catchError((error) {
           print("Error deleting image: $error");
         });
         documentSnapshot.reference.delete();

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/screens/host/booking_card_host.dart';
 
 import '../../models/Accomodation.dart';
@@ -51,9 +52,25 @@ class _AllBookingsScreenState extends State<AllBookingsHostScreen> {
                                   isEqualTo: userID)
                               .snapshots(),
                           builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return const Text("Loading...");
-                            }
+                            if (!snapshot.hasData) return const Text("Loading...");
+                            if (snapshot.data!.docs.isEmpty)
+                              return Container(
+                                margin: EdgeInsets.only(top: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Find your new bookings!",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.roboto(
+                                          color: Color.fromARGB(255, 24, 24, 24),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
                             return ListView.builder(
                                 scrollDirection: Axis.vertical,
                                 itemCount: snapshot.data!.docs.length,

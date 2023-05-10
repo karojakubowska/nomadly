@@ -110,7 +110,7 @@ class LoginPage extends StatelessWidget {
             if (user != null) {
               final uid = user.uid;
               CollectionReference users =
-                  FirebaseFirestore.instance.collection('Users');
+              FirebaseFirestore.instance.collection('Users');
               return FutureBuilder<DocumentSnapshot>(
                 future: users.doc(uid).get(),
                 builder: (BuildContext context,
@@ -132,7 +132,7 @@ class LoginPage extends StatelessWidget {
                           UserProfileScreen()
                         ],
                       );
-                      return NewBottomNavBarHost(
+                    return NewBottomNavBarHost(
                       screens: [
                         HomeHostScreen(),
                         AllBookingsHostScreen(),
