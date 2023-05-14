@@ -237,10 +237,10 @@ packages:
     dependency: "direct overridden"
     description:
       name: firebase_core_platform_interface
-      sha256: ae79f335f6c7f2dadb00c98c429da2ca905d265e0225fb5e7dfa62ac3accad48
+      sha256: "5fab93f5b354648efa62e7cc829c90efb68c8796eecf87e0888cae2d5f3accd4"
       url: "https://pub.dev"
     source: hosted
-    version: "4.7.0"
+    version: "4.5.2"
   firebase_core_web:
     dependency: transitive
     description:
