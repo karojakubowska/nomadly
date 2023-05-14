@@ -10,10 +10,13 @@ import 'package:nomadly_app/screens/all_bookings_view.dart';
 import 'package:nomadly_app/screens/bottomnavbarhost.dart';
 //import 'package:nomadly_app/screens/calendar.dart';
 import 'package:nomadly_app/screens/chat_view.dart';
+import 'package:nomadly_app/screens/checkout.dart';
+import 'package:nomadly_app/screens/checkout_confirmed.dart';
 import 'package:nomadly_app/screens/filter_screen.dart';
 import 'package:nomadly_app/screens/home_view.dart';
 import 'package:nomadly_app/screens/host/all_bookings_host_view.dart';
 import 'package:nomadly_app/screens/new_bottomnavbar.dart';
+import 'package:nomadly_app/screens/payment.dart';
 import 'package:nomadly_app/screens/travel_view.dart';
 import 'package:nomadly_app/screens/user_review_view.dart';
 import 'package:nomadly_app/screens/userprofile_view.dart';
@@ -128,7 +131,9 @@ class LoginPage extends StatelessWidget {
                           AllBookingsScreen(),
                           TravelView(),
                           Chat(),
-                          //CalendarScreen()
+                          //PaymentDetailsScreen(),
+                          //CheckoutConfirmedScreen(),
+                          //CheckoutScreen()
                           UserProfileScreen()
                         ],
                       );

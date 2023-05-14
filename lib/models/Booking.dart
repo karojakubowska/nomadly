@@ -11,7 +11,8 @@ class Booking {
   double? totalPrice;
   String? status;
   String? username;
-  bool? rated;
+  bool? isAccommodationRated;
+  bool? isUserRated;
 
   Booking(
       {this.accommodationId,
@@ -23,7 +24,8 @@ class Booking {
       this.totalPrice,
       this.status,
       this.username,
-      this.rated});
+      this.isAccommodationRated,
+       this.isUserRated});
 
   Booking.fromJson(Map<String, dynamic> json) {
     accommodationId = json['accommodation_id'];
@@ -35,7 +37,8 @@ class Booking {
     endDate = json['end_date'];
     guestNumber = json['guest_number'];
     totalPrice = (json['total_price']).toDouble();
-    rated = json['rated'];
+    isAccommodationRated = json['isAccommodationRated'];
+    isUserRated = json['isUserRated'];
     
   }
 }

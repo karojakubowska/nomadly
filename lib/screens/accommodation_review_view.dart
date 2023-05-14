@@ -133,7 +133,7 @@ class AccommodationReviewScreen extends StatelessWidget {
       FirebaseFirestore.instance
           .collection('Bookings')
           .doc(booking.id)
-          .update({"rated": true});
+          .update({"isAccommodationRated": true});
       Navigator.popUntil(
           context, (AllBookingsScreen) => AllBookingsScreen.isFirst);
     }, onError: (e) {

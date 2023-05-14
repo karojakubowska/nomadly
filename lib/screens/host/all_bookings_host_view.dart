@@ -73,11 +73,13 @@ class _AllBookingsScreenState extends State<AllBookingsHostScreen> {
                                             Acommodation.fromJson(
                                                 snap.data!.docs[0].data()
                                                     as Map<String, dynamic>);
-                                        Booking bookin = Booking.fromJson(
-                                            snapshot.data!.docs[0].data()
+                                        Booking booking = Booking.fromJson(
+                                            snapshot.data!.docs[index].data()
                                                 as Map<String, dynamic>);
+                                                booking.id=snapshot.data!.docs[index].id;
+
                                         return BookingCardHost(
-                                          booking: bookin,
+                                          booking: booking,
                                           index: index,
                                           accommodation: model,
                                         );

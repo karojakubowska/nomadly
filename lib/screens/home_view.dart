@@ -62,7 +62,7 @@ class _HomeTestState extends State<HomeTest> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Gap(20),
-                      Text('Hello!', style: Styles.headLineStyle),
+                      Text('Hello?!', style: Styles.headLineStyle),
                       const Gap(20),
                       Text('What are you looking for?',
                           style: Styles.headLineStyle2),

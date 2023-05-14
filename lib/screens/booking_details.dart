@@ -133,7 +133,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                   Container(
                       padding: const EdgeInsets.only(top: 30, bottom: 30),
                       child: statusButtonSwitch()),
-                      if( widget.booking.rated==false)
+                      if( widget.booking.isAccommodationRated==false)
                   ElevatedButton(
                     onPressed: () {},
                     style: ButtonStyle(
@@ -168,7 +168,7 @@ class _BookingDetailsState extends State<BookingDetails> {
   }
 
   Widget statusButtonSwitch() {
-    if (widget.booking.status == "Finished"&& widget.booking.rated==false ) {
+    if (widget.booking.status == "Finished"&& widget.booking.isAccommodationRated==false ) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

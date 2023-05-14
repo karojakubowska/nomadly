@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/Booking.dart';
 import 'package:intl/intl.dart';
+import 'package:nomadly_app/models/User.dart';
 import 'package:nomadly_app/screens/add_travel_view.dart';
 import 'package:nomadly_app/screens/change_password_view.dart';
 import 'package:nomadly_app/screens/checkout_confirmed.dart';
@@ -11,6 +14,7 @@ import 'package:nomadly_app/screens/home_host_view.dart';
 import '../../utils/app_styles.dart';
 import '../chat_single_view.dart';
 import '../report_form_view.dart';
+import '../user_review_view.dart';
 
 class BookingDetailsHostScreen extends StatefulWidget {
   Acommodation accommodation;
@@ -24,6 +28,7 @@ class BookingDetailsHostScreen extends StatefulWidget {
 }
 
 class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
+  late UserModel userModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,41 +139,55 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
               child: Column(
                 children: [
                   Container(
-                      //  height: 190,
-                      padding: const EdgeInsets.only(top: 30, bottom: 30),
-                      child: statusButtonSwitch()),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChatSingleView(
-                            userId: widget.booking.hostId!,
-                            otherUserId: widget.booking.userId!,
-                          ),
-                        ),
-                      );
-                    },
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(0),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          side: const BorderSide(
-                              color: Color.fromARGB(255, 50, 134, 252),
-                              width: 1,
-                              style: BorderStyle.solid),
-                          borderRadius: BorderRadius.circular(10))),
-                      minimumSize:
-                          MaterialStateProperty.all(const Size(320, 50)),
+                      child: StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('Users')
+                              .where(FieldPath.documentId,
+                                  isEqualTo: widget.booking.userId)
+                              .snapshots(),
+                          builder: (context, snap) {
+                            if (!snap.hasData) return const Text("Loading...");
+                            userModel = UserModel.fromJson(snap.data!.docs[0]
+                                .data() as Map<String, dynamic>);
+                            return statusButtonSwitch();
+                          })),
+                  Container(
+                    padding: const EdgeInsets.only(
+                      top: 30,
                     ),
-                    child: Text(
-                      'Contact with user',
-                      style: GoogleFonts.roboto(
-                          textStyle: const TextStyle(
-                              fontSize: 16.0,
-                              color: Color.fromARGB(255, 50, 134, 252),
-                              fontWeight: FontWeight.w700)),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChatSingleView(
+                              userId: widget.booking.hostId!,
+                              otherUserId: widget.booking.userId!,
+                            ),
+                          ),
+                        );
+                      },
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(0),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            side: const BorderSide(
+                                color: Color.fromARGB(255, 50, 134, 252),
+                                width: 1,
+                                style: BorderStyle.solid),
+                            borderRadius: BorderRadius.circular(10))),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(320, 50)),
+                      ),
+                      child: Text(
+                        'Contact with user',
+                        style: GoogleFonts.roboto(
+                            textStyle: const TextStyle(
+                                fontSize: 16.0,
+                                color: Color.fromARGB(255, 50, 134, 252),
+                                fontWeight: FontWeight.w700)),
+                      ),
                     ),
                   ),
                 ],
@@ -181,12 +200,20 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
   }
 
   Widget statusButtonSwitch() {
-    if (widget.booking.status == "Finished") {
+    //print('Document data: ${documentSnapshot.data()}');
+    if (widget.booking.status == "Finished" &&
+        widget.booking.isUserRated == false) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => UserReviewScreen(
+                          booking: widget.booking, user: userModel))));
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(
                   const Color.fromARGB(255, 50, 134, 252)),
@@ -235,7 +262,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
           ),
         ],
       );
-    } else if (widget.booking.status == "Waiting for confirmation") {
+    }
+    if (widget.booking.status == "Waiting for confirmation") {
       return ElevatedButton(
         onPressed: () {},
         style: ButtonStyle(
@@ -255,8 +283,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
                   fontWeight: FontWeight.w700)),
         ),
       );
-    } else {
-      return Container();
     }
+    return Container();
   }
 }

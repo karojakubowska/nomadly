@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,11 +9,18 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nomadly_app/models/Booking.dart';
 
+import '../models/Accomodation.dart';
+import '../models/User.dart';
 import '../utils/app_styles.dart';
+import 'host/all_bookings_host_view.dart';
 
 class UserReviewScreen extends StatelessWidget {
-  UserReviewScreen({super.key});
+    Booking booking;
+    UserModel user;
+  //  DocumentSnapshot doc;
+  UserReviewScreen({super.key,required this.booking,required this.user});
 
   final descriptionController = TextEditingController();
 
@@ -85,7 +94,7 @@ class UserReviewScreen extends StatelessWidget {
                 minimumSize: MaterialStateProperty.all(const Size(120, 50)),
               ),
               child: Text(
-                'Send review',
+                'Send opinion',
                 style: GoogleFonts.roboto(
                     textStyle: TextStyle(
                         fontSize: 16.0,
@@ -98,27 +107,52 @@ class UserReviewScreen extends StatelessWidget {
   }
 
   Future<void> addOpinion(BuildContext context) async {
-    if (descriptionController.text.isEmpty || userRating == null) {
+    if (descriptionController.text.isEmpty ||userRating == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('All fields are required')),
       );
       return;
     }
-
+    /// #TODO
+    // if(userRating == null){
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text('First field is required')),
+    //   );
+    //   return;
+    // }
     CollectionReference opinion=
-        FirebaseFirestore.instance.collection('Opinion');
+        FirebaseFirestore.instance.collection('UserOpinions');
 
     return opinion.add({
-      'description': descriptionController.text,
-      'rating': userRating,
-      'userId': FirebaseAuth.instance.currentUser!.uid,
+      'hostId':FirebaseAuth.instance.currentUser!.uid,
+      'opinionText': descriptionController.text,
+      'rate': userRating,
+      'userId': booking.userId,
+      'pub_date':DateTime.now(),
     }).then((value) {
-      print("DocumentSnapshot successfully updated!");
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text('New opinion added')),
-      
+       user.rate = addToAverage(user.rate!.toDouble(),
+          user.opinionsNumber!.toInt(), userRating!);
+      FirebaseFirestore.instance
+          .collection('Users')
+          .doc(booking.userId)
+          .update(
+              {"opinionsNumber": FieldValue.increment(1), "rate": user.rate});
+      FirebaseFirestore.instance
+          .collection('Bookings')
+          .doc(booking.id)
+          .update({"isUserRated": true});
+      Navigator.popUntil(
+          context, (AllBookingsHostScreen) => AllBookingsHostScreen.isFirst);
     }, onError: (e) {
       print("Error updating document $e");
     });
+  }
+  double addToAverage(double average, int size, double value) {
+    return roundDouble((size * average + value) / (size + 1), 1);
+  }
+
+  double roundDouble(double value, int places) {
+    num mod = pow(10.0, places);
+    return ((value * mod).round().toDouble() / mod);
   }
 }
