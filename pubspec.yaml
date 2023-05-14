@@ -59,7 +59,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^21.1.41
 
 dependency_overrides:
-    firebase_core_platform_interface: 4.8.0
+    firebase_core_platform_interface: ^4.5.2
 
 dev_dependencies:
   flutter_test:

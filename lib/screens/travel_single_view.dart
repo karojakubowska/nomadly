@@ -33,7 +33,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
     noteController.text = (widget.travel!.get("note"));
     budgetController.text = (widget.travel!.get("budget").toString());
     number_of_peopleController.text =
-        (widget.travel!.get("number_of_people").toString());
+    (widget.travel!.get("number_of_people").toString());
     startDate = (widget.travel!.get("start_date") as Timestamp).toDate();
     endDate = (widget.travel!.get("end_date") as Timestamp).toDate();
   }
@@ -43,286 +43,303 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(children: [
-      Stack(
-        children: [
-          FutureBuilder(
-            future: FirebaseStorage.instance
-                .refFromURL(widget.travel!.get("photo"))
-                .getDownloadURL(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasData) {
-                return Image(
-                  height: 400,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
-                  image: NetworkImage(snapshot.data.toString()),
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
-          Container(
-            height: 400,
-            color: Colors.black12,
-            padding: EdgeInsets.only(top: 50),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 24, right: 24),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          child: Icon(
-                            Icons.arrow_back,
+              Stack(
+                children: [
+                  FutureBuilder(
+                    future: FirebaseStorage.instance
+                        .refFromURL(widget.travel!.get("photo"))
+                        .getDownloadURL(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasData) {
+                        return Image(
+                          height: 400,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          fit: BoxFit.cover,
+                          image: NetworkImage(snapshot.data.toString()),
+                        );
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                  Container(
+                    height: 400,
+                    color: Colors.black12,
+                    padding: EdgeInsets.only(top: 50),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 24, right: 24),
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  child: Icon(
+                                    Icons.arrow_back,
+                                    color: Colors.white,
+                                    size: 24,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Spacer(),
+                        Container(
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          decoration: const BoxDecoration(
                             color: Colors.white,
-                            size: 24,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40),
+                            ),
+                          ),
+                          height: 40,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Travel Details",
+                    style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                            fontSize: 16.0,
+                            height: 1.2,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w400)),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: TextField(
+                  controller: nameController,
+                  enabled: false,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    prefixIcon: Icon(Icons.near_me, color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                        width: 1,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Colors.transparent,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: TextField(
+                  controller: destinationController,
+                  enabled: false,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    labelText: 'Destination',
+                    prefixIcon: Icon(Icons.place, color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                        width: 1,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Colors.transparent,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: TextField(
+                  controller: budgetController,
+                  enabled: false,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    labelText: 'Budget',
+                    prefixIcon: Icon(Icons.monetization_on, color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                        width: 1,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Colors.transparent,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Column(children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: Colors.blue,
+                                  width: 1,
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              prefixIcon: Icon(Icons.calendar_month_outlined,
+                                  color: Colors.grey),
+                              labelText: 'Start Date',
+                              enabled: false,
+                              hintText: 'Please select a start date',
+                            ),
+                            readOnly: true,
+                            controller: TextEditingController(
+                              text: startDate == null
+                                  ? ''
+                                  : DateFormat('dd-MM-yyyy').format(startDate),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Container(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: Colors.blue,
+                                  width: 1,
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              labelText: 'End Date',
+                              prefixIcon: Icon(Icons.calendar_month_outlined,
+                                  color: Colors.grey),
+                              enabled: false,
+                              hintText: 'Please select an end date',
+                            ),
+                            readOnly: true,
+                            controller: TextEditingController(
+                              text: endDate == null
+                                  ? ''
+                                  : DateFormat('dd-MM-yyyy').format(endDate),
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                Spacer(),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                    ),
-                  ),
-                  height: 40,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Travel Details",
-            style: GoogleFonts.roboto(
-                textStyle: TextStyle(
-                    fontSize: 16.0,
-                    height: 1.2,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400)),
-          ),
-        ],
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: TextField(
-          controller: nameController,
-          enabled: false,
-          textInputAction: TextInputAction.done,
-          decoration: InputDecoration(
-            labelText: 'Name',
-            prefixIcon: Icon(Icons.near_me, color: Colors.grey),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(
-                color: Colors.blue,
-                width: 1,
+                ]),
               ),
-            ),
-            filled: true,
-            fillColor: Colors.transparent,
-          ),
-        ),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: TextField(
-          controller: destinationController,
-          enabled: false,
-          textInputAction: TextInputAction.done,
-          decoration: InputDecoration(
-            labelText: 'Destination',
-            prefixIcon: Icon(Icons.place, color: Colors.grey),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(
-                color: Colors.blue,
-                width: 1,
+              const SizedBox(
+                height: 20,
               ),
-            ),
-            filled: true,
-            fillColor: Colors.transparent,
-          ),
-        ),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: TextField(
-          controller: budgetController,
-          enabled: false,
-          textInputAction: TextInputAction.done,
-          decoration: InputDecoration(
-            labelText: 'Budget',
-            prefixIcon: Icon(Icons.monetization_on, color: Colors.grey),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(
-                color: Colors.blue,
-                width: 1,
-              ),
-            ),
-            filled: true,
-            fillColor: Colors.transparent,
-          ),
-        ),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Column(children: [
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
-                          width: 1,
-                        ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: TextField(
+                  controller: number_of_peopleController,
+                  enabled: false,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    labelText: 'Number of People',
+                    prefixIcon: Icon(Icons.person, color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                        width: 1,
                       ),
-                      filled: true,
-                      fillColor: Colors.transparent,
-                      prefixIcon: Icon(Icons.calendar_month_outlined,
-                          color: Colors.grey),
-                      labelText: 'Start Date',
-                      enabled: false,
-                      hintText: 'Please select a start date',
                     ),
-                    readOnly: true,
-                    controller: TextEditingController(
-                      text: startDate == null
-                          ? ''
-                          : DateFormat('dd-MM-yyyy').format(startDate),
-                    ),
+                    filled: true,
+                    fillColor: Colors.transparent,
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Container(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
-                          width: 1,
-                        ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: TextField(
+                  controller: noteController,
+                  enabled: false,
+                  maxLines: 5,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    labelText: 'Note',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                        width: 1,
                       ),
-                      filled: true,
-                      fillColor: Colors.transparent,
-                      labelText: 'End Date',
-                      prefixIcon: Icon(Icons.calendar_month_outlined,
-                          color: Colors.grey),
-                      enabled: false,
-                      hintText: 'Please select an end date',
                     ),
-                    readOnly: true,
-                    controller: TextEditingController(
-                      text: endDate == null
-                          ? ''
-                          : DateFormat('dd-MM-yyyy').format(endDate),
-                    ),
+                    filled: true,
+                    fillColor: Colors.transparent,
                   ),
                 ),
               ),
-            ],
-          ),
-        ]),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: TextField(
-          controller: number_of_peopleController,
-          enabled: false,
-          textInputAction: TextInputAction.done,
-          decoration: InputDecoration(
-            labelText: 'Number of People',
-            prefixIcon: Icon(Icons.person, color: Colors.grey),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(
-                color: Colors.blue,
-                width: 1,
-              ),
-            ),
-            filled: true,
-            fillColor: Colors.transparent,
-          ),
-        ),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: TextField(
-          controller: noteController,
-          enabled: false,
-          maxLines: 5,
-          textInputAction: TextInputAction.done,
-          decoration: InputDecoration(
-            labelText: 'Note',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(
-                color: Colors.blue,
-                width: 1,
-              ),
-            ),
-            filled: true,
-            fillColor: Colors.transparent,
-          ),
-        ),
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      ElevatedButton(
-        onPressed: () async {
-          final todoList = await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ToDoListScreen(
-                      travelDocumentId: widget.travel!.id,
-                    )),
-          );
-        },
-        child: Text('Add To do list'),
-      ),
-    ])));
+              Padding(
+                padding: EdgeInsets.all(40.0),
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(55),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      backgroundColor: const Color.fromARGB(255, 50, 134, 252)),
+                  onPressed: () async {
+                    final todoList = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context)
+                    =>
+                        ToDoListScreen(
+                          travelDocumentId: widget.travel!.id,
+                        )
+                    )
+                    );
+                  },
+                  icon: const Icon(Icons.lock_open, size: 0),
+                  label:
+                  const Text('To do list', style: TextStyle(fontSize: 20)),
+                ),
+              )
+            ])));
   }
 }
