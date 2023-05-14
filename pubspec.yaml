@@ -32,7 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_core: ^2.4.1
-  cloud_firestore: ^4.5.1 
+  cloud_firestore: ^4.7.0
   firebase_auth: ^4.2.5
   flutter_riverpod: ^2.0.0-dev.9
   credit_card_type_detector: ^3.0.0
@@ -59,7 +59,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^21.1.41
 
 dependency_overrides:
-    firebase_core_platform_interface: 4.5.2
+    firebase_core_platform_interface: 4.8.0
 
 dev_dependencies:
   flutter_test:
