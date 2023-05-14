@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../models/Accomodation.dart';
 import '../models/Booking.dart';
@@ -57,6 +58,24 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
                             if (!snapshot.hasData) {
                               return const Text("Loading...");
                             }
+                            if (snapshot.data!.docs.isEmpty)
+                              return Container(
+                                margin: EdgeInsets.only(top: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Find your new bookings!",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.roboto(
+                                          color: Color.fromARGB(255, 24, 24, 24),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
                             return ListView.builder(
                                 scrollDirection: Axis.vertical,
                                 itemCount: snapshot.data!.docs.length,
@@ -97,5 +116,6 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
           ],
         ));
   }
-  
+
 }
+

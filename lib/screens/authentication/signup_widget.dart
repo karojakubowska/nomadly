@@ -215,6 +215,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       'Email': emailController.text,
       'AccountType': _selectedType,
       'AccountImage': 'gs://nomady-ae4b6.appspot.com/example/user.png',
+      'AccountStatus': 'Active'
       'rate': 0,
     });
     //druga wersja dodania danych do bazy

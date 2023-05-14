@@ -89,6 +89,24 @@ class _ChatState extends State<Chat> {
               }
               final List<QueryDocumentSnapshot> latestMessagesList =
                   latestMessages.values.toList();
+              if (latestMessagesList.isEmpty) {
+                return Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Find your new bookings!",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.roboto(
+                            color: Color.fromARGB(255, 24, 24, 24),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
               return ListView.builder(
                   itemCount: latestMessagesList.length,
                   itemBuilder: (context, index) {

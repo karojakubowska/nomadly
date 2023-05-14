@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:nomadly_app/screens/todo_view.dart';
 
 class SingleTravelPage extends StatefulWidget {
   final DocumentSnapshot? travel;
@@ -14,310 +15,27 @@ class SingleTravelPage extends StatefulWidget {
 }
 
 class _SingleTravelPageState extends State<SingleTravelPage> {
-//   Widget _buildTravelInfo(String label, String text) {
-//     return Padding(
-//       padding: const EdgeInsets.only(top: 16.0),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Text(
-//             label,
-//             style: TextStyle(
-//               color: Colors.black,
-//               fontWeight: FontWeight.w700,
-//               fontSize: 16,
-//             ),
-//           ),
-//           Text(
-//             text,
-//             style: TextStyle(
-//               color: Colors.black,
-//               fontWeight: FontWeight.w400,
-//               fontSize: 16,
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         body: SingleChildScrollView(
-//             child: Column(children: [
-//       Stack(
-//         children: [
-//           FutureBuilder(
-//             future: FirebaseStorage.instance
-//                 .refFromURL(widget.travel!.get("photo"))
-//                 .getDownloadURL(),
-//             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-//               if (snapshot.hasData) {
-//                 return Image(
-//                   height: 400,
-//                   width: MediaQuery.of(context).size.width,
-//                   fit: BoxFit.cover,
-//                   image: NetworkImage(snapshot.data.toString()),
-//                 );
-//               } else {
-//                 return Center(child: CircularProgressIndicator());
-//               }
-//             },
-//           ),
-//           Container(
-//             height: 400,
-//             color: Colors.black12,
-//             padding: EdgeInsets.only(top: 50),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Padding(
-//                   padding: const EdgeInsets.only(left: 24, right: 24),
-//                   child: Row(
-//                     children: [
-//                       GestureDetector(
-//                         onTap: () {
-//                           Navigator.pop(context);
-//                         },
-//                         child: Container(
-//                           child: Icon(
-//                             Icons.arrow_back,
-//                             color: Colors.white,
-//                             size: 24,
-//                           ),
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//                 Spacer(),
-//                 Container(
-//                   width: MediaQuery.of(context).size.width,
-//                   decoration: const BoxDecoration(
-//                     color: Colors.white,
-//                     borderRadius: BorderRadius.only(
-//                       topLeft: Radius.circular(40),
-//                       topRight: Radius.circular(40),
-//                     ),
-//                   ),
-//                   height: 40,
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//       Container(
-//         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-//         width: MediaQuery.of(context).size.width,
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               widget.travel!.get("name"),
-//               style: TextStyle(
-//                 color: Color.fromARGB(255, 24, 24, 24),
-//                 fontSize: 22,
-//                 fontWeight: FontWeight.w500,
-//               ),
-//             ),
-//             Text(
-//               widget.travel!.get("destination"),
-//               style: TextStyle(
-//                 color: Color.fromARGB(255, 24, 24, 24),
-//                 fontSize: 22,
-//                 fontWeight: FontWeight.w500,
-//               ),
-//             ),
-//             _buildTravelInfo(
-//               "Budget:",
-//               widget.travel!.get("budget").toString(),
-//             ),
-//             _buildTravelInfo(
-//               "Number of People:",
-//               widget.travel!.get("number_of_people").toString(),
-//             ),
-//             _buildTravelInfo(
-//               "Start Date:",
-//               widget.travel!.get("start_date").toDate().toString(),
-//             ),
-//             _buildTravelInfo(
-//               "End Date:",
-//               widget.travel!.get("end_date").toDate().toString(),
-//             ),
-//           ],
-//         ),
-//       )
-//     ])));
-//   }
-// }
+  final nameController = TextEditingController();
+  final destinationController = TextEditingController();
+  final budgetController = TextEditingController();
+  final number_of_peopleController = TextEditingController();
+  final noteController = TextEditingController();
 
-  // Widget _buildTravelInfo(String label, String text, IconData icon) {
-  //   return Card(
-  //     elevation: 2,
-  //     child: Padding(
-  //       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-  //       child: Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         children: [
-  //           Row(
-  //             children: [
-  //               Icon(icon),
-  //               SizedBox(width: 8),
-  //               Text(
-  //                 label,
-  //                 style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontWeight: FontWeight.w700,
-  //                   fontSize: 16,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           Text(
-  //             text,
-  //             style: TextStyle(
-  //               color: Colors.black,
-  //               fontWeight: FontWeight.w400,
-  //               fontSize: 16,
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  CollectionReference travel = FirebaseFirestore.instance.collection('Travel');
+  late String imageOld = " ";
+  late DateTime startDate;
+  late DateTime endDate;
 
-
-  // Widget _buildTravelInfo(String label, String text, IconData icon) {
-  //   return Card(
-  //     elevation: 1,
-  //     child: Padding(
-  //       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-  //       child: Row(
-  //         children: [
-  //           Expanded(
-  //             child: Row(
-  //               children: [
-  //                 Icon(icon),
-  //                 Text(
-  //                   label,
-  //                   style: TextStyle(
-  //                     color: Colors.black,
-  //                     fontWeight: FontWeight.w700,
-  //                     fontSize: 10,
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //           Expanded(
-  //             child: Text(
-  //               text,
-  //               style: TextStyle(
-  //                 color: Colors.black,
-  //                 fontWeight: FontWeight.w400,
-  //                 fontSize: 10,
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  Widget _buildTravelInfo(
-      String label1, String text1, IconData icon1,
-      String label2, String text2, IconData icon2) {
-    return Card(
-      elevation: 0,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey[400]!,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(icon1),
-                        SizedBox(width: 8),
-                        Text(
-                          label1,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      text1,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(width: 16),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey[400]!,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(icon2),
-                        SizedBox(width: 8),
-                        Text(
-                          label2,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      text2,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+    nameController.text = (widget.travel!.get("name"));
+    destinationController.text = (widget.travel!.get("destination"));
+    noteController.text = (widget.travel!.get("note"));
+    budgetController.text = (widget.travel!.get("budget").toString());
+    number_of_peopleController.text =
+        (widget.travel!.get("number_of_people").toString());
+    startDate = (widget.travel!.get("start_date") as Timestamp).toDate();
+    endDate = (widget.travel!.get("end_date") as Timestamp).toDate();
   }
 
   @override
@@ -387,49 +105,224 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
           ),
         ],
       ),
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              widget.travel!.get("name"),
-              style: GoogleFonts.roboto(
-                  textStyle: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500)),
-              textAlign: TextAlign.center,
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Travel Details",
+            style: GoogleFonts.roboto(
+                textStyle: TextStyle(
+                    fontSize: 16.0,
+                    height: 1.2,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400)),
+          ),
+        ],
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: TextField(
+          controller: nameController,
+          enabled: false,
+          textInputAction: TextInputAction.done,
+          decoration: InputDecoration(
+            labelText: 'Name',
+            prefixIcon: Icon(Icons.near_me, color: Colors.grey),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(
+                color: Colors.blue,
+                width: 1,
+              ),
             ),
-            SizedBox(height: 16),
-            _buildTravelInfo(
-              "Destination:",
-              widget.travel!.get("destination"),
-              Icons.pin_drop,
-              "Budget:",
-              widget.travel!.get("budget").toString(),
-              Icons.attach_money,
-            ),
-            _buildTravelInfo(
-              "Number of People:",
-              widget.travel!.get("number_of_people").toString(),
-              Icons.people,
-              "Number of People:",
-              widget.travel!.get("number_of_people").toString(),
-              Icons.people,
-            ),
-            _buildTravelInfo(
-              "Start Date:",
-              DateFormat('dd/MM/yyyy').format(widget.travel!.get("start_date").toDate()),
-              Icons.calendar_today,
-              "End Date:",
-              DateFormat('dd/MM/yyyy').format(widget.travel!.get("end_date").toDate()),
-              Icons.calendar_today
-            ),
-          ],
+            filled: true,
+            fillColor: Colors.transparent,
+          ),
         ),
-      )
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: TextField(
+          controller: destinationController,
+          enabled: false,
+          textInputAction: TextInputAction.done,
+          decoration: InputDecoration(
+            labelText: 'Destination',
+            prefixIcon: Icon(Icons.place, color: Colors.grey),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(
+                color: Colors.blue,
+                width: 1,
+              ),
+            ),
+            filled: true,
+            fillColor: Colors.transparent,
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: TextField(
+          controller: budgetController,
+          enabled: false,
+          textInputAction: TextInputAction.done,
+          decoration: InputDecoration(
+            labelText: 'Budget',
+            prefixIcon: Icon(Icons.monetization_on, color: Colors.grey),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(
+                color: Colors.blue,
+                width: 1,
+              ),
+            ),
+            filled: true,
+            fillColor: Colors.transparent,
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: Column(children: [
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                          width: 1,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Colors.transparent,
+                      prefixIcon: Icon(Icons.calendar_month_outlined,
+                          color: Colors.grey),
+                      labelText: 'Start Date',
+                      enabled: false,
+                      hintText: 'Please select a start date',
+                    ),
+                    readOnly: true,
+                    controller: TextEditingController(
+                      text: startDate == null
+                          ? ''
+                          : DateFormat('dd-MM-yyyy').format(startDate),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Container(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                          width: 1,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Colors.transparent,
+                      labelText: 'End Date',
+                      prefixIcon: Icon(Icons.calendar_month_outlined,
+                          color: Colors.grey),
+                      enabled: false,
+                      hintText: 'Please select an end date',
+                    ),
+                    readOnly: true,
+                    controller: TextEditingController(
+                      text: endDate == null
+                          ? ''
+                          : DateFormat('dd-MM-yyyy').format(endDate),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ]),
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: TextField(
+          controller: number_of_peopleController,
+          enabled: false,
+          textInputAction: TextInputAction.done,
+          decoration: InputDecoration(
+            labelText: 'Number of People',
+            prefixIcon: Icon(Icons.person, color: Colors.grey),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(
+                color: Colors.blue,
+                width: 1,
+              ),
+            ),
+            filled: true,
+            fillColor: Colors.transparent,
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: TextField(
+          controller: noteController,
+          enabled: false,
+          maxLines: 5,
+          textInputAction: TextInputAction.done,
+          decoration: InputDecoration(
+            labelText: 'Note',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(
+                color: Colors.blue,
+                width: 1,
+              ),
+            ),
+            filled: true,
+            fillColor: Colors.transparent,
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      ElevatedButton(
+        onPressed: () async {
+          final todoList = await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ToDoListScreen(
+                      travelDocumentId: widget.travel!.id,
+                    )),
+          );
+        },
+        child: Text('Add To do list'),
+      ),
     ])));
   }
 }

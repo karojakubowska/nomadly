@@ -189,7 +189,6 @@ class _AddTravelViewState extends State<AddTravelView> {
     }, onError: (e) {
       print("Error updating document $e");
     });
-
   }
 
   @override
@@ -468,28 +467,6 @@ class _AddTravelViewState extends State<AddTravelView> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Padding(
-                //   padding: EdgeInsets.all(15.0),
-                //   child: ElevatedButton.icon(
-                //     style: ElevatedButton.styleFrom(
-                //         minimumSize: const Size.fromHeight(60),
-                //         shape: RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.circular(10.0)),
-                //         backgroundColor:
-                //             const Color.fromARGB(211, 211, 211, 211)),
-                //     onPressed: () {
-                //       Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //               builder: ((context) =>
-                //                   ToDoListScreen())));
-                //     },
-                //     icon: const Icon(Icons.lock_open, size: 0),
-                //     label: const Text('Add To do list',
-                //         style: TextStyle(
-                //             fontSize: 20, color: Colors.white)),
-                //   ),
-                // ),
                 Padding(
                   padding: EdgeInsets.all(15.0),
                   child: ElevatedButton.icon(

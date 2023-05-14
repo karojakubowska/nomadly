@@ -33,7 +33,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
-       leading: BackButton(color: Colors.black),
         backgroundColor: Styles.backgroundColor,
         title: Text('Wishlist', style: Styles.headLineStyle4),
         elevation: 0,
