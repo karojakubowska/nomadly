@@ -32,6 +32,18 @@ class _ChatSingleViewState extends State<ChatSingleView> {
     if (user != null) {
       _userId = user.uid;
     }
+
+    _firestore
+        .collection('ChatMessage')
+        .where('senderId', isEqualTo: widget.otherUserId)
+        .where('recipientId', isEqualTo: widget.userId)
+        .where('isRead', isEqualTo: false)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        _markMessageAsRead(doc.id);
+      });
+    });
   }
 
   Future<void> _sendMessage() async {
@@ -45,6 +57,13 @@ class _ChatSingleViewState extends State<ChatSingleView> {
 
     _messageController.clear();
   }
+
+  Future<void> _markMessageAsRead(String messageId) async {
+    await _firestore.collection('ChatMessage').doc(messageId).update({
+      'isRead': true,
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -134,51 +153,48 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                     ];
                     allMessages.sort(
                         (a, b) => a['timestamp'].compareTo(b['timestamp']));
+                   return ListView.builder(
+                      reverse: false,
+                      itemCount: allMessages.length,
+                      itemBuilder: (context, index) {
+                        final DocumentSnapshot message = allMessages[index];
+                        final bool isMe = message['senderId'] == _userId;
+                        final String messageId = message.id; // dodajemy pobranie ID dokumentu
+                        DateTime timestamp = message['timestamp'].toDate();
+                        String formattedDate = DateFormat('HH:mm\n dd/MM/yyyy').format(timestamp);
+                        return GestureDetector(
+                            onTap: () {
+                          if (!isMe && !message['isRead']) {
+                            _markMessageAsRead(messageId);
+                          }
+                        },
+                        child: Align(
+                        alignment: isMe
+                        ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: SizedBox(
+                        width: 250,
+                        child: Container(
                     // return ListView.builder(
                     //   reverse: false,
                     //   itemCount: allMessages.length,
                     //   itemBuilder: (context, index) {
                     //     final DocumentSnapshot message = allMessages[index];
                     //     final bool isMe = message['senderId'] == _userId;
+                    //     DateTime timestamp = message['timestamp'].toDate();
+                    //     String formattedDate =
+                    //         DateFormat('HH:mm\n dd/MM/yyyy').format(timestamp);
                     //     return Align(
                     //       alignment: isMe
                     //           ? Alignment.centerRight
                     //           : Alignment.centerLeft,
-                    //       child: Container(
-                    //         margin: EdgeInsets.symmetric(
-                    //             vertical: 5, horizontal: 10),
-                    //         padding: EdgeInsets.symmetric(
-                    //             vertical: 10, horizontal: 15),
-                    //         decoration: BoxDecoration(
-                    //           borderRadius: BorderRadius.circular(15),
-                    //           color: isMe ? Colors.blue : Colors.grey[300],
-                    //         ),
-                    //         child: Text(
-                    //           message['text'],
-                    //           style: TextStyle(
-                    //             fontSize: 16,
-                    //             color: isMe ? Colors.white : Colors.black,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     );
-                    //   },
-                    // );
-                    return ListView.builder(
-                      reverse: false,
-                      itemCount: allMessages.length,
-                      itemBuilder: (context, index) {
-                        final DocumentSnapshot message = allMessages[index];
-                        final bool isMe = message['senderId'] == _userId;
-                        DateTime timestamp = message['timestamp'].toDate();
-                        String formattedDate = DateFormat('HH:mm\n dd/MM/yyyy').format(timestamp);
-                        return Align(
-                          alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                          child: SizedBox(
-                            width: 250,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    //       child: SizedBox(
+                    //         width: 250,
+                    //         child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 15),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
                                 color: isMe ? Colors.blue : Colors.grey[300],
@@ -194,7 +210,8 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                                     ),
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(child: Container()),
                                       Expanded(
@@ -203,7 +220,9 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                                           textAlign: TextAlign.right,
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: isMe ? Colors.white : Colors.black,
+                                            color: isMe
+                                                ? Colors.white
+                                                : Colors.black,
                                           ),
                                         ),
                                       ),
@@ -213,7 +232,7 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                               ),
                             ),
                           ),
-                        );
+                        ));
                       },
                     );
                   },
@@ -240,27 +259,10 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                   ),
                 ),
                 IconButton(
-                  // onPressed: _messageController.text.trim().isEmpty
-                  //     ? null
-                  //     : _sendMessage,
                   onPressed: _sendMessage,
                   icon: Icon(Icons.send),
                   color: Theme.of(context).primaryColor,
                 ),
-                // Expanded(
-                //   child: TextFormField(
-                //     controller: _messageController,
-                //     decoration: InputDecoration(
-                //       hintText: 'Write Something...',
-                //       contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                //       border: InputBorder.none,
-                //       hintMaxLines: null,
-                //     ),
-                //     keyboardType: TextInputType.multiline,
-                //     maxLines: null,
-                //     textInputAction: TextInputAction.newline,
-                //   ),
-                // ),
               ],
             ),
           ),

@@ -95,13 +95,12 @@ class _ChatState extends State<Chat> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Find your new bookings!",
+                        "",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.roboto(
                             color: Color.fromARGB(255, 24, 24, 24),
                             fontSize: 16,
-                            fontWeight: FontWeight.w500
-                        ),
+                            fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -110,29 +109,24 @@ class _ChatState extends State<Chat> {
               return ListView.builder(
                   itemCount: latestMessagesList.length,
                   itemBuilder: (context, index) {
-                    final QueryDocumentSnapshot document =
-                        latestMessagesList[index];
+                    final QueryDocumentSnapshot document = latestMessagesList[index];
                     final String senderId = document.get('senderId');
                     final bool is_read = document.get('isRead');
                     DateTime timestamp = document.get('timestamp').toDate();
-                    String formattedDate =
-                        DateFormat('dd/MM/yyyy').format(timestamp);
+                    String formattedDate = DateFormat('dd/MM/yyyy').format(timestamp);
+                    final String otherUserId =
+                    senderId == _userId ? document.get('recipientId') : senderId;
+                    final bool isLastMessage =
+                        index == latestMessagesList.length - 1 && !is_read;
                     final FontWeight fontWeight =
-                        is_read ? FontWeight.w400 : FontWeight.w700;
-                    final String otherUserId = senderId == _userId
-                        ? document.get('recipientId')
-                        : senderId;
+                    isLastMessage ? FontWeight.w400 : FontWeight.w700;
                     return FutureBuilder<DocumentSnapshot>(
-                        future: _firestore
-                            .collection('Users')
-                            .doc(otherUserId)
-                            .get(),
+                        future: _firestore.collection('Users').doc(otherUserId).get(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return Container();
                           } else {
-                            final String otherUserName =
-                                snapshot.data!.get('Name').toString();
+                            final String otherUserName = snapshot.data!.get('Name').toString();
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -237,19 +231,12 @@ class _ChatState extends State<Chat> {
                                             itemBuilder:
                                                 (BuildContext context) =>
                                                     <PopupMenuEntry>[
-                                              // PopupMenuItem(
-                                              //   child: Text("Delete"),
-                                              //   value: 1,
-                                              // ),
                                               PopupMenuItem(
                                                 child: Text("Report"),
                                                 value: 2,
                                               ),
                                             ],
                                             onSelected: (value) {
-                                              // Do something
-                                              // if (value == 1) {
-                                              // }
                                               if (value == 2) {
                                                 Navigator.push(
                                                   context,
