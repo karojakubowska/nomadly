@@ -7,7 +7,7 @@ class Acommodation {
   int? number_of_rooms;
   int? number_of_beds;
   int? number_of_bathrooms;
-  int? number_max_people;
+  num? number_max_people;
   int? price_per_night;
   String? street;
   String? city;
@@ -27,6 +27,8 @@ class Acommodation {
   num? bedroom;
   num? bathroom;
   num? bed;
+  num? people;
+  String? address;
   List<String>? photoUrl;
 
   Acommodation({
@@ -43,7 +45,9 @@ class Acommodation {
     this.bedroom,
     this.bathroom,
     this.bed,
+    this.address,
     this.photoUrl,
+    this.number_max_people,
   });
 
   // Future<String> convertPathToURL(String path){
@@ -61,6 +65,7 @@ class Acommodation {
         'number_max_people': number_max_people,
         'price_per_night': price_per_night,
         'street': street,
+        'address': address,
         'city': city,
         'post_code': post_code,
         'country': country,
@@ -107,13 +112,14 @@ class Acommodation {
     bed = json['bed'];
     bathroom = json['bathroom'];
     bedroom = json['bedroom'];
+    address = json['address'];
     photoUrl = List<String>.from(json['photoUrl']);
   }
 
   Acommodation.fromSnapshot(snapshot)
       : title = snapshot.data()['title'],
         city = snapshot.data()['city'],
-        //street=snapshot.data()['street'],
+        street=snapshot.data()['street'],
         price_per_night = snapshot.data()['price_per_night'],
         //rate=snapshot.data()['rate'],
         photo = snapshot.data()['photo'],
@@ -121,5 +127,7 @@ class Acommodation {
         bedroom = snapshot.data()['bedroom'],
         bed = snapshot.data()['bed'],
         bathroom = snapshot.data()['bathroom'],
+        number_max_people = snapshot.data()['number_max_people'],
+        address = snapshot.data()['address'],
         photoUrl = List<String>.from(snapshot.data()['photoUrl']);
 }

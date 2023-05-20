@@ -30,6 +30,11 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
   final countryController = TextEditingController();
   final descriptionController = TextEditingController();
   final price_per_nightController = TextEditingController();
+  final bedController = TextEditingController();
+  final bathroomController = TextEditingController();
+  final bedroomController = TextEditingController();
+  final addressController = TextEditingController();
+  final number_max_peopleController = TextEditingController();
   bool kitchen = false;
   bool wifi = false;
   bool tv = false;
@@ -114,7 +119,12 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
         cityController.text.isEmpty ||
         streetController.text.isEmpty ||
         descriptionController.text.isEmpty ||
-        price_per_nightController.text.isEmpty) {
+        price_per_nightController.text.isEmpty ||
+        bedController.text.isEmpty ||
+        bedroomController.text.isEmpty ||
+        addressController.text.isEmpty ||
+        number_max_peopleController.text.isEmpty ||
+        bathroomController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('All fields are required')),
       );
@@ -148,9 +158,15 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       'city': cityController.text,
       'street': streetController.text,
       'description': descriptionController.text,
+      'address': addressController.text,
       'price_per_night': int.parse(price_per_nightController.text),
+      'bed': int.parse(bedController.text),
+      'bathroom': int.parse(bathroomController.text),
+      'bedroom': int.parse(bedroomController.text),
+      'number_max_people': int.parse(number_max_peopleController.text),
       'host_id': FirebaseAuth.instance.currentUser!.uid,
       'rate': 0.0,
+      'reviews': 0,
       'photo': imageURL.toString(),
       'kitchen': kitchen ? true : false,
       'wifi': wifi ? true : false,
@@ -170,6 +186,10 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       streetController.clear();
       descriptionController.clear();
       price_per_nightController.clear();
+      addressController.clear();
+      bedController.clear();
+      bathroomController.clear();
+      bedroomController.clear();
       kitchen = false;
       wifi = false;
       tv = false;
@@ -364,6 +384,28 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
+                    controller: addressController,
+                    cursorColor: Colors.white,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                      labelText: 'Address',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
+                      ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
                     controller: cityController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
@@ -374,6 +416,30 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                         borderSide: BorderSide(
                             width: 1,
                             color: Color.fromARGB(255, 217, 217, 217)),
+                      ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: countryController,
+                    cursorColor: Colors.white,
+                    textInputAction: TextInputAction.next,
+                    textAlignVertical: TextAlignVertical.top,
+                    decoration: const InputDecoration(
+                      labelText: 'Country',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: Color.fromARGB(255, 217, 217, 217),
+                        ),
                       ),
                       filled: true,
                       fillColor: Color.fromARGB(255, 249, 250, 250),
@@ -409,18 +475,86 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
-                    controller: countryController,
+                    controller: number_max_peopleController,
                     cursorColor: Colors.white,
-                    textInputAction: TextInputAction.next,
-                    textAlignVertical: TextAlignVertical.top,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
                     decoration: const InputDecoration(
-                      labelText: 'Country',
+                      labelText: 'Number max People',
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
-                          width: 1,
-                          color: Color.fromARGB(255, 217, 217, 217),
-                        ),
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
+                      ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: bedController,
+                    cursorColor: Colors.white,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    decoration: const InputDecoration(
+                      labelText: 'Amount Bed',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
+                      ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: bedroomController,
+                    cursorColor: Colors.white,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    decoration: const InputDecoration(
+                      labelText: 'Amount Bedroom',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
+                      ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: bathroomController,
+                    cursorColor: Colors.white,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    decoration: const InputDecoration(
+                      labelText: 'Amount Bathroom',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
                       ),
                       filled: true,
                       fillColor: Color.fromARGB(255, 249, 250, 250),

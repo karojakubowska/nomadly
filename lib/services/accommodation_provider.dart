@@ -24,6 +24,8 @@ class AccommodationProvider {
         bedroom: documentSnapshot["bedroom"],
         bathroom: documentSnapshot["bathroom"],
         bed: documentSnapshot["bed"],
+        address: documentSnapshot["address"],
+        number_max_people: documentSnapshot["number_max_people"],
         reviews: documentSnapshot["reviews"],
         photoUrl: photoUrls,
       );
