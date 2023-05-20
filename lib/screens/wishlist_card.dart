@@ -16,7 +16,7 @@ class _WishlistCardState extends State<WishlistCard> {
   Widget build(BuildContext context) {
     final size = AppLayout.getSize(context);
     return Container(
-      margin: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
+      margin: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
         width: size.width,
         height: 200,
         child: Container(

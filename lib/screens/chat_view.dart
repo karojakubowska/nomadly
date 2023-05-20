@@ -109,24 +109,31 @@ class _ChatState extends State<Chat> {
               return ListView.builder(
                   itemCount: latestMessagesList.length,
                   itemBuilder: (context, index) {
-                    final QueryDocumentSnapshot document = latestMessagesList[index];
+                    final QueryDocumentSnapshot document =
+                        latestMessagesList[index];
                     final String senderId = document.get('senderId');
                     final bool is_read = document.get('isRead');
                     DateTime timestamp = document.get('timestamp').toDate();
-                    String formattedDate = DateFormat('dd/MM/yyyy').format(timestamp);
-                    final String otherUserId =
-                    senderId == _userId ? document.get('recipientId') : senderId;
+                    String formattedDate =
+                        DateFormat('dd/MM/yyyy').format(timestamp);
+                    final String otherUserId = senderId == _userId
+                        ? document.get('recipientId')
+                        : senderId;
                     final bool isLastMessage =
                         index == latestMessagesList.length - 1 && !is_read;
                     final FontWeight fontWeight =
-                    isLastMessage ? FontWeight.w400 : FontWeight.w700;
+                        isLastMessage ? FontWeight.w400 : FontWeight.w700;
                     return FutureBuilder<DocumentSnapshot>(
-                        future: _firestore.collection('Users').doc(otherUserId).get(),
+                        future: _firestore
+                            .collection('Users')
+                            .doc(otherUserId)
+                            .get(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return Container();
                           } else {
-                            final String otherUserName = snapshot.data!.get('Name').toString();
+                            final String otherUserName =
+                                snapshot.data!.get('Name').toString();
                             return InkWell(
                               onTap: () {
                                 Navigator.push(

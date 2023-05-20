@@ -24,6 +24,10 @@ class Acommodation {
   num? rate;
   String? photo;
   num? reviews;
+  num? bedroom;
+  num? bathroom;
+  num? bed;
+  List<String>? photoUrl;
 
   Acommodation({
     this.id,
@@ -35,8 +39,11 @@ class Acommodation {
     this.price_per_night,
     this.description,
     this.host_id,
-    this.reviews
-
+    this.reviews,
+    this.bedroom,
+    this.bathroom,
+    this.bed,
+    this.photoUrl,
   });
 
   // Future<String> convertPathToURL(String path){
@@ -45,64 +52,74 @@ class Acommodation {
   //       .getDownloadURL();
   // }
 
-   Map<String,dynamic> toJson()=>{
-    'title': title,
-    'type': type,
-    'number_of_rooms': number_of_rooms,
-    'number_of_beds': number_of_beds,
-    'number_of_bathrooms': number_of_bathrooms,
-    'number_max_people': number_max_people,
-    'price_per_night': price_per_night,
-    'street': street,
-    'city': city,
-    'post_code': post_code,
-    'country': country,
-    'check_in': check_in,
-    'check_out': check_out,
-    'description': description,
-    'wifi': wifi,
-    'tv': tv,
-    'air_conditioning': air_conditioning,
-    'kitchen': kitchen,
-    'host_id': host_id,
-    'rate': rate,
-    'photo': photo,
-    'reviews': reviews,
-  };
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'type': type,
+        'number_of_rooms': number_of_rooms,
+        'number_of_beds': number_of_beds,
+        'number_of_bathrooms': number_of_bathrooms,
+        'number_max_people': number_max_people,
+        'price_per_night': price_per_night,
+        'street': street,
+        'city': city,
+        'post_code': post_code,
+        'country': country,
+        'check_in': check_in,
+        'check_out': check_out,
+        'description': description,
+        'wifi': wifi,
+        'tv': tv,
+        'air_conditioning': air_conditioning,
+        'kitchen': kitchen,
+        'host_id': host_id,
+        'rate': rate,
+        'photo': photo,
+        'reviews': reviews,
+        'bedroom': bedroom,
+        'bed': bed,
+        'photoUrl': photoUrl,
+        'bathroom': bathroom
+      };
 
-  Acommodation.fromJson(Map<String,dynamic> json)
-  {
-    title=json['title'];
-    type=json['type'];
-    number_of_rooms=json['number_of_rooms'];
-    number_of_beds=json['number_of_beds'];
-    number_of_bathrooms=json['number_of_bathrooms'];
-    number_max_people=json['number_max_people'];
-    price_per_night=json['price_per_night'];
-    street=json['street'];
-    city=json['city'];
-    post_code=json['post_code'];
-    country=json['country'];
-    check_in=json['check_in'];
-    check_out=json['check_out'];
-    description=json['description'];
-    wifi=json['wifi'];
-    tv=json['tv'];
-    air_conditioning=json['air_conditioning'];
-    kitchen=json['kitchen'];
-    host_id=json['host_id'];
-    rate=json['rate'];
-    photo=json['photo'];
-    reviews=json['reviews'];
+  Acommodation.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    type = json['type'];
+    number_of_rooms = json['number_of_rooms'];
+    number_of_beds = json['number_of_beds'];
+    number_of_bathrooms = json['number_of_bathrooms'];
+    number_max_people = json['number_max_people'];
+    price_per_night = json['price_per_night'];
+    street = json['street'];
+    city = json['city'];
+    post_code = json['post_code'];
+    country = json['country'];
+    check_in = json['check_in'];
+    check_out = json['check_out'];
+    description = json['description'];
+    wifi = json['wifi'];
+    tv = json['tv'];
+    air_conditioning = json['air_conditioning'];
+    kitchen = json['kitchen'];
+    host_id = json['host_id'];
+    rate = json['rate'];
+    photo = json['photo'];
+    reviews = json['reviews'];
+    bed = json['bed'];
+    bathroom = json['bathroom'];
+    bedroom = json['bedroom'];
+    photoUrl = List<String>.from(json['photoUrl']);
   }
 
   Acommodation.fromSnapshot(snapshot)
-  : title=snapshot.data()['title'],
-  city=snapshot.data()['city'],
-  //street=snapshot.data()['street'],
-  price_per_night=snapshot.data()['price_per_night'],
-  //rate=snapshot.data()['rate'],
-  photo=snapshot.data()['photo'],
-  host_id=snapshot.data()['host_id']
-  ;
+      : title = snapshot.data()['title'],
+        city = snapshot.data()['city'],
+        //street=snapshot.data()['street'],
+        price_per_night = snapshot.data()['price_per_night'],
+        //rate=snapshot.data()['rate'],
+        photo = snapshot.data()['photo'],
+        host_id = snapshot.data()['host_id'],
+        bedroom = snapshot.data()['bedroom'],
+        bed = snapshot.data()['bed'],
+        bathroom = snapshot.data()['bathroom'],
+        photoUrl = List<String>.from(snapshot.data()['photoUrl']);
 }

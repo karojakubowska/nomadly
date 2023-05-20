@@ -142,12 +142,12 @@ class _HomeTestState extends State<HomeTest> {
                           itemBuilder: (context, index) {
                             Acommodation model = accommodationList[index];
                             return ForYouCard(
-                                accomodation: model, index: index);
-                          },
-                        )
-                        // }),
+                              accomodation: accommodationList[index],
+                              index: index,
+                            );
+                          }  // }),
                         ),
-                  ])),
+                    )])),
           Container(
             padding: const EdgeInsets.only(left: 30, right: 28),
             child: Row(
@@ -179,11 +179,11 @@ class _HomeTestState extends State<HomeTest> {
                     itemBuilder: (context, index) {
                       Acommodation model = accommodationList[index];
                       return PopularCard(
-                        accomodation: model,
-                        accommodationCity: model.city!,
-                        accommodationName: model.title!,
+                        accomodation: accommodationList[index],
+                        accommodationCity: accommodationList[index].city!,
+                        accommodationName: accommodationList[index].title!,
                         index: index,
-                        accommodationPhoto: model.photo!,
+                        accommodationPhoto: accommodationList[index].photo!,
                       );
                     },
                     //);
