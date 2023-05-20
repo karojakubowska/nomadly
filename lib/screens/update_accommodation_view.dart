@@ -35,6 +35,11 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
   final countryController = TextEditingController();
   final descriptionController = TextEditingController();
   final price_per_nightController = TextEditingController();
+  final bedController = TextEditingController();
+  final bedroomController = TextEditingController();
+  final bathroomController = TextEditingController();
+  final number_max_peopleController = TextEditingController();
+  final addressController = TextEditingController();
 
   bool kitchen = false;
   bool wifi = false;
@@ -61,6 +66,15 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
     descriptionController.text = (widget.accommodation!.get("description"));
     price_per_nightController.text =
         (widget.accommodation!.get("price_per_night").toString());
+    number_max_peopleController.text =
+    (widget.accommodation!.get("number_max_people").toString());
+    bedController.text =
+    (widget.accommodation!.get("bed").toString());
+    bedroomController.text =
+    (widget.accommodation!.get("bedroom").toString());
+    bathroomController.text =
+    (widget.accommodation!.get("bathroom").toString());
+    addressController.text = (widget.accommodation!.get("address"));
     imageOld = (widget.accommodation!.get("photo"));
     kitchen = (widget.accommodation!.get("kitchen"));
     wifi = (widget.accommodation!.get("wifi"));
@@ -148,7 +162,12 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         'city': cityController.text,
         'street': streetController.text,
         'description': descriptionController.text,
+        'address': addressController.text,
         'price_per_night': int.parse(price_per_nightController.text),
+        'bed': int.parse(bedController.text),
+        'bathroom': int.parse(bathroomController.text),
+        'bedroom': int.parse(bedroomController.text),
+        'number_max_people': int.parse(number_max_peopleController.text),
         'host_id': FirebaseAuth.instance.currentUser!.uid,
         'photo': imageOld.toString(),
         'kitchen': kitchen ? true : false,
@@ -186,7 +205,12 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         'city': cityController.text,
         'street': streetController.text,
         'description': descriptionController.text,
+        'address': addressController.text,
         'price_per_night': int.parse(price_per_nightController.text),
+        'bed': int.parse(bedController.text),
+        'bathroom': int.parse(bathroomController.text),
+        'bedroom': int.parse(bedroomController.text),
+        'number_max_people': int.parse(number_max_peopleController.text),
         'host_id': FirebaseAuth.instance.currentUser!.uid,
         'photo': imageURL.toString(),
         'kitchen': kitchen ? true : false,
@@ -399,6 +423,28 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
+                    controller: addressController,
+                    cursorColor: Colors.white,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                      labelText: 'Address',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
+                      ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
                     controller: cityController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
@@ -409,6 +455,30 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                         borderSide: BorderSide(
                             width: 1,
                             color: Color.fromARGB(255, 217, 217, 217)),
+                      ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: countryController,
+                    cursorColor: Colors.white,
+                    textInputAction: TextInputAction.next,
+                    textAlignVertical: TextAlignVertical.top,
+                    decoration: const InputDecoration(
+                      labelText: 'Country',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: Color.fromARGB(255, 217, 217, 217),
+                        ),
                       ),
                       filled: true,
                       fillColor: Color.fromARGB(255, 249, 250, 250),
@@ -439,23 +509,22 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
-                    controller: countryController,
+                    controller: number_max_peopleController,
                     cursorColor: Colors.white,
-                    textInputAction: TextInputAction.next,
-                    textAlignVertical: TextAlignVertical.top,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
                     decoration: const InputDecoration(
-                      labelText: 'Country',
+                      labelText: 'Number max People',
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
-                          width: 1,
-                          color: Color.fromARGB(255, 217, 217, 217),
-                        ),
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
                       ),
                       filled: true,
                       fillColor: Color.fromARGB(255, 249, 250, 250),
@@ -463,7 +532,76 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: bedController,
+                    cursorColor: Colors.white,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    decoration: const InputDecoration(
+                      labelText: 'Amount Bed',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
+                      ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: bedroomController,
+                    cursorColor: Colors.white,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    decoration: const InputDecoration(
+                      labelText: 'Amount Bedroom',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
+                      ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: bathroomController,
+                    cursorColor: Colors.white,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    decoration: const InputDecoration(
+                      labelText: 'Amount Bathroom',
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 217, 217, 217)),
+                      ),
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 249, 250, 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
