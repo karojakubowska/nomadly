@@ -26,14 +26,15 @@ class AccommodationCardHost extends StatefulWidget {
 
 class _AccommodationCardHostState extends State<AccommodationCardHost> {
   Future<QuerySnapshot>? allAccommodationDocumentList =
-      FirebaseFirestore.instance.collectionGroup("Accommodations").get();
+  FirebaseFirestore.instance.collectionGroup("Accommodations").get();
   Future<QuerySnapshot>? accommodationDocumentList;
 
   navigateToDetail(Acommodation accommodation) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: ((context) => DetailScreen(
+            builder: ((context) =>
+                DetailScreen(
                   accommodation: accommodation,
                 ))));
   }
@@ -51,10 +52,12 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
         context,
         MaterialPageRoute(
             builder: ((context) =>
-                UpdateAccommodationScreen(accommodation: accommodation, id: id))));
+                UpdateAccommodationScreen(
+                    accommodation: accommodation, id: id))));
   }
 
-  CollectionReference accommodation = FirebaseFirestore.instance.collection('Accommodations');
+  CollectionReference accommodation = FirebaseFirestore.instance.collection(
+      'Accommodations');
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +140,8 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                 ),
                 child: PopupMenuButton(
                   icon: Icon(Icons.more_vert, color: Colors.white),
-                  itemBuilder: (BuildContext context) => [
+                  itemBuilder: (BuildContext context) =>
+                  [
                     PopupMenuItem(
                       child: Text("Edit"),
                       value: "edit",
@@ -149,7 +153,8 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                   ],
                   onSelected: (value) {
                     if (value == 'edit') {
-                      navigateToUpdate(widget.accomodation, widget.accomodation.id!);
+                      navigateToUpdate(
+                          widget.accomodation, widget.accomodation.id!);
                     } else if (value == 'delete') {
                       showDialog(
                         context: context,
@@ -166,7 +171,8 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                               TextButton(
                                 onPressed: () {
                                   deleteAccommodation(widget.accomodation.id!,
-                                      widget.accomodation.photo!);
+                                      widget.accomodation.photo!,
+                                      widget.accomodation.photoUrl!);
                                   Navigator.pop(context);
                                 },
                                 child: const Text('Yes'),
@@ -189,16 +195,25 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
     );
   }
 
-  void deleteAccommodation(String documentId, String imageId) async {
+  void deleteAccommodation(String documentId, String imageId,
+      List<String> photoUrls) async {
     try {
+      // Delete the main photo
       await FirebaseStorage.instance.refFromURL(imageId).delete();
-      print('Image successfully deleted!');
+      print('Main photo successfully deleted!');
 
+      // Delete other photos
+      for (String photoUrl in photoUrls) {
+        await FirebaseStorage.instance.refFromURL(photoUrl).delete();
+        print('Photo successfully deleted!');
+      }
+
+      // Delete the accommodation document
       await FirebaseFirestore.instance
           .collection('Accommodations')
           .doc(documentId)
           .delete();
-      print('Document successfully deleted!');
+      print('Accommodation document successfully deleted!');
     } catch (e) {
       print('Error deleting accommodation: $e');
     }
