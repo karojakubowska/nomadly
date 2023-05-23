@@ -120,7 +120,6 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 5),
               ],
             ),
           ),

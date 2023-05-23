@@ -48,6 +48,9 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
   final ImagePicker _picker = ImagePicker();
   final pickedFile = "";
 
+  List<File> photos = [];
+  final ImagePicker _imagePicker = ImagePicker();
+
   var imageURL = "";
 
   Future imgFromGallery(pickedFile) async {
@@ -80,7 +83,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
     }
   }
 
-  void _showPicker(context) {
+  void _showPicker1(context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -108,6 +111,55 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
             ),
           );
         });
+  }
+
+  Future<void> _showPicker(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Choose photo:'),
+          actions: [
+            TextButton(
+              child: Text('Gallery'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                final XFile? pickedFile = await _imagePicker.pickImage(
+                  source: ImageSource.gallery,
+                  imageQuality: 85,
+                  maxWidth: 1080,
+                  maxHeight: 1920,
+                );
+                if (pickedFile != null) {
+                  setState(() {
+                    final File photo = File(pickedFile.path);
+                    photos.add(photo);
+                  });
+                }
+              },
+            ),
+            TextButton(
+              child: Text('Camera'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                final XFile? pickedFile = await _imagePicker.pickImage(
+                  source: ImageSource.camera,
+                  imageQuality: 85,
+                  maxWidth: 1080,
+                  maxHeight: 1920,
+                );
+                if (pickedFile != null) {
+                  setState(() {
+                    final File photo = File(pickedFile.path);
+                    photos.add(photo);
+                  });
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   CollectionReference accommodation =
@@ -152,6 +204,28 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       print('error occured');
     }
     ;
+
+    List<String> otherPhotoURLs = [];
+    for (var photo in photos) {
+      String otherPhotoDateTime = DateTime.now().toString();
+      String otherPhotoUuid = Uuid().v4();
+      String otherPhotoUniqueFileName =
+          '$uid/$otherPhotoDateTime-$otherPhotoUuid.jpg';
+
+      final otherPhotoDestination = otherPhotoUniqueFileName;
+      try {
+        final otherPhotoRef = firebase_storage.FirebaseStorage.instance
+            .ref(otherPhotoDestination)
+            .child('');
+        await otherPhotoRef.putFile(photo);
+        String otherPhotoURL = ("gs://nomady-ae4b6.appspot.com/" +
+                otherPhotoDestination.toString())
+            .toString();
+        otherPhotoURLs.add(otherPhotoURL);
+      } catch (e) {
+        print('error occurred');
+      }
+    }
     return accommodation.add({
       'title': titleController.text,
       'country': countryController.text,
@@ -168,6 +242,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       'rate': 0.0,
       'reviews': 0,
       'photo': imageURL.toString(),
+      'photoUrl': otherPhotoURLs,
       'kitchen': kitchen ? true : false,
       'wifi': wifi ? true : false,
       'tv': tv ? true : false,
@@ -190,10 +265,12 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       bedController.clear();
       bathroomController.clear();
       bedroomController.clear();
+      number_max_peopleController.clear();
       kitchen = false;
       wifi = false;
       tv = false;
       air_conditioning = false;
+      photos.clear();
     }, onError: (e) {
       print("Error updating document $e");
     });
@@ -235,12 +312,10 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 10, right: 20, left: 20),
                   child: GestureDetector(
-                    onTap: () {
-                      _showPicker(context);
-                    },
+                    onTap: () {},
                     child: Container(
                       width: size.width,
-                      height: size.height * 0.31,
+                      height: size.height * 0.32,
                       decoration: BoxDecoration(
                         color: Color.fromARGB(255, 249, 250, 250),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -255,9 +330,9 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                                   BorderRadius.all(Radius.circular(10)),
                               child: Image.file(
                                 _photo!,
-                                width: size.width,
-                                height: size.height * 0.31,
-                                fit: BoxFit.fitHeight,
+                                width: size.width * 0.6,
+                                height: size.height * 0.2,
+                                fit: BoxFit.cover,
                               ),
                             )
                           : Container(
@@ -271,27 +346,152 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                                 ),
                               ),
                               child: Icon(
-                                Icons.camera_alt,
+                                Icons.camera_alt_outlined,
                                 color: Colors.grey[800],
+                                size: 30,
                               ),
                             ),
                     ),
                   ),
                 ),
-                // Column(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Text(
-                //       "Click to add photo",
-                //       style: GoogleFonts.roboto(
-                //           textStyle: TextStyle(
-                //               fontSize: 14.0,
-                //               height: 1.2,
-                //               color: Colors.grey,
-                //               fontWeight: FontWeight.w400)),
-                //     ),
-                //   ],
-                // ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 0, right: 20, left: 20),
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size.fromHeight(50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      primary: Color.fromARGB(255, 50, 134, 252),
+                    ),
+                    onPressed: () {
+                      _showPicker1(context);
+                    },
+                    icon: Icon(Icons.camera_alt, size: 0),
+                    label: Text(
+                      'Add main photo',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10, right: 20, left: 20),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          // _showPicker(context);
+                        },
+                        child: Container(
+                          width: size.width,
+                          height: size.height * 0.22,
+                          child: photos.isNotEmpty
+                              ? SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: List.generate(
+                                      photos.length,
+                                      (index) => Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                              child: Image.file(
+                                                photos[index],
+                                                width: 160,
+                                                height: 160,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 5,
+                                              right: 5,
+                                              child: Container(
+                                                width: 30,
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: IconButton(
+                                                  iconSize: 15,
+                                                  icon: Icon(Icons.close),
+                                                  color: Colors.grey[800],
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      photos.removeAt(index);
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                      width: 160,
+                                      height: 160,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: IconButton(
+                                        icon: Icon(Icons.camera_alt_outlined),
+                                        color: Colors.grey[800],
+                                        iconSize: 30,
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 160,
+                                      height: 160,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: IconButton(
+                                        icon: Icon(Icons.add),
+                                        iconSize: 30,
+                                        color: Colors.grey[800],
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size.fromHeight(50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          primary: Color.fromARGB(255, 50, 134, 252),
+                        ),
+                        onPressed: () {
+                          _showPicker(context);
+                        },
+                        icon: Icon(Icons.camera_alt, size: 0),
+                        label: Text(
+                          'Add other photo',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
