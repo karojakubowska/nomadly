@@ -7,6 +7,8 @@ import 'package:nomadly_app/navbar-web.dart';
 import 'report-web.dart';
 
 class HomeWeb extends StatelessWidget {
+  const HomeWeb({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +16,7 @@ class HomeWeb extends StatelessWidget {
         automaticallyImplyLeading: false,
         onShowAllUsersPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => HomeWeb())));
+              context, MaterialPageRoute(builder: ((context) => const HomeWeb())));
         },
         onManageReportsPressed: () {
           Navigator.push(
@@ -22,11 +24,11 @@ class HomeWeb extends StatelessWidget {
         },
         onLogoutPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => HomeWeb())));
+              context, MaterialPageRoute(builder: ((context) => const HomeWeb())));
         },
         onShowAllUsersClicked: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => HomeWeb())));
+              context, MaterialPageRoute(builder: ((context) => const HomeWeb())));
         },
         onManageReportsClicked: () {
           Navigator.push(
@@ -39,11 +41,11 @@ class HomeWeb extends StatelessWidget {
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.all(0),
-          padding: EdgeInsets.all(30),
+          margin: const EdgeInsets.all(0),
+          padding: const EdgeInsets.all(30),
           child: Column(
             children: [
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'All Users',
                 style: GoogleFonts.roboto(
@@ -51,7 +53,7 @@ class HomeWeb extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('Users')
@@ -62,7 +64,7 @@ class HomeWeb extends StatelessWidget {
                           child: Text('Error: ${userSnapshot.error}'));
                     }
                     if (!userSnapshot.hasData) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                     final users = userSnapshot.data!.docs;
                     int totalUsers = users.length;
@@ -83,7 +85,7 @@ class HomeWeb extends StatelessWidget {
                                   'Error: ${accommodationSnapshot.error}'));
                         }
                         if (!accommodationSnapshot.hasData) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(child: CircularProgressIndicator());
                         }
                         final accommodations = accommodationSnapshot.data!.docs;
                         int totalAccommodations = accommodations.length;
@@ -98,7 +100,7 @@ class HomeWeb extends StatelessWidget {
                               Text('Total Accommodations: $totalAccommodations'),
                             ],
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           // Add other widgets here as needed
                           DataTable(
                             columns: const [
@@ -148,7 +150,7 @@ class HomeWeb extends StatelessWidget {
                                 DataCell(Text(userData['AccountStatus'])),
                                 DataCell(
                                   userData['AccountType'] == 'Admin'
-                                      ? Row(
+                                      ? const Row(
                                     children: [
                                       Icon(Icons.delete,
                                           color: Colors.white),
@@ -160,7 +162,7 @@ class HomeWeb extends StatelessWidget {
                                       : Row(
                                     children: [
                                       IconButton(
-                                        icon: Icon(Icons.delete),
+                                        icon: const Icon(Icons.delete),
                                         onPressed: () {
                                           if (userData['AccountType'] !=
                                               'Admin') {
@@ -168,14 +170,14 @@ class HomeWeb extends StatelessWidget {
                                               context: context,
                                               builder: (context) {
                                                 return AlertDialog(
-                                                  title: Text(
+                                                  title: const Text(
                                                       'Confirm Deletion'),
-                                                  content: Text(
+                                                  content: const Text(
                                                       'Are you sure you want to delete this user?'),
                                                   actions: [
                                                     TextButton(
                                                       child:
-                                                      Text('Cancel'),
+                                                      const Text('Cancel'),
                                                       onPressed: () {
                                                         Navigator.of(
                                                             context)
@@ -184,7 +186,7 @@ class HomeWeb extends StatelessWidget {
                                                     ),
                                                     TextButton(
                                                       child:
-                                                      Text('Delete'),
+                                                      const Text('Delete'),
                                                       onPressed: () {
                                                         FirebaseFirestore
                                                             .instance
@@ -209,21 +211,21 @@ class HomeWeb extends StatelessWidget {
                                           }
                                         },
                                       ),
-                                      SizedBox(width: 5),
+                                      const SizedBox(width: 5),
                                       IconButton(
-                                        icon: Icon(Icons.block),
+                                        icon: const Icon(Icons.block),
                                         onPressed: () {
                                           showDialog(
                                             context: context,
                                             builder: (context) {
                                               return AlertDialog(
                                                 title:
-                                                Text('Confirm Block'),
-                                                content: Text(
+                                                const Text('Confirm Block'),
+                                                content: const Text(
                                                     'Are you sure you want to block this user?'),
                                                 actions: [
                                                   TextButton(
-                                                    child: Text('Cancel'),
+                                                    child: const Text('Cancel'),
                                                     onPressed: () {
                                                       Navigator.of(
                                                           context)
@@ -231,7 +233,7 @@ class HomeWeb extends StatelessWidget {
                                                     },
                                                   ),
                                                   TextButton(
-                                                    child: Text('Block'),
+                                                    child: const Text('Block'),
                                                     onPressed: () {
                                                       FirebaseFirestore
                                                           .instance

@@ -2,19 +2,14 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Booking.dart';
 
-import '../models/Accomodation.dart';
 import '../models/User.dart';
 import '../utils/app_styles.dart';
-import 'host/all_bookings_host_view.dart';
 
 class UserReviewScreen extends StatelessWidget {
     Booking booking;
@@ -31,7 +26,7 @@ class UserReviewScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Styles.backgroundColor,
         appBar: AppBar(
-          leading: BackButton(color: Colors.black),
+          leading: const BackButton(color: Colors.black),
           backgroundColor: Styles.backgroundColor,
           title: Text('Review', style: Styles.headLineStyle4),
           elevation: 0,
@@ -40,15 +35,15 @@ class UserReviewScreen extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Gap(30),
+            const Gap(30),
             RatingBar.builder(
               initialRating: 0,
               minRating: 1,
               direction: Axis.horizontal,
               allowHalfRating: false,
               itemCount: 5,
-              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-              itemBuilder: (context, _) => Icon(
+              itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+              itemBuilder: (context, _) => const Icon(
                 Icons.star,
                 color: Colors.amber,
               ),
@@ -57,7 +52,7 @@ class UserReviewScreen extends StatelessWidget {
                 userRating = rating;
               },
             ),
-            Gap(30),
+            const Gap(30),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
@@ -80,7 +75,7 @@ class UserReviewScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Gap(30),
+            const Gap(30),
             ElevatedButton(
               onPressed: () {
                 addOpinion(context);
@@ -96,7 +91,7 @@ class UserReviewScreen extends StatelessWidget {
               child: Text(
                 'Send opinion',
                 style: GoogleFonts.roboto(
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                         fontSize: 16.0,
                         color: Colors.white,
                         fontWeight: FontWeight.w700)),
@@ -109,7 +104,7 @@ class UserReviewScreen extends StatelessWidget {
   Future<void> addOpinion(BuildContext context) async {
     if (descriptionController.text.isEmpty ||userRating == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('All fields are required')),
+        const SnackBar(content: Text('All fields are required')),
       );
       return;
     }

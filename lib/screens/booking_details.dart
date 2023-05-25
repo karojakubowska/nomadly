@@ -1,9 +1,6 @@
-import 'dart:ui';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/screens/accommodation_review_view.dart';
 
@@ -14,7 +11,7 @@ import '../utils/app_styles.dart';
 class BookingDetails extends StatefulWidget {
   Acommodation accommodation;
   Booking booking;
-  BookingDetails({required this.accommodation, required this.booking});
+  BookingDetails({super.key, required this.accommodation, required this.booking});
 
   @override
   State<BookingDetails> createState() => _BookingDetailsState();
@@ -191,13 +188,13 @@ class _BookingDetailsState extends State<BookingDetails> {
             child: Text(
               'Rate the accommodation',
               style: GoogleFonts.roboto(
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                       fontSize: 16.0,
                       color: Colors.white,
                       fontWeight: FontWeight.w700)),
             ),
           ),
-          Gap(30),
+          const Gap(30),
           ElevatedButton(
             onPressed: () {},
             style: ButtonStyle(

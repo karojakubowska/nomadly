@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 
 class ChangePasswordPage extends StatefulWidget {
+  const ChangePasswordPage({super.key});
+
   @override
   _ChangePasswordPageState createState() => _ChangePasswordPageState();
 }
@@ -25,7 +27,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       await user?.updatePassword(passwordController.text);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Password updated successfully.')),
+        const SnackBar(content: Text('Password updated successfully.')),
       );
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -41,7 +43,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         appBar: AppBar(
           leading: IconButton(
             color: Colors.black,
-            icon: Icon(Icons.arrow_back_ios_new),
+            icon: const Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
@@ -50,7 +52,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             'Change Password',
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     fontSize: 20.0,
                     height: 1.2,
                     color: Colors.black,
@@ -65,7 +67,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             children: [
               SingleChildScrollView(
                   child: Column(children: <Widget>[
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 const SizedBox(
                   height: 20,
                 ),
@@ -116,7 +118,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   height: 30,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size.fromHeight(55),

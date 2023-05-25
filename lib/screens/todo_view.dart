@@ -64,17 +64,17 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Confirm'),
-            content: Text('Are you sure you want to clear the list?'),
+            title: const Text('Confirm'),
+            content: const Text('Are you sure you want to clear the list?'),
             actions: <Widget>[
               TextButton(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text('Clear'),
+                child: const Text('Clear'),
                 onPressed: () {
                   setState(() {
                     _todoList.clear();
@@ -94,17 +94,17 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Confirm'),
-            content: Text('Are you sure you want to delete this item?'),
+            title: const Text('Confirm'),
+            content: const Text('Are you sure you want to delete this item?'),
             actions: <Widget>[
               TextButton(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text('Delete'),
+                child: const Text('Delete'),
                 onPressed: () {
                   setState(() {
                     _editingIndex = -1;
@@ -146,7 +146,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         _deleteItem(index);
       },
       child: Container(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(10),
@@ -174,7 +174,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                       color: _checkedList[index] ? Colors.grey : Colors.black,
                       decoration: _checkedList[index] ? TextDecoration.lineThrough : TextDecoration.none,
                     ),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Enter a to do',
                     border: InputBorder.none,
                   ),
@@ -197,7 +197,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       background: Container(
         alignment: AlignmentDirectional.centerEnd,
         color: Colors.red,
-        child: Icon(Icons.delete, color: Colors.white, size: 20),
+        child: const Icon(Icons.delete, color: Colors.white, size: 20),
       ),
     );
   }
@@ -209,7 +209,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       appBar: AppBar(
         leading: IconButton(
           color: Colors.black,
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).popUntil((route) => route.isFirst);
           },
@@ -218,7 +218,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
           'To do list',
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   fontSize: 20.0,
                   height: 1.2,
                   color: Colors.black,
@@ -226,29 +226,34 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
-        centerTitle: true,
-        textTheme: TextTheme(
+        centerTitle: true, toolbarTextStyle: const TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
-        ),
+        ).bodyText2, titleTextStyle: const TextTheme(
+          subtitle1: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ).headline6,
       ),
       floatingActionButton: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             FloatingActionButton(
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               backgroundColor: Colors.blue,
               onPressed: _addNewToDo, // użyj funkcji _addNewToDo
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             FloatingActionButton(
-              child: Icon(Icons.delete),
+              child: const Icon(Icons.delete),
               backgroundColor: Colors.red,
               onPressed: _clearList,
             ),
@@ -260,7 +265,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         elevation: 0,
         child: Container(
           height: 56.0,
-          margin: EdgeInsets.all(40.0),
+          margin: const EdgeInsets.all(40.0),
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(55),

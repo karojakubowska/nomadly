@@ -1,6 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';

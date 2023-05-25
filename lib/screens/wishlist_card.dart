@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import '../utils/app_layout.dart';
 
@@ -19,23 +17,22 @@ class _WishlistCardState extends State<WishlistCard> {
       margin: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
         width: size.width,
         height: 200,
-        child: Container(
-            child: Column(
+        child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
+        Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                          "assets/images/a-modern-living-room-style 2.png"),
-                    ],
-                  )
+                  Image.asset(
+                      "assets/images/a-modern-living-room-style 2.png"),
                 ],
-              ),
-            ),
+              )
+            ],
+          ),
+        ),
           ],
-        )));
+        ));
   }
 }

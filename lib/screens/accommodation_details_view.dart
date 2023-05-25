@@ -1,29 +1,37 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
-import 'package:nomadly_app/screens/accommodation_review_view.dart';
 import 'package:nomadly_app/screens/booking_request_view.dart';
-import 'package:nomadly_app/screens/home_view.dart';
+import 'package:nomadly_app/screens/calendar.dart';
 import 'package:nomadly_app/screens/reviews_view.dart';
-import 'package:nomadly_app/utils/app_layout.dart';
-
-import '../utils/app_styles.dart';
 
 class DetailScreen extends StatefulWidget {
   final Acommodation? accommodation;
+  DateTime? start_date;
+  DateTime? end_date;
+  int? guest_number;
 
-  DetailScreen({
-    this.accommodation,
-  });
+  DetailScreen(
+      {this.accommodation, this.start_date, this.guest_number, this.end_date});
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+   DateTime startDate = DateTime.now();
+  DateTime endDate = DateTime.now();
+  int guestNumber=2;
+  List<String> photoUrls = []; // Lista URL-ów zdjęć
+  void getDates(DateTime start, DateTime end) {
+    setState(() {
+      widget.start_date = start;
+      widget.end_date = end;
+    });
+  }
+
   navigateToDetail(Acommodation accommodation) {
     Navigator.push(
         context,
@@ -33,11 +41,11 @@ class _DetailScreenState extends State<DetailScreen> {
                 rate: accommodation.rate!.toDouble()))));
   }
 
-  List<String> photoUrls = []; // Lista URL-ów zdjęć
+ 
 
   @override
   Widget build(BuildContext context) {
-    var size = AppLayout.getSize(context);
+    //var size = AppLayout.getSize(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -59,19 +67,19 @@ class _DetailScreenState extends State<DetailScreen> {
                         image: NetworkImage(snapshot.data.toString()),
                       );
                     } else {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                   },
                 ),
                 Container(
                   height: 400,
                   color: Colors.black12,
-                  padding: EdgeInsets.only(top: 50),
+                  padding: const EdgeInsets.only(top: 50),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           left: 24,
                           right: 24,
                         ),
@@ -82,7 +90,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                 Navigator.pop(context);
                               },
                               child: Container(
-                                child: Icon(
+                                child: const Icon(
                                   Icons.arrow_back,
                                   color: Colors.white,
                                   size: 24,
@@ -92,7 +100,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           ],
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
                         width: MediaQuery.of(context).size.width,
                         decoration: const BoxDecoration(
@@ -108,7 +116,7 @@ class _DetailScreenState extends State<DetailScreen> {
               ],
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,11 +124,11 @@ class _DetailScreenState extends State<DetailScreen> {
                   Text(
                     widget.accommodation!.title!,
                     style: GoogleFonts.roboto(
-                        color: Color.fromARGB(255, 24, 24, 24),
+                        color: const Color.fromARGB(255, 24, 24, 24),
                         fontSize: 22,
                         fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Row(
@@ -128,34 +136,35 @@ class _DetailScreenState extends State<DetailScreen> {
                       Text(
                         "${widget.accommodation!.city!},",
                         style: GoogleFonts.roboto(
-                            color: Color.fromARGB(255, 24, 24, 24),
+                            color: const Color.fromARGB(255, 24, 24, 24),
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 1,
                       ),
                       Text(
                         widget.accommodation!.country!,
                         style: GoogleFonts.roboto(
-                            color: Color.fromARGB(255, 24, 24, 24),
+                            color: const Color.fromARGB(255, 24, 24, 24),
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
                       ),
+                     
                     ],
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.grey,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
                               " ${widget.accommodation?.bedroom?.toString() ?? '0'} bedroom",
@@ -172,14 +181,14 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.grey,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
                               " ${widget.accommodation?.bed?.toString() ?? '0'} bed",
@@ -196,14 +205,14 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(right: 5),
+                        padding: const EdgeInsets.only(right: 5),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.grey,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
                               " ${widget.accommodation?.bathroom?.toString() ?? '0'} bathroom",
@@ -221,7 +230,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       ),
                     ],
                   ),
-                  Gap(15),
+                  const Gap(15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -257,7 +266,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                     ),
                                   ],
                                 )),
-                            Gap(10),
+                            const Gap(10),
                             Text(
                               "(${widget.accommodation!.reviews.toString()} reviews)",
                               style: GoogleFonts.roboto(
@@ -277,14 +286,14 @@ class _DetailScreenState extends State<DetailScreen> {
                       ),
                     ],
                   ),
-                  Gap(20),
+                  const Gap(20),
                   Text(
                     "Description",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
-                        color: Color.fromARGB(255, 135, 135, 135)),
+                        color: const Color.fromARGB(255, 135, 135, 135)),
                   ),
                   Text(
                     widget.accommodation!.description!,
@@ -292,66 +301,66 @@ class _DetailScreenState extends State<DetailScreen> {
                     style: GoogleFonts.roboto(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(255, 135, 135, 135),
+                        color: const Color.fromARGB(255, 135, 135, 135),
                         height: 1.6,
                         letterSpacing: .5),
                   ),
-                  Gap(20),
+                  const Gap(20),
                   Text(
                     "Additional Information",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
-                        color: Color.fromARGB(255, 135, 135, 135)),
+                        color: const Color.fromARGB(255, 135, 135, 135)),
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     "- Kitchen: ${widget.accommodation?.kitchen == true ? 'Yes' : 'No'}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(255, 135, 135, 135)),
+                        color: const Color.fromARGB(255, 135, 135, 135)),
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     "- TV: ${widget.accommodation?.tv == true ? 'Yes' : 'No'}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(255, 135, 135, 135)),
+                        color: const Color.fromARGB(255, 135, 135, 135)),
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     "- WiFi: ${widget.accommodation?.wifi == true ? 'Yes' : 'No'}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(255, 135, 135, 135)),
+                        color: const Color.fromARGB(255, 135, 135, 135)),
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     "- Air Conditioning: ${widget.accommodation?.air_conditioning == true ? 'Yes' : 'No'}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(255, 135, 135, 135)),
+                        color: const Color.fromARGB(255, 135, 135, 135)),
                   ),
-                  Gap(20),
+                  const Gap(20),
                   Text(
                     "Images",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: Color.fromARGB(255, 135, 135, 135),
+                      color: const Color.fromARGB(255, 135, 135, 135),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -366,7 +375,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 builder: (BuildContext context,
                     AsyncSnapshot<List<dynamic>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (snapshot.hasData) {
@@ -374,7 +383,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         snapshot.data?.cast<String>() ?? [];
                     // Dodajemy URL-e do listy photoUrls
                     return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 24),
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -407,7 +416,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                       );
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.only(right: 10),
+                                      margin: const EdgeInsets.only(right: 10),
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
@@ -426,13 +435,39 @@ class _DetailScreenState extends State<DetailScreen> {
                       ),
                     );
                   } else {
-                    return Text('No data available');
+                    return const Text('No data available');
                   }
                 },
               ),
             ),
+            Container(
+                height: 500,
+                child: CalendarScreen(
+                  bookedDates: widget.accommodation!.bookedDates!,
+                  onChooseDate: getDates,
+                )),
+                 const SizedBox(
+                        width: 1,
+                      ),
+                      Text(
+                        widget.start_date.toString(),
+                        style: GoogleFonts.roboto(
+                            color: const Color.fromARGB(255, 24, 24, 24),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                      ),
+                       const SizedBox(
+                        width: 1,
+                      ),
+                      Text(
+                        widget.end_date.toString(),
+                        style: GoogleFonts.roboto(
+                            color: const Color.fromARGB(255, 24, 24, 24),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                      ),
             Padding(
-              padding: EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(24.0),
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50),
@@ -440,11 +475,27 @@ class _DetailScreenState extends State<DetailScreen> {
                         borderRadius: BorderRadius.circular(10.0)),
                     backgroundColor: const Color.fromARGB(255, 50, 134, 252)),
                 onPressed: () {
-                  Navigator.push(
+                  if(widget.guest_number==null){
+                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: ((context) => BookingRequestScreen())));
-                },
+                          builder: ((context) => BookingRequestScreen(
+                                startDate: widget.start_date!,
+                                endDate: widget.end_date!,
+                                guestNumber: guestNumber,
+                                accommodation: widget.accommodation!,
+                              ))));
+                  }else{   Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => BookingRequestScreen(
+                                startDate: widget.start_date!,
+                                endDate: widget.end_date!,
+                                guestNumber: widget.guest_number!,
+                                accommodation: widget.accommodation!,
+                              ))));
+                }
+               },
                 icon: const Icon(Icons.lock_open, size: 0),
                 label: const Text('Book now', style: TextStyle(fontSize: 18)),
               ),

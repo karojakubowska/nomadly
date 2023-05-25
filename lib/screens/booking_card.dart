@@ -3,8 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +13,6 @@ import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 import '../utils/shimmers/shimmer_load_photos.dart';
 import 'booking_details.dart';
-import 'host/booking_details_host.dart';
 
 class BookingCard extends StatefulWidget {
   Booking booking;
@@ -23,7 +20,7 @@ class BookingCard extends StatefulWidget {
   Acommodation accommodation;
   //const BookingCardHost({super.key});
   BookingCard(
-      {required this.booking,
+      {super.key, required this.booking,
       required this.index,
       required this.accommodation});
   @override
@@ -89,7 +86,7 @@ class _BookingCardState extends State<BookingCard> {
             ),
             const Gap(10),
             Container(
-              padding: EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -133,11 +130,11 @@ class _BookingCardState extends State<BookingCard> {
                 children: [
                   Container(
                       height: 40,
-                      padding: EdgeInsets.only(left: 20, right: 20),
+                      padding: const EdgeInsets.only(left: 20, right: 20),
                       decoration: BoxDecoration(
                           color: statusColorSwitch(),
                           shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                          borderRadius: const BorderRadius.all(Radius.circular(5))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

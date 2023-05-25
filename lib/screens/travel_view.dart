@@ -56,7 +56,7 @@ class _TravelViewState extends State<TravelView> {
           'Travels',
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   fontSize: 20.0,
                   height: 1.2,
                   color: Colors.black,
@@ -69,11 +69,11 @@ class _TravelViewState extends State<TravelView> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 30.0, right: 10.0),
         child: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           backgroundColor: Colors.blue,
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: ((context) => AddTravelView())));
+                MaterialPageRoute(builder: ((context) => const AddTravelView())));
           },
         ),
       ),
@@ -84,7 +84,7 @@ class _TravelViewState extends State<TravelView> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));
@@ -101,7 +101,7 @@ class _TravelViewState extends State<TravelView> {
                     "Click on the plus - blue button and add a new travel!",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.roboto(
-                        color: Color.fromARGB(255, 24, 24, 24),
+                        color: const Color.fromARGB(255, 24, 24, 24),
                         fontSize: 16,
                         fontWeight: FontWeight.w500
                     ),
@@ -117,15 +117,15 @@ class _TravelViewState extends State<TravelView> {
               return InkWell(
                   onTap: () => navigateToDetail(snapshot.data!.docs[index]),
                   child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         child: Container(
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           child: Row(
                             children: [
                               FutureBuilder(
@@ -143,27 +143,27 @@ class _TravelViewState extends State<TravelView> {
                                       ),
                                     );
                                   } else {
-                                    return Center(
+                                    return const Center(
                                         child: CircularProgressIndicator());
                                   }
                                 },
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     model.name as String,
                                     style: GoogleFonts.roboto(
-                                        color: Color.fromARGB(255, 24, 24, 24),
+                                        color: const Color.fromARGB(255, 24, 24, 24),
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500),
                                   ),
-                                  SizedBox(height: 5),
+                                  const SizedBox(height: 5),
                                   Text(
                                     model.destination as String,
                                     style: GoogleFonts.roboto(
-                                        color: Color.fromARGB(255, 24, 24, 24),
+                                        color: const Color.fromARGB(255, 24, 24, 24),
                                         fontSize: 12,
                                         fontWeight: FontWeight.w300),
                                   ),
@@ -174,13 +174,13 @@ class _TravelViewState extends State<TravelView> {
                               ),
                               PopupMenuButton(
                                 icon:
-                                    Icon(Icons.more_vert, color: Colors.black),
+                                    const Icon(Icons.more_vert, color: Colors.black),
                                 itemBuilder: (BuildContext context) => [
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     child: Text("Edit"),
                                     value: "edit",
                                   ),
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     child: Text("Delete"),
                                     value: "delete",
                                   ),
@@ -194,18 +194,18 @@ class _TravelViewState extends State<TravelView> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text("Confirm Delete"),
-                                          content: Text(
+                                          title: const Text("Confirm Delete"),
+                                          content: const Text(
                                               "Are you sure you want to delete this item?"),
                                           actions: [
                                             TextButton(
-                                              child: Text("Cancel"),
+                                              child: const Text("Cancel"),
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
                                             ),
                                             TextButton(
-                                              child: Text("Delete"),
+                                              child: const Text("Delete"),
                                               onPressed: () {
                                                 Navigator.pop(context);
                                                 deleteTravel(

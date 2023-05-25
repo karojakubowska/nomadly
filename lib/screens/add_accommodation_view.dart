@@ -1,15 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
-import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 import '../utils/app_layout.dart';
@@ -90,7 +87,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
           return SafeArea(
             child: Wrap(
               children: <Widget>[
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
                   title: const Text('Gallery'),
@@ -178,7 +175,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
         number_max_peopleController.text.isEmpty ||
         bathroomController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('All fields are required')),
+        const SnackBar(content: Text('All fields are required')),
       );
       return;
     }
@@ -188,7 +185,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
     if (_photo == null) return;
 
     String dateTime = DateTime.now().toString();
-    String uuid = Uuid().v4();
+    String uuid = const Uuid().v4();
     String uniqueFileName = '$uid/$dateTime-$uuid.jpg';
 
     //final fileName = basename(_photo!.path);
@@ -250,7 +247,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
     }).then((value) {
       print("DocumentSnapshot successfully updated!");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('New accommodation added')),
+        const SnackBar(content: Text('New accommodation added')),
       );
       setState(() {
         _photo = null;
@@ -286,7 +283,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
           'Add Accommodation',
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   fontSize: 20.0,
                   height: 1.2,
                   color: Colors.black,
@@ -294,14 +291,19 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        textTheme: TextTheme(
+        elevation: 0, toolbarTextStyle: const TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
-        ),
+        ).bodyText2, titleTextStyle: const TextTheme(
+          subtitle1: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ).headline6,
       ),
       body: ListView(
         // mainAxisAlignment: MainAxisAlignment.center,
@@ -310,24 +312,24 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(bottom: 10, right: 20, left: 20),
+                  padding: const EdgeInsets.only(bottom: 10, right: 20, left: 20),
                   child: GestureDetector(
                     onTap: () {},
                     child: Container(
                       width: size.width,
                       height: size.height * 0.32,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 249, 250, 250),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: const Color.fromARGB(255, 249, 250, 250),
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
                         border: Border.all(
-                          color: Color.fromARGB(255, 217, 217, 217),
+                          color: const Color.fromARGB(255, 217, 217, 217),
                           width: 0.5,
                         ),
                       ),
                       child: _photo != null
                           ? ClipRRect(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                                  const BorderRadius.all(Radius.circular(10)),
                               child: Image.file(
                                 _photo!,
                                 width: size.width * 0.6,
@@ -337,11 +339,11 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                             )
                           : Container(
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 249, 250, 250),
+                                color: const Color.fromARGB(255, 249, 250, 250),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                                    const BorderRadius.all(Radius.circular(10)),
                                 border: Border.all(
-                                  color: Color.fromARGB(255, 217, 217, 217),
+                                  color: const Color.fromARGB(255, 217, 217, 217),
                                   width: 0.5,
                                 ),
                               ),
@@ -503,7 +505,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                       Text(
                         "Basic Information:",
                         style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 fontSize: 20.0,
                                 height: 1.2,
                                 color: Colors.black,
@@ -772,7 +774,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                       Text(
                         "Other:",
                         style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 fontSize: 20.0,
                                 height: 1.2,
                                 color: Colors.black,
@@ -787,7 +789,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("Kitchen",
+                    title: const Text("Kitchen",
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -804,7 +806,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("Wifi",
+                    title: const Text("Wifi",
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -821,7 +823,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("TV",
+                    title: const Text("TV",
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -838,7 +840,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("Air Conditioning",
+                    title: const Text("Air Conditioning",
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -854,7 +856,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 ),
                 const SizedBox(height: 10),
                 Padding(
-                  padding: EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size.fromHeight(60),

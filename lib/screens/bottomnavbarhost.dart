@@ -4,14 +4,10 @@ import 'package:nomadly_app/screens/add_accommodation_view.dart';
 import 'package:nomadly_app/screens/host/all_bookings_host_view.dart';
 import 'package:nomadly_app/screens/chat_view.dart';
 import 'package:nomadly_app/screens/home_host_view.dart';
-import 'package:nomadly_app/screens/travel_view.dart';
 //import 'package:nomadly_app/screens/reservation_view.dart';
 import 'package:nomadly_app/screens/userprofile_view.dart';
 
 import '../utils/app_styles.dart';
-import 'home_view.dart';
-import 'wishlist_view.dart';
-
 
 class BottomNavBarHost extends StatefulWidget {
   const BottomNavBarHost({Key? key}) : super(key: key);
@@ -49,7 +45,7 @@ class _BottomNavBarHostState extends State<BottomNavBarHost>
 
   Widget _tabItem(Widget child, {bool isSelected = false}) {
     return AnimatedContainer(
-        margin: EdgeInsets.only(top:4,bottom:15),
+        margin: const EdgeInsets.only(top:4,bottom:15),
         alignment: Alignment.center,
         duration: const Duration(milliseconds: 500),
         decoration: !isSelected

@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,8 +9,6 @@ import '../models/Booking.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 import 'booking_card.dart';
-import 'host/booking_card_host.dart';
-
 class AllBookingsScreen extends StatefulWidget {
   const AllBookingsScreen({super.key});
 
@@ -41,7 +37,7 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
           children: [
             Column(
               children: [
-                Gap(10),
+                const Gap(10),
                 SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(children: <Widget>[
@@ -58,9 +54,9 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
                             if (!snapshot.hasData) {
                               return const Text("Loading...");
                             }
-                            if (snapshot.data!.docs.isEmpty)
+                            if (snapshot.data!.docs.isEmpty) {
                               return Container(
-                                margin: EdgeInsets.only(top: 20),
+                                margin: const EdgeInsets.only(top: 20),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -68,7 +64,7 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
                                       "Find your new bookings!",
                                       textAlign: TextAlign.center,
                                       style: GoogleFonts.roboto(
-                                          color: Color.fromARGB(255, 24, 24, 24),
+                                          color: const Color.fromARGB(255, 24, 24, 24),
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500
                                       ),
@@ -76,6 +72,7 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
                                   ],
                                 ),
                               );
+                            }
                             return ListView.builder(
                                 scrollDirection: Axis.vertical,
                                 itemCount: snapshot.data!.docs.length,

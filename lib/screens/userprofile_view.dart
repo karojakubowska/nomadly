@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,7 +9,6 @@ import 'package:nomadly_app/screens/update_userprofile_view.dart';
 import 'package:nomadly_app/screens/privacy_policy_view.dart';
 import 'package:nomadly_app/screens/terms_conditions_view.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
-import 'package:nomadly_app/models/User.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -47,7 +45,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             'Profile',
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     fontSize: 20.0,
                     height: 1.2,
                     color: Colors.black,
@@ -61,7 +59,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             stream: userStream,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
               final userDoc = snapshot.data!;
               name = userDoc.get('Name');
@@ -90,24 +88,24 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             }
                           },
                         ),
-                        SizedBox(width: 30.0),
+                        const SizedBox(width: 30.0),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               name,
                               style: GoogleFonts.roboto(
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                       fontSize: 20.0,
                                       height: 1.2,
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500)),
                             ),
-                            SizedBox(height: 8.0),
+                            const SizedBox(height: 8.0),
                             Text(
                               email,
                               style: GoogleFonts.roboto(
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                       fontSize: 16.0,
                                       height: 1.2,
                                       color: Colors.black,
@@ -115,9 +113,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             ),
                           ],
                         ),
-                        Spacer(),
+                        const Spacer(),
                         IconButton(
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -128,7 +126,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Expanded(
                     child: ListView(children: [
                       _buildProfileSection(
@@ -140,7 +138,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: ((context) =>
-                                      ChangePasswordPage())));
+                                      const ChangePasswordPage())));
                         },
                       ),
                       _buildProfileSection(
@@ -164,7 +162,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: ((context) =>
-                                      TermsConditionsScreen())));
+                                      const TermsConditionsScreen())));
                         },
                       ),
                       _buildProfileSection(
@@ -176,7 +174,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: ((context) =>
-                                      PrivacyPolicyScreen())));
+                                      const PrivacyPolicyScreen())));
                         },
                       ),
                       _buildProfileSection(
@@ -187,12 +185,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => HelpSupportScreen())));
+                                  builder: ((context) => const HelpSupportScreen())));
                         },
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size.fromHeight(55),
@@ -241,7 +239,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 color: Colors.grey.withOpacity(0.1),
                 spreadRadius: 2,
                 blurRadius: 5,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -250,17 +248,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             child: Row(
               children: [
                 Icon(icon, color: Colors.black),
-                SizedBox(width: 16.0),
+                const SizedBox(width: 16.0),
                 Text(
                   title,
                   style: GoogleFonts.roboto(
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                           fontSize: 16.0,
                           color: Colors.black,
                           fontWeight: FontWeight.w400)),
                 ),
-                Spacer(),
-                Icon(Icons.keyboard_arrow_right),
+                const Spacer(),
+                const Icon(Icons.keyboard_arrow_right),
               ],
             ),
           ),

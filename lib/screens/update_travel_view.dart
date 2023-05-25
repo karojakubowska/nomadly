@@ -1,11 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nomadly_app/models/Travel.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -117,7 +114,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
           return SafeArea(
             child: Wrap(
               children: <Widget>[
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
                   title: const Text('Gallery'),
@@ -181,7 +178,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
       }).catchError((error) {
         print("Error removing image: $error");
       });
-      String uuid = Uuid().v4();
+      String uuid = const Uuid().v4();
       String uniqueFileName = '$uid/$uuid.jpg';
       final destination = uniqueFileName;
 
@@ -218,7 +215,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
         appBar: AppBar(
           leading: IconButton(
             color: Colors.black,
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
@@ -227,7 +224,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
             'Update Travel',
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     fontSize: 20.0,
                     height: 1.2,
                     color: Colors.black,
@@ -235,20 +232,25 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          centerTitle: true,
-          textTheme: TextTheme(
+          centerTitle: true, toolbarTextStyle: const TextTheme(
             subtitle1: TextStyle(
               color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
-          ),
+          ).bodyText2, titleTextStyle: const TextTheme(
+            subtitle1: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ).headline6,
         ),
         body: ListView(children: [
           SingleChildScrollView(
               child: Column(children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: 0.0),
+              padding: const EdgeInsets.only(top: 0.0),
               child: GestureDetector(
                 onTap: () {
                   _showPicker(context);
@@ -257,16 +259,16 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                   width: 150,
                   height: 150,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 249, 250, 250),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: const Color.fromARGB(255, 249, 250, 250),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     border: Border.all(
-                      color: Color.fromARGB(255, 217, 217, 217),
+                      color: const Color.fromARGB(255, 217, 217, 217),
                       width: 0.5,
                     ),
                   ),
                   child: _photo != null
                       ? ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
                           child: Image.file(
                             _photo!,
                             width: 150,
@@ -277,18 +279,18 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                       : _photoUrl.isNotEmpty
                           ? ClipRRect(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                                  const BorderRadius.all(Radius.circular(10)),
                               child: Image.network(
                                 _photoUrl,
                                 fit: BoxFit.cover,
                               ))
                           : Container(
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 249, 250, 250),
+                                color: const Color.fromARGB(255, 249, 250, 250),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                                    const BorderRadius.all(Radius.circular(10)),
                                 border: Border.all(
-                                  color: Color.fromARGB(255, 217, 217, 217),
+                                  color: const Color.fromARGB(255, 217, 217, 217),
                                   width: 0.5,
                                 ),
                               ),
@@ -314,7 +316,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                     Text(
                       "Click to edit photo",
                       style: GoogleFonts.roboto(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               fontSize: 14.0,
                               height: 1.2,
                               color: Colors.grey,
@@ -397,7 +399,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                     Expanded(
                       child: Container(
                         child: TextField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10.0)),
@@ -424,7 +426,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                     Expanded(
                       child: Container(
                         child: TextField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10.0)),
@@ -500,7 +502,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
               height: 20,
             ),
             Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(60),

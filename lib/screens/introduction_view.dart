@@ -50,9 +50,9 @@ class IntroPage extends StatelessWidget {
   }
     DotsDecorator getDotsDecoration() => DotsDecorator(
       color: Colors.grey,
-      size: Size(10,10),
+      size: const Size(10,10),
       activeColor: Colors.grey.shade800,
-      activeSize: Size(22,10),
+      activeSize: const Size(22,10),
       activeShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       )
@@ -62,12 +62,12 @@ class IntroPage extends StatelessWidget {
     titleTextStyle: Styles.headLineStyle,
     bodyTextStyle: Styles.headLineStyle2,
     pageColor: Colors.grey.shade100,
-    imagePadding: EdgeInsets.all(0),
+    imagePadding: const EdgeInsets.all(0),
   );
     Widget buildImage(String path) => Center(
       child: Image.asset(path)
   );
 
   void goToAuthPage(BuildContext context) => Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => LoginPage()));
+      MaterialPageRoute(builder: (_) => const LoginPage()));
 }

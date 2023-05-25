@@ -1,19 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nomadly_app/models/Favorites.dart';
-import 'package:provider/provider.dart';
 
-import '../main.dart';
 import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 import 'accommodation_card.dart';
-import 'foryou_view.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({super.key});
@@ -62,9 +55,9 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) return const Text("Loading...");
-                  if (snapshot.data!.docs.isEmpty)
+                  if (snapshot.data!.docs.isEmpty) {
                     return Container(
-                      margin: EdgeInsets.only(top: 20),
+                      margin: const EdgeInsets.only(top: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -72,7 +65,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                             "Find your new favourites!",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.roboto(
-                                color: Color.fromARGB(255, 24, 24, 24),
+                                color: const Color.fromARGB(255, 24, 24, 24),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500
                             ),
@@ -80,6 +73,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         ],
                       ),
                     );
+                  }
                   return ListView.builder(
                       scrollDirection: Axis.vertical,
                       //shrinkWrap: true,

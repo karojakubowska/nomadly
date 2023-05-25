@@ -14,7 +14,7 @@ class NewBottomNavBar extends StatefulWidget {
 
 class _NewBottomNavBarState extends State<NewBottomNavBar> {
   int _currentIndex = 0;
-  Widget currentScreen = HomeTest();
+  Widget currentScreen = const HomeTest();
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +28,16 @@ class _NewBottomNavBarState extends State<NewBottomNavBar> {
         type: BottomNavigationBarType.fixed,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(icon: new Icon(Icons.home), label: ""),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.favorite_border_outlined), label: ""),
+              icon: Icon(Icons.favorite_border_outlined), label: ""),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.bed_sharp), label: ""),
+              icon: Icon(Icons.bed_sharp), label: ""),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.card_travel_rounded), label: ""),
-          BottomNavigationBarItem(icon: new Icon(Icons.chat_outlined), label: ""),
-          BottomNavigationBarItem(icon: new Icon(Icons.person), label: "")
+              icon: Icon(Icons.card_travel_rounded), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.chat_outlined), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "")
         ],
       ),
     );

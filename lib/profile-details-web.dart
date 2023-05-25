@@ -19,16 +19,16 @@ class ProfileDetails extends StatelessWidget {
           return Text('Error: ${snapshot.error}');
         }
         if (!snapshot.hasData) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
         final userData = snapshot.data!.data() as Map<String, dynamic>;
         return Scaffold(
             appBar: AppBar(
-              title: Text('User profile details'),
+              title: const Text('User profile details'),
             ),
             body: Container(
-                margin: EdgeInsets.all(20),
-                constraints: BoxConstraints(maxWidth: 300),
+                margin: const EdgeInsets.all(20),
+                constraints: const BoxConstraints(maxWidth: 300),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

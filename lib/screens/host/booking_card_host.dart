@@ -19,7 +19,7 @@ class BookingCardHost extends StatefulWidget {
   Acommodation accommodation;
   //const BookingCardHost({super.key});
   BookingCardHost(
-      {required this.booking,
+      {super.key, required this.booking,
       required this.index,
       required this.accommodation});
   @override
@@ -85,7 +85,7 @@ class _BookingCardState extends State<BookingCardHost> {
             ),
             const Gap(10),
             Container(
-              padding: EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -159,11 +159,11 @@ class _BookingCardState extends State<BookingCardHost> {
                 children: [
                   Container(
                       height: 40,
-                      padding: EdgeInsets.only(left: 20, right: 20),
+                      padding: const EdgeInsets.only(left: 20, right: 20),
                       decoration: BoxDecoration(
                           color: statusColorSwitch(),
                           shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                          borderRadius: const BorderRadius.all(Radius.circular(5))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

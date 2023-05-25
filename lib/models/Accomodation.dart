@@ -1,4 +1,3 @@
-import 'package:firebase_storage/firebase_storage.dart';
 
 class Acommodation {
   String? id;
@@ -7,7 +6,7 @@ class Acommodation {
   int? number_of_rooms;
   int? number_of_beds;
   int? number_of_bathrooms;
-  num? number_max_people;
+  int? max_guests;
   int? price_per_night;
   String? street;
   String? city;
@@ -30,6 +29,7 @@ class Acommodation {
   num? people;
   String? address;
   List<String>? photoUrl;
+  List<DateTime>? bookedDates;
 
   Acommodation({
     this.id,
@@ -42,12 +42,16 @@ class Acommodation {
     this.description,
     this.host_id,
     this.reviews,
+    this.wifi,
+    this.tv,
+    this.max_guests,
+
     this.bedroom,
     this.bathroom,
     this.bed,
     this.address,
     this.photoUrl,
-    this.number_max_people,
+   this.bookedDates,
   });
 
   // Future<String> convertPathToURL(String path){
@@ -62,7 +66,7 @@ class Acommodation {
         'number_of_rooms': number_of_rooms,
         'number_of_beds': number_of_beds,
         'number_of_bathrooms': number_of_bathrooms,
-        'number_max_people': number_max_people,
+        'number_max_people': max_guests,
         'price_per_night': price_per_night,
         'street': street,
         'address': address,
@@ -85,35 +89,34 @@ class Acommodation {
         'photoUrl': photoUrl,
         'bathroom': bathroom
       };
+  
 
-  Acommodation.fromJson(Map<String, dynamic> json) {
-    title = json['title'];
-    type = json['type'];
-    number_of_rooms = json['number_of_rooms'];
-    number_of_beds = json['number_of_beds'];
-    number_of_bathrooms = json['number_of_bathrooms'];
-    number_max_people = json['number_max_people'];
-    price_per_night = json['price_per_night'];
-    street = json['street'];
-    city = json['city'];
-    post_code = json['post_code'];
-    country = json['country'];
-    check_in = json['check_in'];
-    check_out = json['check_out'];
-    description = json['description'];
-    wifi = json['wifi'];
-    tv = json['tv'];
-    air_conditioning = json['air_conditioning'];
-    kitchen = json['kitchen'];
-    host_id = json['host_id'];
-    rate = json['rate'];
-    photo = json['photo'];
-    reviews = json['reviews'];
-    bed = json['bed'];
-    bathroom = json['bathroom'];
-    bedroom = json['bedroom'];
-    address = json['address'];
+  Acommodation.fromJson(Map<String,dynamic> json)
+  {
+    title=json['title'];
+    type=json['type'];
+    number_of_rooms=json['number_of_rooms'];
+    number_of_beds=json['number_of_beds'];
+    number_of_bathrooms=json['number_of_bathrooms'];
+    max_guests=json['number_max_people'];
+    price_per_night=json['price_per_night'];
+    street=json['street'];
+    city=json['city'];
+    post_code=json['post_code'];
+    country=json['country'];
+    check_in=json['check_in'];
+    check_out=json['check_out'];
+    description=json['description'];
+    wifi=json['wifi'];
+    tv=json['tv'];
+    air_conditioning=json['air_conditioning'];
+    kitchen=json['kitchen'];
+    host_id=json['host_id'];
+    rate=json['rate'];
+    photo=json['photo'];
+    reviews=json['reviews'];
     photoUrl = List<String>.from(json['photoUrl']);
+    //bookedDates =( List<Timestamp>.from(json['booked']))!.map((date) => date.toDate()).toList();
   }
 
   Acommodation.fromSnapshot(snapshot)
@@ -127,7 +130,7 @@ class Acommodation {
         bedroom = snapshot.data()['bedroom'],
         bed = snapshot.data()['bed'],
         bathroom = snapshot.data()['bathroom'],
-        number_max_people = snapshot.data()['number_max_people'],
+        max_guests = snapshot.data()['number_max_people'],
         address = snapshot.data()['address'],
         photoUrl = List<String>.from(snapshot.data()['photoUrl']);
 }

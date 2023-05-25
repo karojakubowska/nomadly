@@ -2,7 +2,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:nomadly_app/home-web.dart';
 
@@ -57,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: Container(
           width: 400,
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: Colors.white,
@@ -65,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
                 blurRadius: 5,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -75,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Container(
                 alignment: Alignment.center,
-                child: Text(
+                child: const Text(
                   'Panel Admin',
                   style: TextStyle(
                     fontSize: 24,
@@ -83,24 +82,24 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Email',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Password',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
@@ -146,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: ((context) => HomeWeb(
+                  builder: ((context) => const HomeWeb(
                   ))));
         }
       }

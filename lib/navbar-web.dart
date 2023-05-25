@@ -26,7 +26,7 @@ class TopNavBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false, // usuwa przycisk cofnij
       title: Text('NOMADLY - ADMIN PANEL',
           style: GoogleFonts.roboto(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   fontSize: 20.0,
                   height: 1.2,
                   color: Colors.white,
@@ -37,40 +37,40 @@ class TopNavBar extends StatelessWidget implements PreferredSizeWidget {
           child: Text(
             'Show All Users',
             style: GoogleFonts.roboto(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     fontSize: 16.0,
                     height: 1.2,
                     color: Colors.white,
                     fontWeight: FontWeight.w300)),
           ),
         ),
-        SizedBox(width: 40.0), // dodajemy przerwę pomiędzy przyciskami
+        const SizedBox(width: 40.0), // dodajemy przerwę pomiędzy przyciskami
         TextButton(
           onPressed: onManageReportsClicked,
           child: Text(
             'Manage Reports',
             style: GoogleFonts.roboto(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     fontSize: 16.0,
                     height: 1.2,
                     color: Colors.white,
                     fontWeight: FontWeight.w300)),
           ),
         ),
-        SizedBox(width: 40.0), // dodajemy przerwę pomiędzy przyciskami
+        const SizedBox(width: 40.0), // dodajemy przerwę pomiędzy przyciskami
         TextButton(
           onPressed: onLogoutClicked,
           child: Text(
             'Logout',
             style: GoogleFonts.roboto(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     fontSize: 16.0,
                     height: 1.2,
                     color: Colors.white,
                     fontWeight: FontWeight.w300)),
           ),
         ),
-        SizedBox(width: 20.0)
+        const SizedBox(width: 20.0)
       ],
     );
   }

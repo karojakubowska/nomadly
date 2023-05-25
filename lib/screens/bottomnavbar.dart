@@ -1,5 +1,4 @@
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nomadly_app/screens/chat_view.dart';
 import 'package:nomadly_app/screens/travel_view.dart';
@@ -47,7 +46,7 @@ class _BottomNavBarState extends State<BottomNavBar>
 
   Widget _tabItem(Widget child, {bool isSelected = false}) {
     return AnimatedContainer(
-        margin: EdgeInsets.only(top:4,bottom:15),
+        margin: const EdgeInsets.only(top:4,bottom:15),
         alignment: Alignment.center,
         duration: const Duration(milliseconds: 500),
         decoration: !isSelected

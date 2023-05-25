@@ -62,14 +62,14 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                           image: NetworkImage(snapshot.data.toString()),
                         );
                       } else {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
                     },
                   ),
                   Container(
                     height: 400,
                     color: Colors.black12,
-                    padding: EdgeInsets.only(top: 50),
+                    padding: const EdgeInsets.only(top: 50),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -82,7 +82,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                                   Navigator.pop(context);
                                 },
                                 child: Container(
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.arrow_back,
                                     color: Colors.white,
                                     size: 24,
@@ -92,7 +92,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                             ],
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Container(
                           width: MediaQuery
                               .of(context)
@@ -118,7 +118,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   Text(
                     "Travel Details",
                     style: GoogleFonts.roboto(
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
                             color: Colors.grey,
@@ -137,10 +137,10 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     labelText: 'Name',
-                    prefixIcon: Icon(Icons.near_me, color: Colors.grey),
+                    prefixIcon: const Icon(Icons.near_me, color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.blue,
                         width: 1,
                       ),
@@ -161,10 +161,10 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     labelText: 'Destination',
-                    prefixIcon: Icon(Icons.place, color: Colors.grey),
+                    prefixIcon: const Icon(Icons.place, color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.blue,
                         width: 1,
                       ),
@@ -185,10 +185,10 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     labelText: 'Budget',
-                    prefixIcon: Icon(Icons.monetization_on, color: Colors.grey),
+                    prefixIcon: const Icon(Icons.monetization_on, color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.blue,
                         width: 1,
                       ),
@@ -212,14 +212,14 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   color: Colors.blue,
                                   width: 1,
                                 ),
                               ),
                               filled: true,
                               fillColor: Colors.transparent,
-                              prefixIcon: Icon(Icons.calendar_month_outlined,
+                              prefixIcon: const Icon(Icons.calendar_month_outlined,
                                   color: Colors.grey),
                               labelText: 'Start Date',
                               enabled: false,
@@ -241,7 +241,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   color: Colors.blue,
                                   width: 1,
                                 ),
@@ -249,7 +249,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                               filled: true,
                               fillColor: Colors.transparent,
                               labelText: 'End Date',
-                              prefixIcon: Icon(Icons.calendar_month_outlined,
+                              prefixIcon: const Icon(Icons.calendar_month_outlined,
                                   color: Colors.grey),
                               enabled: false,
                               hintText: 'Please select an end date',
@@ -278,10 +278,10 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     labelText: 'Number of People',
-                    prefixIcon: Icon(Icons.person, color: Colors.grey),
+                    prefixIcon: const Icon(Icons.person, color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.blue,
                         width: 1,
                       ),
@@ -305,7 +305,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                     labelText: 'Note',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.blue,
                         width: 1,
                       ),
@@ -316,7 +316,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(40.0),
+                padding: const EdgeInsets.all(40.0),
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                       minimumSize: const Size.fromHeight(55),

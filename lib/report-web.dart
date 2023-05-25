@@ -185,7 +185,7 @@ class ReportWeb extends StatelessWidget {
           },
         ),
         body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 100, vertical: 100),
+            padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 100),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -196,7 +196,7 @@ class ReportWeb extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Expanded(
                       child: StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance.collection(
@@ -207,7 +207,7 @@ class ReportWeb extends StatelessWidget {
                                   child: Text('Error: ${snapshot.error}'));
                             }
                             if (!snapshot.hasData) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(child: CircularProgressIndicator());
                             }
                             final reports = snapshot.data!.docs;
                             return ListView.builder(
@@ -229,8 +229,8 @@ class ReportWeb extends StatelessWidget {
                                     );
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.only(bottom: 20),
-                                    padding: EdgeInsets.all(20),
+                                    margin: const EdgeInsets.only(bottom: 20),
+                                    padding: const EdgeInsets.all(20),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
                                       color: Colors.white,
@@ -238,7 +238,7 @@ class ReportWeb extends StatelessWidget {
                                         BoxShadow(
                                           color: Colors.grey.withOpacity(0.5),
                                           blurRadius: 5,
-                                          offset: Offset(0, 3),
+                                          offset: const Offset(0, 3),
                                         ),
                                       ],
                                     ),
@@ -253,7 +253,7 @@ class ReportWeb extends StatelessWidget {
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         FutureBuilder<DocumentSnapshot>(
                                             future: FirebaseFirestore.instance
                                                 .collection('Users')
@@ -265,7 +265,7 @@ class ReportWeb extends StatelessWidget {
                                                     'Error: ${snapshot.error}');
                                               }
                                               if (!snapshot.hasData) {
-                                                return CircularProgressIndicator();
+                                                return const CircularProgressIndicator();
                                               }
                                               final userData = snapshot.data!
                                                   .data() as Map<

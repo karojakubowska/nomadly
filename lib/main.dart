@@ -2,26 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:nomadly_app/home-web.dart';
 import 'package:nomadly_app/main-web.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
+import 'package:nomadly_app/models/Booking.dart';
 import 'package:nomadly_app/models/User.dart';
 import 'package:nomadly_app/screens/all_bookings_view.dart';
-import 'package:nomadly_app/screens/bottomnavbarhost.dart';
 //import 'package:nomadly_app/screens/calendar.dart';
 import 'package:nomadly_app/screens/chat_view.dart';
-import 'package:nomadly_app/screens/checkout.dart';
-import 'package:nomadly_app/screens/checkout_confirmed.dart';
-import 'package:nomadly_app/screens/filter_screen.dart';
 import 'package:nomadly_app/screens/home_view.dart';
 import 'package:nomadly_app/screens/host/all_bookings_host_view.dart';
 import 'package:nomadly_app/screens/new_bottomnavbar.dart';
-import 'package:nomadly_app/screens/payment.dart';
 import 'package:nomadly_app/screens/travel_view.dart';
-import 'package:nomadly_app/screens/user_review_view.dart';
 import 'package:nomadly_app/screens/userprofile_view.dart';
 import 'package:nomadly_app/screens/wishlist_view.dart';
 import 'package:nomadly_app/services/accommodation_provider.dart';
+import 'package:nomadly_app/services/booking_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/add_accommodation_view.dart';
@@ -31,7 +26,6 @@ import 'services/authentication_provider.dart';
 import 'firebase_options.dart';
 import 'screens/authentication/auth_page.dart';
 import 'screens/introduction_view.dart';
-import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 int? initScreen;
@@ -69,10 +63,15 @@ Future<void> main() async {
       ),
       StreamProvider<List<Acommodation>>.value(
         value: AccommodationProvider().allAccommodations,
-        initialData: [],
-        child: HomeTest(),
+        initialData: const [],
+        child: const HomeTest(),
       ),
-    ], child: MyApp()));
+      StreamProvider<List<Booking>>.value(
+        value: BookingProvider().allBookings,
+        initialData: const [],
+        child: const HomeTest(),
+      ),
+    ], child: const MyApp()));
   }
 }
 
@@ -89,8 +88,8 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255)),
       initialRoute: initScreen == 0 || initScreen == null ? 'onboard' : 'home',
       routes: {
-        'home': (context) => LoginPage(),
-        'onboard': (context) => IntroPage(),
+        'home': (context) => const LoginPage(),
+        'onboard': (context) => const IntroPage(),
       },
       navigatorKey: navigatorKey,
     );
@@ -107,7 +106,7 @@ class LoginPage extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.active) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             final user = snapshot.data;
             if (user != null) {
@@ -119,26 +118,28 @@ class LoginPage extends StatelessWidget {
                 builder: (BuildContext context,
                     AsyncSnapshot<DocumentSnapshot> snapshot) {
                   if (snapshot.hasError) {
-                    return Text("Something went wrong.");
+                    return const Text("Something went wrong.");
                   }
                   if (snapshot.connectionState == ConnectionState.done) {
                     UserModel user = UserModel.fromSnapshot(snapshot.data);
-                    if (user.accountType == 'Client')
+                    if (user.accountType == 'Client') {
                       return NewBottomNavBar(
-                        screens: [
+                        screens: const [
                           HomeTest(),
                           WishlistScreen(),
                           AllBookingsScreen(),
                           TravelView(),
                           Chat(),
-                          //PaymentDetailsScreen(),
+                         // PaymentDetailsScreen(),
                           //CheckoutConfirmedScreen(),
                           //CheckoutScreen()
-                          UserProfileScreen()
+                          //CalendarScreen(),
+                          //UserProfileScreen()
                         ],
                       );
+                    }
                     return NewBottomNavBarHost(
-                      screens: [
+                      screens: const [
                         HomeHostScreen(),
                         AllBookingsHostScreen(),
                         AddAccommodationScreen(),
@@ -147,11 +148,11 @@ class LoginPage extends StatelessWidget {
                       ],
                     );
                   }
-                  return Text("Loading");
+                  return const Text("Loading");
                 },
               );
             } else {
-              return AuthPage();
+              return const AuthPage();
             }
           }),
     );

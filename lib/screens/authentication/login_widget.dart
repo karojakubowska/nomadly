@@ -81,12 +81,12 @@ class _LoginWidgetState extends State<LoginWidget> {
             obscureText: true,
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: const EdgeInsets.all(5),
             child: Align(
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   'Forgot Password?',
                   style: TextStyle(
                       fontSize: 16,
@@ -152,7 +152,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 style: TextStyle(
                     fontSize: 16, color: Color.fromARGB(255, 57, 57, 57))),
           ),
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(60),

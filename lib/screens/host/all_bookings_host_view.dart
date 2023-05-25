@@ -38,7 +38,7 @@ class _AllBookingsScreenState extends State<AllBookingsHostScreen> {
           children: [
             Column(
               children: [
-                Gap(10),
+                const Gap(10),
                 SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(children: <Widget>[
@@ -53,9 +53,9 @@ class _AllBookingsScreenState extends State<AllBookingsHostScreen> {
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) return const Text("Loading...");
-                            if (snapshot.data!.docs.isEmpty)
+                            if (snapshot.data!.docs.isEmpty) {
                               return Container(
-                                margin: EdgeInsets.only(top: 20),
+                                margin: const EdgeInsets.only(top: 20),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -63,7 +63,7 @@ class _AllBookingsScreenState extends State<AllBookingsHostScreen> {
                                       "Find your new bookings!",
                                       textAlign: TextAlign.center,
                                       style: GoogleFonts.roboto(
-                                          color: Color.fromARGB(255, 24, 24, 24),
+                                          color: const Color.fromARGB(255, 24, 24, 24),
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500
                                       ),
@@ -71,6 +71,7 @@ class _AllBookingsScreenState extends State<AllBookingsHostScreen> {
                                   ],
                                 ),
                               );
+                            }
                             return ListView.builder(
                                 scrollDirection: Axis.vertical,
                                 itemCount: snapshot.data!.docs.length,

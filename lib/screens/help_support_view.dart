@@ -28,7 +28,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
         appBar: AppBar(
           leading: IconButton(
             color: Colors.black,
-            icon: Icon(Icons.arrow_back_ios_new),
+            icon: const Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
@@ -37,7 +37,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
             'Help',
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     fontSize: 20.0,
                     height: 1.2,
                     color: Colors.black,
@@ -48,7 +48,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
           centerTitle: true,
         ),
         body: Container(
-          padding: EdgeInsets.only(left: 40, right: 40),
+          padding: const EdgeInsets.only(left: 40, right: 40),
           width: double.infinity,
           height: double.infinity,
           child: Column(
@@ -66,12 +66,12 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                 'Do You have a problem with \n the app or have any questions?',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.roboto(
-                    color: Color.fromARGB(255, 24, 24, 24),
+                    color: const Color.fromARGB(255, 24, 24, 24),
                     fontSize: 20,
                     fontWeight: FontWeight.w500),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 40, right: 40, top: 20),
+                padding: const EdgeInsets.only(left: 40, right: 40, top: 20),
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                       minimumSize: const Size.fromHeight(60),

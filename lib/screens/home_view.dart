@@ -8,6 +8,7 @@ import 'package:nomadly_app/screens/accommodation_details_view.dart';
 import 'package:provider/provider.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
+import 'filter_screen.dart';
 import 'foryou_view.dart';
 import 'popular_view.dart';
 
@@ -30,6 +31,36 @@ class _HomeTestState extends State<HomeTest> {
                 ))));
   }
 
+
+Query query = FirebaseFirestore.instance.collection("Accommodations");
+  List<String> filters = [];
+  String city = "";
+  RangeValues priceRange = const RangeValues(0, 2000);
+  List<Acommodation> results = [];
+ int guestNumber=0;
+   DateTime  startDate=DateTime.now();
+   DateTime endDate=DateTime.now();
+  //String searchText="";
+  TextEditingController searchText = TextEditingController();
+
+  void getFilter(List<String> currentfilters, RangeValues priceRangeFilter,
+      String currentCity, List<Acommodation> resultList,int guests,DateTime start,DateTime end) {
+    setState(() {
+      filters = currentfilters;
+      priceRange = priceRangeFilter;
+      city = currentCity;
+      results = resultList;
+      guestNumber=guests;
+       startDate=start;
+      endDate=end;
+    });
+  }
+
+  void updateQuery(Query newQuery) {
+    setState(() {
+      query = newQuery;
+    });
+  }
   // @override
   // void initState() {
   //   accommodations = fetchAccommodations();
@@ -45,7 +76,7 @@ class _HomeTestState extends State<HomeTest> {
   @override
   Widget build(BuildContext context) {
     final size = AppLayout.getSize(context);
-    final String locationsvg = 'assets/images/location-pin-svgrepo-com.svg';
+    const String locationsvg = 'assets/images/location-pin-svgrepo-com.svg';
     List<Acommodation> accommodationList =
         Provider.of<List<Acommodation>>(context);
     return Scaffold(
@@ -62,7 +93,7 @@ class _HomeTestState extends State<HomeTest> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Gap(20),
-                      Text('Hello?!', style: Styles.headLineStyle),
+                      Text('Hello!!', style: Styles.headLineStyle),
                       const Gap(20),
                       Text('What are you looking for?',
                           style: Styles.headLineStyle2),
@@ -76,25 +107,52 @@ class _HomeTestState extends State<HomeTest> {
                   const Gap(10),
                 ],
               ),
-              Container(
-                height: 50,
-                margin: const EdgeInsets.only(top: 28, left: 28, right: 28),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                child: TextField(
-                  onChanged: (val) => (val),
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.all(15),
-                    prefixIcon: Icon(Icons.search_outlined),
-                    hintText: 'Search places',
+              GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet<dynamic>(
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (BuildContext bc) {
+                          return FiltersScreen(
+                              onApplyFilters: getFilter,
+                              onQueryChanged: updateQuery,
+                              currentFilters: filters,
+                              currentPriceRange: priceRange,
+                              currentCity: city,
+                              resultList: results,
+                              start: startDate,
+                              end: endDate,
+                              guests: guestNumber);
+                        });
+                  },
+                    child: Container(
+                      height: 50,
+                      margin:
+                          const EdgeInsets.only(top: 28, left: 28, right: 28),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Row(
+                        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          const Gap(10),
+                          const Icon(Icons.search_outlined),
+                          const Gap(10),
+                          Center(
+                            child: Text(
+                              'Search places',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                                color: Styles.greyColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
               Container(
                 padding: const EdgeInsets.only(top: 25, left: 30, right: 28),
                 child: Row(
@@ -110,44 +168,45 @@ class _HomeTestState extends State<HomeTest> {
                                     const AllAccommodationsScreen()),
                           );
                         },
-                        child: Text('See all', style: Styles.viewAllStyle),
+                        child: Text('See more', style: Styles.viewAllStyle),
                       ),
                     ]),
               )
             ],
           ),
-          Gap(20),
+          const Gap(20),
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
-                        height: 210,
-                        width: size.width,
-                        child:
-                            //  FutureBuilder<QuerySnapshot>(
-                            //     future: accommodations,
-                            //     builder: (context, snapshot) {
-                            //       if (snapshot.data == null) {
-                            //         return const Center(
-                            //           child: Text('Loading'),
-                            //         );
-                            //       }
+                      height: 210,
+                      width: size.width,
+                      child:
+                          //  FutureBuilder<QuerySnapshot>(
+                          //     future: accommodations,
+                          //     builder: (context, snapshot) {
+                          //       if (snapshot.data == null) {
+                          //         return const Center(
+                          //           child: Text('Loading'),
+                          //         );
+                          //       }
 
-                            // return
-                            ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: accommodationList.length,
-                          itemBuilder: (context, index) {
-                            Acommodation model = accommodationList[index];
-                            return ForYouCard(
-                              accomodation: accommodationList[index],
-                              index: index,
-                            );
-                          }  // }),
-                        ),
-                    )])),
+                          // return
+                          ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: accommodationList.length,
+                              itemBuilder: (context, index) {
+                                Acommodation model = accommodationList[index];
+                                return ForYouCard(
+                                  accomodation: accommodationList[index],
+                                  index: index,
+                                );
+                              } // }),
+                              ),
+                    )
+                  ])),
           Container(
             padding: const EdgeInsets.only(left: 30, right: 28),
             child: Row(
@@ -163,7 +222,7 @@ class _HomeTestState extends State<HomeTest> {
                                 const AllAccommodationsScreen()),
                       );
                     },
-                    child: Text('See all', style: Styles.viewAllStyle),
+                    child: Text('See more', style: Styles.viewAllStyle),
                   ),
                 ]),
           ),

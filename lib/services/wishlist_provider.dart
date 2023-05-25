@@ -1,10 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/Favorites.dart';
-import 'package:provider/provider.dart';
 
 class WishlistProvider {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

@@ -11,6 +11,13 @@ class AccommodationProvider {
         .map((QuerySnapshot querySnapshot) => querySnapshot.docs
         .map((DocumentSnapshot documentSnapshot) {
       List<String> photoUrls = List<String>.from(documentSnapshot["photoUrl"]);
+       var bookedDates = List<Timestamp>.from(documentSnapshot["booked"]);
+       bookedDates.sort();
+       List<DateTime> list=[];
+      for (var date in bookedDates) {
+        list.add(date.toDate());
+        
+      }
       return Acommodation(
         id: documentSnapshot.id,
         title: documentSnapshot["title"],
@@ -21,13 +28,17 @@ class AccommodationProvider {
         price_per_night: documentSnapshot["price_per_night"],
         host_id: documentSnapshot['host_id'],
         description: documentSnapshot["description"],
+                wifi: documentSnapshot["wifi"],
+                tv:  documentSnapshot["tv"],
         bedroom: documentSnapshot["bedroom"],
         bathroom: documentSnapshot["bathroom"],
         bed: documentSnapshot["bed"],
         address: documentSnapshot["address"],
-        number_max_people: documentSnapshot["number_max_people"],
+        max_guests: documentSnapshot["number_max_people"],
         reviews: documentSnapshot["reviews"],
         photoUrl: photoUrls,
+        bookedDates: list,
+
       );
     })
         .toList());

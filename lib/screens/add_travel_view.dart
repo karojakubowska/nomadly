@@ -1,13 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nomadly_app/models/Travel.dart';
-import 'package:nomadly_app/screens/todo_view.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
@@ -54,7 +49,7 @@ class _AddTravelViewState extends State<AddTravelView> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select a start date')),
+        const SnackBar(content: Text('Please select a start date')),
       );
     }
   }
@@ -71,7 +66,7 @@ class _AddTravelViewState extends State<AddTravelView> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select an end date')),
+        const SnackBar(content: Text('Please select an end date')),
       );
     }
   }
@@ -113,7 +108,7 @@ class _AddTravelViewState extends State<AddTravelView> {
           return SafeArea(
             child: Wrap(
               children: <Widget>[
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
                   title: const Text('Gallery'),
@@ -148,7 +143,7 @@ class _AddTravelViewState extends State<AddTravelView> {
         number_of_peopleController.text.isEmpty ||
         _photo == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('All fields are required')),
+        const SnackBar(content: Text('All fields are required')),
       );
       return;
     }
@@ -157,7 +152,7 @@ class _AddTravelViewState extends State<AddTravelView> {
     var uid = user.uid;
     if (_photo == null) return;
 
-    String uuid = Uuid().v4();
+    String uuid = const Uuid().v4();
     String uniqueFileName = '$uid/$uuid.jpg';
     final destination = uniqueFileName;
 
@@ -184,7 +179,7 @@ class _AddTravelViewState extends State<AddTravelView> {
     }).then((value) {
       print("DocumentSnapshot successfully updated!");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('New travel added')),
+        const SnackBar(content: Text('New travel added')),
       );
     }, onError: (e) {
       print("Error updating document $e");
@@ -205,7 +200,7 @@ class _AddTravelViewState extends State<AddTravelView> {
       appBar: AppBar(
         leading: IconButton(
           color: Colors.black,
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).popUntil((route) => route.isFirst);
           },
@@ -214,7 +209,7 @@ class _AddTravelViewState extends State<AddTravelView> {
           'Add Travel',
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   fontSize: 20.0,
                   height: 1.2,
                   color: Colors.black,
@@ -222,14 +217,19 @@ class _AddTravelViewState extends State<AddTravelView> {
         ),
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        elevation: 0,
-        textTheme: TextTheme(
+        elevation: 0, toolbarTextStyle: const TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
-        ),
+        ).bodyText2, titleTextStyle: const TextTheme(
+          subtitle1: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ).headline6,
       ),
 //       body: ListView(
 //         // mainAxisAlignment: MainAxisAlignment.center,
@@ -501,7 +501,7 @@ class _AddTravelViewState extends State<AddTravelView> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 0.0),
+                  padding: const EdgeInsets.only(top: 0.0),
                   child: GestureDetector(
                     onTap: () {
                       _showPicker(context);
@@ -510,17 +510,17 @@ class _AddTravelViewState extends State<AddTravelView> {
                       width: 150,
                       height: 150,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 249, 250, 250),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: const Color.fromARGB(255, 249, 250, 250),
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
                         border: Border.all(
-                          color: Color.fromARGB(255, 217, 217, 217),
+                          color: const Color.fromARGB(255, 217, 217, 217),
                           width: 0.5,
                         ),
                       ),
                       child: _photo != null
                           ? ClipRRect(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                                  const BorderRadius.all(Radius.circular(10)),
                               child: Image.file(
                                 _photo!,
                                 width: 50,
@@ -530,11 +530,11 @@ class _AddTravelViewState extends State<AddTravelView> {
                             )
                           : Container(
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 249, 250, 250),
+                                color: const Color.fromARGB(255, 249, 250, 250),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                                    const BorderRadius.all(Radius.circular(10)),
                                 border: Border.all(
-                                  color: Color.fromARGB(255, 217, 217, 217),
+                                  color: const Color.fromARGB(255, 217, 217, 217),
                                   width: 0.5,
                                 ),
                               ),
@@ -624,7 +624,7 @@ class _AddTravelViewState extends State<AddTravelView> {
                         Expanded(
                           child: Container(
                             child: TextField(
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10.0)),
@@ -653,7 +653,7 @@ class _AddTravelViewState extends State<AddTravelView> {
                         Expanded(
                           child: Container(
                             child: TextField(
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10.0)),
@@ -731,7 +731,7 @@ class _AddTravelViewState extends State<AddTravelView> {
                 ),
                 const SizedBox(height: 10),
                 Padding(
-                  padding: EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size.fromHeight(60),

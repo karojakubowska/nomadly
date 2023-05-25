@@ -1,7 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gap/gap.dart';
 
@@ -75,7 +73,7 @@ class ReviewCard extends StatelessWidget {
                               fontSize: 10,
                             ),
                           ),
-                          Gap(10),
+                          const Gap(10),
                           RatingBarIndicator(
                             rating: user.rate!.toDouble(),
                             itemBuilder: (context, index) => const Icon(
@@ -86,7 +84,7 @@ class ReviewCard extends StatelessWidget {
                             itemSize: 10.0,
                             direction: Axis.horizontal,
                           ),
-                          Gap(10),
+                          const Gap(10),
                         ],
                       ),
                     ],
@@ -102,7 +100,7 @@ class ReviewCard extends StatelessWidget {
                 ),
               ],
             ),
-            Gap(10),
+            const Gap(10),
             Text(
               review.reviewText!,
               style: const TextStyle(

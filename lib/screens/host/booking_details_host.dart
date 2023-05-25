@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,10 +6,6 @@ import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/Booking.dart';
 import 'package:intl/intl.dart';
 import 'package:nomadly_app/models/User.dart';
-import 'package:nomadly_app/screens/add_travel_view.dart';
-import 'package:nomadly_app/screens/change_password_view.dart';
-import 'package:nomadly_app/screens/checkout_confirmed.dart';
-import 'package:nomadly_app/screens/home_host_view.dart';
 import '../../utils/app_styles.dart';
 import '../chat_single_view.dart';
 import '../report_form_view.dart';
@@ -225,13 +220,13 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
             child: Text(
               'Rate the user',
               style: GoogleFonts.roboto(
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                       fontSize: 16.0,
                       color: Colors.white,
                       fontWeight: FontWeight.w700)),
             ),
           ),
-          Gap(30),
+          const Gap(30),
           ElevatedButton(
             onPressed: () {
               Navigator.push(

@@ -1,8 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/screens/accommodation_card_host.dart';
 import 'package:nomadly_app/utils/app_layout.dart';
@@ -11,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../utils/app_styles.dart';
 
 class HomeHostScreen extends StatefulWidget {
-  const HomeHostScreen();
+  const HomeHostScreen({super.key});
 
   @override
   State<HomeHostScreen> createState() => _HomeHostScreenState();
@@ -54,7 +51,7 @@ class _HomeHostScreenState extends State<HomeHostScreen> {
                                 host_id: currentUser,
                               );
                             } else {
-                              return SizedBox.shrink(); // pusta przestrzeń
+                              return const SizedBox.shrink(); // pusta przestrzeń
                             }
                           },
                         ),

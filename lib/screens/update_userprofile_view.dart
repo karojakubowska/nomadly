@@ -123,7 +123,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           return SafeArea(
             child: Wrap(
               children: <Widget>[
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
                   title: const Text('Gallery'),
@@ -151,7 +151,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     var uid = user.uid;
     if (_photo == null) return;
 
-    String uuid = Uuid().v4();
+    String uuid = const Uuid().v4();
     String uniqueFileName = '$uid/$uuid.jpg';
     final destination = uniqueFileName;
 
@@ -180,7 +180,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         appBar: AppBar(
           leading: IconButton(
             color: Colors.black,
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
@@ -189,7 +189,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             'Edit Profile',
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     fontSize: 20.0,
                     height: 1.2,
                     color: Colors.black,
@@ -205,7 +205,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SingleChildScrollView(
                   child: Column(children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 0.0),
+                  padding: const EdgeInsets.only(top: 0.0),
                   //padding: EdgeInsets.all(15.0),
                   child: GestureDetector(
                     onTap: () {
@@ -215,17 +215,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       width: 150,
                       height: 150,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 249, 250, 250),
-                        borderRadius: BorderRadius.all(Radius.circular(100)),
+                        color: const Color.fromARGB(255, 249, 250, 250),
+                        borderRadius: const BorderRadius.all(Radius.circular(100)),
                         border: Border.all(
-                          color: Color.fromARGB(255, 217, 217, 217),
+                          color: const Color.fromARGB(255, 217, 217, 217),
                           width: 0.5,
                         ),
                       ),
                       child: _photo != null
                           ? ClipRRect(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(100)),
+                                  const BorderRadius.all(Radius.circular(100)),
                               child: Image.file(
                                 _photo!,
                                 width: 150,
@@ -236,18 +236,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           : _photoUrl.isNotEmpty
                               ? ClipRRect(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(100)),
+                                      const BorderRadius.all(Radius.circular(100)),
                                   child: Image.network(
                                     _photoUrl,
                                     fit: BoxFit.cover,
                                   ))
                               : Container(
                                   decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 249, 250, 250),
+                                    color: const Color.fromARGB(255, 249, 250, 250),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(100)),
+                                        const BorderRadius.all(Radius.circular(100)),
                                     border: Border.all(
-                                      color: Color.fromARGB(255, 217, 217, 217),
+                                      color: const Color.fromARGB(255, 217, 217, 217),
                                       width: 0.5,
                                     ),
                                   ),
@@ -273,7 +273,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Text(
                       "Click to edit photo",
                       style: GoogleFonts.roboto(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               fontSize: 14.0,
                               height: 1.2,
                               color: Colors.grey,
@@ -285,7 +285,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   height: 20,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 120.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 120.0),
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size.fromHeight(45),
@@ -306,13 +306,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(15.0),
                     child: StreamBuilder<DocumentSnapshot>(
                         stream: userStream,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
                           final userDoc = snapshot.data!;
                           final accountImage = userDoc.get('AccountImage');
@@ -376,7 +376,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 ),
                                 Padding(
                                   padding:
-                                      EdgeInsets.symmetric(horizontal: 20.0),
+                                      const EdgeInsets.symmetric(horizontal: 20.0),
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       minimumSize: const Size.fromHeight(45),

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-
 class ReportFormView extends StatefulWidget {
   final String otherUserId;
 
@@ -26,7 +24,7 @@ class _ReportFormViewState extends State<ReportFormView> {
     final text = textController.text.trim();
     if (title.isEmpty || text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('All fields are required')),
+        const SnackBar(content: Text('All fields are required')),
       );
       return;
     }
@@ -39,7 +37,7 @@ class _ReportFormViewState extends State<ReportFormView> {
         'otherUserId': widget.otherUserId,
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Report added successfully.'),
         ),
       );
@@ -56,7 +54,7 @@ class _ReportFormViewState extends State<ReportFormView> {
       appBar: AppBar(
         leading: IconButton(
           color: Colors.black,
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).popUntil((route) => route.isFirst);
           },
@@ -65,7 +63,7 @@ class _ReportFormViewState extends State<ReportFormView> {
           'Add Report',
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   fontSize: 20.0,
                   height: 1.2,
                   color: Colors.black,
@@ -73,14 +71,19 @@ class _ReportFormViewState extends State<ReportFormView> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: true,
-        textTheme: TextTheme(
+        centerTitle: true, toolbarTextStyle: const TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
-        ),
+        ).bodyText2, titleTextStyle: const TextTheme(
+          subtitle1: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ).headline6,
       ),
       body: ListView(
         // mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +142,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                 ),
                 const SizedBox(height: 10),
                 Padding(
-                  padding: EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size.fromHeight(60),

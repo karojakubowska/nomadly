@@ -13,9 +13,17 @@ import 'accommodation_details_view.dart';
 class AccommodationCard extends StatefulWidget {
   final Acommodation accomodation;
   final int index;
+  DateTime? start_date;
+  DateTime? end_date;
+  int? guest_number;
 
-  const AccommodationCard(
-      {super.key, required this.accomodation, required this.index});
+  AccommodationCard(
+      {super.key,
+      required this.accomodation,
+      required this.index,
+      this.start_date,
+      this.guest_number,
+      this.end_date});
 
   @override
   State<AccommodationCard> createState() => _AccommodationCardState();
@@ -28,6 +36,9 @@ class _AccommodationCardState extends State<AccommodationCard> {
         MaterialPageRoute(
             builder: ((context) => DetailScreen(
                   accommodation: accommodation,
+                  start_date: widget.start_date,
+                  end_date: widget.end_date,
+                  guest_number: widget.guest_number,
                 ))));
   }
 
@@ -36,7 +47,7 @@ class _AccommodationCardState extends State<AccommodationCard> {
     final size = AppLayout.getSize(context);
     return InkWell(
       child: Container(
-       margin: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
+        margin: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
         width: size.width,
         height: size.height * 0.31,
         decoration: BoxDecoration(
@@ -55,7 +66,7 @@ class _AccommodationCardState extends State<AccommodationCard> {
                       height: 180,
                       width: size.width,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20)),
                           image: DecorationImage(
@@ -64,50 +75,52 @@ class _AccommodationCardState extends State<AccommodationCard> {
                           )));
                 } else {
                   return Center(
-                      child: ShimmerLoadCardPhotos(height: 180, width: size.width));
+                      child: ShimmerLoadCardPhotos(
+                          height: 180, width: size.width));
                 }
               },
             ),
-            Gap(10),
+            const Gap(10),
             Container(
-              padding: EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     widget.accomodation.title!,
                     style: GoogleFonts.roboto(
-                        color: Color.fromARGB(255, 24, 24, 24),
+                        color: const Color.fromARGB(255, 24, 24, 24),
                         fontSize: 18,
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
                     "\$${widget.accomodation.price_per_night?.toStringAsFixed(2)}",
                     style: GoogleFonts.roboto(
-                        color: Color.fromARGB(255, 24, 24, 24),
+                        color: const Color.fromARGB(255, 24, 24, 24),
                         fontSize: 18,
                         fontWeight: FontWeight.w500),
                   ),
+                  
                 ],
               ),
             ),
-            Gap(10),
+            const Gap(10),
             Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
+              margin: const EdgeInsets.only(left: 20, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                       height: 30,
                       width: 50,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Color.fromARGB(255, 50, 134, 252),
                           shape: BoxShape.rectangle,
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.star,
                             color: Colors.white,
                             size: 16,
@@ -130,7 +143,7 @@ class _AccommodationCardState extends State<AccommodationCard> {
                               isEqualTo: widget.accomodation.id)
                           .snapshots(),
                       builder: (context, snapshot) {
-                        if (snapshot.data == null) return Text("no data");
+                        if (snapshot.data == null) return const Text("no data");
                         return IconButton(
                             onPressed: () async {
                               snapshot.data!.docs.length == 0
@@ -140,8 +153,8 @@ class _AccommodationCardState extends State<AccommodationCard> {
                                       widget.accomodation.id!);
                             },
                             icon: snapshot.data!.docs.length == 0
-                                ? Icon(Icons.favorite_border_outlined)
-                                : Icon(Icons.favorite));
+                                ? const Icon(Icons.favorite_border_outlined)
+                                : const Icon(Icons.favorite));
                       })
                 ],
               ),

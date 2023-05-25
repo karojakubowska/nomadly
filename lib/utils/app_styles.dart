@@ -7,7 +7,7 @@ class Styles {
   static Color primaryColor = primary;
   static Color textColor = const Color(0xFF3b3b3b);
   static Color greyColor = const Color.fromARGB(255, 173, 173, 173);
-  static Color whiteColor = Color.fromARGB(255, 255, 255, 255);
+  static Color whiteColor = const Color.fromARGB(255, 255, 255, 255);
   static Color pinColor = const Color.fromARGB(255, 49, 134, 252);
   static Color backgroundColor = const Color(0xFFeeedf2);
   static TextStyle textStyle =

@@ -45,7 +45,7 @@ class _ChatState extends State<Chat> {
           'Chat',
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   fontSize: 20.0,
                   height: 1.2,
                   color: Colors.black,
@@ -53,14 +53,19 @@ class _ChatState extends State<Chat> {
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        textTheme: TextTheme(
+        elevation: 0, toolbarTextStyle: const TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
-        ),
+        ).bodyText2, titleTextStyle: const TextTheme(
+          subtitle1: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ).headline6,
       ),
       body: StreamBuilder<QuerySnapshot>(
           stream: _firestore
@@ -98,7 +103,7 @@ class _ChatState extends State<Chat> {
                         "",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.roboto(
-                            color: Color.fromARGB(255, 24, 24, 24),
+                            color: const Color.fromARGB(255, 24, 24, 24),
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                       ),
@@ -147,14 +152,14 @@ class _ChatState extends State<Chat> {
                                 );
                               },
                               child: Container(
-                                margin: EdgeInsets.symmetric(
+                                margin: const EdgeInsets.symmetric(
                                     vertical: 5, horizontal: 10),
                                 child: Card(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.all(15),
+                                    padding: const EdgeInsets.all(15),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -166,7 +171,7 @@ class _ChatState extends State<Chat> {
                                           builder: (context, snapshot) {
                                             if (snapshot.connectionState ==
                                                 ConnectionState.waiting) {
-                                              return Center(
+                                              return const Center(
                                                   child:
                                                       CircularProgressIndicator());
                                             }
@@ -196,7 +201,7 @@ class _ChatState extends State<Chat> {
                                             );
                                           },
                                         ),
-                                        SizedBox(width: 15),
+                                        const SizedBox(width: 15),
                                         Expanded(
                                           child: Column(
                                             crossAxisAlignment:
@@ -204,25 +209,25 @@ class _ChatState extends State<Chat> {
                                             children: [
                                               Text(otherUserName,
                                                   style: GoogleFonts.roboto(
-                                                      color: Color.fromARGB(
+                                                      color: const Color.fromARGB(
                                                           255, 24, 24, 24),
                                                       fontSize: 16,
                                                       fontWeight: fontWeight)),
-                                              SizedBox(height: 7),
+                                              const SizedBox(height: 7),
                                               Text(
                                                 document.get('text').length > 30
                                                     ? '${document.get('text').substring(0, 30)}...'
                                                     : document.get('text'),
                                                 style: GoogleFonts.roboto(
-                                                    color: Color.fromARGB(
+                                                    color: const Color.fromARGB(
                                                         255, 24, 24, 24),
                                                     fontSize: 12,
                                                     fontWeight: fontWeight),
                                               ),
-                                              SizedBox(height: 7),
+                                              const SizedBox(height: 7),
                                               Text(formattedDate,
                                                   style: GoogleFonts.roboto(
-                                                      color: Color.fromARGB(
+                                                      color: const Color.fromARGB(
                                                           130, 30, 30, 30),
                                                       fontSize: 12,
                                                       fontWeight:
@@ -238,7 +243,7 @@ class _ChatState extends State<Chat> {
                                             itemBuilder:
                                                 (BuildContext context) =>
                                                     <PopupMenuEntry>[
-                                              PopupMenuItem(
+                                              const PopupMenuItem(
                                                 child: Text("Report"),
                                                 value: 2,
                                               ),
@@ -256,7 +261,7 @@ class _ChatState extends State<Chat> {
                                                 );
                                               }
                                             },
-                                            icon: Icon(Icons.more_vert),
+                                            icon: const Icon(Icons.more_vert),
                                           ),
                                         )
                                       ],

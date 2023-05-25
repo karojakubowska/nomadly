@@ -10,7 +10,7 @@ class ShimmerLoad extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color:Colors.black.withOpacity(0.1),
         borderRadius: const BorderRadius.all(Radius.circular(12))

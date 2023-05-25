@@ -719,17 +719,14 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
-import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 import '../utils/app_layout.dart';
@@ -857,7 +854,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
           return SafeArea(
             child: Wrap(
               children: <Widget>[
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
                   title: const Text('Gallery'),
@@ -912,7 +909,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
       }).catchError((error) {
         print("Error removing image: $error");
       });
-      String uuid = Uuid().v4();
+      String uuid = const Uuid().v4();
       String uniqueFileName = '$uid/$uuid.jpg';
       final destination = uniqueFileName;
 
@@ -962,7 +959,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
           'Update Accommodation',
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                   fontSize: 20.0,
                   height: 1.2,
                   color: Colors.black,
@@ -970,14 +967,19 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        textTheme: TextTheme(
+        elevation: 0, toolbarTextStyle: const TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
-        ),
+        ).bodyText2, titleTextStyle: const TextTheme(
+          subtitle1: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ).headline6,
       ),
       body: ListView(
         // mainAxisAlignment: MainAxisAlignment.center,
@@ -986,7 +988,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(bottom: 10, right: 20, left: 20),
+                  padding: const EdgeInsets.only(bottom: 10, right: 20, left: 20),
                   child: GestureDetector(
                     onTap: () {
                       _showPicker(context);
@@ -995,17 +997,17 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                       width: size.width,
                       height: size.height * 0.31,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 249, 250, 250),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: const Color.fromARGB(255, 249, 250, 250),
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
                         border: Border.all(
-                          color: Color.fromARGB(255, 217, 217, 217),
+                          color: const Color.fromARGB(255, 217, 217, 217),
                           width: 0.5,
                         ),
                       ),
                       child: _photo != null
                           ? ClipRRect(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                                  const BorderRadius.all(Radius.circular(10)),
                               child: Image.file(
                                 _photo!,
                                 width: size.width,
@@ -1016,18 +1018,18 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                           : _photoUrl.isNotEmpty
                               ? ClipRRect(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
+                                      const BorderRadius.all(Radius.circular(10)),
                                   child: Image.network(
                                     _photoUrl,
                                     fit: BoxFit.cover,
                                   ))
                               : Container(
                                   decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 249, 250, 250),
+                                    color: const Color.fromARGB(255, 249, 250, 250),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
+                                        const BorderRadius.all(Radius.circular(10)),
                                     border: Border.all(
-                                      color: Color.fromARGB(255, 217, 217, 217),
+                                      color: const Color.fromARGB(255, 217, 217, 217),
                                       width: 0.5,
                                     ),
                                   ),
@@ -1053,7 +1055,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     Text(
                       "Click to edit photo",
                       style: GoogleFonts.roboto(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                               fontSize: 14.0,
                               height: 1.2,
                               color: Colors.grey,
@@ -1072,7 +1074,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                       Text(
                         "Basic Information:",
                         style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 fontSize: 20.0,
                                 height: 1.2,
                                 color: Colors.black,
@@ -1341,7 +1343,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                       Text(
                         "Other:",
                         style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 fontSize: 20.0,
                                 height: 1.2,
                                 color: Colors.black,
@@ -1356,7 +1358,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("Kitchen",
+                    title: const Text("Kitchen",
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -1373,7 +1375,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("Wifi",
+                    title: const Text("Wifi",
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -1390,7 +1392,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("TV",
+                    title: const Text("TV",
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -1407,7 +1409,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("Air Conditioning",
+                    title: const Text("Air Conditioning",
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -1423,7 +1425,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 ),
                 const SizedBox(height: 10),
                 Padding(
-                  padding: EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size.fromHeight(60),

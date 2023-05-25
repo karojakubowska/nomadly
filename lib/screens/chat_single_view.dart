@@ -73,7 +73,7 @@ class _ChatSingleViewState extends State<ChatSingleView> {
         centerTitle: true,
         leading: IconButton(
           color: Colors.black,
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).popUntil((route) => route.isFirst);
           },
@@ -90,7 +90,7 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                 widget.otherUserId,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.roboto(
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                         fontSize: 20.0,
                         height: 1.2,
                         color: Colors.black,
@@ -102,7 +102,7 @@ class _ChatSingleViewState extends State<ChatSingleView> {
               otherUserName,
               textAlign: TextAlign.center,
               style: GoogleFonts.roboto(
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                       fontSize: 20.0,
                       height: 1.2,
                       color: Colors.black,
@@ -111,14 +111,19 @@ class _ChatSingleViewState extends State<ChatSingleView> {
           },
         ),
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        textTheme: TextTheme(
+        elevation: 0, toolbarTextStyle: const TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
-        ),
+        ).bodyText2, titleTextStyle: const TextTheme(
+          subtitle1: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ).headline6,
       ),
       body: Column(
         children: [
@@ -131,7 +136,7 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 final List<DocumentSnapshot> senderMessages =
                     snapshot.data!.docs;
@@ -143,7 +148,7 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                     final List<DocumentSnapshot> otherUserMessages =
                         snapshot.data!.docs;
@@ -191,9 +196,9 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                     //       child: SizedBox(
                     //         width: 250,
                     //         child: Container(
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 10),
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 15),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -241,7 +246,7 @@ class _ChatSingleViewState extends State<ChatSingleView> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(20),
@@ -251,7 +256,7 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: ' Write Something...',
                       contentPadding: EdgeInsets.symmetric(horizontal: 5),
                       border: InputBorder.none,
@@ -260,7 +265,7 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                 ),
                 IconButton(
                   onPressed: _sendMessage,
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   color: Theme.of(context).primaryColor,
                 ),
               ],

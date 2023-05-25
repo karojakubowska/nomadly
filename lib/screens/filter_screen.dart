@@ -1,10 +1,8 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:nomadly_app/screens/all_accommodations.dart';
+import 'package:nomadly_app/models/Booking.dart';
 import 'package:nomadly_app/utils/app_layout.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 import 'package:intl/src/intl/date_format.dart';
@@ -29,14 +27,25 @@ enum AmenitiesFilter { wifi, tv, airconditioning, kitchen }
 
 class FiltersScreen extends StatefulWidget {
   List<String> currentFilters = [];
-  RangeValues currentPriceRange = RangeValues(0, 2000);
+  int guests = 0;
+  RangeValues currentPriceRange = const RangeValues(0, 2000);
+  String currentCity = "";
+  List<Acommodation> resultList;
+  DateTime start;
+  DateTime end;
   final QueryCallback onQueryChanged;
-  final void Function(List<String>, RangeValues) onApplyFilters;
+  final void Function(List<String>, RangeValues, String, List<Acommodation>,
+      int, DateTime, DateTime) onApplyFilters;
   FiltersScreen(
-      {required this.onApplyFilters,
+      {super.key, required this.onApplyFilters,
       required this.onQueryChanged,
       required this.currentFilters,
-      required this.currentPriceRange});
+      required this.currentPriceRange,
+      required this.currentCity,
+      required this.resultList,
+      required this.start,
+      required this.end,
+      required this.guests});
   @override
   State<FiltersScreen> createState() => _FiltersScreenState();
 }
@@ -44,8 +53,9 @@ class FiltersScreen extends StatefulWidget {
 class _FiltersScreenState extends State<FiltersScreen> {
   RangeValues _priceRange = const RangeValues(0, 2000);
 
-  late DateTime startDate;
-  late DateTime endDate;
+  late DateTime currentstartDate;
+  late DateTime currentendDate;
+  late int guest_number;
   int? _value = 1;
   //List<String> accommodationType=["All","Apartment","Hotel","Hostel","Cabin","Bungalow","Private room"];
   List<String> _filters = <String>[];
@@ -53,12 +63,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
   Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: startDate ?? DateTime.now(),
+        initialDate: currentstartDate ?? DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != startDate) {
+    if (picked != null && picked != currentstartDate) {
       setState(() {
-        startDate = picked;
+        currentstartDate = picked;
       });
     }
   }
@@ -66,12 +76,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
   Future<void> _selectEndDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: endDate ?? DateTime.now(),
+        initialDate: currentendDate ?? DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != endDate) {
+    if (picked != null && picked != currentendDate) {
       setState(() {
-        endDate = picked;
+        currentendDate = picked;
       });
     }
   }
@@ -79,21 +89,25 @@ class _FiltersScreenState extends State<FiltersScreen> {
   @override
   void initState() {
     super.initState();
-    startDate = DateTime.now();
-    endDate = DateTime.now();
+    currentstartDate = DateTime.now();
+    currentendDate = DateTime.now();
     _filters = widget.currentFilters;
     _priceRange = widget.currentPriceRange;
+    searchCity.text = widget.currentCity;
+    guest_number = widget.guests;
   }
 
+  TextEditingController searchCity = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var size = AppLayout.getSize(context);
     List<Acommodation> accommodationList =
         Provider.of<List<Acommodation>>(context);
+    List<Booking> bookingsList = Provider.of<List<Booking>>(context);
 
     return Container(
-      height: size.height * 0.8,
-      width: size.width * 0.8,
+      height: size.height, //size.height * 0.8,
+      width: size.width, //size.width * 0.8,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -104,13 +118,44 @@ class _FiltersScreenState extends State<FiltersScreen> {
       ),
       child: Column(
         children: [
-          Gap(20),
-          Text("Date",
+          const Gap(80),
+          const Text("When",
               style: TextStyle(
                   fontSize: 20,
                   color: Color.fromARGB(255, 24, 24, 24),
                   fontWeight: FontWeight.w500)),
-          Gap(20),
+          TextField(
+            controller: searchCity,
+            onChanged: (val) => setState(() {
+              // query = query.where(
+              //   'city',
+              //   isEqualTo: searchText.text,
+              // );
+            }),
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              errorBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              contentPadding: EdgeInsets.all(15),
+              prefixIcon: Icon(Icons.search_outlined),
+              hintText: 'Search places',
+            ),
+             ),
+          Divider(
+            color: Styles.greyColor,
+            height: 30,
+            thickness: 1,
+            indent: 25,
+            endIndent: 25,
+          
+          ),
+          const Text("When",
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Color.fromARGB(255, 24, 24, 24),
+                  fontWeight: FontWeight.w500)),
+          const Gap(20),
           Row(
             children: [
               Expanded(
@@ -129,9 +174,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   readOnly: true,
                   onTap: () => _selectStartDate(context),
                   controller: TextEditingController(
-                    text: startDate == null
+                    text: currentstartDate == null
                         ? ''
-                        : DateFormat('dd-MM-yyyy').format(startDate),
+                        : DateFormat('dd-MM-yyyy').format(currentstartDate),
                   ),
                 ),
               ),
@@ -148,15 +193,15 @@ class _FiltersScreenState extends State<FiltersScreen> {
                       ),
                       filled: true,
                       fillColor: Color.fromARGB(255, 249, 250, 250),
-                      labelText: 'Out',
+                      labelText: 'Check Out',
                       hintText: 'Please select an end date',
                     ),
                     readOnly: true,
                     onTap: () => _selectEndDate(context),
                     controller: TextEditingController(
-                      text: endDate == null
+                      text: currentendDate == null
                           ? ''
-                          : DateFormat('dd-MM-yyyy').format(endDate),
+                          : DateFormat('dd-MM-yyyy').format(currentendDate),
                     ),
                   ),
                 ),
@@ -170,14 +215,49 @@ class _FiltersScreenState extends State<FiltersScreen> {
             indent: 25,
             endIndent: 25,
           ),
-          Gap(10),
-          Text("Price",
+          Container(
+            width: 60,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                    onTap: () => setState(() {
+                          widget.guests == 0
+                              ? print('guests at 0')
+                              : widget.guests--;
+                        }),
+                    child: const Icon(Icons.remove)),
+                Text('${widget.guests}'),
+                GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        print('set');
+                        widget.guests++;
+                      });
+                    },
+                    child: const Icon(Icons.add)),
+              ],
+            ),
+          ),
+          Divider(
+            color: Styles.greyColor,
+            height: 30,
+            thickness: 1,
+            indent: 25,
+            endIndent: 25,
+          ),
+          const Gap(10),
+          const Text("Price",
               style: TextStyle(
                   fontSize: 20,
                   color: Color.fromARGB(255, 24, 24, 24),
                   fontWeight: FontWeight.w500)),
           RangeSlider(
-            activeColor: Color.fromARGB(255, 135, 135, 135),
+            activeColor: const Color.fromARGB(255, 135, 135, 135),
             values: _priceRange,
             max: 2000,
             divisions: 2000,
@@ -198,8 +278,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
             indent: 25,
             endIndent: 25,
           ),
-          Gap(10),
-          Text("Type",
+          const Gap(10),
+          const Text("Type",
               style: TextStyle(
                   fontSize: 20,
                   color: Color.fromARGB(255, 24, 24, 24),
@@ -251,8 +331,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
             indent: 25,
             endIndent: 25,
           ),
-          Gap(20),
-          Text("Amenities",
+          const Gap(20),
+          const Text("Amenities",
               style: TextStyle(
                 fontSize: 20,
                 color: Color.fromARGB(255, 24, 24, 24),
@@ -286,13 +366,27 @@ class _FiltersScreenState extends State<FiltersScreen> {
               );
             }).toList(),
           ),
-          Gap(20),
+          const Gap(20),
 
+          // ElevatedButton(
+          //   child: const Text('Search'),
+          //   onPressed: () => {
+          //     widget.onApplyFilters(_filters, _priceRange,searchCity.text),
+          //     widget.onQueryChanged(buildFilterQuery()),
+          //     Navigator.pop(context)
+          //   },
+          // )
           ElevatedButton(
             child: const Text('Search'),
             onPressed: () => {
-              widget.onApplyFilters(_filters, _priceRange),
-              widget.onQueryChanged(buildFilterQuery()),
+              widget.onApplyFilters(
+                  _filters,
+                  _priceRange,
+                  searchCity.text,
+                  getFilteredList(accommodationList, bookingsList),
+                  widget.guests,
+                  currentstartDate,
+                  currentendDate,),
               Navigator.pop(context)
             },
           )
@@ -303,14 +397,16 @@ class _FiltersScreenState extends State<FiltersScreen> {
 
   Query buildFilterQuery() {
     Query query = FirebaseFirestore.instance.collection('Accommodations');
+
+    if (searchCity.text.isNotEmpty) {
+      query = query.where("city", isEqualTo: searchCity.text);
+    }
+
     if (_priceRange.start >= 0 && _priceRange.end <= 2000) {
       query = query
           .where("price_per_night", isGreaterThanOrEqualTo: _priceRange.start)
           .where("price_per_night", isLessThanOrEqualTo: _priceRange.end);
     }
-    // if(startDate!=null&&endDate!=null){
-    //   query=query.where(field)
-    // }
     if (_filters == AccommodationTypeFilter.All) {}
     if (_filters.contains(AmenitiesFilter.wifi.name)) {
       query = query.where("wifi", isEqualTo: true);
@@ -324,6 +420,81 @@ class _FiltersScreenState extends State<FiltersScreen> {
     if (_filters.contains(AmenitiesFilter.kitchen.name)) {
       query = query.where("kitchen", isEqualTo: true);
     }
+
     return query;
+  }
+
+  // List<Booking> checkForAvailability(List<Booking> bookingsList) {
+  //   var bookingResults = bookingsList;
+  //   bookingResults = bookingResults
+  //       .where((i) =>
+  //           DateTime.fromMillisecondsSinceEpoch(i.startDate!.seconds * 1000) !=
+  //               currentstartDate &&
+  //           DateTime.fromMillisecondsSinceEpoch(i.endDate!.seconds * 1000) !=
+  //               currentendDate)
+  //       .toList();
+  //   return bookingResults;
+  // }
+
+  List<Acommodation> getFilteredList(
+      List<Acommodation> accommodationList, List<Booking> bookingsList) {
+    List<Acommodation> list = [];
+    var bookingResults = bookingsList;
+    if (searchCity.text.isEmpty) {
+      bookingResults = bookingResults
+          .where((i) =>
+              DateTime.fromMillisecondsSinceEpoch(
+                      i.startDate!.seconds * 1000) !=
+                  currentstartDate &&
+              DateTime.fromMillisecondsSinceEpoch(i.endDate!.seconds * 1000) !=
+                  currentendDate)
+          .toList();
+    } else {
+      bookingResults = bookingResults
+          .where((i) =>(DateTime.fromMillisecondsSinceEpoch(
+                          i.startDate!.seconds * 1000) !=
+                      currentstartDate &&
+                  DateTime.fromMillisecondsSinceEpoch(
+                          i.endDate!.seconds * 1000) !=
+                      currentendDate)||
+              (DateTime.fromMillisecondsSinceEpoch(
+                          i.startDate!.seconds * 1000) !=
+                      currentstartDate &&
+                  DateTime.fromMillisecondsSinceEpoch(
+                          i.endDate!.seconds * 1000) !=
+                      currentendDate) &&
+              (i.city == searchCity.text || i.country == searchCity.text))
+          .toList();
+    }
+
+    for (Booking booking in bookingResults) {
+      for (Acommodation accommodation in accommodationList) {
+        if (booking.accommodationId == accommodation.id &&
+            accommodation.max_guests! >= widget.guests) {
+          list.add(accommodation);
+        }
+      }
+    }
+    if (_priceRange.start >= 0 && _priceRange.end <= 2000) {
+      list = list
+          .where((i) =>
+              i.price_per_night! >= _priceRange.start &&
+              i.price_per_night! <= _priceRange.end)
+          .toList();
+    }
+    if (_filters == AccommodationTypeFilter.All) {}
+    if (_filters.contains(AmenitiesFilter.wifi.name)) {
+      list = list.where((i) => i.wifi == true).toList();
+    }
+    if (_filters.contains(AmenitiesFilter.tv.name)) {
+      list = list.where((i) => i.tv == true).toList();
+    }
+    if (_filters.contains(AmenitiesFilter.airconditioning.name)) {
+      list = list.where((i) => i.air_conditioning == true).toList();
+    }
+    if (_filters.contains(AmenitiesFilter.kitchen.name)) {
+      list = list.where((i) => i.kitchen == true).toList();
+    }
+    return list;
   }
 }

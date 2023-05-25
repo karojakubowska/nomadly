@@ -21,16 +21,16 @@ class ReportDetails extends StatelessWidget {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
         if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
         final reportData = snapshot.data!.data() as Map<String, dynamic>;
         return Scaffold(
           appBar: AppBar(
-            title: Text('Report Details'),
+            title: const Text('Report Details'),
           ),
           body: Container(
-            margin: EdgeInsets.all(20),
-            constraints: BoxConstraints(maxWidth: 300),
+            margin: const EdgeInsets.all(20),
+            constraints: const BoxConstraints(maxWidth: 300),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -41,7 +41,7 @@ class ReportDetails extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 FutureBuilder<DocumentSnapshot>(
                   future: FirebaseFirestore.instance
                       .collection('Users')
@@ -52,7 +52,7 @@ class ReportDetails extends StatelessWidget {
                       return Text('Error: ${snapshot.error}');
                     }
                     if (!snapshot.hasData) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     }
                     final userData =
                         snapshot.data!.data() as Map<String, dynamic>;
@@ -75,7 +75,7 @@ class ReportDetails extends StatelessWidget {
                       return Text('Error: ${snapshot.error}');
                     }
                     if (!snapshot.hasData) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     }
                     final userData =
                         snapshot.data!.data() as Map<String, dynamic>;
@@ -88,15 +88,15 @@ class ReportDetails extends StatelessWidget {
                     );
                   },
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'Report Content:',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   reportData['text'],
                   style: TextStyle(
@@ -116,9 +116,9 @@ class ReportDetails extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text('Przeglądaj profil zgłaszającego'),
+                  child: const Text('Przeglądaj profil zgłaszającego'),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     // Przeglądaj profil zgłaszającego
@@ -131,7 +131,7 @@ class ReportDetails extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text('Przeglądaj profil zgłoszonego'),
+                  child: const Text('Przeglądaj profil zgłoszonego'),
                 )
               ],
             ),

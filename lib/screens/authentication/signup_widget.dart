@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -120,14 +119,14 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             ),
             obscureText: true,
           ),
-          Gap(20),
+          const Gap(20),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 249, 250, 250),
+              color: const Color.fromARGB(255, 249, 250, 250),
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                  width: 1, color: Color.fromARGB(255, 217, 217, 217)),
+                  width: 1, color: const Color.fromARGB(255, 217, 217, 217)),
             ),
             child: DropdownButton<String>(
               value: _selectedType,
