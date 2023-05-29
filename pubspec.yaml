@@ -59,9 +59,10 @@ dependencies:
   syncfusion_flutter_datepicker: ^21.1.41
   rxdart: ^0.27.7
   syncfusion_localizations: ^21.2.5
-  intl: ^0.18.1
+  intl: ^0.18.0
   path: ^1.8.3
   uuid: ^3.0.7
+  easy_localization: ^3.0.0
 
 dependency_overrides:
    firebase_core_platform_interface: ^4.8.0
@@ -90,6 +91,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/translate/
 
   #   - images/a_dot_ham.jpeg
 
