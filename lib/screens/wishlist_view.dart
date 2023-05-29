@@ -24,86 +24,80 @@ class _WishlistScreenState extends State<WishlistScreen> {
 
     var size = AppLayout.getSize(context);
     return Scaffold(
-      backgroundColor: Styles.backgroundColor,
-      appBar: AppBar(
         backgroundColor: Styles.backgroundColor,
-        title: Text('Wishlist', style: Styles.headLineStyle4),
-        elevation: 0,
-        centerTitle: true,
-      ),
-      body:
-
-          //  SingleChildScrollView(
-          //       scrollDirection: Axis.vertical,
-          //       child: Column(children: <Widget>[
-          //         SizedBox(
-          //           height: size.height * 0.78,
-          //           width: size.width * 0.9,
-          //           child:
-          SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            Container(
-              height: size.height*0.78 ,
-              width: size.width,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('Wishlists')
-                    .doc(userID)
-                    .collection('favs')
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) return const Text("Loading...");
-                  if (snapshot.data!.docs.isEmpty) {
-                    return Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Find your new favourites!",
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.roboto(
-                                color: const Color.fromARGB(255, 24, 24, 24),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      //shrinkWrap: true,
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        return StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance
-                                .collection('Accommodations')
-                                .where(FieldPath.documentId,
-                                    isEqualTo: snapshot.data!.docs[index]
-                                        ['accommodationId'])
-                                .snapshots(),
-                            builder: (context, snap) {
-                              if (!snap.hasData) return const Text("Loading...");
-                              Acommodation model = Acommodation.fromJson(
-                                  snap.data!.docs[0].data() as Map<String,dynamic>);
-                                  model.id=snap.data!.docs[0].id;
-                              return AccommodationCard(
-                                accomodation: model,
-                                index: index,
-                              );
-                            });
-                      });
-                },
-              ),
-            ),
-          ],
+        appBar: AppBar(
+          backgroundColor: Styles.backgroundColor,
+          title: Text('Wishlist', style: Styles.headLineStyle4),
+          elevation: 0,
+          centerTitle: true,
         ),
-      ),
-    );
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Center(
+            child: Column(
+              children: [
+                Container(
+                  height: size.height * 0.78,
+                  width: size.width * 0.9,
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Wishlists')
+                        .doc(userID)
+                        .collection('favs')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) return const Text("Loading...");
+                      if (snapshot.data!.docs.isEmpty) {
+                        return Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Find your new favourites!",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.roboto(
+                                    color:
+                                        const Color.fromARGB(255, 24, 24, 24),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          //shrinkWrap: true,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            return StreamBuilder<QuerySnapshot>(
+                                stream: FirebaseFirestore.instance
+                                    .collection('Accommodations')
+                                    .where(FieldPath.documentId,
+                                        isEqualTo: snapshot.data!.docs[index]
+                                            ['accommodationId'])
+                                    .snapshots(),
+                                builder: (context, snap) {
+                                  if (!snap.hasData)
+                                    return const Text("Loading...");
+                                  Acommodation model = Acommodation.fromJson(
+                                      snap.data!.docs[0].data()
+                                          as Map<String, dynamic>);
+                                  model.id = snap.data!.docs[0].id;
+                                  return AccommodationCard(
+                                    accomodation: model,
+                                    index: index,
+                                  );
+                                });
+                          });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
     //          , ])),
     // );
   }
