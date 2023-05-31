@@ -5,7 +5,6 @@ import 'package:nomadly_app/screens/home_view.dart';
 
 import '../../main.dart';
 
-
 // class LoginWidget extends StatefulWidget {
 //   final VoidCallback onClickedSignUp;
 //
@@ -212,6 +211,8 @@ class _LoginWidgetState extends State<LoginWidget> {
     super.dispose();
   }
 
+  bool _isPasswordVisible = false;
+
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -262,7 +263,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 controller: passwordController,
                 cursorColor: Colors.white,
                 textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Password',
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
@@ -271,8 +272,20 @@ class _LoginWidgetState extends State<LoginWidget> {
                   ),
                   filled: true,
                   fillColor: Color.fromARGB(255, 249, 250, 250),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  ),
                 ),
-                obscureText: true,
+                obscureText: !_isPasswordVisible,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your password';

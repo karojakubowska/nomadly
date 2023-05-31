@@ -50,9 +50,15 @@ class _WishlistScreenState extends State<WishlistScreen> {
                       if (snapshot.data!.docs.isEmpty) {
                         return Container(
                           margin: const EdgeInsets.only(top: 20),
-                          child: Row(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              Image.asset(
+                                'assets/images/empty-box.png',
+                                width: 100,
+                                height: 100,
+                              ),
+                              SizedBox(height: 20),
                               Text(
                                 "Find your new favourites!",
                                 textAlign: TextAlign.center,

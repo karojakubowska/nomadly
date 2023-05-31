@@ -41,16 +41,7 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) => Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
-        title: Text(
-          'Chat',
-          textAlign: TextAlign.center,
-          style: GoogleFonts.roboto(
-              textStyle: TextStyle(
-                  fontSize: 20.0,
-                  height: 1.2,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700)),
-        ),
+        title: Text('Chat', style: Styles.headLineStyle4),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -99,16 +90,23 @@ class _ChatState extends State<Chat> {
                   latestMessages.values.toList();
               if (latestMessagesList.isEmpty) {
                 return Center(
-                  child: Row(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Image.asset(
+                        'assets/images/empty-box.png',
+                        width: 100,
+                        height: 100,
+                      ),
+                      SizedBox(height: 20),
                       Text(
-                        "",
+                        "No messages yet",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.roboto(
-                            color: Color.fromARGB(255, 24, 24, 24),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
+                          color: Color.fromARGB(255, 24, 24, 24),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),
@@ -138,7 +136,8 @@ class _ChatState extends State<Chat> {
                             .get(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return Container();
+                            return Container(
+                            );
                           } else {
                             final String otherUserName =
                                 snapshot.data!.get('Name').toString();

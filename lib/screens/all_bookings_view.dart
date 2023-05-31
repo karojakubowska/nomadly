@@ -56,17 +56,22 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
                             }
                             if (snapshot.data!.docs.isEmpty) {
                               return Container(
-                                margin: const EdgeInsets.only(top: 20),
-                                child: Row(
+                                child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    Image.asset(
+                                      'assets/images/empty-box.png',
+                                      width: 100,
+                                      height: 100,
+                                    ),
+                                    SizedBox(height: 20),
                                     Text(
                                       "Find your new bookings!",
                                       textAlign: TextAlign.center,
                                       style: GoogleFonts.roboto(
-                                          color: const Color.fromARGB(255, 24, 24, 24),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500
+                                        color: const Color.fromARGB(255, 24, 24, 24),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ],

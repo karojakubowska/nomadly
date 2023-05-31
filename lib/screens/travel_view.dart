@@ -52,16 +52,7 @@ class _TravelViewState extends State<TravelView> {
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
-        title: Text(
-          'Travels',
-          textAlign: TextAlign.center,
-          style: GoogleFonts.roboto(
-              textStyle: const TextStyle(
-                  fontSize: 20.0,
-                  height: 1.2,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700)),
-        ),
+        title: Text('Travels`', style: Styles.headLineStyle4),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -94,9 +85,15 @@ class _TravelViewState extends State<TravelView> {
           }
           if (snapshot.data!.docs.isEmpty)
             return Center(
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Image.asset(
+                    'assets/images/empty-box.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                  SizedBox(height: 20),
                   Text(
                     "Click on the plus - blue button and add a new travel!",
                     textAlign: TextAlign.center,
