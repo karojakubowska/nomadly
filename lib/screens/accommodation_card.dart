@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +101,6 @@ class _AccommodationCardState extends State<AccommodationCard> {
                         fontSize: 18,
                         fontWeight: FontWeight.w500),
                   ),
-                  
                 ],
               ),
             ),
@@ -143,7 +143,7 @@ class _AccommodationCardState extends State<AccommodationCard> {
                               isEqualTo: widget.accomodation.id)
                           .snapshots(),
                       builder: (context, snapshot) {
-                        if (snapshot.data == null) return const Text("no data");
+                        if (snapshot.data == null) return Text(tr("No data"));
                         return IconButton(
                             onPressed: () async {
                               snapshot.data!.docs.length == 0

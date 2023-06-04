@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -28,7 +29,7 @@ class UserReviewScreen extends StatelessWidget {
         appBar: AppBar(
           leading: const BackButton(color: Colors.black),
           backgroundColor: Styles.backgroundColor,
-          title: Text('Review', style: Styles.headLineStyle4),
+          title: Text(tr('Review'), style: Styles.headLineStyle4),
           elevation: 0,
           centerTitle: true,
         ),
@@ -61,8 +62,8 @@ class UserReviewScreen extends StatelessWidget {
                 maxLines: 10,
                 textInputAction: TextInputAction.next,
                 textAlignVertical: TextAlignVertical.top,
-                decoration: const InputDecoration(
-                  labelText: 'Tell us about your experience with your guests',
+                decoration: InputDecoration(
+                  labelText: tr('Tell us about your experience with your guests'),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
@@ -89,7 +90,7 @@ class UserReviewScreen extends StatelessWidget {
                 minimumSize: MaterialStateProperty.all(const Size(120, 50)),
               ),
               child: Text(
-                'Send opinion',
+                tr('Send opinion'),
                 style: GoogleFonts.roboto(
                     textStyle: const TextStyle(
                         fontSize: 16.0,
@@ -104,8 +105,8 @@ class UserReviewScreen extends StatelessWidget {
   Future<void> addOpinion(BuildContext context) async {
     if (descriptionController.text.isEmpty ||userRating == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('All fields are required')),
-      );
+        SnackBar(content: Text(tr('All fields are required')),
+      ));
       return;
     }
     /// #TODO

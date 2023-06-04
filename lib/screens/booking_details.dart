@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _BookingDetailsState extends State<BookingDetails> {
       appBar: AppBar(
         leading: const BackButton(color: Colors.black),
         backgroundColor: Styles.backgroundColor,
-        title: Text('Booking details', style: Styles.headLineStyle4),
+        title: Text(tr('Booking details'), style: Styles.headLineStyle4),
         elevation: 0,
         centerTitle: true,
       ),
@@ -36,7 +37,7 @@ class _BookingDetailsState extends State<BookingDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Accommodation", style: Styles.bookingDetailsStyle),
+                Text(tr("Accommodation"), style: Styles.bookingDetailsStyle),
                 Text(widget.accommodation.title!,
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
@@ -49,7 +50,7 @@ class _BookingDetailsState extends State<BookingDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Check-in", style: Styles.bookingDetailsStyle),
+                Text(tr("Check-in"), style: Styles.bookingDetailsStyle),
                 Text(
                     DateFormat.yMMMMd('en_US')
                         .format(widget.booking.startDate!.toDate()),
@@ -79,7 +80,7 @@ class _BookingDetailsState extends State<BookingDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("For", style: Styles.bookingDetailsStyle),
+                Text(tr("For"), style: Styles.bookingDetailsStyle),
                 Text(widget.booking.guestNumber!.toString(),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
@@ -92,7 +93,7 @@ class _BookingDetailsState extends State<BookingDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Status", style: Styles.bookingDetailsStyle),
+                Text(tr("Status"), style: Styles.bookingDetailsStyle),
                 Text(widget.booking.status!,
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
@@ -106,7 +107,7 @@ class _BookingDetailsState extends State<BookingDetails> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Total",
+                  tr("Total"),
                   style: GoogleFonts.roboto(
                       textStyle: const TextStyle(
                           fontSize: 18.0,
@@ -147,7 +148,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                           MaterialStateProperty.all(const Size(320, 50)),
                     ),
                     child: Text(
-                      'Contact with host',
+                      tr('Contact with host'),
                       style: GoogleFonts.roboto(
                           textStyle: const TextStyle(
                               fontSize: 16.0,
@@ -186,7 +187,7 @@ class _BookingDetailsState extends State<BookingDetails> {
               minimumSize: MaterialStateProperty.all(const Size(320, 50)),
             ),
             child: Text(
-              'Rate the accommodation',
+              tr('Rate the accommodation'),
               style: GoogleFonts.roboto(
                   textStyle: const TextStyle(
                       fontSize: 16.0,
@@ -206,7 +207,7 @@ class _BookingDetailsState extends State<BookingDetails> {
               minimumSize: MaterialStateProperty.all(const Size(320, 50)),
             ),
             child: Text(
-              'Report the host',
+              tr('Report the host'),
               style: GoogleFonts.roboto(
                   textStyle: const TextStyle(
                       fontSize: 16.0,
@@ -228,7 +229,7 @@ class _BookingDetailsState extends State<BookingDetails> {
           minimumSize: MaterialStateProperty.all(const Size(320, 50)),
         ),
         child: Text(
-          'Go to payment',
+          tr('Go to payment'),
           style: GoogleFonts.roboto(
               fontSize: 16.0,
               textStyle: const TextStyle(

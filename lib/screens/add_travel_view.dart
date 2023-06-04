@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -49,7 +50,7 @@ class _AddTravelViewState extends State<AddTravelView> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a start date')),
+        SnackBar(content: Text(tr('Please select a start date'))),
       );
     }
   }
@@ -66,7 +67,7 @@ class _AddTravelViewState extends State<AddTravelView> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select an end date')),
+        SnackBar(content: Text(tr('Please select an end date'))),
       );
     }
   }
@@ -111,7 +112,7 @@ class _AddTravelViewState extends State<AddTravelView> {
                 const SizedBox(height: 8.0),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text('Gallery'),
+                  title: Text(tr('Gallery')),
                   onTap: () {
                     imgFromGallery(pickedFile);
                     Navigator.of(context).pop();
@@ -119,7 +120,7 @@ class _AddTravelViewState extends State<AddTravelView> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
-                  title: const Text('Camera'),
+                  title: Text(tr('Camera')),
                   onTap: () {
                     imgFromCamera(pickedFile);
                     Navigator.of(context).pop();
@@ -143,7 +144,7 @@ class _AddTravelViewState extends State<AddTravelView> {
         number_of_peopleController.text.isEmpty ||
         _photo == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('All fields are required')),
+        SnackBar(content: Text(tr('All fields are required'))),
       );
       return;
     }
@@ -206,7 +207,7 @@ class _AddTravelViewState extends State<AddTravelView> {
           },
         ),
         title: Text(
-          'Add Travel',
+          tr('Add Travel'),
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
               textStyle: const TextStyle(
@@ -217,285 +218,23 @@ class _AddTravelViewState extends State<AddTravelView> {
         ),
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        elevation: 0, toolbarTextStyle: const TextTheme(
-          subtitle1: TextStyle(
+        elevation: 0,
+        toolbarTextStyle: const TextTheme(
+          titleMedium: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
-        ).bodyText2, titleTextStyle: const TextTheme(
-          subtitle1: TextStyle(
+        ).bodyText2,
+        titleTextStyle: const TextTheme(
+          titleMedium: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ).headline6,
       ),
-//       body: ListView(
-//         // mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           SingleChildScrollView(
-//             child: Column(
-//               children: <Widget>[
-//                 Padding(
-//                   padding: EdgeInsets.only(top: 0.0),
-//                   child: GestureDetector(
-//                     onTap: () {
-//                       _showPicker(context);
-//                     },
-//                     child: Container(
-//                       width: 150,
-//                       height: 150,
-//                       decoration: BoxDecoration(
-//                         color: Color.fromARGB(255, 249, 250, 250),
-//                         borderRadius: BorderRadius.all(Radius.circular(10)),
-//                         border: Border.all(
-//                           color: Color.fromARGB(255, 217, 217, 217),
-//                           width: 0.5,
-//                         ),
-//                       ),
-//                       child: _photo != null
-//                           ? ClipRRect(
-//                               borderRadius:
-//                                   BorderRadius.all(Radius.circular(10)),
-//                               child: Image.file(
-//                                 _photo!,
-//                                 width: 50,
-//                                 height: 50,
-//                                 fit: BoxFit.fitHeight,
-//                               ),
-//                             )
-//                           : Container(
-//                               decoration: BoxDecoration(
-//                                 color: Color.fromARGB(255, 249, 250, 250),
-//                                 borderRadius:
-//                                     BorderRadius.all(Radius.circular(10)),
-//                                 border: Border.all(
-//                                   color: Color.fromARGB(255, 217, 217, 217),
-//                                   width: 0.5,
-//                                 ),
-//                               ),
-//                               child: Icon(
-//                                 Icons.camera_alt,
-//                                 color: Colors.grey[800],
-//                               ),
-//                             ),
-//                     ),
-//                   ),
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 20),
-//                   child: TextField(
-//                     controller: nameController,
-//                     cursorColor: Colors.white,
-//                     textInputAction: TextInputAction.next,
-//                     decoration: const InputDecoration(
-//                       labelText: 'Name',
-//                       enabledBorder: OutlineInputBorder(
-//                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
-//                         borderSide: BorderSide(
-//                             width: 1,
-//                             color: Color.fromARGB(255, 217, 217, 217)),
-//                       ),
-//                       filled: true,
-//                       fillColor: Color.fromARGB(255, 249, 250, 250),
-//                     ),
-//                   ),
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 20),
-//                   child: TextField(
-//                     controller: destinationController,
-//                     cursorColor: Colors.white,
-//                     textInputAction: TextInputAction.next,
-//                     decoration: const InputDecoration(
-//                       labelText: 'Destination',
-//                       enabledBorder: OutlineInputBorder(
-//                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
-//                         borderSide: BorderSide(
-//                             width: 1,
-//                             color: Color.fromARGB(255, 217, 217, 217)),
-//                       ),
-//                       filled: true,
-//                       fillColor: Color.fromARGB(255, 249, 250, 250),
-//                     ),
-//                   ),
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 20),
-//                   child: TextField(
-//                     controller: budgetController,
-//                     cursorColor: Colors.white,
-//                     keyboardType: TextInputType.number,
-//                     textInputAction: TextInputAction.done,
-//                     decoration: const InputDecoration(
-//                       labelText: 'Budget',
-//                       enabledBorder: OutlineInputBorder(
-//                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
-//                         borderSide: BorderSide(
-//                             width: 1,
-//                             color: Color.fromARGB(255, 217, 217, 217)),
-//                       ),
-//                       filled: true,
-//                       fillColor: Color.fromARGB(255, 249, 250, 250),
-//                     ),
-//                   ),
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 20),
-//                   child: Column(children: [
-//                     Row(
-//                       children: [
-//                         Expanded(
-//                           child: Container(
-//                             child: TextField(
-//                               decoration: InputDecoration(
-//                                 enabledBorder: OutlineInputBorder(
-//                                   borderRadius:
-//                                       BorderRadius.all(Radius.circular(10.0)),
-//                                   borderSide: BorderSide(
-//                                       width: 1,
-//                                       color:
-//                                           Color.fromARGB(255, 217, 217, 217)),
-//                                 ),
-//                                 filled: true,
-//                                 fillColor: Color.fromARGB(255, 249, 250, 250),
-//                                 labelText: 'Start Date',
-//                                 hintText: 'Please select a start date',
-//                               ),
-//                               readOnly: true,
-//                               onTap: () => _selectStartDate(context),
-//                               controller: TextEditingController(
-//                                 text: startDate == null
-//                                     ? ''
-//                                     : DateFormat('dd-MM-yyyy')
-//                                         .format(startDate),
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                         const SizedBox(width: 10),
-//                         Expanded(
-//                           child: Container(
-//                             child: TextField(
-//                               decoration: InputDecoration(
-//                                 enabledBorder: OutlineInputBorder(
-//                                   borderRadius:
-//                                       BorderRadius.all(Radius.circular(10.0)),
-//                                   borderSide: BorderSide(
-//                                       width: 1,
-//                                       color:
-//                                           Color.fromARGB(255, 217, 217, 217)),
-//                                 ),
-//                                 filled: true,
-//                                 fillColor: Color.fromARGB(255, 249, 250, 250),
-//                                 labelText: 'End Date',
-//                                 hintText: 'Please select an end date',
-//                               ),
-//                               readOnly: true,
-//                               onTap: () => _selectEndDate(context),
-//                               controller: TextEditingController(
-//                                 text: endDate == null
-//                                     ? ''
-//                                     : DateFormat('dd-MM-yyyy').format(endDate),
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ]),
-//                 ),
-//                 const SizedBox(
-//                   height: 10,
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 20),
-//                   child: TextField(
-//                     controller: number_of_peopleController,
-//                     cursorColor: Colors.white,
-//                     keyboardType: TextInputType.number,
-//                     textInputAction: TextInputAction.done,
-//                     decoration: const InputDecoration(
-//                       labelText: 'Number of people',
-//                       enabledBorder: OutlineInputBorder(
-//                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
-//                         borderSide: BorderSide(
-//                             width: 1,
-//                             color: Color.fromARGB(255, 217, 217, 217)),
-//                       ),
-//                       filled: true,
-//                       fillColor: Color.fromARGB(255, 249, 250, 250),
-//                     ),
-//                   ),
-//                 ),
-//                 const SizedBox(
-//                   height: 10,
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 20),
-//                   child: TextField(
-//                     controller: noteController,
-//                     cursorColor: Colors.white,
-//                     maxLines: 5,
-//                     textInputAction: TextInputAction.next,
-//                     textAlignVertical: TextAlignVertical.top,
-//                     decoration: const InputDecoration(
-//                       labelText: 'Note',
-//                       enabledBorder: OutlineInputBorder(
-//                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
-//                         borderSide: BorderSide(
-//                           width: 1,
-//                           color: Color.fromARGB(255, 217, 217, 217),
-//                         ),
-//                       ),
-//                       filled: true,
-//                       fillColor: Color.fromARGB(255, 249, 250, 250),
-//                     ),
-//                   ),
-//                 ),
-//                 const SizedBox(height: 10),
-//                 Padding(
-//                   padding: EdgeInsets.all(15.0),
-//                   child: ElevatedButton.icon(
-//                     style: ElevatedButton.styleFrom(
-//                         minimumSize: const Size.fromHeight(60),
-//                         shape: RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.circular(10.0)),
-//                         backgroundColor:
-//                             const Color.fromARGB(255, 50, 134, 252)),
-//                     onPressed: () {
-//                       addTravel(context, pickedFile);
-//                     },
-//                     icon: const Icon(Icons.lock_open, size: 0),
-//                     label: const Text('Add Travel',
-//                         style: TextStyle(fontSize: 20)),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-
-          body: ListView(
-        // mainAxisAlignment: MainAxisAlignment.center,
+      body: ListView(
         children: [
           SingleChildScrollView(
             child: Column(
@@ -511,7 +250,8 @@ class _AddTravelViewState extends State<AddTravelView> {
                       height: 150,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 249, 250, 250),
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
                         border: Border.all(
                           color: const Color.fromARGB(255, 217, 217, 217),
                           width: 0.5,
@@ -534,7 +274,8 @@ class _AddTravelViewState extends State<AddTravelView> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 217, 217, 217),
+                                  color:
+                                      const Color.fromARGB(255, 217, 217, 217),
                                   width: 0.5,
                                 ),
                               ),
@@ -555,8 +296,8 @@ class _AddTravelViewState extends State<AddTravelView> {
                     controller: nameController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Name',
+                    decoration: InputDecoration(
+                      labelText: tr('Name'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -577,8 +318,8 @@ class _AddTravelViewState extends State<AddTravelView> {
                     controller: destinationController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Destination',
+                    decoration: InputDecoration(
+                      labelText: tr('Destination'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -600,8 +341,8 @@ class _AddTravelViewState extends State<AddTravelView> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Budget',
+                    decoration: InputDecoration(
+                      labelText: tr('Budget'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -624,7 +365,7 @@ class _AddTravelViewState extends State<AddTravelView> {
                         Expanded(
                           child: Container(
                             child: TextField(
-                              decoration: const InputDecoration(
+                              decoration:  InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10.0)),
@@ -635,8 +376,8 @@ class _AddTravelViewState extends State<AddTravelView> {
                                 ),
                                 filled: true,
                                 fillColor: Color.fromARGB(255, 249, 250, 250),
-                                labelText: 'Start Date',
-                                hintText: 'Please select a start date',
+                                labelText: tr('Start Date'),
+                                hintText: tr('Please select a start date'),
                               ),
                               readOnly: true,
                               onTap: () => _selectStartDate(context),
@@ -653,7 +394,7 @@ class _AddTravelViewState extends State<AddTravelView> {
                         Expanded(
                           child: Container(
                             child: TextField(
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10.0)),
@@ -664,8 +405,8 @@ class _AddTravelViewState extends State<AddTravelView> {
                                 ),
                                 filled: true,
                                 fillColor: Color.fromARGB(255, 249, 250, 250),
-                                labelText: 'End Date',
-                                hintText: 'Please select an end date',
+                                labelText: tr('End Date'),
+                                hintText: tr('Please select an end date'),
                               ),
                               readOnly: true,
                               onTap: () => _selectEndDate(context),
@@ -691,8 +432,8 @@ class _AddTravelViewState extends State<AddTravelView> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Number of people',
+                    decoration: InputDecoration(
+                      labelText: tr('Number of people'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -715,8 +456,8 @@ class _AddTravelViewState extends State<AddTravelView> {
                     maxLines: 5,
                     textInputAction: TextInputAction.next,
                     textAlignVertical: TextAlignVertical.top,
-                    decoration: const InputDecoration(
-                      labelText: 'Note',
+                    decoration: InputDecoration(
+                      labelText: tr('Note'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -743,7 +484,7 @@ class _AddTravelViewState extends State<AddTravelView> {
                       addTravel(context, pickedFile);
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
-                    label: const Text('Add Travel',
+                    label: Text(tr('Add Travel'),
                         style: TextStyle(fontSize: 20)),
                   ),
                 ),

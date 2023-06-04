@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -117,7 +118,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 const SizedBox(height: 8.0),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text('Gallery'),
+                  title:  Text(tr('Gallery')),
                   onTap: () {
                     imgFromGallery(pickedFile);
                     Navigator.of(context).pop();
@@ -125,7 +126,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
-                  title: const Text('Camera'),
+                  title: Text(tr('Camera')),
                   onTap: () {
                     imgFromCamera(pickedFile);
                     Navigator.of(context).pop();
@@ -221,7 +222,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
             },
           ),
           title: Text(
-            'Update Travel',
+            tr('Update Travel'),
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
                 textStyle: const TextStyle(
@@ -314,7 +315,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Click to edit photo",
+                      tr("Click to edit photo"),
                       style: GoogleFonts.roboto(
                           textStyle: const TextStyle(
                               fontSize: 14.0,
@@ -333,8 +334,8 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 controller: nameController,
                 cursorColor: Colors.white,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                  labelText: 'Name',
+                decoration: InputDecoration(
+                  labelText: tr('Name'),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
@@ -354,8 +355,8 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 controller: destinationController,
                 cursorColor: Colors.white,
                 textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                  labelText: 'Destination',
+                decoration: InputDecoration(
+                  labelText: tr('Destination'),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
@@ -376,8 +377,8 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 cursorColor: Colors.white,
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                  labelText: 'Budget',
+                decoration: InputDecoration(
+                  labelText: tr('Budget'),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
@@ -399,7 +400,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                     Expanded(
                       child: Container(
                         child: TextField(
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10.0)),
@@ -409,8 +410,8 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                             ),
                             filled: true,
                             fillColor: Color.fromARGB(255, 249, 250, 250),
-                            labelText: 'Start Date',
-                            hintText: 'Please select a start date',
+                            labelText: tr('Start Date'),
+                            hintText: tr('Please select a start date'),
                           ),
                           readOnly: true,
                           onTap: () => _selectStartDate(context),
@@ -426,7 +427,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                     Expanded(
                       child: Container(
                         child: TextField(
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10.0)),
@@ -436,8 +437,8 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                             ),
                             filled: true,
                             fillColor: Color.fromARGB(255, 249, 250, 250),
-                            labelText: 'End Date',
-                            hintText: 'Please select an end date',
+                            labelText: tr('End Date'),
+                            hintText: tr('Please select an end date'),
                           ),
                           readOnly: true,
                           onTap: () => _selectEndDate(context),
@@ -463,8 +464,8 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 cursorColor: Colors.white,
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                  labelText: 'Number of People',
+                decoration: InputDecoration(
+                  labelText: tr('Number of People'),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
@@ -486,8 +487,8 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 maxLines: 5,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                  labelText: 'Note',
+                decoration: InputDecoration(
+                  labelText: tr('Note'),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
@@ -514,7 +515,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 },
                 icon: const Icon(Icons.lock_open, size: 0),
                 label:
-                    const Text('Update Travel', style: TextStyle(fontSize: 20)),
+                      Text(tr('Update Travel'), style: TextStyle(fontSize: 20)),
               ),
             )
           ]))

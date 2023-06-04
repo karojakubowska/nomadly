@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -60,7 +61,7 @@ class _ReportFormViewState extends State<ReportFormView> {
           },
         ),
         title: Text(
-          'Add Report',
+          tr('Add Report'),
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
               textStyle: const TextStyle(
@@ -100,8 +101,8 @@ class _ReportFormViewState extends State<ReportFormView> {
                     controller: titleController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Title',
+                    decoration: InputDecoration(
+                      labelText: tr('Title'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -124,8 +125,8 @@ class _ReportFormViewState extends State<ReportFormView> {
                     maxLines: 5,
                     textInputAction: TextInputAction.next,
                     textAlignVertical: TextAlignVertical.top,
-                    decoration: const InputDecoration(
-                      labelText: 'Description',
+                    decoration: InputDecoration(
+                      labelText: tr('Description'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -154,7 +155,7 @@ class _ReportFormViewState extends State<ReportFormView> {
                       addReport();
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
-                    label: const Text('Add Report',
+                    label: Text(tr('Add Report'),
                         style: TextStyle(fontSize: 20)),
                   ),
                 ),

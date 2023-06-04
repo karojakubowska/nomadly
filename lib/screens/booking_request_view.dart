@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:basics/basics.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,7 +50,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
       appBar: AppBar(
         leading: const BackButton(color: Colors.black),
         backgroundColor: Styles.backgroundColor,
-        title: Text('Booking details', style: Styles.headLineStyle4),
+        title: Text(tr('Booking details'), style: Styles.headLineStyle4),
         elevation: 0,
         centerTitle: true,
       ),
@@ -61,7 +62,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Accommodation", style: Styles.bookingDetailsStyle),
+                Text(tr("Accommodation"), style: Styles.bookingDetailsStyle),
                 Text(widget.accommodation.title!,
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
@@ -100,7 +101,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("For", style: Styles.bookingDetailsStyle),
+                Text(tr("For"), style: Styles.bookingDetailsStyle),
                 Text(widget.guestNumber.toString(),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
@@ -114,14 +115,24 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Total",
+                  tr("Total"),
                   style: GoogleFonts.roboto(
                       textStyle: const TextStyle(
                           fontSize: 18.0,
                           color: Color.fromARGB(255, 135, 135, 135),
                           fontWeight: FontWeight.w700)),
                 ),
-                Text(totalPrice.toString(),
+                Text(
+                    CountTotalPrice(
+                      widget.guestNumber,
+                      (widget.accommodation.price_per_night!),
+                      // DateTime.fromMillisecondsSinceEpoch(
+                      //     widget.startDate.seconds * 1000),
+                      // DateTime.fromMillisecondsSinceEpoch(
+                      //     widget.endDate.seconds * 1000)
+                      widget.startDate,
+                      widget.endDate,
+                    ).toString(),
                     style: const TextStyle(
                         fontSize: 18.0,
                         color: Color.fromARGB(255, 49, 134, 252),
@@ -154,7 +165,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
                           MaterialStateProperty.all(const Size(320, 50)),
                     ),
                     child: Text(
-                      'Request a booking',
+                      tr('Request a booking'),
                       style: GoogleFonts.roboto(
                           textStyle: const TextStyle(
                               fontSize: 16.0,

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +127,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 const SizedBox(height: 8.0),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text('Gallery'),
+                  title: Text(tr('Gallery')),
                   onTap: () {
                     imgFromGallery(pickedFile);
                     Navigator.of(context).pop();
@@ -134,7 +135,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
-                  title: const Text('Camera'),
+                  title: Text(tr('Camera')),
                   onTap: () {
                     imgFromCamera(pickedFile);
                     Navigator.of(context).pop();
@@ -186,7 +187,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             },
           ),
           title: Text(
-            'Edit Profile',
+            tr('Edit Profile'),
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
                 textStyle: const TextStyle(
@@ -271,7 +272,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Click to edit photo",
+                      tr('Click to edit photo'),
                       style: GoogleFonts.roboto(
                           textStyle: const TextStyle(
                               fontSize: 14.0,
@@ -297,7 +298,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       updateImage(widget.id, pickedFile);
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
-                    label: const Text('Save Image',
+                    label: Text( tr('Save Image'),
                         style: TextStyle(
                             fontSize: 18.0,
                             height: 1.2,
@@ -329,8 +330,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     controller: nameController,
                                     cursorColor: Colors.white,
                                     textInputAction: TextInputAction.next,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Name',
+                                    decoration: InputDecoration(
+                                      labelText: tr('Name'),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10.0)),
@@ -349,14 +350,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   height: 20,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                       horizontal: 20),
                                   child: TextField(
                                     controller: emailController,
                                     cursorColor: Colors.white,
                                     textInputAction: TextInputAction.next,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Email',
+                                    decoration: InputDecoration(
+                                      labelText: tr('Email'),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10.0)),
@@ -388,7 +389,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           255, 50, 134, 252),
                                     ),
                                     onPressed: _updateUserProfile,
-                                    child: const Text('Save',
+                                    child: Text( tr('Save'),
                                         style: TextStyle(
                                             fontSize: 18.0,
                                             height: 1.2,

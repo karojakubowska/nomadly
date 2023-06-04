@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,7 +29,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
       appBar: AppBar(
         leading: const BackButton(color: Colors.black),
         backgroundColor: Styles.backgroundColor,
-        title: Text('Reviews', style: Styles.headLineStyle4),
+        title: Text(tr('Reviews'), style: Styles.headLineStyle4),
         elevation: 0,
         centerTitle: true,
       ),
@@ -75,7 +76,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "No reviews yet.",
+                            tr("No reviews yet."),
                             textAlign: TextAlign.center,
                             style: GoogleFonts.roboto(
                                 color: const Color.fromARGB(255, 24, 24, 24),
@@ -100,7 +101,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                 .snapshots(),
                             builder: (context, snap) {
                               if (!snap.hasData)
-                                return const Text("Loading...");
+                                return Text (tr("Loading..."));
                               UserModel user = UserModel.fromJson(
                                   snap.data!.docs[0].data()
                                       as Map<String, dynamic>);

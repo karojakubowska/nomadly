@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +117,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Travel Details",
+                    tr("Travel Details"),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
                             fontSize: 16.0,
@@ -136,7 +137,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   enabled: false,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                    labelText: 'Name',
+                    labelText: tr('Name'),
                     prefixIcon: const Icon(Icons.near_me, color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -160,7 +161,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   enabled: false,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                    labelText: 'Destination',
+                    labelText: tr('Destination'),
                     prefixIcon: const Icon(Icons.place, color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -184,7 +185,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   enabled: false,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                    labelText: 'Budget',
+                    labelText: tr('Budget'),
                     prefixIcon: const Icon(Icons.monetization_on, color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -221,9 +222,9 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                               fillColor: Colors.transparent,
                               prefixIcon: const Icon(Icons.calendar_month_outlined,
                                   color: Colors.grey),
-                              labelText: 'Start Date',
+                              labelText: tr('Start Date'),
                               enabled: false,
-                              hintText: 'Please select a start date',
+                              hintText: tr('Please select a start date'),
                             ),
                             readOnly: true,
                             controller: TextEditingController(
@@ -248,11 +249,11 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                               ),
                               filled: true,
                               fillColor: Colors.transparent,
-                              labelText: 'End Date',
+                              labelText: tr('End Date'),
                               prefixIcon: const Icon(Icons.calendar_month_outlined,
                                   color: Colors.grey),
                               enabled: false,
-                              hintText: 'Please select an end date',
+                              hintText: tr('Please select an end date'),
                             ),
                             readOnly: true,
                             controller: TextEditingController(
@@ -277,7 +278,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   enabled: false,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                    labelText: 'Number of People',
+                    labelText: tr('Number of People'),
                     prefixIcon: const Icon(Icons.person, color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -302,7 +303,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   maxLines: 5,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                    labelText: 'Note',
+                    labelText: tr('Note'),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: const BorderSide(
@@ -337,7 +338,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                   },
                   icon: const Icon(Icons.lock_open, size: 0),
                   label:
-                  const Text('To do list', style: TextStyle(fontSize: 20)),
+                  Text(tr('To do list'), style: TextStyle(fontSize: 20)),
                 ),
               )
             ])));

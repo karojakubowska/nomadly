@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -106,7 +107,7 @@ class _BookingCardState extends State<BookingCardHost> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "User: ${widget.booking.username!}",
+                        tr("User")+": ${widget.booking.username!}",
                         style: GoogleFonts.roboto(
                             color: const Color.fromARGB(255, 24, 24, 24),
                             fontSize: 18,
@@ -141,7 +142,7 @@ class _BookingCardState extends State<BookingCardHost> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Date: ${DateFormat("dd.MM.yyyy").format(widget.booking.startDate!.toDate())}-${DateFormat("dd.MM.yyyy").format(widget.booking.endDate!.toDate())}",
+                    tr("Date")+": ${DateFormat("dd.MM.yyyy").format(widget.booking.startDate!.toDate())}-${DateFormat("dd.MM.yyyy").format(widget.booking.endDate!.toDate())}",
                     style: GoogleFonts.roboto(
                         color: const Color.fromARGB(255, 24, 24, 24),
                         fontSize: 18,
@@ -168,7 +169,7 @@ class _BookingCardState extends State<BookingCardHost> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Status: ${widget.booking.status!}",
+                            tr("Status")+": ${widget.booking.status!}",
                             style: GoogleFonts.roboto(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

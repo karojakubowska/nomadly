@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
@@ -34,7 +35,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
             },
           ),
           title: Text(
-            'Help',
+            tr('Help'),
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
                 textStyle: const TextStyle(
@@ -63,7 +64,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
               ),
               const SizedBox(height: 10),
               Text(
-                'Do You have a problem with \n the app or have any questions?',
+                tr('Do You have a problem with \n the app or have any questions?'),
                 textAlign: TextAlign.center,
                 style: GoogleFonts.roboto(
                     color: const Color.fromARGB(255, 24, 24, 24),
@@ -92,7 +93,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                     }
                   },
                   icon: const Icon(Icons.lock_open, size: 0),
-                  label: const Text('Write Us', style: TextStyle(fontSize: 20)),
+                  label: Text(tr('Write Us'), style: TextStyle(fontSize: 20)),
                 ),
               ),
             ],

@@ -1,6 +1,5 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -18,17 +17,21 @@ class BookingCard extends StatefulWidget {
   Booking booking;
   int index;
   Acommodation accommodation;
+
   //const BookingCardHost({super.key});
   BookingCard(
-      {super.key, required this.booking,
+      {super.key,
+      required this.booking,
       required this.index,
       required this.accommodation});
+
   @override
   State<BookingCard> createState() => _BookingCardState();
 }
 
 class _BookingCardState extends State<BookingCard> {
   var user;
+
   navigateToDetail(Acommodation accommodation, Booking booking) {
     Navigator.push(
         context,
@@ -112,7 +115,7 @@ class _BookingCardState extends State<BookingCard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Date: ${DateFormat("dd.MM.yyyy").format(widget.booking.startDate!.toDate())}-${DateFormat("dd.MM.yyyy").format(widget.booking.endDate!.toDate())}",
+                    tr('Date')+": ${DateFormat("dd.MM.yyyy").format(widget.booking.startDate!.toDate())}-${DateFormat("dd.MM.yyyy").format(widget.booking.endDate!.toDate())}",
                     style: GoogleFonts.roboto(
                         color: const Color.fromARGB(255, 24, 24, 24),
                         fontSize: 18,
@@ -134,12 +137,13 @@ class _BookingCardState extends State<BookingCard> {
                       decoration: BoxDecoration(
                           color: statusColorSwitch(),
                           shape: BoxShape.rectangle,
-                          borderRadius: const BorderRadius.all(Radius.circular(5))),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Status: ${widget.booking.status!}",
+                            tr('Status')+": ${widget.booking.status!}",
                             style: GoogleFonts.roboto(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

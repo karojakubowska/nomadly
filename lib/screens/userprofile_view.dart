@@ -9,6 +9,7 @@ import 'package:nomadly_app/screens/update_userprofile_view.dart';
 import 'package:nomadly_app/screens/privacy_policy_view.dart';
 import 'package:nomadly_app/screens/terms_conditions_view.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -28,8 +29,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   void initState() {
     super.initState();
     final currentUser = FirebaseAuth.instance.currentUser;
-    id =  FirebaseAuth.instance.currentUser!.uid.toString();
-    user =  FirebaseAuth.instance.currentUser;
+    id = FirebaseAuth.instance.currentUser!.uid.toString();
+    user = FirebaseAuth.instance.currentUser;
     userStream = FirebaseFirestore.instance
         .collection('Users')
         .doc(currentUser!.uid)
@@ -42,7 +43,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         backgroundColor: Styles.backgroundColor,
         appBar: AppBar(
           title: Text(
-            'Profile',
+            (tr('Profile')),
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
                 textStyle: const TextStyle(
@@ -120,7 +121,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: ((context) => EditProfilePage(id:id, image: accountImage))));
+                                    builder: ((context) => EditProfilePage(
+                                        id: id, image: accountImage))));
                           },
                         ),
                       ],
@@ -131,7 +133,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     child: ListView(children: [
                       _buildProfileSection(
                         context,
-                        title: 'Change Password',
+                        title: (tr('Change Password')),
                         icon: Icons.lock_outline,
                         onPressed: () {
                           Navigator.push(
@@ -141,21 +143,57 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       const ChangePasswordPage())));
                         },
                       ),
+                      // _buildProfileSection(
+                      //   context,
+                      //   title: 'Language',
+                      //   icon: Icons.language,
+                      //   onPressed: () {},
+                      // ),
                       _buildProfileSection(
                         context,
-                        title: 'Language',
+                        title: (tr('Language')),
                         icon: Icons.language,
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text((tr('Select Language'))),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ListTile(
+                                      title: Text((tr('English'))),
+                                      onTap: () {
+                                        _changeLanguage(
+                                            context, Locale('en', 'US'));
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    ListTile(
+                                      title: Text((tr('Polish'))),
+                                      onTap: () {
+                                        _changeLanguage(
+                                            context, Locale('pl', 'PL'));
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
                       ),
                       _buildProfileSection(
                         context,
-                        title: 'Notifications',
+                        title: (tr('Notifications')),
                         icon: Icons.notifications_active_outlined,
                         onPressed: () {},
                       ),
                       _buildProfileSection(
                         context,
-                        title: 'Terms and Conditions',
+                        title: (tr('Terms and Conditions')),
                         icon: Icons.security,
                         onPressed: () {
                           Navigator.push(
@@ -167,7 +205,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                       _buildProfileSection(
                         context,
-                        title: 'Privacy Policy',
+                        title: (tr('Privacy Policy')),
                         icon: Icons.local_police,
                         onPressed: () {
                           Navigator.push(
@@ -179,13 +217,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                       _buildProfileSection(
                         context,
-                        title: 'Help & Support',
+                        title: (tr('Help & Support')),
                         icon: Icons.help,
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => const HelpSupportScreen())));
+                                  builder: ((context) =>
+                                      const HelpSupportScreen())));
                         },
                       ),
                       const SizedBox(height: 16),
@@ -201,7 +240,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 const Color.fromARGB(255, 50, 134, 252),
                           ),
                           onPressed: _signOut,
-                          child: const Text('Log out',
+                          child: Text(tr('Log out'),
                               style: TextStyle(
                                   fontSize: 20.0,
                                   height: 1.2,
@@ -214,6 +253,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ],
               );
             }));
+  }
+
+  void _changeLanguage(BuildContext context, Locale locale) {
+    EasyLocalization.of(context)?.setLocale(locale);
+    setState(() {});
   }
 
   void _signOut() {

@@ -7,6 +7,7 @@ import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/Booking.dart';
 import 'package:nomadly_app/models/User.dart';
 import 'package:nomadly_app/screens/all_bookings_view.dart';
+
 //import 'package:nomadly_app/screens/calendar.dart';
 import 'package:nomadly_app/screens/chat_view.dart';
 import 'package:nomadly_app/screens/home_view.dart';
@@ -27,9 +28,65 @@ import 'firebase_options.dart';
 import 'screens/authentication/auth_page.dart';
 import 'screens/introduction_view.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:easy_localization/easy_localization.dart';
 
 int? initScreen;
+
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await EasyLocalization.ensureInitialized();
+//
+//   if (kIsWeb) {
+//     WidgetsFlutterBinding.ensureInitialized();
+//     await Firebase.initializeApp(
+//         options: DefaultFirebaseOptions.currentPlatform);
+//     runApp(
+//         MaterialApp(
+//           debugShowCheckedModeBanner: false,
+//           home: Scaffold(
+//             body: Container(
+//               child: MyWebView(),
+//             ),
+//           ),
+//         )
+//     );
+//   }
+//   else {
+//     WidgetsFlutterBinding.ensureInitialized();
+//     SharedPreferences preferences = await SharedPreferences.getInstance();
+//     initScreen = preferences.getInt('initScreen');
+//     await preferences.setInt('initScreen', 1); //if already shown  1 else 0
+//     await Firebase.initializeApp(
+//         options: DefaultFirebaseOptions.currentPlatform);
+//     runApp(MultiProvider(providers: [
+//       Provider<AuthenticationProvider>(
+//         create: (_) => AuthenticationProvider(FirebaseAuth.instance),
+//       ),
+//       StreamProvider(
+//         create: (context) =>
+//         context
+//             .read<AuthenticationProvider>()
+//             .authState,
+//         initialData: null,
+//       ),
+//       StreamProvider<List<Acommodation>>.value(
+//         value: AccommodationProvider().allAccommodations,
+//         initialData: const [],
+//         child: const HomeTest(),
+//       ),
+//       StreamProvider<List<Booking>>.value(
+//         value: BookingProvider().allBookings,
+//         initialData: const [],
+//         child: const HomeTest(),
+//       ),
+//     ], child: const MyApp()));
+//   }
+// }
+
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
   if (kIsWeb) {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(
@@ -44,30 +101,47 @@ Future<void> main() async {
     ));
   } else {
     WidgetsFlutterBinding.ensureInitialized();
+    await EasyLocalization.ensureInitialized();
+
+    WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     initScreen = preferences.getInt('initScreen');
     await preferences.setInt('initScreen', 1); //if already shown  1 else 0
     await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
-    runApp(MultiProvider(providers: [
-      Provider<AuthenticationProvider>(
-        create: (_) => AuthenticationProvider(FirebaseAuth.instance),
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    runApp(EasyLocalization(
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('pl', 'PL'),
+      ],
+      fallbackLocale: Locale('en', 'US'),
+      path: 'assets/translate',
+      child: MultiProvider(
+        providers: [
+          Provider<AuthenticationProvider>(
+            create: (_) => AuthenticationProvider(FirebaseAuth.instance),
+          ),
+          StreamProvider(
+            create: (context) =>
+            context.read<AuthenticationProvider>().authState,
+            initialData: null,
+          ),
+          StreamProvider<List<Acommodation>>.value(
+            value: AccommodationProvider().allAccommodations,
+            initialData: const [],
+            child: const HomeTest(),
+          ),
+          StreamProvider<List<Booking>>.value(
+            value: BookingProvider().allBookings,
+            initialData: const [],
+            child: const HomeTest(),
+          ),
+        ],
+        child: const MyApp(),
       ),
-      StreamProvider(
-        create: (context) => context.read<AuthenticationProvider>().authState,
-        initialData: null,
-      ),
-      StreamProvider<List<Acommodation>>.value(
-        value: AccommodationProvider().allAccommodations,
-        initialData: const [],
-        child: const HomeTest(),
-      ),
-      StreamProvider<List<Booking>>.value(
-        value: BookingProvider().allBookings,
-        initialData: const [],
-        child: const HomeTest(),
-      ),
-    ], child: const MyApp()));
+    ));
   }
 }
 
@@ -79,13 +153,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255)),
       initialRoute: initScreen == 0 || initScreen == null ? 'onboard' : 'home',
       routes: {
         'home': (context) => const LoginPage(),
-        'onboard': (context) => const IntroPage(),
+        'onboard': (context) => IntroPage(),
       },
       navigatorKey: navigatorKey,
     );
@@ -109,6 +186,7 @@ class LoginPage extends StatelessWidget {
               final uid = user.uid;
               CollectionReference users =
                   FirebaseFirestore.instance.collection('Users');
+                  FirebaseFirestore.instance.collection('Users');
               return FutureBuilder<DocumentSnapshot>(
                 future: users.doc(uid).get(),
                 builder: (BuildContext context,
@@ -120,12 +198,16 @@ class LoginPage extends StatelessWidget {
                     UserModel user = UserModel.fromSnapshot(snapshot.data);
                     if (user.accountType == 'Client') {
                       return NewBottomNavBar(
-                        screens: const [
+                        screens: [
                           HomeTest(),
                           WishlistScreen(),
                           AllBookingsScreen(),
                           TravelView(),
                           Chat(),
+                          // PaymentDetailsScreen(),
+                          //CheckoutConfirmedScreen(),
+                          //CheckoutScreen()
+                          //CalendarScreen(),
                           UserProfileScreen()
                         ],
                       );
