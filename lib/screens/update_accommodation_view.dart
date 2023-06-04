@@ -41,6 +41,17 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
   final bathroomController = TextEditingController();
   final number_max_peopleController = TextEditingController();
   final addressController = TextEditingController();
+  String? _selectedType;
+
+  final List<String> _types = [
+    "Apartament",
+    "Villa",
+    "Hotel",
+    "Hostel",
+    "Cabin",
+    "Bungalow",
+    "Room"
+  ];
 
   bool kitchen = false;
   bool wifi = false;
@@ -85,6 +96,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
     wifi = widget.accommodation!.get("wifi");
     tv = widget.accommodation!.get("tv");
     air_conditioning = widget.accommodation!.get("air_conditioning");
+    _selectedType = widget.accommodation!.get("type");
 
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref =
@@ -224,155 +236,6 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
     );
   }
 
-  // Future<void> updateAccommodation(id, PickedFile) async {
-  //   var user = await FirebaseAuth.instance.currentUser!;
-  //   var uid = user.uid;
-  //
-  //   if (_photo == null) {
-  //     final db = FirebaseFirestore.instance;
-  //     final accommodation = db.collection("Accommodations").doc(id);
-  //
-  //     List<String> updatedPhotoUrls = [];
-  //
-  //     for (var photo in photos) {
-  //       String uuid = Uuid().v4();
-  //       String uniqueFileName = '$uid/$uuid.jpg';
-  //       final destination = uniqueFileName;
-  //
-  //
-  //       try {
-  //         final ref = firebase_storage.FirebaseStorage.instance.ref(destination).child('');
-  //         await ref.putFile(photo);
-  //        String  photoUrl = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
-  //             .toString();
-  //         updatedPhotoUrls.add(photoUrl);
-  //       } catch (e) {
-  //         print('error occurred');
-  //       }
-  //       // try {
-  //       //   final ref =
-  //       //   firebase_storage.FirebaseStorage.instance.ref(destination);
-  //       //   await ref.putFile(photo);
-  //       //   String photoUrl = await ref.getDownloadURL();
-  //       //   updatedPhotoUrls.add(photoUrl);
-  //       // } catch (e) {
-  //       //   print('Error uploading photo: $e');
-  //       // }
-  //     }
-  //
-  //     // Delete old photos from Firebase Storage
-  //     for (var oldPhotoUrl in photoUrls) {
-  //       try {
-  //         await firebase_storage.FirebaseStorage.instance
-  //             .refFromURL(oldPhotoUrl)
-  //             .delete();
-  //         print("Old photo successfully deleted: $oldPhotoUrl");
-  //       } catch (e) {
-  //         print('Error deleting old photo: $e');
-  //       }
-  //     }
-  //
-  //     accommodation.update({
-  //       'title': titleController.text,
-  //       'country': countryController.text,
-  //       'city': cityController.text,
-  //       'street': streetController.text,
-  //       'description': descriptionController.text,
-  //       'address': addressController.text,
-  //       'price_per_night': int.parse(price_per_nightController.text),
-  //       'bed': int.parse(bedController.text),
-  //       'bathroom': int.parse(bathroomController.text),
-  //       'bedroom': int.parse(bedroomController.text),
-  //       'number_max_people': int.parse(number_max_peopleController.text),
-  //       'host_id': FirebaseAuth.instance.currentUser!.uid,
-  //       'photo': imageOld.toString(),
-  //       'kitchen': kitchen ? true : false,
-  //       'wifi': wifi ? true : false,
-  //       'tv': tv ? true : false,
-  //       'air_conditioning': air_conditioning ? true : false,
-  //       'photoUrl': updatedPhotoUrls,
-  //     }).then((value) => print("DocumentSnapshot successfully updated!"),
-  //         onError: (e) => print("Error updating document $e"));
-  //   } else {
-  //     final db = FirebaseFirestore.instance;
-  //     final accommodation = db.collection("Accommodations").doc(id);
-  //
-  //     FirebaseStorage.instance.refFromURL(imageOld).delete().then((_) {
-  //       print("Image successfully deleted!");
-  //     }).catchError((error) {
-  //       print("Error removing image: $error");
-  //     });
-  //
-  //     String uuid = Uuid().v4();
-  //     String uniqueFileName = '$uid/$uuid.jpg';
-  //     final destination = uniqueFileName;
-  //
-  //     try {
-  //       final ref = firebase_storage.FirebaseStorage.instance
-  //           .ref(destination)
-  //           .child('');
-  //       await ref.putFile(_photo!);
-  //       imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
-  //           .toString();
-  //     } catch (e) {
-  //       print('error occurred');
-  //     }
-  //
-  //     List<String> updatedPhotoUrls = [];
-  //
-  //     for (var photo in photos) {
-  //       String uuid = Uuid().v4();
-  //       String uniqueFileName = '$uid/$uuid.jpg';
-  //       final destination = uniqueFileName;
-  //
-  //       try {
-  //         final ref =
-  //             firebase_storage.FirebaseStorage.instance.ref(destination);
-  //         await ref.putFile(photo);
-  //         String photoUrl = await ref.getDownloadURL();
-  //         updatedPhotoUrls.add(photoUrl);
-  //       } catch (e) {
-  //         print('Error uploading photo: $e');
-  //       }
-  //     }
-  //
-  //     // Delete old photos from Firebase Storage
-  //     for (var oldPhotoUrl in photoUrls) {
-  //       try {
-  //         await firebase_storage.FirebaseStorage.instance
-  //             .refFromURL(oldPhotoUrl)
-  //             .delete();
-  //         print("Old photo successfully deleted: $oldPhotoUrl");
-  //       } catch (e) {
-  //         print('Error deleting old photo: $e');
-  //       }
-  //     }
-  //
-  //     accommodation.update({
-  //       'title': titleController.text,
-  //       'country': countryController.text,
-  //       'city': cityController.text,
-  //       'street': streetController.text,
-  //       'description': descriptionController.text,
-  //       'address': addressController.text,
-  //       'price_per_night': int.parse(price_per_nightController.text),
-  //       'bed': int.parse(bedController.text),
-  //       'bathroom': int.parse(bathroomController.text),
-  //       'bedroom': int.parse(bedroomController.text),
-  //       'number_max_people': int.parse(number_max_peopleController.text),
-  //       'host_id': FirebaseAuth.instance.currentUser!.uid,
-  //       'photo': imageURL.toString(),
-  //       'kitchen': kitchen ? true : false,
-  //       'wifi': wifi ? true : false,
-  //       'tv': tv ? true : false,
-  //       'air_conditioning': air_conditioning ? true : false,
-  //       'photoUrl': updatedPhotoUrls,
-  //     }).then((value) => print("DocumentSnapshot successfully updated!"),
-  //         onError: (e) => print("Error updating document $e"));
-  //   }
-  // }
-
-
   Future<void> updateAccommodation(id, PickedFile) async {
     var user = await FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
@@ -393,9 +256,9 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
               .ref(destination)
               .child('');
           await ref.putFile(photo);
-          String photoUrl = ("gs://nomady-ae4b6.appspot.com/" +
-              destination.toString())
-              .toString();
+          String photoUrl =
+              ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
+                  .toString();
           updatedPhotoUrls.add(photoUrl);
         } catch (e) {
           print('Error occurred');
@@ -406,7 +269,9 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
       for (var oldPhotoUrl in photoUrls) {
         if (!updatedPhotoUrls.contains(oldPhotoUrl)) {
           try {
-            await firebase_storage.FirebaseStorage.instance.refFromURL(oldPhotoUrl).delete();
+            await firebase_storage.FirebaseStorage.instance
+                .refFromURL(oldPhotoUrl)
+                .delete();
             print("Stare zdjęcie zostało pomyślnie usunięte: $oldPhotoUrl");
           } catch (e) {
             print('Błąd podczas usuwania starego zdjęcia: $e');
@@ -435,6 +300,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         'tv': tv ? true : false,
         'air_conditioning': air_conditioning ? true : false,
         'photoUrl': updatedPhotoUrls,
+        'type': _selectedType,
       }).then((value) => print("DocumentSnapshot successfully updated!"),
           onError: (e) => print("Error updating document $e"));
     } else {
@@ -471,7 +337,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
 
         try {
           final ref =
-          firebase_storage.FirebaseStorage.instance.ref(destination);
+              firebase_storage.FirebaseStorage.instance.ref(destination);
           await ref.putFile(photo);
           String photoUrl = await ref.getDownloadURL();
           updatedPhotoUrls.add(photoUrl);
@@ -484,7 +350,9 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
       for (var oldPhotoUrl in photoUrls) {
         if (!updatedPhotoUrls.contains(oldPhotoUrl)) {
           try {
-            await firebase_storage.FirebaseStorage.instance.refFromURL(oldPhotoUrl).delete();
+            await firebase_storage.FirebaseStorage.instance
+                .refFromURL(oldPhotoUrl)
+                .delete();
             print("Stare zdjęcie zostało pomyślnie usunięte: $oldPhotoUrl");
           } catch (e) {
             print('Błąd podczas usuwania starego zdjęcia: $e');
@@ -514,13 +382,13 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         'tv': tv ? true : false,
         'air_conditioning': air_conditioning ? true : false,
         'photoUrl': updatedPhotoUrls,
+        'type': _selectedType,
       }).then((value) => print("DocumentSnapshot successfully updated!"),
           onError: (e) => print("Error updating document $e"));
     }
   }
 
-
-      @override
+  @override
   Widget build(BuildContext context) {
     final size = AppLayout.getSize(context);
     return Scaffold(
@@ -633,90 +501,94 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                         children: [
                           ...photos.asMap().entries.map(
                                 (entry) => Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    child: Image.file(
-                                      entry.value,
-                                      width: 160,
-                                      height: 160,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 5,
-                                    right: 5,
-                                    child: Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        child: Image.file(
+                                          entry.value,
+                                          width: 160,
+                                          height: 160,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                      child: IconButton(
-                                        iconSize: 15,
-                                        icon: Icon(Icons.close),
-                                        color: Colors.grey[800],
-                                        onPressed: () {
-                                          setState(() {
-                                            int index = entry.key;
-                                            if (index < photos.length) {
-                                              photos.removeAt(index);
-                                            } else {
-                                              int photoUrlIndex = index - photos.length;
-                                              photoUrls.removeAt(photoUrlIndex);
-                                            }
-                                          });
-                                        },
+                                      Positioned(
+                                        top: 5,
+                                        right: 5,
+                                        child: Container(
+                                          width: 30,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: IconButton(
+                                            iconSize: 15,
+                                            icon: Icon(Icons.close),
+                                            color: Colors.grey[800],
+                                            onPressed: () {
+                                              setState(() {
+                                                int index = entry.key;
+                                                if (index < photos.length) {
+                                                  photos.removeAt(index);
+                                                } else {
+                                                  int photoUrlIndex =
+                                                      index - photos.length;
+                                                  photoUrls
+                                                      .removeAt(photoUrlIndex);
+                                                }
+                                              });
+                                            },
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
                           ...photoUrls.asMap().entries.map(
                                 (entry) => Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    child: Image.network(
-                                      entry.value,
-                                      width: 160,
-                                      height: 160,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 5,
-                                    right: 5,
-                                    child: Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        child: Image.network(
+                                          entry.value,
+                                          width: 160,
+                                          height: 160,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                      child: IconButton(
-                                        iconSize: 15,
-                                        icon: Icon(Icons.close),
-                                        color: Colors.grey[800],
-                                        onPressed: () {
-                                          setState(() {
-                                            photoUrls.removeAt(entry.key);
-                                          });
-                                        },
+                                      Positioned(
+                                        top: 5,
+                                        right: 5,
+                                        child: Container(
+                                          width: 30,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: IconButton(
+                                            iconSize: 15,
+                                            icon: Icon(Icons.close),
+                                            color: Colors.grey[800],
+                                            onPressed: () {
+                                              setState(() {
+                                                photoUrls.removeAt(entry.key);
+                                              });
+                                            },
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -1005,6 +877,70 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                       ),
                       filled: true,
                       fillColor: Color.fromARGB(255, 249, 250, 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 249, 250, 250),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        width: 1,
+                        color: const Color.fromARGB(255, 217, 217, 217),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: DropdownButton<String>(
+                        value: _selectedType,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedType = value;
+                          });
+                        },
+                        hint: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            tr("Select the type of accommodation"),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        underline: Container(),
+                        dropdownColor: Styles.backgroundColor,
+                        icon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Color.fromARGB(255, 57, 57, 57),
+                        ),
+                        isExpanded: true,
+                        items: _types
+                            .map(
+                              (e) => DropdownMenuItem(
+                            value: e,
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(e),
+                            ),
+                          ),
+                        )
+                            .toList(),
+                        selectedItemBuilder: (BuildContext context) => _types
+                            .map(
+                              (e) => Center(
+                            child: Text(
+                              e,
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 57, 57, 57),
+                              ),
+                            ),
+                          ),
+                        )
+                            .toList(),
+                      ),
                     ),
                   ),
                 ),
