@@ -63,13 +63,21 @@ dependencies:
   path: ^1.8.3
   uuid: ^3.0.7
   easy_localization: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
 
 dependency_overrides:
    firebase_core_platform_interface: ^4.8.0
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/travel.png"
+  min_sdk_android: 21
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -92,6 +100,7 @@ flutter:
   assets:
     - assets/images/
     - assets/translate/
+    - assets/icons/
 
   #   - images/a_dot_ham.jpeg
 
