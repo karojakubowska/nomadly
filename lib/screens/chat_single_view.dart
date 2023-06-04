@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -64,7 +65,6 @@ class _ChatSingleViewState extends State<ChatSingleView> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,13 +111,15 @@ class _ChatSingleViewState extends State<ChatSingleView> {
           },
         ),
         backgroundColor: Colors.transparent,
-        elevation: 0, toolbarTextStyle: const TextTheme(
+        elevation: 0,
+        toolbarTextStyle: const TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
-        ).bodyText2, titleTextStyle: const TextTheme(
+        ).bodyText2,
+        titleTextStyle: const TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
             fontSize: 20,
@@ -158,86 +160,75 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                     ];
                     allMessages.sort(
                         (a, b) => a['timestamp'].compareTo(b['timestamp']));
-                   return ListView.builder(
+                    return ListView.builder(
                       reverse: false,
                       itemCount: allMessages.length,
                       itemBuilder: (context, index) {
                         final DocumentSnapshot message = allMessages[index];
                         final bool isMe = message['senderId'] == _userId;
-                        final String messageId = message.id; // dodajemy pobranie ID dokumentu
+                        final String messageId = message.id;
                         DateTime timestamp = message['timestamp'].toDate();
-                        String formattedDate = DateFormat('HH:mm\n dd/MM/yyyy').format(timestamp);
+                        String formattedDate =
+                            DateFormat('HH:mm\n dd/MM/yyyy').format(timestamp);
                         return GestureDetector(
                             onTap: () {
-                          if (!isMe && !message['isRead']) {
-                            _markMessageAsRead(messageId);
-                          }
-                        },
-                        child: Align(
-                        alignment: isMe
-                        ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: SizedBox(
-                        width: 250,
-                        child: Container(
-                    // return ListView.builder(
-                    //   reverse: false,
-                    //   itemCount: allMessages.length,
-                    //   itemBuilder: (context, index) {
-                    //     final DocumentSnapshot message = allMessages[index];
-                    //     final bool isMe = message['senderId'] == _userId;
-                    //     DateTime timestamp = message['timestamp'].toDate();
-                    //     String formattedDate =
-                    //         DateFormat('HH:mm\n dd/MM/yyyy').format(timestamp);
-                    //     return Align(
-                    //       alignment: isMe
-                    //           ? Alignment.centerRight
-                    //           : Alignment.centerLeft,
-                    //       child: SizedBox(
-                    //         width: 250,
-                    //         child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 15),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: isMe ? Colors.blue : Colors.grey[300],
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    message['text'],
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: isMe ? Colors.white : Colors.black,
-                                    ),
+                              if (!isMe && !message['isRead']) {
+                                _markMessageAsRead(messageId);
+                              }
+                            },
+                            child: Align(
+                              alignment: isMe
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              child: SizedBox(
+                                width: 250,
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color:
+                                        isMe ? Colors.blue : Colors.grey[300],
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(child: Container()),
-                                      Expanded(
-                                        child: Text(
-                                          formattedDate,
-                                          textAlign: TextAlign.right,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: isMe
-                                                ? Colors.white
-                                                : Colors.black,
-                                          ),
+                                      Text(
+                                        message['text'],
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: isMe
+                                              ? Colors.white
+                                              : Colors.black,
                                         ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(child: Container()),
+                                          Expanded(
+                                            child: Text(
+                                              formattedDate,
+                                              textAlign: TextAlign.right,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: isMe
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ));
+                            ));
                       },
                     );
                   },
@@ -256,8 +247,8 @@ class _ChatSingleViewState extends State<ChatSingleView> {
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: const InputDecoration(
-                      hintText: ' Write Something...',
+                    decoration: InputDecoration(
+                      hintText: tr(' Write Something...'),
                       contentPadding: EdgeInsets.symmetric(horizontal: 5),
                       border: InputBorder.none,
                     ),

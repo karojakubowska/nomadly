@@ -6,6 +6,7 @@ class NewBottomNavBar extends StatefulWidget {
 
   static const Tag = "NewBottomNavBar";
   final List<Widget> screens;
+
   @override
   State<StatefulWidget> createState() {
     return _NewBottomNavBarState();
@@ -32,8 +33,7 @@ class _NewBottomNavBarState extends State<NewBottomNavBar> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite_border_outlined), label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.bed_sharp), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.bed_sharp), label: ""),
           BottomNavigationBarItem(
               icon: Icon(Icons.card_travel_rounded), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.chat_outlined), label: ""),

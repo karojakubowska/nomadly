@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -143,11 +144,11 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                   itemBuilder: (BuildContext context) =>
                   [
                     PopupMenuItem(
-                      child: Text("Edit"),
+                      child: Text(tr("Edit")),
                       value: "edit",
                     ),
                     PopupMenuItem(
-                      child: Text("Delete"),
+                      child: Text(tr("Delete")),
                       value: "delete",
                     ),
                   ],
@@ -160,13 +161,13 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: const Text('Delete Accommodation'),
-                            content: const Text(
-                                'Are you sure you want to delete this accommodation?'),
+                            title: Text(tr('Delete Accommodation')),
+                            content: Text(
+                                tr('Are you sure you want to delete this item?')),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text('No'),
+                                child: Text(tr('No')),
                               ),
                               TextButton(
                                 onPressed: () {
@@ -175,7 +176,7 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
                                       widget.accomodation.photoUrl!);
                                   Navigator.pop(context);
                                 },
-                                child: const Text('Yes'),
+                                child: Text(tr('Yes')),
                               ),
                             ],
                           );

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,17 +22,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       if (passwordController.text != password2Controller.text) {
         throw FirebaseAuthException(
           code: 'password-mismatch',
-          message: 'The passwords do not match.',
+          message:  tr('The passwords do not match'),
         );
       }
       await user?.updatePassword(passwordController.text);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password updated successfully.')),
-      );
+        SnackBar(content: Text( tr('Password updated successfully')),
+      ));
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? 'An error occurred.')),
+        SnackBar(content: Text(e.message ?? tr('An error occurred'))),
       );
     }
   }
@@ -49,7 +50,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             },
           ),
           title: Text(
-            'Change Password',
+            tr('Change Password'),
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
                 textStyle: const TextStyle(
@@ -78,8 +79,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     cursorColor: Colors.white,
                     obscureText: true,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'New Password',
+                    decoration: InputDecoration(
+                      labelText: tr('New Password'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -101,8 +102,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     cursorColor: Colors.white,
                     obscureText: true,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Confirm New Password',
+                    decoration: InputDecoration(
+                      labelText: tr('Confirm New Password'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -128,7 +129,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       backgroundColor: const Color.fromARGB(255, 50, 134, 252),
                     ),
                     onPressed: _updatePassword,
-                    child: const Text('Save',
+                    child: Text(tr('Save'),
                         style: TextStyle(
                             fontSize: 18.0,
                             height: 1.2,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -45,7 +46,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //var size = AppLayout.getSize(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -167,7 +167,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             padding: const EdgeInsets.only(
                                 right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bedroom?.toString() ?? '0'} bedroom",
+                              " ${widget.accommodation?.bedroom?.toString() ?? '0'} "+tr("bedroom"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
                                 fontSize: 14,
@@ -191,7 +191,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             padding: const EdgeInsets.only(
                                 right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bed?.toString() ?? '0'} bed",
+                              " ${widget.accommodation?.bed?.toString() ?? '0'} "+tr("bed"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
                                 fontSize: 14,
@@ -215,7 +215,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             padding: const EdgeInsets.only(
                                 right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bathroom?.toString() ?? '0'} bathroom",
+                              " ${widget.accommodation?.bathroom?.toString() ?? '0'} "+tr("bathroom"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
                                 fontSize: 14,
@@ -268,7 +268,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                 )),
                             const Gap(10),
                             Text(
-                              "(${widget.accommodation!.reviews.toString()} reviews)",
+                              "(${widget.accommodation!.reviews.toString()} "+tr("reviews"),
                               style: GoogleFonts.roboto(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
@@ -278,7 +278,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                       Text(
-                        "\$${widget.accommodation!.price_per_night!}/night",
+                        "\$${widget.accommodation!.price_per_night!}/"+tr("night"),
                         style: GoogleFonts.roboto(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
@@ -288,7 +288,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   const Gap(20),
                   Text(
-                    "Description",
+                    tr("Description"),
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 15,
@@ -307,7 +307,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   const Gap(20),
                   Text(
-                    "Additional Information",
+                    tr("Additional Information"),
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 15,
@@ -316,7 +316,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   const Gap(10),
                   Text(
-                    "- Kitchen: ${widget.accommodation?.kitchen == true ? 'Yes' : 'No'}",
+                    "- "+ tr("Kitchen") +": ${widget.accommodation?.kitchen == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 13,
@@ -325,7 +325,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   const Gap(10),
                   Text(
-                    "- TV: ${widget.accommodation?.tv == true ? 'Yes' : 'No'}",
+                    "- "+ tr("TV") +": ${widget.accommodation?.tv == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 13,
@@ -334,7 +334,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   const Gap(10),
                   Text(
-                    "- WiFi: ${widget.accommodation?.wifi == true ? 'Yes' : 'No'}",
+                    "- "+ tr("Wifi") +": ${widget.accommodation?.wifi == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 13,
@@ -343,7 +343,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   const Gap(10),
                   Text(
-                    "- Air Conditioning: ${widget.accommodation?.air_conditioning == true ? 'Yes' : 'No'}",
+                    "- "+ tr("Air Conditioning") +": ${widget.accommodation?.air_conditioning == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                         fontSize: 13,
@@ -351,16 +351,6 @@ class _DetailScreenState extends State<DetailScreen> {
                         color: const Color.fromARGB(255, 135, 135, 135)),
                   ),
                   const Gap(20),
-                  Text(
-                    "Images",
-                    textAlign: TextAlign.start,
-                    style: GoogleFonts.roboto(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: const Color.fromARGB(255, 135, 135, 135),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -388,7 +378,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            height: 100,
+                            //height: 100,
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
@@ -435,7 +425,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       ),
                     );
                   } else {
-                    return const Text('No data available');
+                    return Text(tr('No data available'));
                   }
                 },
               ),
@@ -497,7 +487,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 }
                },
                 icon: const Icon(Icons.lock_open, size: 0),
-                label: const Text('Book now', style: TextStyle(fontSize: 18)),
+                label: Text( tr('Book now'), style: TextStyle(fontSize: 18)),
               ),
             ),
           ],

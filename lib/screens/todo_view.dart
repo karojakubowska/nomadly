@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
@@ -64,17 +65,17 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Confirm'),
-            content: const Text('Are you sure you want to clear the list?'),
+            title: Text(tr('Confirm')),
+            content: Text(tr('Are you sure you want to clear the list?')),
             actions: <Widget>[
               TextButton(
-                child: const Text('Cancel'),
+                child: Text(tr('Cancel')),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: const Text('Clear'),
+                child: Text(tr('Clear')),
                 onPressed: () {
                   setState(() {
                     _todoList.clear();
@@ -94,17 +95,17 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Confirm'),
-            content: const Text('Are you sure you want to delete this item?'),
+            title: Text(tr('Confirm')),
+            content: Text(tr('Are you sure you want to delete this item?')),
             actions: <Widget>[
               TextButton(
-                child: const Text('Cancel'),
+                child: Text(tr('Cancel')),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: const Text('Delete'),
+                child: Text(tr('Delete')),
                 onPressed: () {
                   setState(() {
                     _editingIndex = -1;
@@ -174,8 +175,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                       color: _checkedList[index] ? Colors.grey : Colors.black,
                       decoration: _checkedList[index] ? TextDecoration.lineThrough : TextDecoration.none,
                     ),
-                  decoration: const InputDecoration(
-                    hintText: 'Enter a to do',
+                  decoration: InputDecoration(
+                    hintText: tr('Enter a to do'),
                     border: InputBorder.none,
                   ),
                   onChanged: (text) {
@@ -215,7 +216,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
           },
         ),
         title: Text(
-          'To do list',
+          tr('To do list'),
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
               textStyle: const TextStyle(
@@ -283,7 +284,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                       (error) => print('Error updating document: $error'));
             },
             icon: const Icon(Icons.lock_open, size: 0),
-            label: const Text('Save', style: TextStyle(fontSize: 20)),
+            label: Text(tr('Save'), style: TextStyle(fontSize: 20)),
           ),
         ),
       ),

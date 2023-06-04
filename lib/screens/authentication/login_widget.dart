@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -222,8 +223,8 @@ class _LoginWidgetState extends State<LoginWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 60),
-              const Text(
-                "Login",
+              Text(
+                tr("Login"),
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -239,7 +240,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 cursorColor: Colors.white,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
-                  labelText: 'E-mail',
+                  labelText: tr('E-mail'),
                   enabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     borderSide: BorderSide(
@@ -264,7 +265,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 cursorColor: Colors.white,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
-                  labelText: 'Password',
+                  labelText: tr('Password'),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     borderSide: BorderSide(
@@ -288,7 +289,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 obscureText: !_isPasswordVisible,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
+                    return tr('Please enter your password');
                   }
                   return null;
                 },
@@ -299,8 +300,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {},
-                    child: const Text(
-                      'Forgot Password?',
+                    child: Text(
+                      tr('Forgot Password?'),
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -318,7 +319,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ),
                 onPressed: signIn,
                 icon: const Icon(Icons.lock_open, size: 0),
-                label: const Text('Sign In', style: TextStyle(fontSize: 24)),
+                label: Text(tr('Sign In'), style: TextStyle(fontSize: 24)),
               ),
               const SizedBox(
                 height: 24,
@@ -326,12 +327,12 @@ class _LoginWidgetState extends State<LoginWidget> {
               RichText(
                 text: TextSpan(
                     style: TextStyle(color: Colors.grey.shade700, fontSize: 16),
-                    text: 'No account yet? ',
+                    text: tr('No account yet? '),
                     children: [
                       TextSpan(
                         recognizer: TapGestureRecognizer()
                           ..onTap = widget.onClickedSignUp,
-                        text: 'Sign Up',
+                        text: tr('Sign Up'),
                         style: const TextStyle(
                             color: Color.fromARGB(255, 50, 134, 252),
                             fontSize: 16,

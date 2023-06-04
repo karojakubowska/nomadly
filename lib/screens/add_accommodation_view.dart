@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -90,7 +91,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 const SizedBox(height: 8.0),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text('Gallery'),
+                  title: Text(tr('Gallery')),
                   onTap: () {
                     imgFromGallery(pickedFile);
                     Navigator.of(context).pop();
@@ -98,7 +99,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
-                  title: const Text('Camera'),
+                  title: Text(tr('Camera')),
                   onTap: () {
                     imgFromCamera(pickedFile);
                     Navigator.of(context).pop();
@@ -115,10 +116,10 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Choose photo:'),
+          title: Text(tr('Choose photo:')),
           actions: [
             TextButton(
-              child: Text('Gallery'),
+              child: Text(tr('Gallery')),
               onPressed: () async {
                 Navigator.of(context).pop();
                 final XFile? pickedFile = await _imagePicker.pickImage(
@@ -136,7 +137,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
               },
             ),
             TextButton(
-              child: Text('Camera'),
+              child: Text(tr('Camera')),
               onPressed: () async {
                 Navigator.of(context).pop();
                 final XFile? pickedFile = await _imagePicker.pickImage(
@@ -280,7 +281,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
         title: Text(
-          'Add Accommodation',
+          tr('Add Accommodation'),
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
               textStyle: const TextStyle(
@@ -371,7 +372,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     },
                     icon: Icon(Icons.camera_alt, size: 0),
                     label: Text(
-                      'Add main photo',
+                      tr('Add main photo'),
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
@@ -487,7 +488,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                         },
                         icon: Icon(Icons.camera_alt, size: 0),
                         label: Text(
-                          'Add other photo',
+                          tr('Add other photo'),
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
@@ -503,7 +504,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Basic Information:",
+                        tr("Basic Information:"),
                         style: GoogleFonts.roboto(
                             textStyle: const TextStyle(
                                 fontSize: 20.0,
@@ -523,8 +524,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     controller: titleController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Title',
+                    decoration:  InputDecoration(
+                      labelText: tr('Title'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -545,8 +546,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     controller: descriptionController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Description',
+                    decoration: InputDecoration(
+                      labelText: tr('Description'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -567,8 +568,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     controller: streetController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Street',
+                    decoration: InputDecoration(
+                      labelText: tr('Street'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -589,8 +590,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     controller: addressController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Address',
+                    decoration: InputDecoration(
+                      labelText: tr('Address'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -611,8 +612,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     controller: cityController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'City',
+                    decoration: InputDecoration(
+                      labelText: tr('City'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -634,8 +635,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
                     textAlignVertical: TextAlignVertical.top,
-                    decoration: const InputDecoration(
-                      labelText: 'Country',
+                    decoration: InputDecoration(
+                      labelText: tr('Country'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -658,8 +659,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Price per night',
+                    decoration: InputDecoration(
+                      labelText: tr('Price per night'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -681,8 +682,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Number max People',
+                    decoration: InputDecoration(
+                      labelText: tr('Number max People'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -704,8 +705,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Amount Bed',
+                    decoration: InputDecoration(
+                      labelText: tr('Amount Bed'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -727,8 +728,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Amount Bedroom',
+                    decoration: InputDecoration(
+                      labelText: tr('Amount Bedroom'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -750,8 +751,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Amount Bathroom',
+                    decoration: InputDecoration(
+                      labelText: tr('Amount Bathroom'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -772,7 +773,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Other:",
+                        tr("Other:"),
                         style: GoogleFonts.roboto(
                             textStyle: const TextStyle(
                                 fontSize: 20.0,
@@ -789,7 +790,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: const Text("Kitchen",
+                    title: Text(tr("Kitchen"),
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -806,7 +807,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: const Text("Wifi",
+                    title: Text(tr("Wifi"),
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -823,7 +824,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: const Text("TV",
+                    title: Text(tr("TV"),
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -840,7 +841,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: const Text("Air Conditioning",
+                    title: Text(tr("Air Conditioning"),
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -868,7 +869,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                       addAccommodation(context, pickedFile);
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
-                    label: const Text('Add Accommodation',
+                    label: Text(tr('Add Accommodation'),
                         style: TextStyle(fontSize: 20)),
                   ),
                 ),

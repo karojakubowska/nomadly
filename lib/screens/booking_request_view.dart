@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,7 @@ class BookingRequestScreen extends StatefulWidget {
   DateTime startDate;
   DateTime endDate;
   int guestNumber;
+
   BookingRequestScreen(
       {super.key,
       required this.accommodation,
@@ -28,7 +30,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
       appBar: AppBar(
         leading: const BackButton(color: Colors.black),
         backgroundColor: Styles.backgroundColor,
-        title: Text('Booking details', style: Styles.headLineStyle4),
+        title: Text(tr('Booking details'), style: Styles.headLineStyle4),
         elevation: 0,
         centerTitle: true,
       ),
@@ -40,7 +42,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Accommodation", style: Styles.bookingDetailsStyle),
+                Text(tr("Accommodation"), style: Styles.bookingDetailsStyle),
                 Text(widget.accommodation.title!,
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
@@ -53,10 +55,8 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Check-in", style: Styles.bookingDetailsStyle),
-                Text(
-                    DateFormat.yMMMMd('en_US')
-                        .format(widget.startDate),
+                Text(tr("Check-in"), style: Styles.bookingDetailsStyle),
+                Text(DateFormat.yMMMMd('en_US').format(widget.startDate),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
                             fontSize: 16.0,
@@ -68,10 +68,8 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Check-out", style: Styles.bookingDetailsStyle),
-                Text(
-                    DateFormat.yMMMMd('en_US')
-                        .format(widget.endDate),
+                Text(tr("Check-out"), style: Styles.bookingDetailsStyle),
+                Text(DateFormat.yMMMMd('en_US').format(widget.endDate),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
                             fontSize: 16.0,
@@ -83,7 +81,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("For", style: Styles.bookingDetailsStyle),
+                Text(tr("For"), style: Styles.bookingDetailsStyle),
                 Text(widget.guestNumber.toString(),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
@@ -97,7 +95,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Total",
+                  tr("Total"),
                   style: GoogleFonts.roboto(
                       textStyle: const TextStyle(
                           fontSize: 18.0,
@@ -106,16 +104,15 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
                 ),
                 Text(
                     CountTotalPrice(
-                            widget.guestNumber,
-                            (widget.accommodation.price_per_night!),
-                            // DateTime.fromMillisecondsSinceEpoch(
-                            //     widget.startDate.seconds * 1000),
-                            // DateTime.fromMillisecondsSinceEpoch(
-                            //     widget.endDate.seconds * 1000)
-                            widget.startDate,
-                            widget.endDate,
-                            )
-                        .toString(),
+                      widget.guestNumber,
+                      (widget.accommodation.price_per_night!),
+                      // DateTime.fromMillisecondsSinceEpoch(
+                      //     widget.startDate.seconds * 1000),
+                      // DateTime.fromMillisecondsSinceEpoch(
+                      //     widget.endDate.seconds * 1000)
+                      widget.startDate,
+                      widget.endDate,
+                    ).toString(),
                     style: const TextStyle(
                         fontSize: 18.0,
                         color: Color.fromARGB(255, 49, 134, 252),
@@ -145,7 +142,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
                           MaterialStateProperty.all(const Size(320, 50)),
                     ),
                     child: Text(
-                      'Request a booking',
+                      tr('Request a booking'),
                       style: GoogleFonts.roboto(
                           textStyle: const TextStyle(
                               fontSize: 16.0,
@@ -165,8 +162,8 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
   int CountDaysBetweenDates(DateTime startDate, DateTime endDate) {
     var count;
 
-    if(startDate==DateTime.now()){
-      count+=1;//musi byc +1,bo nie liczy dzisiejszego dnia???
+    if (startDate == DateTime.now()) {
+      count += 1; //musi byc +1,bo nie liczy dzisiejszego dnia???
     }
     Duration diff = startDate.difference(endDate);
     count = diff.inDays;
@@ -180,5 +177,4 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
     total = (guestNumber * price * days).toDouble();
     return total;
   }
-
 }

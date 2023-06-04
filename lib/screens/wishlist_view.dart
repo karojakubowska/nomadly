@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +19,7 @@ class WishlistScreen extends StatefulWidget {
 class _WishlistScreenState extends State<WishlistScreen> {
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final userID = user!.uid;
@@ -27,7 +29,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
         backgroundColor: Styles.backgroundColor,
         appBar: AppBar(
           backgroundColor: Styles.backgroundColor,
-          title: Text('Wishlist', style: Styles.headLineStyle4),
+          title: Text(tr('Wishlist'), style: Styles.headLineStyle4),
           elevation: 0,
           centerTitle: true,
         ),
@@ -46,7 +48,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         .collection('favs')
                         .snapshots(),
                     builder: (context, snapshot) {
-                      if (!snapshot.hasData) return const Text("Loading...");
+                      if (!snapshot.hasData) return Text(tr("Loading..."));
                       if (snapshot.data!.docs.isEmpty) {
                         return Container(
                           margin: const EdgeInsets.only(top: 20),
@@ -60,7 +62,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               ),
                               SizedBox(height: 20),
                               Text(
-                                "Find your new favourites!",
+                                tr("Find your new favourites places!"),
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.roboto(
                                     color:
@@ -86,7 +88,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                     .snapshots(),
                                 builder: (context, snap) {
                                   if (!snap.hasData)
-                                    return const Text("Loading...");
+                                    return Text(tr("Loading..."));
                                   Acommodation model = Acommodation.fromJson(
                                       snap.data!.docs[0].data()
                                           as Map<String, dynamic>);
@@ -108,46 +110,3 @@ class _WishlistScreenState extends State<WishlistScreen> {
     // );
   }
 }
-// StreamBuilder<QuerySnapshot>(
-//                 stream: FirebaseFirestore.instance
-//                     .collection('Wishlists')
-//                     .doc(userID)
-//                     .collection('favs')
-//                     .snapshots(),
-//                 builder: (context, snapshot) {
-//                   if (!snapshot.hasData) return const Text("Loading...");
-//                   return Column(children: [
-//                     ListView.builder(
-//                         scrollDirection: Axis.vertical,
-//                         shrinkWrap: true,
-//                         itemCount: snapshot.data!.docs.length,
-//                         itemBuilder: (context, index) {
-//                           //return buildListItem(context, snapshot.data.documents[index]);
-//                           return ListView(
-//                             scrollDirection: Axis.vertical,
-//                             shrinkWrap: true,
-//                             children: <Widget>[
-//                               StreamBuilder<QuerySnapshot>(
-//                                   stream: FirebaseFirestore.instance
-//                                       .collection('Accommodations')
-//                                       .where(FieldPath.documentId,
-//                                           isEqualTo: snapshot.data!.docs[index]
-//                                               ['accommodationId'])
-//                                       .snapshots(),
-//                                   builder: (context, snap) {
-//                                     if (!snap.hasData)
-//                                       return const Text("Loading...");
-//                                     Acommodation model = Acommodation.fromJson(
-//                                         snap.data!.docs[0].data()
-//                                             as Map<String, dynamic>);
-//                                     return AccommodationCard(
-//                                       accomodation: model,
-//                                       index: index,
-//                                     );
-//                                   }),
-//                             ],
-//                           );
-//                         }),
-//                   ]);
-//                 },
-//               ),

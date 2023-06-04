@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,7 +32,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
       appBar: AppBar(
         leading: const BackButton(color: Colors.black),
         backgroundColor: Styles.backgroundColor,
-        title: Text('Booking details', style: Styles.headLineStyle4),
+        title: Text(tr('Booking details'), style: Styles.headLineStyle4),
         elevation: 0,
         centerTitle: true,
       ),
@@ -42,7 +43,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Accommodation", style: Styles.bookingDetailsStyle),
+                Text(tr("Accommodation"), style: Styles.bookingDetailsStyle),
                 Text(widget.accommodation.title!,
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
@@ -55,7 +56,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Check-in", style: Styles.bookingDetailsStyle),
+                Text(tr("Check-in"), style: Styles.bookingDetailsStyle),
                 Text(
                     DateFormat.yMMMMd('en_US')
                         .format(widget.booking.startDate!.toDate()),
@@ -70,7 +71,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Check-out", style: Styles.bookingDetailsStyle),
+                Text(tr("Check-out"), style: Styles.bookingDetailsStyle),
                 Text(
                     DateFormat.yMMMMd('en_US')
                         .format(widget.booking.endDate!.toDate()),
@@ -85,7 +86,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("For", style: Styles.bookingDetailsStyle),
+                Text(tr("For"), style: Styles.bookingDetailsStyle),
                 Text(widget.booking.guestNumber!.toString(),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
@@ -98,7 +99,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Status", style: Styles.bookingDetailsStyle),
+                Text(tr("Status"), style: Styles.bookingDetailsStyle),
                 Text(widget.booking.status!,
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
@@ -112,7 +113,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Total",
+                  tr("Total"),
                   style: GoogleFonts.roboto(
                       textStyle: const TextStyle(
                           fontSize: 18.0,
@@ -141,7 +142,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
                                   isEqualTo: widget.booking.userId)
                               .snapshots(),
                           builder: (context, snap) {
-                            if (!snap.hasData) return const Text("Loading...");
+                            if (!snap.hasData) return Text(tr("Loading..."));
                             userModel = UserModel.fromJson(snap.data!.docs[0]
                                 .data() as Map<String, dynamic>);
                             return statusButtonSwitch();
@@ -176,7 +177,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
                             MaterialStateProperty.all(const Size(320, 50)),
                       ),
                       child: Text(
-                        'Contact with user',
+                        tr('Contact with user'),
                         style: GoogleFonts.roboto(
                             textStyle: const TextStyle(
                                 fontSize: 16.0,
@@ -218,7 +219,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
               minimumSize: MaterialStateProperty.all(const Size(320, 50)),
             ),
             child: Text(
-              'Rate the user',
+              tr('Rate the user'),
               style: GoogleFonts.roboto(
                   textStyle: const TextStyle(
                       fontSize: 16.0,
@@ -247,7 +248,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
               minimumSize: MaterialStateProperty.all(const Size(320, 50)),
             ),
             child: Text(
-              'Report the user',
+              tr('Report the user'),
               style: GoogleFonts.roboto(
                   textStyle: const TextStyle(
                       fontSize: 16.0,
@@ -270,7 +271,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
           minimumSize: MaterialStateProperty.all(const Size(320, 50)),
         ),
         child: Text(
-          'Confirm',
+          tr('Confirm'),
           style: GoogleFonts.roboto(
               textStyle: const TextStyle(
                   fontSize: 16.0,

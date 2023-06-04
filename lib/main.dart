@@ -101,11 +101,16 @@ Future<void> main() async {
     ));
   } else {
     WidgetsFlutterBinding.ensureInitialized();
+    await EasyLocalization.ensureInitialized();
+
+    WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     initScreen = preferences.getInt('initScreen');
     await preferences.setInt('initScreen', 1); //if already shown  1 else 0
     await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
     runApp(EasyLocalization(
       supportedLocales: [
         Locale('en', 'US'),
@@ -120,7 +125,7 @@ Future<void> main() async {
           ),
           StreamProvider(
             create: (context) =>
-                context.read<AuthenticationProvider>().authState,
+            context.read<AuthenticationProvider>().authState,
             initialData: null,
           ),
           StreamProvider<List<Acommodation>>.value(
@@ -192,7 +197,7 @@ class LoginPage extends StatelessWidget {
                     UserModel user = UserModel.fromSnapshot(snapshot.data);
                     if (user.accountType == 'Client') {
                       return NewBottomNavBar(
-                        screens: const [
+                        screens: [
                           HomeTest(),
                           WishlistScreen(),
                           AllBookingsScreen(),

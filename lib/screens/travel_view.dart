@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,10 +50,11 @@ class _TravelViewState extends State<TravelView> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
-        title: Text('Travels`', style: Styles.headLineStyle4),
+        title: Text(tr('Travels'), style: Styles.headLineStyle4),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -95,7 +97,7 @@ class _TravelViewState extends State<TravelView> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    "Click on the plus - blue button and add a new travel!",
+                    tr("Click on the plus - blue button and add a new travel!"),
                     textAlign: TextAlign.center,
                     style: GoogleFonts.roboto(
                         color: const Color.fromARGB(255, 24, 24, 24),
@@ -173,12 +175,12 @@ class _TravelViewState extends State<TravelView> {
                                 icon:
                                     const Icon(Icons.more_vert, color: Colors.black),
                                 itemBuilder: (BuildContext context) => [
-                                  const PopupMenuItem(
-                                    child: Text("Edit"),
+                                  PopupMenuItem(
+                                    child: Text(tr("Edit")),
                                     value: "edit",
                                   ),
-                                  const PopupMenuItem(
-                                    child: Text("Delete"),
+                                  PopupMenuItem(
+                                    child: Text (tr("Delete")),
                                     value: "delete",
                                   ),
                                 ],
@@ -191,18 +193,18 @@ class _TravelViewState extends State<TravelView> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: const Text("Confirm Delete"),
-                                          content: const Text(
-                                              "Are you sure you want to delete this item?"),
+                                          title: Text(tr("Confirm Delete")),
+                                          content: Text(
+                                              tr("Are you sure you want to delete this item?")),
                                           actions: [
                                             TextButton(
-                                              child: const Text("Cancel"),
+                                              child: Text(tr("Cancel")),
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
                                             ),
                                             TextButton(
-                                              child: const Text("Delete"),
+                                              child: Text(tr("Delete")),
                                               onPressed: () {
                                                 Navigator.pop(context);
                                                 deleteTravel(

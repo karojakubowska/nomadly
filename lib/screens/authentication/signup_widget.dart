@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -269,8 +270,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               const SizedBox(
                 height: 60,
               ),
-              const Text(
-                "Sign Up",
+              Text(
+                tr("Sign Up"),
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -285,8 +286,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 controller: emailController,
                 cursorColor: Colors.white,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                  labelText: 'E-mail',
+                decoration: InputDecoration(
+                  labelText: tr('E-mail'),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
@@ -297,10 +298,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter an email';
+                    return tr('Please enter an email');
                   }
                   if (!isValidEmail(value)) {
-                    return 'Please enter a valid email address';
+                    return tr('Please enter a valid email address');
                   }
                   return null;
                 },
@@ -312,8 +313,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 controller: nameController,
                 cursorColor: Colors.white,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                  labelText: 'Name',
+                decoration: InputDecoration(
+                  labelText: tr('Name'),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
@@ -331,7 +332,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 cursorColor: Colors.white,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
-                  labelText: 'Password',
+                  labelText: tr('Password'),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     borderSide: BorderSide(
@@ -355,10 +356,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 obscureText: !_isPasswordVisible,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
+                    return tr('Please enter a password');
                   }
                   if (value.length < 6) {
-                    return 'Password must be at least 6 characters long';
+                    return tr('Password must be at least 6 characters long');
                   }
                   return null;
                 },
@@ -371,7 +372,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 cursorColor: Colors.white,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
-                  labelText: 'Confirm Password',
+                  labelText: tr('Confirm Password'),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
@@ -395,10 +396,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 obscureText: !_isPassword2Visible,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
+                    return tr('Please enter a password');
                   }
                   if (value != passwordController.text) {
-                    return 'Passwords do not match';
+                    return tr('Passwords do not match');
                   }
                   return null;
                 },
@@ -423,7 +424,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   },
                   hint: Container(
                       alignment: Alignment.centerLeft,
-                      child: const Text("Select the type of account",
+                      child: Text(tr("Select the type of account"),
                           textAlign: TextAlign.left)),
                   underline: Container(),
                   dropdownColor: Styles.backgroundColor,
@@ -468,7 +469,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     backgroundColor: const Color.fromARGB(255, 50, 134, 252)),
                 onPressed: signUp,
                 icon: const Icon(Icons.lock_open, size: 0),
-                label: const Text('Sign Up', style: TextStyle(fontSize: 24)),
+                label: Text(tr('Sign Up'), style: TextStyle(fontSize: 24)),
               ),
               const SizedBox(
                 height: 24,
@@ -476,12 +477,12 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               RichText(
                 text: TextSpan(
                     style: TextStyle(color: Colors.grey.shade700, fontSize: 16),
-                    text: 'Already have an account? ',
+                    text: tr('Already have an account? '),
                     children: [
                       TextSpan(
                         recognizer: TapGestureRecognizer()
                           ..onTap = widget.onClickedSignIn,
-                        text: 'Login',
+                        text: tr('Login'),
                         style: const TextStyle(
                             color: Color.fromARGB(255, 50, 134, 252),
                             fontSize: 16,

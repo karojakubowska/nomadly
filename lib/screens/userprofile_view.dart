@@ -29,8 +29,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   void initState() {
     super.initState();
     final currentUser = FirebaseAuth.instance.currentUser;
-    id =  FirebaseAuth.instance.currentUser!.uid.toString();
-    user =  FirebaseAuth.instance.currentUser;
+    id = FirebaseAuth.instance.currentUser!.uid.toString();
+    user = FirebaseAuth.instance.currentUser;
     userStream = FirebaseFirestore.instance
         .collection('Users')
         .doc(currentUser!.uid)
@@ -121,7 +121,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: ((context) => EditProfilePage(id:id, image: accountImage))));
+                                    builder: ((context) => EditProfilePage(
+                                        id: id, image: accountImage))));
                           },
                         ),
                       ],
@@ -164,14 +165,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     ListTile(
                                       title: Text((tr('English'))),
                                       onTap: () {
-                                        _changeLanguage(context, Locale('en', 'US'));
+                                        _changeLanguage(
+                                            context, Locale('en', 'US'));
                                         Navigator.of(context).pop();
                                       },
                                     ),
                                     ListTile(
                                       title: Text((tr('Polish'))),
                                       onTap: () {
-                                        _changeLanguage(context, Locale('pl', 'PL'));
+                                        _changeLanguage(
+                                            context, Locale('pl', 'PL'));
                                         Navigator.of(context).pop();
                                       },
                                     ),
@@ -220,7 +223,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => const HelpSupportScreen())));
+                                  builder: ((context) =>
+                                      const HelpSupportScreen())));
                         },
                       ),
                       const SizedBox(height: 16),

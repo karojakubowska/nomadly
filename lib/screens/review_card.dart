@@ -10,6 +10,7 @@ import '../models/User.dart';
 class ReviewCard extends StatelessWidget {
   UserModel user;
   Review review;
+
   //CircleAvatar avatar;
   // final String name;
   // final String date;

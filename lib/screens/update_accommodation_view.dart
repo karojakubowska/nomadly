@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
@@ -154,7 +155,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 SizedBox(height: 8.0),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text('Gallery'),
+                  title: Text(tr('Gallery')),
                   onTap: () {
                     imgFromGallery(pickedFile);
                     Navigator.of(context).pop();
@@ -162,7 +163,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
-                  title: const Text('Camera'),
+                  title: Text(tr('Camera')),
                   onTap: () {
                     imgFromCamera(pickedFile);
                     Navigator.of(context).pop();
@@ -179,40 +180,40 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Choose photo:'),
+          title: Text(tr('Choose photo:')),
           actions: [
             TextButton(
-              child: Text('Gallery'),
+              child: Text(tr('Gallery')),
               onPressed: () async {
                 Navigator.of(context).pop();
-                final XFile? pickedFile = await _imagePicker.pickImage(
+                final pickedFile = await _picker.getImage(
                   source: ImageSource.gallery,
                   imageQuality: 85,
                   maxWidth: 1080,
                   maxHeight: 1920,
                 );
                 if (pickedFile != null) {
+                  final photoFile = File(pickedFile.path);
                   setState(() {
-                    final File photo = File(pickedFile.path);
-                    photos.add(photo);
+                    photos.add(photoFile);
                   });
                 }
               },
             ),
             TextButton(
-              child: Text('Camera'),
+              child: Text(tr('Camera')),
               onPressed: () async {
                 Navigator.of(context).pop();
-                final XFile? pickedFile = await _imagePicker.pickImage(
+                final pickedFile = await _picker.getImage(
                   source: ImageSource.camera,
                   imageQuality: 85,
                   maxWidth: 1080,
                   maxHeight: 1920,
                 );
                 if (pickedFile != null) {
+                  final photoFile = File(pickedFile.path);
                   setState(() {
-                    final File photo = File(pickedFile.path);
-                    photos.add(photo);
+                    photos.add(photoFile);
                   });
                 }
               },
@@ -222,7 +223,6 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
       },
     );
   }
-
 
   // Future<void> updateAccommodation(id, PickedFile) async {
   //   var user = await FirebaseAuth.instance.currentUser!;
@@ -402,20 +402,19 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         }
       }
 
-      // Delete old photos from Firebase Storage and Firestore
+      // Usuń stare URL-e zdjęć, które nie znajdują się na liście updatedPhotoUrls
       for (var oldPhotoUrl in photoUrls) {
-        try {
-          await firebase_storage.FirebaseStorage.instance
-              .refFromURL(oldPhotoUrl)
-              .delete();
-          print("Old photo successfully deleted: $oldPhotoUrl");
-
-          // Remove old photo URL from Firestore
-          updatedPhotoUrls.remove(oldPhotoUrl);
-        } catch (e) {
-          print('Error deleting old photo: $e');
+        if (!updatedPhotoUrls.contains(oldPhotoUrl)) {
+          try {
+            await firebase_storage.FirebaseStorage.instance.refFromURL(oldPhotoUrl).delete();
+            print("Stare zdjęcie zostało pomyślnie usunięte: $oldPhotoUrl");
+          } catch (e) {
+            print('Błąd podczas usuwania starego zdjęcia: $e');
+          }
         }
       }
+
+      photoUrls.addAll(updatedPhotoUrls);
 
       accommodation.update({
         'title': titleController.text,
@@ -483,18 +482,18 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
 
 // Delete old photos from Firebase Storage and Firestore
       for (var oldPhotoUrl in photoUrls) {
-        try {
-          await firebase_storage.FirebaseStorage.instance
-              .refFromURL(oldPhotoUrl)
-              .delete();
-          print("Old photo successfully deleted: $oldPhotoUrl");
-
-          // Remove old photo URL from Firestore
-          updatedPhotoUrls.remove(oldPhotoUrl);
-        } catch (e) {
-          print('Error deleting old photo: $e');
+        if (!updatedPhotoUrls.contains(oldPhotoUrl)) {
+          try {
+            await firebase_storage.FirebaseStorage.instance.refFromURL(oldPhotoUrl).delete();
+            print("Stare zdjęcie zostało pomyślnie usunięte: $oldPhotoUrl");
+          } catch (e) {
+            print('Błąd podczas usuwania starego zdjęcia: $e');
+          }
         }
       }
+
+// Dodaj nowe URL-e do listy photoUrls
+      photoUrls.addAll(updatedPhotoUrls);
 
       accommodation.update({
         'title': titleController.text,
@@ -528,7 +527,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
         title: Text(
-          'Update Accommodation',
+          tr('Update Accommodation'),
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
               textStyle: TextStyle(
@@ -662,7 +661,13 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                                         color: Colors.grey[800],
                                         onPressed: () {
                                           setState(() {
-                                            photos.removeAt(entry.key);
+                                            int index = entry.key;
+                                            if (index < photos.length) {
+                                              photos.removeAt(index);
+                                            } else {
+                                              int photoUrlIndex = index - photos.length;
+                                              photoUrls.removeAt(photoUrlIndex);
+                                            }
                                           });
                                         },
                                       ),
@@ -717,105 +722,6 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     ),
                   ),
                 ),
-                // GestureDetector(
-                //   onTap: () {
-                //     _showPicker(context);
-                //   },
-                //   child: Container(
-                //     width: size.width,
-                //     height: size.height * 0.22,
-                //     child: SingleChildScrollView(
-                //       scrollDirection: Axis.horizontal,
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //         children: [
-                //           ...photos.asMap().entries.map(
-                //                 (entry) => Padding(
-                //                   padding: const EdgeInsets.all(4.0),
-                //                   child: Stack(
-                //                     children: [
-                //                       ClipRRect(
-                //                         borderRadius: BorderRadius.all(
-                //                             Radius.circular(10)),
-                //                         child: Image.file(
-                //                           entry.value,
-                //                           width: 160,
-                //                           height: 160,
-                //                           fit: BoxFit.cover,
-                //                         ),
-                //                       ),
-                //                       Positioned(
-                //                         top: 5,
-                //                         right: 5,
-                //                         child: Container(
-                //                           width: 30,
-                //                           height: 30,
-                //                           decoration: BoxDecoration(
-                //                             color: Colors.white,
-                //                             shape: BoxShape.circle,
-                //                           ),
-                //                           child: IconButton(
-                //                             iconSize: 15,
-                //                             icon: Icon(Icons.close),
-                //                             color: Colors.grey[800],
-                //                             onPressed: () {
-                //                               setState(() {
-                //                                 photos.removeAt(entry.key);
-                //                               });
-                //                             },
-                //                           ),
-                //                         ),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                 ),
-                //               ),
-                //           ...photoUrls.asMap().entries.map(
-                //                 (entry) => Padding(
-                //                   padding: const EdgeInsets.all(4.0),
-                //                   child: Stack(
-                //                     children: [
-                //                       ClipRRect(
-                //                         borderRadius: BorderRadius.all(
-                //                             Radius.circular(10)),
-                //                         child: Image.network(
-                //                           entry.value,
-                //                           width: 160,
-                //                           height: 160,
-                //                           fit: BoxFit.cover,
-                //                         ),
-                //                       ),
-                //                       Positioned(
-                //                         top: 5,
-                //                         right: 5,
-                //                         child: Container(
-                //                           width: 30,
-                //                           height: 30,
-                //                           decoration: BoxDecoration(
-                //                             color: Colors.white,
-                //                             shape: BoxShape.circle,
-                //                           ),
-                //                           child: IconButton(
-                //                             iconSize: 15,
-                //                             icon: Icon(Icons.close),
-                //                             color: Colors.grey[800],
-                //                             onPressed: () {
-                //                               setState(() {
-                //                                 photoUrls.removeAt(entry.key);
-                //                               });
-                //                             },
-                //                           ),
-                //                         ),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                 ),
-                //               ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -842,7 +748,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Basic Information:",
+                        tr("Basic Information:"),
                         style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 fontSize: 20.0,
@@ -862,8 +768,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     controller: titleController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Title',
+                    decoration: InputDecoration(
+                      labelText: tr('Title'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -884,8 +790,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     controller: descriptionController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Description',
+                    decoration: InputDecoration(
+                      labelText: tr('Description'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -906,8 +812,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     controller: streetController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Street',
+                    decoration: InputDecoration(
+                      labelText: tr('Street'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -928,8 +834,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     controller: addressController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Address',
+                    decoration: InputDecoration(
+                      labelText: tr('Address'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -950,8 +856,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     controller: cityController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'City',
+                    decoration: InputDecoration(
+                      labelText: tr('City'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -973,8 +879,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
                     textAlignVertical: TextAlignVertical.top,
-                    decoration: const InputDecoration(
-                      labelText: 'Country',
+                    decoration: InputDecoration(
+                      labelText: tr('Country'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -997,8 +903,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Price per night',
+                    decoration: InputDecoration(
+                      labelText: tr('Price per night'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -1020,8 +926,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Number max People',
+                    decoration: InputDecoration(
+                      labelText: tr('Number max People'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -1043,8 +949,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Amount Bed',
+                    decoration: InputDecoration(
+                      labelText: tr('Amount Bed'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -1066,8 +972,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Amount Bedroom',
+                    decoration: InputDecoration(
+                      labelText: tr('Amount Bedroom'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -1089,8 +995,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Amount Bathroom',
+                    decoration: InputDecoration(
+                      labelText: tr('Amount Bathroom'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
@@ -1111,7 +1017,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Other:",
+                        tr("Other:"),
                         style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 fontSize: 20.0,
@@ -1128,7 +1034,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("Kitchen",
+                    title: Text(tr("Kitchen"),
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -1145,7 +1051,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("Wifi",
+                    title: Text(tr("Wifi"),
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -1162,7 +1068,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("TV",
+                    title: Text(tr("TV"),
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -1179,7 +1085,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: CheckboxListTile(
-                    title: Text("Air Conditioning",
+                    title: Text(tr("Air Conditioning"),
                         style: TextStyle(
                             fontSize: 16.0,
                             height: 1.2,
@@ -1207,7 +1113,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                       updateAccommodation(widget.id, pickedFile);
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
-                    label: const Text('Update Accommodation',
+                    label: Text(tr('Update Accommodation'),
                         style: TextStyle(fontSize: 20)),
                   ),
                 ),

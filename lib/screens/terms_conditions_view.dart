@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
@@ -25,7 +26,7 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
           },
         ),
         title: Text(
-          'Terms and Conditions',
+          tr('Terms and Conditions'),
           textAlign: TextAlign.center,
           style: GoogleFonts.roboto(
               textStyle: const TextStyle(

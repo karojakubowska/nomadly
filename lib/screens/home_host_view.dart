@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,7 +27,7 @@ class _HomeHostScreenState extends State<HomeHostScreen> {
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
         backgroundColor: Styles.backgroundColor,
-        title: Text('My Places', style: Styles.headLineStyle4),
+        title: Text(tr('My Places'), style: Styles.headLineStyle4),
         elevation: 0,
         centerTitle: true,
       ),
@@ -43,7 +44,7 @@ class _HomeHostScreenState extends State<HomeHostScreen> {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      "Add your new places and rent it!",
+                      tr("Add your new places and rent it!"),
                       textAlign: TextAlign.center,
                       style: GoogleFonts.roboto(
                         color: const Color.fromARGB(255, 24, 24, 24),
@@ -91,47 +92,5 @@ class _HomeHostScreenState extends State<HomeHostScreen> {
               ],
             ),
     );
-
-    // return Scaffold(
-    //     backgroundColor: Styles.backgroundColor,
-    //     appBar: AppBar(
-    //       backgroundColor: Styles.backgroundColor,
-    //       title: Text('My Places', style: Styles.headLineStyle4),
-    //       elevation: 0,
-    //       centerTitle: true,
-    //     ),
-    //     body: ListView(
-    //       children: [
-    //         Column(
-    //           children: [
-    //             SingleChildScrollView(
-    //                 scrollDirection: Axis.vertical,
-    //                 child: Column(children: <Widget>[
-    //                   SizedBox(
-    //                     height: size.height * 0.78,
-    //                     width: size.width * 0.9,
-    //                     child: ListView.builder(
-    //                       scrollDirection: Axis.vertical,
-    //                       itemCount: accommodationList.length,
-    //                       itemBuilder: (context, index) {
-    //                         Acommodation model = accommodationList[index];
-    //                         if (model.host_id == currentUser) {
-    //                           return AccommodationCardHost(
-    //                             accomodation: model,
-    //                             index: index,
-    //                             host_id: currentUser,
-    //                           );
-    //                         } else {
-    //                           return const SizedBox
-    //                               .shrink(); // pusta przestrzeń
-    //                         }
-    //                       },
-    //                     ),
-    //                   ),
-    //                 ])),
-    //           ],
-    //         ),
-    //       ],
-    //     ));
   }
 }

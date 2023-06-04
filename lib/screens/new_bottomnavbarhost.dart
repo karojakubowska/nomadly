@@ -6,6 +6,7 @@ class NewBottomNavBarHost extends StatefulWidget {
 
   static const Tag = "NewBottomNavBar";
   final List<Widget> screens;
+
   @override
   State<StatefulWidget> createState() {
     return _NewBottomNavBarHostState();
@@ -32,8 +33,7 @@ class _NewBottomNavBarHostState extends State<NewBottomNavBarHost> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month_outlined), label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.chat_outlined), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "")
         ],

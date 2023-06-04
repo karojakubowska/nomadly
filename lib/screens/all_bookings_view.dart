@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -20,6 +21,7 @@ class _AllBookingsScreenState extends State<AllBookingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final String userID = user!.uid;
@@ -29,7 +31,7 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
         backgroundColor: Styles.backgroundColor,
         appBar: AppBar(
           backgroundColor: Styles.backgroundColor,
-          title: Text('Bookings', style: Styles.headLineStyle4),
+          title: Text(tr('Bookings'), style: Styles.headLineStyle4),
           elevation: 0,
           centerTitle: true,
         ),
@@ -52,7 +54,7 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return const Text("Loading...");
+                              return Text(tr("Loading..."));
                             }
                             if (snapshot.data!.docs.isEmpty) {
                               return Container(
@@ -66,7 +68,7 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
                                     ),
                                     SizedBox(height: 20),
                                     Text(
-                                      "Find your new bookings!",
+                                      tr("Add new bookings!"),
                                       textAlign: TextAlign.center,
                                       style: GoogleFonts.roboto(
                                         color: const Color.fromARGB(255, 24, 24, 24),
@@ -92,7 +94,7 @@ Query query = FirebaseFirestore.instance.collection("Bookings");
                                           .snapshots(),
                                       builder: (context, snap) {
                                         if (!snap.hasData)
-                                          return const Text("Loading...");
+                                          return Text(tr("Loading..."));
                                         Acommodation model =
                                             Acommodation.fromJson(
                                                 snap.data!.docs[0].data()
