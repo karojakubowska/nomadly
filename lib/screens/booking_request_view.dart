@@ -18,13 +18,12 @@ class BookingRequestScreen extends StatefulWidget {
   DateTime startDate;
   DateTime endDate;
   int guestNumber;
-  BookingRequestScreen({
-    super.key,
-    required this.accommodation,
-    required this.startDate,
-    required this.guestNumber,
-    required this.endDate,
-  });
+  BookingRequestScreen(
+      {super.key,
+      required this.accommodation,
+      required this.startDate,
+      required this.guestNumber,
+      required this.endDate});
 
   @override
   State<BookingRequestScreen> createState() => _BookingRequestScreenState();
@@ -32,6 +31,20 @@ class BookingRequestScreen extends StatefulWidget {
 
 class _BookingRequestScreenState extends State<BookingRequestScreen> {
   late double totalPrice;
+  var username;
+  Future<void> getUsername() async {
+    //query the user photo
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .snapshots()
+        .listen((event) {
+      setState(() {
+        username = event.get("Name");
+      });
+    });
+  }
+
   @override
   void initState() {
     totalPrice = CountTotalPrice(
@@ -40,6 +53,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
       widget.startDate,
       widget.endDate,
     );
+    getUsername();
     super.initState();
   }
 
@@ -148,8 +162,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      FuckinBook(widget.startDate, widget.endDate);
-                      //   batchWrite();
+                      BookingTransaction(widget.startDate, widget.endDate);
                     },
                     style: ButtonStyle(
                       elevation: MaterialStateProperty.all(0),
@@ -201,7 +214,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
     return total;
   }
 
-  void FuckinBook(DateTime startDate, DateTime endDate) {
+  void BookingTransaction(DateTime startDate, DateTime endDate) {
     List<BookDate> listOfDates = listAllDates(startDate, endDate);
     // List<BookDate> listOfDates = [
     //   BookDate(date: DateTime(2023, 06, 23), hour: "14"),
@@ -215,12 +228,10 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
     var db = FirebaseFirestore.instance;
     final sfDocRef =
         db.collection("Accommodations").doc(widget.accommodation.id);
-        var bookingRef = db.collection("Bookings").doc();
+    var bookingRef = db.collection("Bookings").doc();
 
     db.runTransaction((transaction) async {
-      final snapshot = await transaction.get(sfDocRef); //read
-
-      //nalezy sprawdzić inne warunki nakładania się dat istniejących rezerwacji
+      final snapshot = await transaction.get(sfDocRef);
       if (!x(snapshot, listOfDates)) {
         throw FirebaseException(
             plugin: 'cloud_firestore', code: 'predefined-condition-failed');
@@ -233,24 +244,24 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
           ]),
         });
       }
-      transaction.update(sfDocRef, {"reservations_count": FieldValue.increment(1)});
-      
-    transaction.set(bookingRef, {
-      'accommodation_id': widget.accommodation.id,
-      'host_id': widget.accommodation.host_id,
-      'user_id': FirebaseAuth.instance.currentUser!.uid,
-      'start_date': widget.startDate,
-      'end_date': widget.endDate,
-      'guest_number': widget.guestNumber,
-      'total_price': totalPrice,
-      'status': "Waiting for confirmation",
-      'username': FirebaseAuth.instance.currentUser!
-          .displayName, //nie wiem czy to bedzie dzialalo czy trzeba nasz model tu podstawic
-      'isAccommodationRated': false,
-      'isUserRated': false,
-      'city': widget.accommodation.city,
-      'country': widget.accommodation.country,
-    });
+      transaction
+          .update(sfDocRef, {"reservations_count": FieldValue.increment(1)});
+
+      transaction.set(bookingRef, {
+        'accommodation_id': widget.accommodation.id,
+        'host_id': widget.accommodation.host_id,
+        'user_id': FirebaseAuth.instance.currentUser!.uid,
+        'start_date': widget.startDate,
+        'end_date': widget.endDate,
+        'guest_number': widget.guestNumber,
+        'total_price': totalPrice,
+        'status': "Waiting for confirmation",
+        'username': username,
+        'isAccommodationRated': false,
+        'isUserRated': false,
+        'city': widget.accommodation.city,
+        'country': widget.accommodation.country,
+      });
     }).then(
       (value) => {
         print("DocumentSnapshot successfully updated!"),
@@ -258,7 +269,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
             MaterialPageRoute(builder: ((context) => CheckoutScreen())))
       },
       onError: (e) => {
-        print (e),
+        print(e),
         Navigator.push(context,
             MaterialPageRoute(builder: ((context) => ErrorWhileBooking())))
       },

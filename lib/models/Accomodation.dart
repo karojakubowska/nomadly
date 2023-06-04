@@ -54,7 +54,6 @@ class Acommodation {
     this.bed,
     this.address,
     this.photoUrl,
-   //this.bookedDates,
    this.bookedDates,
   });
 

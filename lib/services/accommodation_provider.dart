@@ -14,6 +14,18 @@ class AccommodationProvider {
               List<dynamic> bookedDates =
                   List<dynamic>.from(documentSnapshot["booked_dates"]);
               List<BookDate> dates = [];
+              bookedDates.forEach((element) {
+                dates.add(BookDate(
+                    date: element['date'].toDate(), hour: element['hour']));
+              });
+              dates.sort((a, b) => a.date!.compareTo(b.date!));
+              // var x =
+              //     List<Timestamp>.from(documentSnapshot["booked"]);
+              // x.sort();
+              // List<DateTime> list = [];
+              // for (var date in x) {
+              //   list.add(date.toDate());
+              // }
               return Acommodation(
                 id: documentSnapshot.id,
                 title: documentSnapshot["title"],
@@ -38,4 +50,6 @@ class AccommodationProvider {
             }).toList());
     return list;
   }
+
+
 }
