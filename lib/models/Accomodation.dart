@@ -1,4 +1,6 @@
 
+import 'package:nomadly_app/models/Date.dart';
+
 class Acommodation {
   String? id;
   String? title;
@@ -29,7 +31,8 @@ class Acommodation {
   num? people;
   String? address;
   List<String>? photoUrl;
-  List<DateTime>? bookedDates;
+  //List<DateTime>? bookedDates;
+  List<BookDate>? bookedDates;
 
   Acommodation({
     this.id,
@@ -51,6 +54,7 @@ class Acommodation {
     this.bed,
     this.address,
     this.photoUrl,
+   //this.bookedDates,
    this.bookedDates,
   });
 

@@ -11,7 +11,7 @@ class CheckoutScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Styles.backgroundColor,
         appBar: AppBar(
-          //leading: BackButton(color: Colors.black),
+        
           backgroundColor: Styles.backgroundColor,
           title: Text('Secure payment', style: Styles.headLineStyle4),
           elevation: 0,

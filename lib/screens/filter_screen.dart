@@ -1,7 +1,10 @@
-
+import 'package:basics/basics.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:gap/gap.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:nomadly_app/models/Booking.dart';
 import 'package:nomadly_app/utils/app_layout.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
@@ -23,7 +26,7 @@ enum AccommodationTypeFilter {
   Room
 }
 
-enum AmenitiesFilter { wifi, tv, airconditioning, kitchen }
+enum AmenitiesFilter { wifi, TV, AC, Kitchen }
 
 class FiltersScreen extends StatefulWidget {
   List<String> currentFilters = [];
@@ -37,7 +40,8 @@ class FiltersScreen extends StatefulWidget {
   final void Function(List<String>, RangeValues, String, List<Acommodation>,
       int, DateTime, DateTime) onApplyFilters;
   FiltersScreen(
-      {super.key, required this.onApplyFilters,
+      {super.key,
+      required this.onApplyFilters,
       required this.onQueryChanged,
       required this.currentFilters,
       required this.currentPriceRange,
@@ -141,14 +145,13 @@ class _FiltersScreenState extends State<FiltersScreen> {
               prefixIcon: Icon(Icons.search_outlined),
               hintText: 'Search places',
             ),
-             ),
+          ),
           Divider(
             color: Styles.greyColor,
             height: 30,
             thickness: 1,
             indent: 25,
             endIndent: 25,
-          
           ),
           const Text("When",
               style: TextStyle(
@@ -380,13 +383,14 @@ class _FiltersScreenState extends State<FiltersScreen> {
             child: const Text('Search'),
             onPressed: () => {
               widget.onApplyFilters(
-                  _filters,
-                  _priceRange,
-                  searchCity.text,
-                  getFilteredList(accommodationList, bookingsList),
-                  widget.guests,
-                  currentstartDate,
-                  currentendDate,),
+                _filters,
+                _priceRange,
+                searchCity.text,
+                getFilteredList(accommodationList, bookingsList),
+                widget.guests,
+                currentstartDate,
+                currentendDate,
+              ),
               Navigator.pop(context)
             },
           )
@@ -411,14 +415,14 @@ class _FiltersScreenState extends State<FiltersScreen> {
     if (_filters.contains(AmenitiesFilter.wifi.name)) {
       query = query.where("wifi", isEqualTo: true);
     }
-    if (_filters.contains(AmenitiesFilter.tv.name)) {
-      query = query.where("tv", isEqualTo: true);
+    if (_filters.contains(AmenitiesFilter.TV.name)) {
+      query = query.where("TV", isEqualTo: true);
     }
-    if (_filters.contains(AmenitiesFilter.airconditioning.name)) {
+    if (_filters.contains(AmenitiesFilter.AC.name)) {
       query = query.where("air_conditioning", isEqualTo: true);
     }
-    if (_filters.contains(AmenitiesFilter.kitchen.name)) {
-      query = query.where("kitchen", isEqualTo: true);
+    if (_filters.contains(AmenitiesFilter.Kitchen.name)) {
+      query = query.where("Kitchen", isEqualTo: true);
     }
 
     return query;
@@ -451,21 +455,18 @@ class _FiltersScreenState extends State<FiltersScreen> {
           .toList();
     } else {
       bookingResults = bookingResults
-          .where((i) =>(DateTime.fromMillisecondsSinceEpoch(
-                          i.startDate!.seconds * 1000) !=
-                      currentstartDate &&
-                  DateTime.fromMillisecondsSinceEpoch(
-                          i.endDate!.seconds * 1000) !=
-                      currentendDate)||
-              (DateTime.fromMillisecondsSinceEpoch(
-                          i.startDate!.seconds * 1000) !=
-                      currentstartDate &&
-                  DateTime.fromMillisecondsSinceEpoch(
-                          i.endDate!.seconds * 1000) !=
-                      currentendDate) &&
-              (i.city == searchCity.text || i.country == searchCity.text))
+          .where((i) => ((i.city == searchCity.text ||
+                      i.country == searchCity.text) &&(
+                  // (currentstartDate<=toDateTime(i.startDate!)&&currentendDate<=toDateTime(i.endDate!))||
+                  (currentstartDate >= toDateTime(i.endDate!) &&
+                      currentstartDate <= toDateTime(i.startDate!)) ||
+            (toDateTime(i.startDate!) >= currentendDate &&
+                  toDateTime(i.startDate!) <= currentstartDate) ||
+              (toDateTime(i.startDate!) != currentstartDate &&
+                  toDateTime(i.endDate!) != currentendDate))))
           .toList();
     }
+    bookingResults = unifyList(bookingResults);
 
     for (Booking booking in bookingResults) {
       for (Acommodation accommodation in accommodationList) {
@@ -482,19 +483,55 @@ class _FiltersScreenState extends State<FiltersScreen> {
               i.price_per_night! <= _priceRange.end)
           .toList();
     }
-    if (_filters == AccommodationTypeFilter.All) {}
+    if (_filters == AccommodationTypeFilter.All) {
+      list = list;
+    }
+    if (_filters.contains(AmenitiesFilter.wifi.name)) {
+      list = list;
+    }
     if (_filters.contains(AmenitiesFilter.wifi.name)) {
       list = list.where((i) => i.wifi == true).toList();
     }
-    if (_filters.contains(AmenitiesFilter.tv.name)) {
+    if (_filters.contains(AmenitiesFilter.TV.name)) {
       list = list.where((i) => i.tv == true).toList();
     }
-    if (_filters.contains(AmenitiesFilter.airconditioning.name)) {
+    if (_filters.contains(AmenitiesFilter.AC.name)) {
       list = list.where((i) => i.air_conditioning == true).toList();
     }
-    if (_filters.contains(AmenitiesFilter.kitchen.name)) {
+    if (_filters.contains(AmenitiesFilter.Kitchen.name)) {
       list = list.where((i) => i.kitchen == true).toList();
     }
+
     return list;
+  }
+
+  List<Booking> unifyList(List<Booking> list) {
+    if (list.isEmpty) {
+      return list;
+    }
+    if (list.length <= 1) {
+      return list;
+    }
+    List<Booking> results = [];
+    list.sort((a, b) => a.accommodationId!.compareTo(b.accommodationId!));
+
+    var x = list[0];
+    results.add(x);
+    for (int i = 1; i < list.length; i++) {
+      if (x.accommodationId != list[i].accommodationId) {
+        x = list[i];
+        results.add(x);
+      }
+    }
+
+    return results;
+  }
+
+  DateTime toDateTime(Timestamp date) {
+    return DateTime.fromMillisecondsSinceEpoch(date.seconds * 1000);
+  }
+
+  bool isBetween(DateTime checkDate, DateTime dateStart, DateTime dateEnd) {
+    return checkDate >= dateStart && checkDate <= dateEnd;
   }
 }

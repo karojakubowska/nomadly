@@ -62,6 +62,7 @@ dependencies:
   intl: ^0.18.1
   path: ^1.8.3
   uuid: ^3.0.7
+  basics: ^0.10.0
 
 dependency_overrides:
    firebase_core_platform_interface: ^4.8.0

@@ -31,28 +31,33 @@ class _HomeTestState extends State<HomeTest> {
                 ))));
   }
 
-
-Query query = FirebaseFirestore.instance.collection("Accommodations");
+  Query query = FirebaseFirestore.instance.collection("Accommodations");
   List<String> filters = [];
   String city = "";
   RangeValues priceRange = const RangeValues(0, 2000);
   List<Acommodation> results = [];
- int guestNumber=0;
-   DateTime  startDate=DateTime.now();
-   DateTime endDate=DateTime.now();
+  int guestNumber = 0;
+  DateTime startDate = DateTime.now();
+  DateTime endDate = DateTime.now();
   //String searchText="";
   TextEditingController searchText = TextEditingController();
 
-  void getFilter(List<String> currentfilters, RangeValues priceRangeFilter,
-      String currentCity, List<Acommodation> resultList,int guests,DateTime start,DateTime end) {
+  void getFilter(
+      List<String> currentfilters,
+      RangeValues priceRangeFilter,
+      String currentCity,
+      List<Acommodation> resultList,
+      int guests,
+      DateTime start,
+      DateTime end) {
     setState(() {
       filters = currentfilters;
       priceRange = priceRangeFilter;
       city = currentCity;
       results = resultList;
-      guestNumber=guests;
-       startDate=start;
-      endDate=end;
+      guestNumber = guests;
+      startDate = start;
+      endDate = end;
     });
   }
 
@@ -79,6 +84,8 @@ Query query = FirebaseFirestore.instance.collection("Accommodations");
     const String locationsvg = 'assets/images/location-pin-svgrepo-com.svg';
     List<Acommodation> accommodationList =
         Provider.of<List<Acommodation>>(context);
+    List<Acommodation> popularAccommodation =
+        getHighestRatedAccommodations(accommodationList);
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       body: ListView(
@@ -93,7 +100,7 @@ Query query = FirebaseFirestore.instance.collection("Accommodations");
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Gap(20),
-                      Text('Hello!!', style: Styles.headLineStyle),
+                      Text('Hello!', style: Styles.headLineStyle),
                       const Gap(20),
                       Text('What are you looking for?',
                           style: Styles.headLineStyle2),
@@ -108,57 +115,56 @@ Query query = FirebaseFirestore.instance.collection("Accommodations");
                 ],
               ),
               GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet<dynamic>(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext bc) {
-                          return FiltersScreen(
-                              onApplyFilters: getFilter,
-                              onQueryChanged: updateQuery,
-                              currentFilters: filters,
-                              currentPriceRange: priceRange,
-                              currentCity: city,
-                              resultList: results,
-                              start: startDate,
-                              end: endDate,
-                              guests: guestNumber);
-                        });
-                  },
-                    child: Container(
-                      height: 50,
-                      margin:
-                          const EdgeInsets.only(top: 28, left: 28, right: 28),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          const Gap(10),
-                          const Icon(Icons.search_outlined),
-                          const Gap(10),
-                          Center(
-                            child: Text(
-                              'Search places',
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.bold,
-                                color: Styles.greyColor,
-                              ),
-                            ),
+                onTap: () {
+                  showModalBottomSheet<dynamic>(
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext bc) {
+                        return FiltersScreen(
+                            onApplyFilters: getFilter,
+                            onQueryChanged: updateQuery,
+                            currentFilters: filters,
+                            currentPriceRange: priceRange,
+                            currentCity: city,
+                            resultList: results,
+                            start: startDate,
+                            end: endDate,
+                            guests: guestNumber);
+                      });
+                },
+                child: Container(
+                  height: 50,
+                  margin: const EdgeInsets.only(top: 28, left: 28, right: 28),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      const Gap(10),
+                      const Icon(Icons.search_outlined),
+                      const Gap(10),
+                      Center(
+                        child: Text(
+                          'Search places',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            color: Styles.greyColor,
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
+                ),
+              ),
               Container(
                 padding: const EdgeInsets.only(top: 25, left: 30, right: 28),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('For You', style: Styles.headLineStyle3),
+                      Text('Highest Rated', style: Styles.headLineStyle3),
                       TextButton(
                         onPressed: () {
                           Navigator.push(
@@ -196,11 +202,12 @@ Query query = FirebaseFirestore.instance.collection("Accommodations");
                           // return
                           ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: accommodationList.length,
+                              itemCount: popularAccommodation.length,
                               itemBuilder: (context, index) {
-                                Acommodation model = accommodationList[index];
+                                Acommodation model =
+                                    popularAccommodation[index];
                                 return ForYouCard(
-                                  accomodation: accommodationList[index],
+                                  accomodation: model,
                                   index: index,
                                 );
                               } // }),
@@ -252,5 +259,25 @@ Query query = FirebaseFirestore.instance.collection("Accommodations");
         ],
       ),
     );
+  }
+
+  List<Acommodation> getPopularAccommodations(
+      List<Acommodation> allAccommodations) {
+    List<Acommodation> result = [];
+   // var reservationsMax = allAccommodations.reduce((current, next) =>
+      //  current["reservations_count"] > next['reservations_count'] ? current : next);
+    // result = allAccommodations
+    //     .where((accommodation) => accommodation.reservations)
+    //     .toList();
+    return result;
+  }
+
+  List<Acommodation> getHighestRatedAccommodations(
+      List<Acommodation> allAccommodations) {
+    List<Acommodation> result = [];
+    result = allAccommodations
+        .where((accommodation) => accommodation.rate! >= 4.7)
+        .toList();
+    return result;
   }
 }

@@ -2,6 +2,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/screens/booking_request_view.dart';
 import 'package:nomadly_app/screens/calendar.dart';
@@ -21,9 +22,9 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-   DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now();
-  int guestNumber=2;
+  //  DateTime startDate = DateTime.now();
+  // DateTime endDate = DateTime.now();
+  int guestNumber = 2;
   List<String> photoUrls = []; // Lista URL-ów zdjęć
   void getDates(DateTime start, DateTime end) {
     setState(() {
@@ -41,11 +42,8 @@ class _DetailScreenState extends State<DetailScreen> {
                 rate: accommodation.rate!.toDouble()))));
   }
 
- 
-
   @override
   Widget build(BuildContext context) {
-    //var size = AppLayout.getSize(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -150,7 +148,6 @@ class _DetailScreenState extends State<DetailScreen> {
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
                       ),
-                     
                     ],
                   ),
                   const Gap(10),
@@ -440,32 +437,57 @@ class _DetailScreenState extends State<DetailScreen> {
                 },
               ),
             ),
-            Container(
-                height: 500,
-                child: CalendarScreen(
-                  bookedDates: widget.accommodation!.bookedDates!,
-                  onChooseDate: getDates,
-                )),
-                 const SizedBox(
-                        width: 1,
-                      ),
-                      Text(
-                        widget.start_date.toString(),
-                        style: GoogleFonts.roboto(
-                            color: const Color.fromARGB(255, 24, 24, 24),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                      ),
+            GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CalendarScreen(
+                          bookedDates: widget.accommodation!.bookedDates!,
+                          onChooseDate: getDates,
+                        );
+                      });
+                },
+                child: Text("Choose dates",
+                    textAlign: TextAlign.start,
+                    style: GoogleFonts.roboto(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: const Color.fromARGB(255, 135, 135, 135),
+                    ))),
+            if (widget.start_date != null && widget.end_date != null) ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                      DateFormat.yMMMMd('en_US')
+                          .format(widget.start_date!)
+                          .toString(),
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.roboto(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: const Color.fromARGB(255, 135, 135, 135),
+                      )),
                        const SizedBox(
-                        width: 1,
-                      ),
-                      Text(
-                        widget.end_date.toString(),
-                        style: GoogleFonts.roboto(
-                            color: const Color.fromARGB(255, 24, 24, 24),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                      ),
+                width: 10,
+              ),
+              Text(
+                DateFormat.yMMMMd('en_US').format(widget.end_date!).toString(),
+                textAlign: TextAlign.start,
+                style: GoogleFonts.roboto(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: const Color.fromARGB(255, 135, 135, 135),
+                ),
+              ),
+                ],
+              ),
+             
+            ] else ...[
+              Container()
+            ],
             Padding(
               padding: const EdgeInsets.all(24.0),
               child: ElevatedButton.icon(
@@ -475,27 +497,28 @@ class _DetailScreenState extends State<DetailScreen> {
                         borderRadius: BorderRadius.circular(10.0)),
                     backgroundColor: const Color.fromARGB(255, 50, 134, 252)),
                 onPressed: () {
-                  if(widget.guest_number==null){
-                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => BookingRequestScreen(
-                                startDate: widget.start_date!,
-                                endDate: widget.end_date!,
-                                guestNumber: guestNumber,
-                                accommodation: widget.accommodation!,
-                              ))));
-                  }else{   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => BookingRequestScreen(
-                                startDate: widget.start_date!,
-                                endDate: widget.end_date!,
-                                guestNumber: widget.guest_number!,
-                                accommodation: widget.accommodation!,
-                              ))));
-                }
-               },
+                  if (widget.guest_number == null) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => BookingRequestScreen(
+                                  startDate: widget.start_date!,
+                                  endDate: widget.end_date!,
+                                  guestNumber: guestNumber,
+                                  accommodation: widget.accommodation!,
+                                ))));
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => BookingRequestScreen(
+                                  startDate: widget.start_date!,
+                                  endDate: widget.end_date!,
+                                  guestNumber: widget.guest_number!,
+                                  accommodation: widget.accommodation!,
+                                ))));
+                  }
+                },
                 icon: const Icon(Icons.lock_open, size: 0),
                 label: const Text('Book now', style: TextStyle(fontSize: 18)),
               ),

@@ -42,8 +42,7 @@ Future<void> main() async {
         ),
       ),
     ));
-  }
-  else {
+  } else {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     initScreen = preferences.getInt('initScreen');
@@ -55,10 +54,7 @@ Future<void> main() async {
         create: (_) => AuthenticationProvider(FirebaseAuth.instance),
       ),
       StreamProvider(
-        create: (context) =>
-        context
-            .read<AuthenticationProvider>()
-            .authState,
+        create: (context) => context.read<AuthenticationProvider>().authState,
         initialData: null,
       ),
       StreamProvider<List<Acommodation>>.value(
@@ -112,7 +108,7 @@ class LoginPage extends StatelessWidget {
             if (user != null) {
               final uid = user.uid;
               CollectionReference users =
-              FirebaseFirestore.instance.collection('Users');
+                  FirebaseFirestore.instance.collection('Users');
               return FutureBuilder<DocumentSnapshot>(
                 future: users.doc(uid).get(),
                 builder: (BuildContext context,
@@ -130,11 +126,7 @@ class LoginPage extends StatelessWidget {
                           AllBookingsScreen(),
                           TravelView(),
                           Chat(),
-                         // PaymentDetailsScreen(),
-                          //CheckoutConfirmedScreen(),
-                          //CheckoutScreen()
-                          //CalendarScreen(),
-                          //UserProfileScreen()
+                          UserProfileScreen()
                         ],
                       );
                     }
