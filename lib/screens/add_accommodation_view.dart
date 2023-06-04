@@ -37,6 +37,17 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
   bool wifi = false;
   bool tv = false;
   bool air_conditioning = false;
+  String? _selectedType;
+
+  final List<String> _types = [
+    "Apartament",
+    "Villa",
+    "Hotel",
+    "Hostel",
+    "Cabin",
+    "Bungalow",
+    "Room"
+  ];
 
   // final boolController = TextEditingController();
   firebase_storage.FirebaseStorage storage =
@@ -245,6 +256,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       'wifi': wifi ? true : false,
       'tv': tv ? true : false,
       'air_conditioning': air_conditioning ? true : false,
+      'type': _selectedType,
     }).then((value) {
       print("DocumentSnapshot successfully updated!");
       ScaffoldMessenger.of(context).showSnackBar(
@@ -252,6 +264,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       );
       setState(() {
         _photo = null;
+        _selectedType = null;
       });
       titleController.clear();
       countryController.clear();
@@ -293,13 +306,15 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        elevation: 0, toolbarTextStyle: const TextTheme(
+        elevation: 0,
+        toolbarTextStyle: const TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
-        ).bodyText2, titleTextStyle: const TextTheme(
+        ).bodyText2,
+        titleTextStyle: const TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
             fontSize: 20,
@@ -314,7 +329,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10, right: 20, left: 20),
+                  padding:
+                      const EdgeInsets.only(bottom: 10, right: 20, left: 20),
                   child: GestureDetector(
                     onTap: () {},
                     child: Container(
@@ -322,7 +338,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                       height: size.height * 0.32,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 249, 250, 250),
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
                         border: Border.all(
                           color: const Color.fromARGB(255, 217, 217, 217),
                           width: 0.5,
@@ -345,7 +362,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 217, 217, 217),
+                                  color:
+                                      const Color.fromARGB(255, 217, 217, 217),
                                   width: 0.5,
                                 ),
                               ),
@@ -525,7 +543,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                     controller: titleController,
                     cursorColor: Colors.white,
                     textInputAction: TextInputAction.next,
-                    decoration:  InputDecoration(
+                    decoration: InputDecoration(
                       labelText: tr('Title'),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -766,7 +784,71 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 5,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 249, 250, 250),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        width: 1,
+                        color: const Color.fromARGB(255, 217, 217, 217),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: DropdownButton<String>(
+                        value: _selectedType,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedType = value;
+                          });
+                        },
+                        hint: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            tr("Select the type of accommodation"),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        underline: Container(),
+                        dropdownColor: Styles.backgroundColor,
+                        icon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Color.fromARGB(255, 57, 57, 57),
+                        ),
+                        isExpanded: true,
+                        items: _types
+                            .map(
+                              (e) => DropdownMenuItem(
+                            value: e,
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(e),
+                            ),
+                          ),
+                        )
+                            .toList(),
+                        selectedItemBuilder: (BuildContext context) => _types
+                            .map(
+                              (e) => Center(
+                            child: Text(
+                              e,
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 57, 57, 57),
+                              ),
+                            ),
+                          ),
+                        )
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
