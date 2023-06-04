@@ -104,7 +104,7 @@
   "Password": "Hasło",
   "Forgot Password?": "Zapomniałeś hasło?",
   "Sign In": "Zaloguj się",
-  "No account yet? ": "Nie masz jeszcze konta?",
+  "No account yet? ": "Nie masz jeszcze konta? ",
   "Sign Up": "Zarejestruj się",
   "Please enter a valid email address": "Proszę wpisz aktualny adres email",
   "Please enter a password": "Proszę wpisz hasło",
@@ -128,6 +128,13 @@
   "To do list": "Lista to do",
   "Are you sure you want to clear the list?": "Jesteś pewny, że chcesz to usunąć z tej listy?",
   "Clear": "Wyczyść",
-  "Enter a to do": "Dodaj do to do"
-
+  "Enter a to do": "Dodaj do to do",
+  "Skip": "Pomiń",
+  "Done": "Gotowe",
+  "Let's Enjoy Your Dream Vacation!":  "Ciesz się wymarzonymi wakacjami!",
+  "Finding new possibilities in excellent traveling": "Odkryj nowe możliwości w doskonałych podróżach",
+  "Book Your Dream Room or Apartment!": "Zarezerwuj swój wymarzony pokój lub mieszkanie!",
+  "Find the perfect accommodation and enjoy comfort": "Znajdź idealne miejsce na nocleg i ciesz się wygodą",
+  "Create Your Unforgettable Journey!": "Stwórz swoją niezapomnianą podróż!",
+  "Explore the world by planning your own adventures and experiences": "Odkryj świat, planując swoje własne przygody i przeżycia"
 }

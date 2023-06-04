@@ -22,6 +22,8 @@ class _AllBookingsScreenState extends State<AllBookingsHostScreen> {
   Query query = FirebaseFirestore.instance.collection("Bookings");
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
+
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final String userID = user!.uid;

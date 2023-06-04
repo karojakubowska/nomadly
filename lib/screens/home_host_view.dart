@@ -19,6 +19,7 @@ class HomeHostScreen extends StatefulWidget {
 class _HomeHostScreenState extends State<HomeHostScreen> {
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     final currentUser = FirebaseAuth.instance.currentUser?.uid;
     List<Acommodation> accommodationList =
         Provider.of<List<Acommodation>>(context);

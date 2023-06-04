@@ -276,6 +276,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     final size = AppLayout.getSize(context);
     return Scaffold(
       backgroundColor: Styles.backgroundColor,

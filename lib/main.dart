@@ -162,7 +162,7 @@ class MyApp extends StatelessWidget {
       initialRoute: initScreen == 0 || initScreen == null ? 'onboard' : 'home',
       routes: {
         'home': (context) => const LoginPage(),
-        'onboard': (context) => const IntroPage(),
+        'onboard': (context) => IntroPage(),
       },
       navigatorKey: navigatorKey,
     );
