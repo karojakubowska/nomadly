@@ -33,6 +33,7 @@ class Acommodation {
   List<String>? photoUrl;
   //List<DateTime>? bookedDates;
   List<BookDate>? bookedDates;
+  int? reservationsCount;
 
   Acommodation({
     this.id,
@@ -55,6 +56,7 @@ class Acommodation {
     this.address,
     this.photoUrl,
    this.bookedDates,
+   this.reservationsCount
   });
 
   // Future<String> convertPathToURL(String path){

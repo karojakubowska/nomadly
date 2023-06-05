@@ -46,6 +46,7 @@ class AccommodationProvider {
                 reviews: documentSnapshot["reviews"],
                 photoUrl: photoUrls,
                 bookedDates: dates,
+                reservationsCount: documentSnapshot["reservations_count"],
               );
             }).toList());
     return list;

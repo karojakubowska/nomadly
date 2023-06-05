@@ -33,7 +33,6 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
   late double totalPrice;
   var username;
   Future<void> getUsername() async {
-    //query the user photo
     await FirebaseFirestore.instance
         .collection("Users")
         .doc(FirebaseAuth.instance.currentUser!.uid)

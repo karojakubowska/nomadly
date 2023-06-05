@@ -84,8 +84,10 @@ class _HomeTestState extends State<HomeTest> {
     const String locationsvg = 'assets/images/location-pin-svgrepo-com.svg';
     List<Acommodation> accommodationList =
         Provider.of<List<Acommodation>>(context);
-    List<Acommodation> popularAccommodation =
+    List<Acommodation> highestRatedAccommodations =
         getHighestRatedAccommodations(accommodationList);
+     List<Acommodation> popularAccommodations =
+        getPopularAccommodations(accommodationList);
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       body: ListView(
@@ -115,7 +117,10 @@ class _HomeTestState extends State<HomeTest> {
                 ],
               ),
               GestureDetector(
-                onTap: () {
+                onTap: () {Navigator.push(context,MaterialPageRoute(
+            builder: ((context) => AllAccommodationsScreen(
+                 
+                ))));
                   showModalBottomSheet<dynamic>(
                       backgroundColor: Colors.transparent,
                       isScrollControlled: true,
@@ -202,10 +207,10 @@ class _HomeTestState extends State<HomeTest> {
                           // return
                           ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: popularAccommodation.length,
+                              itemCount: highestRatedAccommodations.length,
                               itemBuilder: (context, index) {
                                 Acommodation model =
-                                    popularAccommodation[index];
+                                    highestRatedAccommodations[index];
                                 return ForYouCard(
                                   accomodation: model,
                                   index: index,
@@ -241,15 +246,16 @@ class _HomeTestState extends State<HomeTest> {
                   width: size.width * 0.9,
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemCount: accommodationList.length,
+                    itemCount: popularAccommodations.length,
                     itemBuilder: (context, index) {
-                      Acommodation model = accommodationList[index];
+                       Acommodation model =
+                                    popularAccommodations[index];
                       return PopularCard(
-                        accomodation: accommodationList[index],
-                        accommodationCity: accommodationList[index].city!,
-                        accommodationName: accommodationList[index].title!,
+                        accomodation: model,
+                        accommodationCity: model.city!,
+                        accommodationName: model.title!,
                         index: index,
-                        accommodationPhoto: accommodationList[index].photo!,
+                        accommodationPhoto: model.photo!,
                       );
                     },
                     //);
@@ -263,13 +269,35 @@ class _HomeTestState extends State<HomeTest> {
 
   List<Acommodation> getPopularAccommodations(
       List<Acommodation> allAccommodations) {
+
     List<Acommodation> result = [];
-   // var reservationsMax = allAccommodations.reduce((current, next) =>
-      //  current["reservations_count"] > next['reservations_count'] ? current : next);
-    // result = allAccommodations
-    //     .where((accommodation) => accommodation.reservations)
-    //     .toList();
-    return result;
+    result=allAccommodations;
+    List<Acommodation> maxObjects = [];
+    if (result.isNotEmpty) {
+  result.sort((a, b) => b.reservationsCount!.compareTo(a.reservationsCount!)); // Sort the list in descending order based on the value property
+  
+  
+  
+  // Add the first three objects to the maxObjects list
+  for (int i = 0; i < result.length && i < 3; i++) {
+    maxObjects.add(result[i]);
+  }
+  
+  // Use the maxObjects list
+  print(maxObjects);
+} else {
+  // Handle the bad state "no element" exception
+  print("List is empty. Cannot find maximum objects.");
+}
+    
+  //  var reservationsMax = allAccommodations.reduce((current, next) =>
+  //      current.reservationsCount! > next.reservationsCount! ? current : next);
+  //   result = allAccommodations
+  //       .where((accommodation) => accommodation.reservationsCount==reservationsMax.reservationsCount)
+  //       .toList();
+          
+        
+    return maxObjects;
   }
 
   List<Acommodation> getHighestRatedAccommodations(

@@ -63,6 +63,43 @@ class _FiltersScreenState extends State<FiltersScreen> {
   int? _value = 1;
   //List<String> accommodationType=["All","Apartment","Hotel","Hostel","Cabin","Bungalow","Private room"];
   List<String> _filters = <String>[];
+  List<Booking> sortedBookings = [];
+  Future<void> getCollection(DateTime startDate, DateTime endDate) async {
+    var x;
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection("Bookings")
+          .where("start_date", isGreaterThan: Timestamp.fromDate(startDate))
+          .where("start_date", isLessThan: Timestamp.fromDate(endDate))
+          // .orderBy("accommodation_id")
+          // .orderBy("start_date")
+          .get();
+      List<dynamic> snapshots = snapshot.docs.map((doc) => doc.data()).toList();
+      List<Booking> bookings = [];
+      snapshots.forEach((element) {
+        bookings.add(Booking(
+            accommodationId: element['accommodation_id'],
+            startDate: element['start_date'].toDate(),
+            endDate: element['end_date'].toDate()));
+      });
+      bookings.sort((a, b) {
+        //sortowanie po accommodation_id i start_date
+        //komparator po accommodation_id
+        int accommComp = a.accommodationId!.compareTo(b.accommodationId!);
+        if (accommComp == 0) {
+          //jeśli accommodation_id są takie same
+          return a.startDate!
+              .compareTo(b.startDate!); // to sortuj po dacie startowej
+        }
+        return accommComp;
+      });
+      sortedBookings = bookings;
+    } catch (error) {
+      print(error);
+
+      return x;
+    }
+  }
 
   Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -381,7 +418,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
           // )
           ElevatedButton(
             child: const Text('Search'),
-            onPressed: () => {
+            onPressed: () async => {
+              await getCollection(widget.start.add(Duration(days: -30)),
+                  widget.end.add(Duration(days: 30))),
               widget.onApplyFilters(
                 _filters,
                 _priceRange,
@@ -391,7 +430,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 currentstartDate,
                 currentendDate,
               ),
-              Navigator.pop(context)
+              Navigator.pop(context),
             },
           )
         ],
@@ -428,42 +467,38 @@ class _FiltersScreenState extends State<FiltersScreen> {
     return query;
   }
 
-  // List<Booking> checkForAvailability(List<Booking> bookingsList) {
-  //   var bookingResults = bookingsList;
-  //   bookingResults = bookingResults
-  //       .where((i) =>
-  //           DateTime.fromMillisecondsSinceEpoch(i.startDate!.seconds * 1000) !=
-  //               currentstartDate &&
-  //           DateTime.fromMillisecondsSinceEpoch(i.endDate!.seconds * 1000) !=
-  //               currentendDate)
-  //       .toList();
-  //   return bookingResults;
-  // }
-
   List<Acommodation> getFilteredList(
       List<Acommodation> accommodationList, List<Booking> bookingsList) {
     List<Acommodation> list = [];
     var bookingResults = bookingsList;
     if (searchCity.text.isEmpty) {
-      bookingResults = bookingResults
-          .where((i) =>
-              DateTime.fromMillisecondsSinceEpoch(
-                      i.startDate!.seconds * 1000) !=
-                  currentstartDate &&
-              DateTime.fromMillisecondsSinceEpoch(i.endDate!.seconds * 1000) !=
-                  currentendDate)
-          .toList();
+      // bookingResults=bookingResults;
+      // bookingResults = bookingResults
+      //     .where((i) =>
+      //         DateTime.fromMillisecondsSinceEpoch(
+      //                 i.startDate!.seconds * 1000) !=
+      //             currentstartDate &&
+      //         DateTime.fromMillisecondsSinceEpoch(i.endDate!.seconds * 1000) !=
+      //             currentendDate)
+      //     .toList();
     } else {
       bookingResults = bookingResults
-          .where((i) => ((i.city == searchCity.text ||
-                      i.country == searchCity.text) &&(
-                  // (currentstartDate<=toDateTime(i.startDate!)&&currentendDate<=toDateTime(i.endDate!))||
-                  (currentstartDate >= toDateTime(i.endDate!) &&
-                      currentstartDate <= toDateTime(i.startDate!)) ||
-            (toDateTime(i.startDate!) >= currentendDate &&
-                  toDateTime(i.startDate!) <= currentstartDate) ||
-              (toDateTime(i.startDate!) != currentstartDate &&
-                  toDateTime(i.endDate!) != currentendDate))))
+          .where((i) =>
+              ((i.city == searchCity.text || i.country == searchCity.text)
+
+              //  (
+              //           // (currentstartDate<=toDateTime(i.startDate!)&&currentendDate<=toDateTime(i.endDate!))||
+
+              //           (currentstartDate >= toDateTime(i.endDate!) &&
+              //               currentstartDate >= toDateTime(i.startDate!)) &&
+
+              //     (currentendDate <=toDateTime(i.startDate!) &&
+              //          currentstartDate <= toDateTime(i.endDate!)  )
+              //    ||
+              // (toDateTime(i.startDate!) != currentstartDate &&
+              //     toDateTime(i.endDate!) != currentendDate)
+              // )
+              ))
           .toList();
     }
     bookingResults = unifyList(bookingResults);
