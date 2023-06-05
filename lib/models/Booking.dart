@@ -5,8 +5,8 @@ class Booking {
   String? accommodationId;
   String? hostId;
   String? userId;
-  Timestamp? startDate; //czy to będzie ten typ???
-  Timestamp? endDate;
+  DateTime? startDate;
+  DateTime? endDate;
   num? guestNumber;
   num? totalPrice;
   String? status;
@@ -38,8 +38,8 @@ class Booking {
     userId = json['user_id'];
     status = json['status'];
     username = json['username'];
-    startDate = json['start_date'];
-    endDate = json['end_date'];
+    startDate = json['start_date'].toDate();
+    endDate = json['end_date'].toDate();
     guestNumber = json['guest_number'];
     totalPrice = (json['total_price']).toDouble();
     isAccommodationRated = json['isAccommodationRated'];

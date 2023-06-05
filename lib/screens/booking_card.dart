@@ -115,7 +115,7 @@ class _BookingCardState extends State<BookingCard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    tr('Date')+": ${DateFormat("dd.MM.yyyy").format(widget.booking.startDate!.toDate())}-${DateFormat("dd.MM.yyyy").format(widget.booking.endDate!.toDate())}",
+                    tr('Date')+": ${DateFormat("dd.MM.yyyy").format(widget.booking.startDate!)}-${DateFormat("dd.MM.yyyy").format(widget.booking.endDate!)}",
                     style: GoogleFonts.roboto(
                         color: const Color.fromARGB(255, 24, 24, 24),
                         fontSize: 18,

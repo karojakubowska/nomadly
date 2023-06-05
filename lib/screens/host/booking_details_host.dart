@@ -59,7 +59,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
                 Text(tr("Check-in"), style: Styles.bookingDetailsStyle),
                 Text(
                     DateFormat.yMMMMd('en_US')
-                        .format(widget.booking.startDate!.toDate()),
+                        .format(widget.booking.startDate!),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
                             fontSize: 16.0,
@@ -74,7 +74,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
                 Text(tr("Check-out"), style: Styles.bookingDetailsStyle),
                 Text(
                     DateFormat.yMMMMd('en_US')
-                        .format(widget.booking.endDate!.toDate()),
+                        .format(widget.booking.endDate!),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
                             fontSize: 16.0,
