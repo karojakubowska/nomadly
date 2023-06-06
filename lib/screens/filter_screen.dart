@@ -55,24 +55,22 @@ class FiltersScreen extends StatefulWidget {
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
+  TextEditingController searchCity = TextEditingController();
   RangeValues _priceRange = const RangeValues(0, 2000);
-
   late DateTime currentstartDate;
   late DateTime currentendDate;
   late int guest_number;
-  int? _value = 1;
-  //List<String> accommodationType=["All","Apartment","Hotel","Hostel","Cabin","Bungalow","Private room"];
   List<String> _filters = <String>[];
+  List<String> accommodations_id = <String>[];
   List<Booking> sortedBookings = [];
-  Future<void> getCollection(DateTime startDate, DateTime endDate) async {
+
+  Future<void> getBookings(DateTime startDate, DateTime endDate) async {
     var x;
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection("Bookings")
           .where("start_date", isGreaterThan: Timestamp.fromDate(startDate))
           .where("start_date", isLessThan: Timestamp.fromDate(endDate))
-          // .orderBy("accommodation_id")
-          // .orderBy("start_date")
           .get();
       List<dynamic> snapshots = snapshot.docs.map((doc) => doc.data()).toList();
       List<Booking> bookings = [];
@@ -94,6 +92,35 @@ class _FiltersScreenState extends State<FiltersScreen> {
         return accommComp;
       });
       sortedBookings = bookings;
+    } catch (error) {
+      print(error);
+
+      return x;
+    }
+  }
+
+  Future<void> getAccommodations(String city,
+      [String? country]) async {
+    var x;
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection("Accommodations")
+          .where("city", isEqualTo: city)
+          .get();
+      List<Acommodation> snapshots = snapshot.docs.map((doc) =>  Acommodation.fromSnapshot(doc)).toList();
+      List<String> a = [];
+      snapshots.forEach((element) {
+        a.add(element.id!);
+      });
+      print(a);
+      a.sort((a, b) {
+        //sortowanie po accommodation_id i start_date
+        //komparator po accommodation_id
+        int accommComp = a.compareTo(b);
+
+        return accommComp;
+      });
+      accommodations_id=a;
     } catch (error) {
       print(error);
 
@@ -138,7 +165,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
     guest_number = widget.guests;
   }
 
-  TextEditingController searchCity = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     var size = AppLayout.getSize(context);
@@ -347,23 +374,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
               );
             }).toList(),
           ),
-          //  Wrap(
-          //     spacing: 5.0,
-          //     children: List<Widget>.generate(
-          //       7,
-          //       (int index) {
-          //         return ChoiceChip(
-          //           label: Text(accommodationType[index]),
-          //           selected: _value == index,
-          //           onSelected: (bool selected) {
-          //             setState(() {
-          //               _value = selected ? index : null;
-          //             });
-          //           },
-          //         );
-          //       },
-          //     ).toList(),
-          //   ),
+          
           Divider(
             color: Styles.greyColor,
             height: 30,
@@ -384,16 +395,10 @@ class _FiltersScreenState extends State<FiltersScreen> {
               return FilterChip(
                 label: Text(exercise.name),
                 selected: _filters.contains(exercise.name),
-                // selected: _filters.contains(exercise.name),
                 onSelected: (bool value) {
                   setState(() {
                     if (value) {
-                      // if (!_filters.contains(exercise.name)) {
-                      //  // ||!widget.currentFilters.contains(exercise.name)
-                      //   _filters.add(exercise.name);
-                      // }
                       if (!_filters.contains(exercise.name)) {
-                        // ||!widget.currentFilters.contains(exercise.name)
                         _filters.add(exercise.name);
                       }
                     } else {
@@ -407,25 +412,17 @@ class _FiltersScreenState extends State<FiltersScreen> {
             }).toList(),
           ),
           const Gap(20),
-
-          // ElevatedButton(
-          //   child: const Text('Search'),
-          //   onPressed: () => {
-          //     widget.onApplyFilters(_filters, _priceRange,searchCity.text),
-          //     widget.onQueryChanged(buildFilterQuery()),
-          //     Navigator.pop(context)
-          //   },
-          // )
           ElevatedButton(
             child: const Text('Search'),
             onPressed: () async => {
-              await getCollection(widget.start.add(Duration(days: -30)),
-                  widget.end.add(Duration(days: 30))),
+              await getBookings(currentstartDate.add(Duration(days: -90)),
+                  currentendDate.add(Duration(days: 365))),
+               await getAccommodations(searchCity.text),
               widget.onApplyFilters(
                 _filters,
                 _priceRange,
                 searchCity.text,
-                getFilteredList(accommodationList, bookingsList),
+                getFilteredList(accommodationList, sortedBookings),
                 widget.guests,
                 currentstartDate,
                 currentendDate,
@@ -438,78 +435,23 @@ class _FiltersScreenState extends State<FiltersScreen> {
     );
   }
 
-  Query buildFilterQuery() {
-    Query query = FirebaseFirestore.instance.collection('Accommodations');
-
-    if (searchCity.text.isNotEmpty) {
-      query = query.where("city", isEqualTo: searchCity.text);
-    }
-
-    if (_priceRange.start >= 0 && _priceRange.end <= 2000) {
-      query = query
-          .where("price_per_night", isGreaterThanOrEqualTo: _priceRange.start)
-          .where("price_per_night", isLessThanOrEqualTo: _priceRange.end);
-    }
-    if (_filters == AccommodationTypeFilter.All) {}
-    if (_filters.contains(AmenitiesFilter.wifi.name)) {
-      query = query.where("wifi", isEqualTo: true);
-    }
-    if (_filters.contains(AmenitiesFilter.TV.name)) {
-      query = query.where("TV", isEqualTo: true);
-    }
-    if (_filters.contains(AmenitiesFilter.AC.name)) {
-      query = query.where("air_conditioning", isEqualTo: true);
-    }
-    if (_filters.contains(AmenitiesFilter.Kitchen.name)) {
-      query = query.where("Kitchen", isEqualTo: true);
-    }
-
-    return query;
-  }
 
   List<Acommodation> getFilteredList(
       List<Acommodation> accommodationList, List<Booking> bookingsList) {
-    List<Acommodation> list = [];
-    var bookingResults = bookingsList;
+    List<Acommodation> list = getAccommodationsFreeTimeSlots(
+        //pobieram liste z obiektami wolnymi w zadanych datach
+        bookingsList,
+        accommodationList,
+        currentstartDate,
+        currentendDate);
+
+    // var bookingResults = bookingsList;
     if (searchCity.text.isEmpty) {
-      // bookingResults=bookingResults;
-      // bookingResults = bookingResults
-      //     .where((i) =>
-      //         DateTime.fromMillisecondsSinceEpoch(
-      //                 i.startDate!.seconds * 1000) !=
-      //             currentstartDate &&
-      //         DateTime.fromMillisecondsSinceEpoch(i.endDate!.seconds * 1000) !=
-      //             currentendDate)
-      //     .toList();
     } else {
-      bookingResults = bookingResults
+      list = list
           .where((i) =>
-              ((i.city == searchCity.text || i.country == searchCity.text)
-
-              //  (
-              //           // (currentstartDate<=toDateTime(i.startDate!)&&currentendDate<=toDateTime(i.endDate!))||
-
-              //           (currentstartDate >= toDateTime(i.endDate!) &&
-              //               currentstartDate >= toDateTime(i.startDate!)) &&
-
-              //     (currentendDate <=toDateTime(i.startDate!) &&
-              //          currentstartDate <= toDateTime(i.endDate!)  )
-              //    ||
-              // (toDateTime(i.startDate!) != currentstartDate &&
-              //     toDateTime(i.endDate!) != currentendDate)
-              // )
-              ))
+              ((i.city == searchCity.text || i.country == searchCity.text)))
           .toList();
-    }
-    bookingResults = unifyList(bookingResults);
-
-    for (Booking booking in bookingResults) {
-      for (Acommodation accommodation in accommodationList) {
-        if (booking.accommodationId == accommodation.id &&
-            accommodation.max_guests! >= widget.guests) {
-          list.add(accommodation);
-        }
-      }
     }
     if (_priceRange.start >= 0 && _priceRange.end <= 2000) {
       list = list
@@ -518,11 +460,30 @@ class _FiltersScreenState extends State<FiltersScreen> {
               i.price_per_night! <= _priceRange.end)
           .toList();
     }
+
     if (_filters == AccommodationTypeFilter.All) {
       list = list;
     }
-    if (_filters.contains(AmenitiesFilter.wifi.name)) {
-      list = list;
+    if (_filters.contains(AccommodationTypeFilter.Apartment.name)) {
+      list = list.where((i) => i.type == "Apartment").toList();
+    }
+    if (_filters.contains(AccommodationTypeFilter.Villa.name)) {
+      list = list.where((i) => i.type == "Villa").toList();
+    }
+    if (_filters.contains(AccommodationTypeFilter.Hotel.name)) {
+      list = list.where((i) => i.type == "Hotel").toList();
+    }
+    if (_filters.contains(AccommodationTypeFilter.Hostel.name)) {
+      list = list.where((i) => i.type == "Hostel").toList();
+    }
+    if (_filters.contains(AccommodationTypeFilter.Cabin.name)) {
+      list = list.where((i) => i.type == "Cabin").toList();
+    }
+    if (_filters.contains(AccommodationTypeFilter.Bungalow.name)) {
+      list = list.where((i) => i.type == "Bungalow").toList();
+    }
+    if (_filters.contains(AccommodationTypeFilter.Room.name)) {
+      list = list.where((i) => i.type == "Room").toList();
     }
     if (_filters.contains(AmenitiesFilter.wifi.name)) {
       list = list.where((i) => i.wifi == true).toList();
@@ -538,6 +499,18 @@ class _FiltersScreenState extends State<FiltersScreen> {
     }
 
     return list;
+    // bookingResults = unifyList(bookingResults);
+
+    // for (Booking booking in bookingResults) {
+    //   for (Acommodation accommodation in accommodationList) {
+    //     if (booking.accommodationId == accommodation.id &&
+    //         accommodation.max_guests! >= widget.guests) {
+    //       list.add(accommodation);
+    //     }
+    //   }
+    // }
+
+    // return list;
   }
 
   List<Booking> unifyList(List<Booking> list) {
@@ -568,5 +541,58 @@ class _FiltersScreenState extends State<FiltersScreen> {
 
   bool isBetween(DateTime checkDate, DateTime dateStart, DateTime dateEnd) {
     return checkDate >= dateStart && checkDate <= dateEnd;
+  }
+
+  List<Acommodation> getAccommodationsFreeTimeSlots(List<Booking> bookings,
+      List<Acommodation> accommodations, DateTime dtStart, DateTime dtEnd) {
+    List<Acommodation> result = [];
+    if (bookings.isEmpty) {
+      return result;
+    }
+    String accommId = bookings[0].accommodationId!;
+    for (int i = 0; i < bookings.length - 1; i++) {
+      Booking b1 = bookings[i];
+      if (b1.accommodationId != accommId) //punkt zmiany accommodation_id
+      {
+        accommId = b1.accommodationId!;
+      }
+      Booking b2 = bookings[i + 1];
+      if (b1.accommodationId !=
+          b2.accommodationId) //punkt zmiany accommodation_id
+      {
+        //przypadek,gdy jest tylko jedna rezerwacja (b1), a po niej nie ma zadnej innej rezerwacji z tym samym accommodation_id
+        bool match = isBetween(dtStart, b1.startDate!, b1.endDate!) ||
+            isBetween(dtEnd, b1.startDate!, b1.endDate!);
+        if (!match) {
+          Acommodation x =
+              getAccommodationById(accommodations, b1.accommodationId!);
+          if (x.id != "") {
+            result.add(x);
+          }
+        }
+        continue;
+      }
+      bool match = isBetween(dtStart, b1.endDate!, b2.startDate!) &&
+          isBetween(dtEnd, b1.endDate!, b2.startDate!);
+      if (match) {
+        Acommodation x =
+            getAccommodationById(accommodations, b1.accommodationId!);
+        if (x.id != "") {
+          result.add(x);
+        }
+      }
+    }
+    return result;
+  }
+
+  Acommodation getAccommodationById(
+      List<Acommodation> accommodations, String id) {
+    if (accommodations.isEmpty) return new Acommodation();
+    for (Acommodation accommodation in accommodations) {
+      if (accommodation.id == id) {
+        return accommodation;
+      }
+    }
+    return new Acommodation();
   }
 }

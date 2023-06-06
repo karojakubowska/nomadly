@@ -4,7 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/screens/accommodation_review_view.dart';
+<<<<<<< Updated upstream
 import 'package:nomadly_app/screens/chat_single_view.dart';
+=======
+import 'package:nomadly_app/screens/payment.dart';
+>>>>>>> Stashed changes
 
 import '../models/Accomodation.dart';
 import '../models/Booking.dart';
@@ -13,7 +17,8 @@ import '../utils/app_styles.dart';
 class BookingDetails extends StatefulWidget {
   Acommodation accommodation;
   Booking booking;
-  BookingDetails({super.key, required this.accommodation, required this.booking});
+  BookingDetails(
+      {super.key, required this.accommodation, required this.booking});
 
   @override
   State<BookingDetails> createState() => _BookingDetailsState();
@@ -67,9 +72,7 @@ class _BookingDetailsState extends State<BookingDetails> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Check-out", style: Styles.bookingDetailsStyle),
-                Text(
-                    DateFormat.yMMMMd('en_US')
-                        .format(widget.booking.endDate!),
+                Text(DateFormat.yMMMMd('en_US').format(widget.booking.endDate!),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
                             fontSize: 16.0,
@@ -132,6 +135,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                   Container(
                       padding: const EdgeInsets.only(top: 30, bottom: 30),
                       child: statusButtonSwitch()),
+<<<<<<< Updated upstream
                       if( widget.booking.isAccommodationRated==false)
                   ElevatedButton(
                     onPressed: () {
@@ -157,16 +161,33 @@ class _BookingDetailsState extends State<BookingDetails> {
                           borderRadius: BorderRadius.circular(10))),
                       minimumSize:
                           MaterialStateProperty.all(const Size(320, 50)),
+=======
+                  if (widget.booking.isAccommodationRated == false)
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(0),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            side: const BorderSide(
+                                color: Color.fromARGB(255, 50, 134, 252),
+                                width: 1,
+                                style: BorderStyle.solid),
+                            borderRadius: BorderRadius.circular(10))),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(320, 50)),
+                      ),
+                      child: Text(
+                        tr('Contact with host'),
+                        style: GoogleFonts.roboto(
+                            textStyle: const TextStyle(
+                                fontSize: 16.0,
+                                color: Color.fromARGB(255, 50, 134, 252),
+                                fontWeight: FontWeight.w700)),
+                      ),
+>>>>>>> Stashed changes
                     ),
-                    child: Text(
-                      tr('Contact with host'),
-                      style: GoogleFonts.roboto(
-                          textStyle: const TextStyle(
-                              fontSize: 16.0,
-                              color: Color.fromARGB(255, 50, 134, 252),
-                              fontWeight: FontWeight.w700)),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -177,17 +198,19 @@ class _BookingDetailsState extends State<BookingDetails> {
   }
 
   Widget statusButtonSwitch() {
-    if (widget.booking.status == "Finished"&& widget.booking.isAccommodationRated==false ) {
+    if (widget.booking.status == "Finished" &&
+        widget.booking.isAccommodationRated == false) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ElevatedButton(
             onPressed: () {
-               Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: ((context) => AccommodationReviewScreen(accommodation: widget.accommodation,booking:widget.booking)
-                )));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => AccommodationReviewScreen(
+                          accommodation: widget.accommodation,
+                          booking: widget.booking))));
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(
@@ -230,7 +253,12 @@ class _BookingDetailsState extends State<BookingDetails> {
       );
     } else if (widget.booking.status == "Confirmed") {
       return ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) => PaymentDetailsScreen())));
+        },
         style: ButtonStyle(
           elevation: MaterialStateProperty.all(0),
           backgroundColor: MaterialStateProperty.all<Color>(

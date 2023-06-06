@@ -93,12 +93,11 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: TextFormField(
                   validator: (val) {
-                  /// check if it is null empty or whitespace
-                  if (val == null || val.isEmpty || val.trim().isEmpty) {
-                    return "Please input card number";
-                  }
-              
-                },
+                    /// check if it is null empty or whitespace
+                    if (val == null || val.isEmpty || val.trim().isEmpty) {
+                      return "Please input card number";
+                    }
+                  },
                   controller: CVVController,
                   cursorColor: Colors.white,
                   textInputAction: TextInputAction.next,
@@ -114,35 +113,29 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                   ),
                 ),
               ),
-
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => const CheckoutScreen())));
-                    },
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(0),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 50, 134, 252)),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                      minimumSize:
-                          MaterialStateProperty.all(const Size(350, 50)),
-                    ),
-                    child: Text(
-                      'Pay now',
-                      style: GoogleFonts.roboto(
-                          textStyle: const TextStyle(
-                              fontSize: 16.0,
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              fontWeight: FontWeight.w700)),
-                    ),
-                  ),
+              SizedBox(height: 50),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => const CheckoutScreen())));
+                },
+                style: ButtonStyle(
+                  elevation: MaterialStateProperty.all(0),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      const Color.fromARGB(255, 50, 134, 252)),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+                  minimumSize: MaterialStateProperty.all(const Size(350, 50)),
+                ),
+                child: Text(
+                  'Pay now',
+                  style: GoogleFonts.roboto(
+                      textStyle: const TextStyle(
+                          fontSize: 16.0,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontWeight: FontWeight.w700)),
                 ),
               ),
             ],
