@@ -507,22 +507,6 @@ class _ChatSingleViewState extends State<ChatSingleView> {
               },
             ),
           ),
-          if (_messageController.text.isEmpty)
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    tr("No messages. Write something!"),
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.roboto(
-                        color: const Color.fromARGB(255, 24, 24, 24),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ],
-              ),
-            ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
