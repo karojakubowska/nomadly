@@ -72,9 +72,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(tr("Check-out"), style: Styles.bookingDetailsStyle),
-                Text(
-                    DateFormat.yMMMMd('en_US')
-                        .format(widget.booking.endDate!),
+                Text(DateFormat.yMMMMd('en_US').format(widget.booking.endDate!),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
                             fontSize: 16.0,
@@ -261,7 +259,13 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
     }
     if (widget.booking.status == "Waiting for confirmation") {
       return ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          FirebaseFirestore.instance
+              .collection('Bookings')
+              .doc(widget.booking.id)
+              .update({'status': 'Confirmed'});
+              Navigator.pop(context);
+        },
         style: ButtonStyle(
           elevation: MaterialStateProperty.all(0),
           backgroundColor: MaterialStateProperty.all<Color>(

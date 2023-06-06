@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nomadly_app/models/Date.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -213,7 +214,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       print('error occured');
     }
     ;
-
+    List<BookDate>bookedDates=[BookDate(date: DateTime.now().add(Duration(days:-32)),hour:"14"),BookDate(date: DateTime.now().add(Duration(days:-31)),hour:"11")];
     List<String> otherPhotoURLs = [];
     for (var photo in photos) {
       String otherPhotoDateTime = DateTime.now().toString();
@@ -257,6 +258,8 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       'tv': tv ? true : false,
       'air_conditioning': air_conditioning ? true : false,
       'type': _selectedType,
+      'reservations_count':0,
+      'booked_dates':bookedDates,
     }).then((value) {
       print("DocumentSnapshot successfully updated!");
       ScaffoldMessenger.of(context).showSnackBar(

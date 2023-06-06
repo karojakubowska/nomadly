@@ -76,7 +76,7 @@ class ReviewCard extends StatelessWidget {
                           ),
                           const Gap(10),
                           RatingBarIndicator(
-                            rating: user.rate!.toDouble(),
+                            rating:review.rate!.toDouble(),//rating: user.rate!.toDouble(),
                             itemBuilder: (context, index) => const Icon(
                               Icons.star,
                               color: Colors.amber,

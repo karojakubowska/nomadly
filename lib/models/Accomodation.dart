@@ -121,11 +121,22 @@ class Acommodation {
     photo=json['photo'];
     reviews=json['reviews'];
     photoUrl = List<String>.from(json['photoUrl']);
-    //bookedDates =( List<Timestamp>.from(json['booked']))!.map((date) => date.toDate()).toList();
+     List<dynamic> datesList =
+                  List<dynamic>.from(json["booked_dates"]);
+               List<BookDate>x = [];
+              datesList.forEach((element) {
+                x.add(BookDate(
+                    date: element['date'].toDate(), hour: element['hour']));
+              });
+              x.sort((a, b) => a.date!.compareTo(b.date!));
+              bookedDates=x;
+             
   }
 
   Acommodation.fromSnapshot(snapshot)
-      : title = snapshot.data()['title'],
+
+      : id=snapshot.id,
+      title = snapshot.data()['title'],
         city = snapshot.data()['city'],
         street=snapshot.data()['street'],
         price_per_night = snapshot.data()['price_per_night'],

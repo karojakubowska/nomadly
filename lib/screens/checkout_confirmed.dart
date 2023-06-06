@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nomadly_app/screens/all_bookings_view.dart';
+import 'package:nomadly_app/screens/home_view.dart';
 
 import '../utils/app_styles.dart';
 
-class CheckoutConfirmedScreen extends StatelessWidget {
+class CheckoutConfirmedScreen extends StatefulWidget {
   const CheckoutConfirmedScreen({super.key});
 
+  @override
+  State<CheckoutConfirmedScreen> createState() => _CheckoutConfirmedScreenState();
+}
+
+class _CheckoutConfirmedScreenState extends State<CheckoutConfirmedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
-      appBar: AppBar(
-        //  leading: BackButton(color: Colors.black),
-        backgroundColor: Styles.backgroundColor,
-        title: Text('Secure payment', style: Styles.headLineStyle4),
-        elevation: 0,
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   //  leading: BackButton(color: Colors.black),
+      //   backgroundColor: Styles.backgroundColor,
+      //   title: Text('Secure payment', style: Styles.headLineStyle4),
+      //   elevation: 0,
+      //   centerTitle: true,
+   //   ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -38,7 +45,10 @@ class CheckoutConfirmedScreen extends StatelessWidget {
               ],
             )),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {   Navigator.popUntil(
+          context, (HomeTest) => HomeTest.isFirst);
+   
+      },
               style: ButtonStyle(
                 elevation: MaterialStateProperty.all(0),
                 backgroundColor: MaterialStateProperty.all<Color>(
@@ -48,7 +58,7 @@ class CheckoutConfirmedScreen extends StatelessWidget {
                 minimumSize: MaterialStateProperty.all(const Size(180, 50)),
               ),
               child: Text(
-                'Go to my bookings',
+                'Back to home',
                 style: GoogleFonts.roboto(
                     textStyle: const TextStyle(
                         fontSize: 16.0,

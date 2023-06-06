@@ -71,7 +71,6 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
         padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
         child: Column(
           children: [
-            //AccommodationCard(accomodation: accomodation, index: index),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

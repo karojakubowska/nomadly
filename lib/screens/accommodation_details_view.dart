@@ -266,7 +266,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                 )),
                             const Gap(10),
                             Text(
-                              "(${widget.accommodation!.reviews.toString()} "+tr("reviews"),
+                              "(${widget.accommodation!.reviews.toString()} "+tr("reviews")+")",
                               style: GoogleFonts.roboto(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,

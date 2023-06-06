@@ -86,7 +86,7 @@ class _HomeTestState extends State<HomeTest> {
         Provider.of<List<Acommodation>>(context);
     List<Acommodation> highestRatedAccommodations =
         getHighestRatedAccommodations(accommodationList);
-     List<Acommodation> popularAccommodations =
+    List<Acommodation> popularAccommodations =
         getPopularAccommodations(accommodationList);
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
@@ -117,10 +117,11 @@ class _HomeTestState extends State<HomeTest> {
                 ],
               ),
               GestureDetector(
-                onTap: () {Navigator.push(context,MaterialPageRoute(
-            builder: ((context) => AllAccommodationsScreen(
-                 
-                ))));
+                onTap: () {
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: ((context) => AllAccommodationsScreen())));
                   showModalBottomSheet<dynamic>(
                       backgroundColor: Colors.transparent,
                       isScrollControlled: true,
@@ -248,8 +249,7 @@ class _HomeTestState extends State<HomeTest> {
                     scrollDirection: Axis.vertical,
                     itemCount: popularAccommodations.length,
                     itemBuilder: (context, index) {
-                       Acommodation model =
-                                    popularAccommodations[index];
+                      Acommodation model = popularAccommodations[index];
                       return PopularCard(
                         accomodation: model,
                         accommodationCity: model.city!,
@@ -269,35 +269,17 @@ class _HomeTestState extends State<HomeTest> {
 
   List<Acommodation> getPopularAccommodations(
       List<Acommodation> allAccommodations) {
-
     List<Acommodation> result = [];
-    result=allAccommodations;
-    List<Acommodation> maxObjects = [];
-    if (result.isNotEmpty) {
-  result.sort((a, b) => b.reservationsCount!.compareTo(a.reservationsCount!)); // Sort the list in descending order based on the value property
-  
-  
-  
-  // Add the first three objects to the maxObjects list
-  for (int i = 0; i < result.length && i < 3; i++) {
-    maxObjects.add(result[i]);
-  }
-  
-  // Use the maxObjects list
-  print(maxObjects);
-} else {
-  // Handle the bad state "no element" exception
-  print("List is empty. Cannot find maximum objects.");
-}
-    
-  //  var reservationsMax = allAccommodations.reduce((current, next) =>
-  //      current.reservationsCount! > next.reservationsCount! ? current : next);
-  //   result = allAccommodations
-  //       .where((accommodation) => accommodation.reservationsCount==reservationsMax.reservationsCount)
-  //       .toList();
-          
-        
-    return maxObjects;
+    if (allAccommodations.isNotEmpty) {
+      allAccommodations
+          .sort((a, b) => b.reservationsCount!.compareTo(a.reservationsCount!));
+      for (int i = 0; i < allAccommodations.length && i < 3; i++) {
+        result.add(allAccommodations[i]);
+      }
+    } else {
+     // print("List is empty. Cannot find maximum objects.");
+    }
+    return result;
   }
 
   List<Acommodation> getHighestRatedAccommodations(

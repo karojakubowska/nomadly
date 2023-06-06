@@ -113,23 +113,7 @@ class _BookingCardState extends State<BookingCardHost> {
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
-                      //   FutureBuilder(
-                      // future: getUser(widget.booking.userId!),
-                      // builder: (context, snapshot) {
-                      //   if (snapshot.hasData) {
-                      //     final userName= snapshot.data;
-                      //     return Text(
-                      //       "User: $userName",
-                      //       style: GoogleFonts.roboto(
-                      //           color: const Color.fromARGB(255, 24, 24, 24),
-                      //           fontSize: 18,
-                      //           fontWeight: FontWeight.w500),
-                      //     );
-                      //   } else {
-                      //     // A Widget to show while the value loads
-                      //     return Text('');
-                      //   }
-                      // }),
+                      
                     ],
                   ),
                 ],
