@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/screens/accommodation_review_view.dart';
+import 'package:nomadly_app/screens/chat_single_view.dart';
 
 import '../models/Accomodation.dart';
 import '../models/Booking.dart';
@@ -133,7 +134,17 @@ class _BookingDetailsState extends State<BookingDetails> {
                       child: statusButtonSwitch()),
                       if( widget.booking.isAccommodationRated==false)
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatSingleView(
+                            userId: widget.booking.userId!,
+                            otherUserId: widget.booking.hostId!,
+                          ),
+                        ),
+                      );
+                    },
                     style: ButtonStyle(
                       elevation: MaterialStateProperty.all(0),
                       backgroundColor:

@@ -431,29 +431,26 @@ class _ChatState extends State<Chat> {
               return ListView.builder(
                 itemCount: latestMessagesList.length,
                 itemBuilder: (context, index) {
-                  final QueryDocumentSnapshot document =
-                      latestMessagesList[index];
+                  final QueryDocumentSnapshot document = latestMessagesList[index];
                   final String senderId = document.get('senderId');
-                  bool is_read = document.get('isRead');
-                  DateTime timestamp = document.get('timestamp').toDate();
-                  String formattedDate =
-                      DateFormat('dd/MM/yyyy').format(timestamp);
-                  final String otherUserId = senderId == _userId
-                      ? document.get('recipientId')
-                      : senderId;
-                  final bool isLastMessage =
-                      index == latestMessagesList.length - 1 && !is_read;
-                  final FontWeight fontWeight =
-                      isLastMessage ? FontWeight.w700 : FontWeight.w400;
+                  bool isRead = document.get('isRead');
+                  final DateTime timestamp = document.get('timestamp').toDate();
+                  final String formattedDate = DateFormat('dd/MM/yyyy').format(timestamp);
+                  final String otherUserId = senderId == _userId ? document.get('recipientId') : senderId;
+                  final bool isLastMessage = index == latestMessagesList.length - 1 && !isRead;
+                  final bool isOtherUserMessage = senderId != _userId;
+
                   return FutureBuilder<DocumentSnapshot>(
-                    future:
-                        _firestore.collection('Users').doc(otherUserId).get(),
+                    future: _firestore.collection('Users').doc(otherUserId).get(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return Container();
                       } else {
-                        final String otherUserName =
-                            snapshot.data!.get('Name').toString();
+                        final String otherUserName = snapshot.data!.get('Name').toString();
+                        final Color? messageColor = isOtherUserMessage && !isRead ? Colors.blue[200] : Colors.white;
+                        final FontWeight fontWeight = isOtherUserMessage && !isRead ? FontWeight.w700 : FontWeight.w400;
+                        final String otherUserAccountImage = snapshot.data!.get('AccountImage').toString();
+
                         return InkWell(
                           onTap: () async {
                             Navigator.push(
@@ -465,13 +462,13 @@ class _ChatState extends State<Chat> {
                                 ),
                               ),
                             ).then((_) async {
-                              if (!is_read) {
+                              if (!isRead) {
                                 await _firestore
                                     .collection('ChatMessage')
                                     .doc(document.id)
                                     .update({'isRead': true});
                                 setState(() {
-                                  is_read = true;
+                                  isRead = true;
                                 });
                               }
                             });
@@ -480,7 +477,7 @@ class _ChatState extends State<Chat> {
                             margin: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 10),
                             child: Card(
-                              color: is_read ? Colors.white : Colors.blue[200],
+                              color: messageColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
@@ -492,7 +489,7 @@ class _ChatState extends State<Chat> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     StreamBuilder<DocumentSnapshot>(
-                                      stream: userStream,
+                                      stream: _firestore.collection('Users').doc(otherUserId).snapshots(),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
@@ -536,8 +533,11 @@ class _ChatState extends State<Chat> {
                                           Text(
                                             otherUserName,
                                             style: GoogleFonts.roboto(
-                                              color: Color.fromARGB(
-                                                  255, 24, 24, 24),
+                                              color:
+                                                  isOtherUserMessage && !isRead
+                                                      ? Colors.white
+                                                      : Color.fromARGB(
+                                                          255, 24, 24, 24),
                                               fontSize: 16,
                                               fontWeight: fontWeight,
                                             ),

@@ -920,25 +920,25 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                         items: _types
                             .map(
                               (e) => DropdownMenuItem(
-                            value: e,
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(e),
-                            ),
-                          ),
-                        )
+                                value: e,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(e),
+                                ),
+                              ),
+                            )
                             .toList(),
                         selectedItemBuilder: (BuildContext context) => _types
                             .map(
                               (e) => Center(
-                            child: Text(
-                              e,
-                              style: const TextStyle(
-                                color: Color.fromARGB(255, 57, 57, 57),
+                                child: Text(
+                                  e,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 57, 57, 57),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )
+                            )
                             .toList(),
                       ),
                     ),
