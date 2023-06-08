@@ -134,7 +134,15 @@ class _BookingDetailsState extends State<BookingDetails> {
                       child: statusButtonSwitch()),
                   if (widget.booking.isAccommodationRated == false)
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () { Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatSingleView(
+                            userId: widget.booking.userId!,
+                            otherUserId: widget.booking.hostId!,
+                          ),
+                        ),
+                      );},
                       style: ButtonStyle(
                         elevation: MaterialStateProperty.all(0),
                         backgroundColor:

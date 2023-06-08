@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/Date.dart';
 import 'package:nomadly_app/screens/checkout.dart';
+import 'package:nomadly_app/screens/confirmation.dart';
 import 'package:nomadly_app/screens/error_when_book.dart';
 import 'package:provider/provider.dart';
 import '../utils/app_styles.dart';
@@ -264,7 +265,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
       (value) => {
         print("DocumentSnapshot successfully updated!"),
         Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => CheckoutScreen())))
+            MaterialPageRoute(builder: ((context) => ConfirmationScreen())))
       },
       onError: (e) => {
         print(e),

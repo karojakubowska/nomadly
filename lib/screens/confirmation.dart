@@ -4,14 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import '../utils/app_styles.dart';
 import 'checkout_confirmed.dart';
 
-class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key});
+class ConfirmationScreen extends StatefulWidget {
+  const ConfirmationScreen({super.key});
 
   @override
-  State<CheckoutScreen> createState() => _CheckoutScreenState();
+  State<ConfirmationScreen> createState() => _ConfirmationScreenState();
 }
 
-class _CheckoutScreenState extends State<CheckoutScreen> {
+class _ConfirmationScreenState extends State<ConfirmationScreen> {
    @override
   void initState() {
     super.initState();
@@ -45,7 +45,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 height: 70,
                 width: 260,
                 child: Text(
-                  "We are processing your payment...",
+                  "We are confirming your booking...",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
                       color: Color.fromARGB(255, 24, 24, 24),
