@@ -168,40 +168,40 @@ class _AccommodationCardState extends State<AccommodationCard> {
     );
   }
 
-  Future addToFavorites(String accommodationId) async {
-    var userId = FirebaseAuth.instance.currentUser?.uid;
-    CollectionReference wishlist =
-        FirebaseFirestore.instance.collection("Wishlists");
-    return wishlist
-        .doc(userId)
-        .collection("favs")
-        .doc()
-        .set({'accommodationId': accommodationId})
-        .then((value) => print("liked"))
-        .catchError((error) => print("Something went wrong when liking"));
-  }
+    Future addToFavorites(String accommodationId) async {
+      var userId = FirebaseAuth.instance.currentUser?.uid;
+      CollectionReference wishlist =
+          FirebaseFirestore.instance.collection("Wishlists");
+      return wishlist
+          .doc(userId)
+          .collection("favs")
+          .doc()
+          .set({'accommodationId': accommodationId})
+          .then((value) => print("liked"))
+          .catchError((error) => print("Something went wrong when liking"));
+    }
 
-  Future deleteFromFavorites(String accommodationId) async {
-    var userId = FirebaseAuth.instance.currentUser?.uid;
-    var wishlist = FirebaseFirestore.instance
-        .collection("Wishlists")
-        .doc(userId)
-        .collection("favs")
-        .where('accommodationId', isEqualTo: widget.accomodation.id)
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        FirebaseFirestore.instance
-            .collection("Wishlists")
-            .doc(userId)
-            .collection("favs")
-            .doc(element.id)
-            .delete()
-            .then((value) {
-          print("unliked");
+    Future deleteFromFavorites(String accommodationId) async {
+      var userId = FirebaseAuth.instance.currentUser?.uid;
+      var wishlist = FirebaseFirestore.instance
+          .collection("Wishlists")
+          .doc(userId)
+          .collection("favs")
+          .where('accommodationId', isEqualTo: widget.accomodation.id)
+          .get()
+          .then((value) {
+        value.docs.forEach((element) {
+          FirebaseFirestore.instance
+              .collection("Wishlists")
+              .doc(userId)
+              .collection("favs")
+              .doc(element.id)
+              .delete()
+              .then((value) {
+            print("unliked");
+          });
         });
       });
-    });
-    return wishlist;
+      return wishlist;
+    }
   }
-}

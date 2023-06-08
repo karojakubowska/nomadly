@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -43,7 +45,45 @@ class _DetailScreenState extends State<DetailScreen> {
                 rate: accommodation.rate!.toDouble()))));
   }
 
-  @override
+  Future addToFavorites(String accommodationId) async {
+    var userId = FirebaseAuth.instance.currentUser?.uid;
+    CollectionReference wishlist =
+    FirebaseFirestore.instance.collection("Wishlists");
+    return wishlist
+        .doc(userId)
+        .collection("favs")
+        .doc()
+        .set({'accommodationId': accommodationId})
+        .then((value) => print("liked"))
+        .catchError((error) => print("Something went wrong when liking"));
+  }
+
+  Future deleteFromFavorites(String accommodationId) async {
+    var userId = FirebaseAuth.instance.currentUser?.uid;
+    var wishlist = FirebaseFirestore.instance
+        .collection("Wishlists")
+        .doc(userId)
+        .collection("favs")
+        .where('accommodationId', isEqualTo: widget.accommodation?.id)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        FirebaseFirestore.instance
+            .collection("Wishlists")
+            .doc(userId)
+            .collection("favs")
+            .doc(element.id)
+            .delete()
+            .then((value) {
+          print("unliked");
+        });
+      });
+    });
+    return wishlist;
+  }
+
+
+@override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -120,34 +160,61 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.accommodation!.title!,
-                    style: GoogleFonts.roboto(
-                        color: const Color.fromARGB(255, 24, 24, 24),
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.accommodation!.title!,
+                          style: GoogleFonts.roboto(
+                            color: const Color.fromARGB(255, 24, 24, 24),
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection("Wishlists")
+                            .doc(FirebaseAuth.instance.currentUser?.uid)
+                            .collection("favs")
+                            .where("accommodationId", isEqualTo: widget.accommodation?.id)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.data == null) return Text(tr("No data"));
+                          return IconButton(
+                            onPressed: () async {
+                              snapshot.data!.docs.length == 0
+                                  ? await addToFavorites(widget.accommodation!.id.toString())
+                                  : deleteFromFavorites(widget.accommodation!.id.toString());
+                            },
+                            icon: snapshot.data!.docs.length == 0
+                                ? Icon(Icons.favorite_border_outlined, size: 30) // Increase the size to 30
+                                : Icon(Icons.favorite, size: 30), // Increase the size to 30
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
                       Text(
                         "${widget.accommodation!.city!},",
                         style: GoogleFonts.roboto(
-                            color: const Color.fromARGB(255, 24, 24, 24),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
+                          color: const Color.fromARGB(255, 24, 24, 24),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                      const SizedBox(
-                        width: 1,
-                      ),
+                      const SizedBox(width: 1),
                       Text(
                         widget.accommodation!.country!,
                         style: GoogleFonts.roboto(
-                            color: const Color.fromARGB(255, 24, 24, 24),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
+                          color: const Color.fromARGB(255, 24, 24, 24),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ],
                   ),
@@ -162,10 +229,9 @@ class _DetailScreenState extends State<DetailScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                right: 7, left: 7, top: 4, bottom: 4),
+                            padding: const EdgeInsets.only(right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bedroom?.toString() ?? '0'} "+tr("bedroom"),
+                              " ${widget.accommodation?.bedroom?.toString() ?? '0'} " + tr("bedroom"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
                                 fontSize: 14,
@@ -186,10 +252,9 @@ class _DetailScreenState extends State<DetailScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                right: 7, left: 7, top: 4, bottom: 4),
+                            padding: const EdgeInsets.only(right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bed?.toString() ?? '0'} "+tr("bed"),
+                              " ${widget.accommodation?.bed?.toString() ?? '0'} " + tr("bed"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
                                 fontSize: 14,
@@ -210,10 +275,9 @@ class _DetailScreenState extends State<DetailScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                right: 7, left: 7, top: 4, bottom: 4),
+                            padding: const EdgeInsets.only(right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bathroom?.toString() ?? '0'} "+tr("bathroom"),
+                              " ${widget.accommodation?.bathroom?.toString() ?? '0'} " + tr("bathroom"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
                                 fontSize: 14,
@@ -239,48 +303,51 @@ class _DetailScreenState extends State<DetailScreen> {
                         child: Row(
                           children: [
                             Container(
-                                height: 40,
-                                width: 70,
-                                decoration: const BoxDecoration(
-                                    color: Color.fromARGB(255, 50, 134, 252),
-                                    shape: BoxShape.rectangle,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8))),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    const Icon(
-                                      Icons.star,
+                              height: 40,
+                              width: 70,
+                              decoration: const BoxDecoration(
+                                color: Color.fromARGB(255, 50, 134, 252),
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Icon(
+                                    Icons.star,
+                                    color: Colors.white,
+                                    size: 25,
+                                  ),
+                                  Text(
+                                    widget.accommodation!.rate!.toString(),
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.w600,
                                       color: Colors.white,
-                                      size: 25,
                                     ),
-                                    Text(
-                                      widget.accommodation!.rate!.toString(),
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 19,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                    ),
-                                  ],
-                                )),
+                                  ),
+                                ],
+                              ),
+                            ),
                             const Gap(10),
                             Text(
-                              "(${widget.accommodation!.reviews.toString()} "+tr("reviews")+")",
+                              "(${widget.accommodation!.reviews.toString()} " + tr("reviews") + ")",
                               style: GoogleFonts.roboto(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey,
+                              ),
                             ),
                           ],
                         ),
                       ),
                       Text(
-                        "\$${widget.accommodation!.price_per_night!}/"+tr("night"),
+                        "\$${widget.accommodation!.price_per_night!}/" + tr("night"),
                         style: GoogleFonts.roboto(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
                       ),
                     ],
                   ),
@@ -289,64 +356,71 @@ class _DetailScreenState extends State<DetailScreen> {
                     tr("Description"),
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: const Color.fromARGB(255, 135, 135, 135)),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: const Color.fromARGB(255, 135, 135, 135),
+                    ),
                   ),
                   Text(
                     widget.accommodation!.description!,
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: const Color.fromARGB(255, 135, 135, 135),
-                        height: 1.6,
-                        letterSpacing: .5),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(255, 135, 135, 135),
+                      height: 1.6,
+                      letterSpacing: .5,
+                    ),
                   ),
                   const Gap(20),
                   Text(
                     tr("Additional Information"),
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: const Color.fromARGB(255, 135, 135, 135)),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: const Color.fromARGB(255, 135, 135, 135),
+                    ),
                   ),
                   const Gap(10),
                   Text(
-                    "- "+ tr("Kitchen") +": ${widget.accommodation?.kitchen == true ? tr('Yes') : tr('No')}",
+                    "- " + tr("Kitchen") + ": ${widget.accommodation?.kitchen == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: const Color.fromARGB(255, 135, 135, 135)),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(255, 135, 135, 135),
+                    ),
                   ),
                   const Gap(10),
                   Text(
-                    "- "+ tr("TV") +": ${widget.accommodation?.tv == true ? tr('Yes') : tr('No')}",
+                    "- " + tr("TV") + ": ${widget.accommodation?.tv == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: const Color.fromARGB(255, 135, 135, 135)),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(255, 135, 135, 135),
+                    ),
                   ),
                   const Gap(10),
                   Text(
-                    "- "+ tr("Wifi") +": ${widget.accommodation?.wifi == true ? tr('Yes') : tr('No')}",
+                    "- " + tr("Wifi") + ": ${widget.accommodation?.wifi == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: const Color.fromARGB(255, 135, 135, 135)),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(255, 135, 135, 135),
+                    ),
                   ),
                   const Gap(10),
                   Text(
-                    "- "+ tr("Air Conditioning") +": ${widget.accommodation?.air_conditioning == true ? tr('Yes') : tr('No')}",
+                    "- " + tr("Air Conditioning") + ": ${widget.accommodation?.air_conditioning == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: const Color.fromARGB(255, 135, 135, 135)),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(255, 135, 135, 135),
+                    ),
                   ),
                   const Gap(20),
                   Text(
@@ -530,3 +604,4 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 }
+
