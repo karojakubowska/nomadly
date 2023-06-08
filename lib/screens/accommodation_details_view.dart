@@ -349,6 +349,16 @@ class _DetailScreenState extends State<DetailScreen> {
                         color: const Color.fromARGB(255, 135, 135, 135)),
                   ),
                   const Gap(20),
+                  Text(
+                    "Images",
+                    textAlign: TextAlign.start,
+                    style: GoogleFonts.roboto(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: const Color.fromARGB(255, 135, 135, 135),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -376,7 +386,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            //height: 100,
+                            height: 100,
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
