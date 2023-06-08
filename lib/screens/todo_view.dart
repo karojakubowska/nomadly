@@ -212,8 +212,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
           color: Colors.black,
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).popUntil((route) => route.isFirst);
-          },
+            Navigator.of(context).pop();
+        },
         ),
         title: Text(
           tr('To do list'),
