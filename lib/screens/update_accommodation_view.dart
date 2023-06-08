@@ -13,7 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../utils/app_layout.dart';
 
 class UpdateAccommodationScreen extends StatefulWidget {
@@ -257,28 +257,15 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
               .child('');
           await ref.putFile(photo);
           String photoUrl =
-              ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
-                  .toString();
+          ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
+              .toString();
           updatedPhotoUrls.add(photoUrl);
         } catch (e) {
           print('Error occurred');
         }
       }
 
-      // Usuń stare URL-e zdjęć, które nie znajdują się na liście updatedPhotoUrls
-      for (var oldPhotoUrl in photoUrls) {
-        if (!updatedPhotoUrls.contains(oldPhotoUrl)) {
-          try {
-            await firebase_storage.FirebaseStorage.instance
-                .refFromURL(oldPhotoUrl)
-                .delete();
-            print("Stare zdjęcie zostało pomyślnie usunięte: $oldPhotoUrl");
-          } catch (e) {
-            print('Błąd podczas usuwania starego zdjęcia: $e');
-          }
-        }
-      }
-
+      // Dodaj nowe URL-e zdjęć do istniejącej listy photoUrls
       photoUrls.addAll(updatedPhotoUrls);
 
       accommodation.update({
@@ -299,7 +286,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         'wifi': wifi ? true : false,
         'tv': tv ? true : false,
         'air_conditioning': air_conditioning ? true : false,
-        'photoUrl': updatedPhotoUrls,
+        'photoUrl': photoUrls, // Użyj aktualizowanej listy photoUrls
         'type': _selectedType,
       }).then((value) => print("DocumentSnapshot successfully updated!"),
           onError: (e) => print("Error updating document $e"));
@@ -337,7 +324,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
 
         try {
           final ref =
-              firebase_storage.FirebaseStorage.instance.ref(destination);
+          firebase_storage.FirebaseStorage.instance.ref(destination);
           await ref.putFile(photo);
           String photoUrl = await ref.getDownloadURL();
           updatedPhotoUrls.add(photoUrl);
@@ -346,7 +333,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         }
       }
 
-// Delete old photos from Firebase Storage and Firestore
+      // Usuń stare URL-e zdjęć, które nie znajdują się na liście updatedPhotoUrls
       for (var oldPhotoUrl in photoUrls) {
         if (!updatedPhotoUrls.contains(oldPhotoUrl)) {
           try {
@@ -360,7 +347,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         }
       }
 
-// Dodaj nowe URL-e do listy photoUrls
+      // Dodaj nowe URL-e do istniejącej listy photoUrls
       photoUrls.addAll(updatedPhotoUrls);
 
       accommodation.update({
@@ -381,12 +368,13 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         'wifi': wifi ? true : false,
         'tv': tv ? true : false,
         'air_conditioning': air_conditioning ? true : false,
-        'photoUrl': updatedPhotoUrls,
+        'photoUrl': photoUrls, // Użyj aktualizowanej listy photoUrls
         'type': _selectedType,
       }).then((value) => print("DocumentSnapshot successfully updated!"),
           onError: (e) => print("Error updating document $e"));
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -489,7 +477,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    _showPicker(context);
+                    //_showPicker(context);
                   },
                   child: Container(
                     width: size.width,
@@ -528,18 +516,29 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                                             iconSize: 15,
                                             icon: Icon(Icons.close),
                                             color: Colors.grey[800],
-                                            onPressed: () {
-                                              setState(() {
-                                                int index = entry.key;
-                                                if (index < photos.length) {
-                                                  photos.removeAt(index);
-                                                } else {
-                                                  int photoUrlIndex =
-                                                      index - photos.length;
-                                                  photoUrls
-                                                      .removeAt(photoUrlIndex);
+                                            onPressed: () async {
+                                              int index = entry.key;
+                                              if (index < photos.length) {
+                                                photos.removeAt(index);
+                                                Fluttertoast.showToast(msg: 'DUPA');
+                                              } else {
+                                                int photoUrlIndex = index - photos.length;
+                                                if (photoUrlIndex >= 0 && photoUrlIndex < photoUrls.length) {
+                                                  String removedUrl = photoUrls.removeAt(photoUrlIndex);
+                                                  print("DUPA");
+                                                  print(removedUrl);
+                                                  try {
+                                                    await firebase_storage.FirebaseStorage.instance
+                                                        .refFromURL(removedUrl)
+                                                        .delete();
+                                                    setState(() {
+                                                      Fluttertoast.showToast(msg: 'Zdjęcie zostało pomyślnie usunięte: $removedUrl');
+                                                    });
+                                                  } catch (e) {
+                                                    print('Błąd podczas usuwania zdjęcia: $e');
+                                                  }
                                                 }
-                                              });
+                                              }
                                             },
                                           ),
                                         ),
@@ -577,10 +576,29 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                                             iconSize: 15,
                                             icon: Icon(Icons.close),
                                             color: Colors.grey[800],
-                                            onPressed: () {
-                                              setState(() {
-                                                photoUrls.removeAt(entry.key);
-                                              });
+                                            onPressed: () async {
+                                              int index = entry.key;
+                                              if (index < photos.length) {
+                                                photos.removeAt(index);
+                                                Fluttertoast.showToast(msg: 'DUPA');
+                                              } else {
+                                                int photoUrlIndex = index - photos.length;
+                                                if (photoUrlIndex >= 0 && photoUrlIndex < photoUrls.length) {
+                                                  String removedUrl = photoUrls.removeAt(photoUrlIndex);
+                                                  print("DUPA");
+                                                  print(removedUrl);
+                                                  try {
+                                                    await firebase_storage.FirebaseStorage.instance
+                                                        .refFromURL(removedUrl)
+                                                        .delete();
+                                                    setState(() {
+                                                      Fluttertoast.showToast(msg: 'Zdjęcie zostało pomyślnie usunięte: $removedUrl');
+                                                    });
+                                                  } catch (e) {
+                                                    print('Błąd podczas usuwania zdjęcia: $e');
+                                                  }
+                                                }
+                                              }
                                             },
                                           ),
                                         ),
@@ -592,6 +610,24 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                         ],
                       ),
                     ),
+                  ),
+                ),
+                SizedBox(height: 5),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size.fromHeight(50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    primary: Color.fromARGB(255, 50, 134, 252),
+                  ),
+                  onPressed: () {
+                    _showPicker(context);
+                  },
+                  icon: Icon(Icons.camera_alt, size: 0),
+                  label: Text(
+                    tr('Add other photo'),
+                    style: TextStyle(fontSize: 18),
                   ),
                 ),
                 const SizedBox(

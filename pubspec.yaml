@@ -65,6 +65,7 @@ dependencies:
   basics: ^0.10.0
   easy_localization: ^3.0.0
   flutter_launcher_icons: ^0.13.1
+  fluttertoast: ^8.2.2
 
 dependency_overrides:
    firebase_core_platform_interface: ^4.8.0
