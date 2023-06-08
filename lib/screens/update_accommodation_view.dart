@@ -239,7 +239,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
   Future<void> updateAccommodation(BuildContext context, id, PickedFile) async {
     if (photos.isEmpty && photoUrls.isEmpty) {
       print("Cannot update accommodation without photos");
-      Fluttertoast.showToast(msg: tr('Cannot update accommodation without photos'));
+      Fluttertoast.showToast(
+          msg: tr('Cannot update accommodation without photos'));
       return;
     }
     var user = await FirebaseAuth.instance.currentUser!;
@@ -262,8 +263,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
               .child('');
           await ref.putFile(photo);
           String photoUrl =
-          ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
-              .toString();
+              ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
+                  .toString();
           updatedPhotoUrls.add(photoUrl);
         } catch (e) {
           print('Error occurred');
@@ -354,7 +355,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
 
         try {
           final ref =
-          firebase_storage.FirebaseStorage.instance.ref(destination);
+              firebase_storage.FirebaseStorage.instance.ref(destination);
           await ref.putFile(photo);
           String photoUrl = await ref.getDownloadURL();
           updatedPhotoUrls.add(photoUrl);
@@ -433,7 +434,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
     if (index < photos.length) {
       photos.removeAt(index);
       setState(() {
-        Fluttertoast.showToast(msg: tr('The photo has been successfully deleted'));
+        Fluttertoast.showToast(
+            msg: tr('The photo has been successfully deleted'));
       });
     } else {
       int photoUrlIndex = index - photos.length;
@@ -444,7 +446,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
               .refFromURL(removedUrl)
               .delete();
           setState(() {
-            Fluttertoast.showToast(msg: tr('The photo has been successfully deleted'));
+            Fluttertoast.showToast(
+                msg: tr('The photo has been successfully deleted'));
           });
         } catch (e) {
           print('Error: $e');
@@ -474,7 +477,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black), // Ustawienie koloru ikon w appBar
+        iconTheme: IconThemeData(color: Colors.black),
+        // Ustawienie koloru ikon w appBar
         toolbarTextStyle: TextTheme(
           subtitle1: TextStyle(
             color: Colors.black,
@@ -575,97 +579,107 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    //_showPicker(context);
-                  },
-                  child: Container(
-                    width: size.width,
-                    height: size.height * 0.22,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ...photos.asMap().entries.map(
-                                (entry) => Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    child: Image.file(
-                                      entry.value,
-                                      width: 160,
-                                      height: 160,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 5,
-                                    right: 5,
-                                    child: Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10, right: 20, left: 20),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          //_showPicker(context);
+                        },
+                        child: Container(
+                          width: size.width,
+                          height: size.height * 0.22,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ...photos.asMap().entries.map(
+                                      (entry) => Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                              child: Image.file(
+                                                entry.value,
+                                                width: 160,
+                                                height: 160,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 5,
+                                              right: 5,
+                                              child: Container(
+                                                width: 30,
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: IconButton(
+                                                  iconSize: 15,
+                                                  icon: Icon(Icons.close),
+                                                  color: Colors.grey[800],
+                                                  onPressed: () async {
+                                                    removePhoto(entry.key);
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      child: IconButton(
-                                        iconSize: 15,
-                                        icon: Icon(Icons.close),
-                                        color: Colors.grey[800],
-                                        onPressed: () async {
-                                          removePhoto(entry.key);
-                                        },
+                                    ),
+                                ...photoUrls.asMap().entries.map(
+                                      (entry) => Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                              child: Image.network(
+                                                entry.value,
+                                                width: 160,
+                                                height: 160,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 5,
+                                              right: 5,
+                                              child: Container(
+                                                width: 30,
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: IconButton(
+                                                  iconSize: 15,
+                                                  icon: Icon(Icons.close),
+                                                  color: Colors.grey[800],
+                                                  onPressed: () async {
+                                                    removePhoto(entry.key +
+                                                        photos.length);
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
+                              ],
                             ),
                           ),
-                          ...photoUrls.asMap().entries.map(
-                                (entry) => Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    child: Image.network(
-                                      entry.value,
-                                      width: 160,
-                                      height: 160,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 5,
-                                    right: 5,
-                                    child: Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: IconButton(
-                                        iconSize: 15,
-                                        icon: Icon(Icons.close),
-                                        color: Colors.grey[800],
-                                        onPressed: () async {
-                                          removePhoto(entry.key + photos.length);
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
                 SizedBox(height: 5),
@@ -684,8 +698,8 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     onPressed: photos.length + photoUrls.length >= 8
                         ? null
                         : () {
-                      _showPicker(context);
-                    },
+                            _showPicker(context);
+                          },
                     icon: Icon(Icons.camera_alt, size: 0),
                     label: Text(
                       tr('Add other photo'),

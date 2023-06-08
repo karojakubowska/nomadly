@@ -503,9 +503,9 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          primary: Color.fromARGB(255, 50, 134, 252),
+                          primary: photos.length >= 8 ? Colors.grey[400] : Color.fromARGB(255, 50, 134, 252),
                         ),
-                        onPressed: () {
+                        onPressed: photos.length >= 8 ? null : () {
                           _showPicker(context);
                         },
                         icon: Icon(Icons.camera_alt, size: 0),
@@ -514,6 +514,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
+
                     ],
                   ),
                 ),

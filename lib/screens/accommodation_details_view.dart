@@ -386,7 +386,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            height: 100,
+                            height: 120,
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
