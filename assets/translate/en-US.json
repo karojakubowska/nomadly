@@ -133,5 +133,7 @@
   "Explore the world by planning your own adventures and experiences": "Explore the world by planning your own adventures and experiences",
   " Select the type of accommodation":" Select the type of accommodation",
   "No messages. Write something!": "No messages. Write something!",
-  "The photo has been successfully deleted": "The photo has been successfully deleted"
+  "The photo has been successfully deleted": "The photo has been successfully deleted",
+  "Cannot update accommodation without photos": "Cannot update accommodation without photos",
+  "Accommodation successfully updated!": "Accommodation successfully updated!"
 }

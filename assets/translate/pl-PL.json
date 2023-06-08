@@ -139,5 +139,7 @@
   "Explore the world by planning your own adventures and experiences": "Odkryj świat, planując swoje własne przygody i przeżycia",
   " Select the type of accommodation": " Wybierz typ miejsca",
   "No messages. Write something!": "Brak wiadomości. Napisz coś!",
-  "The photo has been successfully deleted": "Zdjęcie zostało pomyślnie usunięte"
+  "The photo has been successfully deleted": "Zdjęcie zostało pomyślnie usunięte",
+  "Cannot update accommodation without photos": "Nie można wykonać aktualizacji bez dodatkowych zdjęć",
+  "Accommodation successfully updated!": "Miejsce zostało zaktualizowane!"
 }

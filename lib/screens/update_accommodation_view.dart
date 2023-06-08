@@ -236,7 +236,12 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
     );
   }
 
-  Future<void> updateAccommodation(id, PickedFile) async {
+  Future<void> updateAccommodation(BuildContext context, id, PickedFile) async {
+    if (photos.isEmpty && photoUrls.isEmpty) {
+      print("Cannot update accommodation without photos");
+      Fluttertoast.showToast(msg: tr('Cannot update accommodation without photos'));
+      return;
+    }
     var user = await FirebaseAuth.instance.currentUser!;
     var uid = user.uid;
 
@@ -265,7 +270,6 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         }
       }
 
-      // Dodaj nowe URL-e zdjęć do istniejącej listy photoUrls
       photoUrls.addAll(updatedPhotoUrls);
 
       accommodation.update({
@@ -286,10 +290,36 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         'wifi': wifi ? true : false,
         'tv': tv ? true : false,
         'air_conditioning': air_conditioning ? true : false,
-        'photoUrl': photoUrls, // Użyj aktualizowanej listy photoUrls
+        'photoUrl': photoUrls,
         'type': _selectedType,
-      }).then((value) => print("DocumentSnapshot successfully updated!"),
-          onError: (e) => print("Error updating document $e"));
+      }).then((value) {
+        print("DocumentSnapshot successfully updated!");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('Accommodation successfully updated!'))),
+        );
+        setState(() {
+          _photo = null;
+          _selectedType = null;
+        });
+        titleController.clear();
+        countryController.clear();
+        cityController.clear();
+        streetController.clear();
+        descriptionController.clear();
+        price_per_nightController.clear();
+        addressController.clear();
+        bedController.clear();
+        bathroomController.clear();
+        bedroomController.clear();
+        number_max_peopleController.clear();
+        kitchen = false;
+        wifi = false;
+        tv = false;
+        air_conditioning = false;
+        photos.clear();
+      }, onError: (e) {
+        print("Error updating document $e");
+      });
     } else {
       final db = FirebaseFirestore.instance;
       final accommodation = db.collection("Accommodations").doc(id);
@@ -333,7 +363,6 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         }
       }
 
-      // Usuń stare URL-e zdjęć, które nie znajdują się na liście updatedPhotoUrls
       for (var oldPhotoUrl in photoUrls) {
         if (!updatedPhotoUrls.contains(oldPhotoUrl)) {
           try {
@@ -347,7 +376,6 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         }
       }
 
-      // Dodaj nowe URL-e do istniejącej listy photoUrls
       photoUrls.addAll(updatedPhotoUrls);
 
       accommodation.update({
@@ -368,10 +396,36 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
         'wifi': wifi ? true : false,
         'tv': tv ? true : false,
         'air_conditioning': air_conditioning ? true : false,
-        'photoUrl': photoUrls, // Użyj aktualizowanej listy photoUrls
+        'photoUrl': photoUrls,
         'type': _selectedType,
-      }).then((value) => print("DocumentSnapshot successfully updated!"),
-          onError: (e) => print("Error updating document $e"));
+      }).then((value) {
+        print("DocumentSnapshot successfully updated!");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('Accommodation successfully updated!'))),
+        );
+        setState(() {
+          _photo = null;
+          _selectedType = null;
+        });
+        titleController.clear();
+        countryController.clear();
+        cityController.clear();
+        streetController.clear();
+        descriptionController.clear();
+        price_per_nightController.clear();
+        addressController.clear();
+        bedController.clear();
+        bathroomController.clear();
+        bedroomController.clear();
+        number_max_peopleController.clear();
+        kitchen = false;
+        wifi = false;
+        tv = false;
+        air_conditioning = false;
+        photos.clear();
+      }, onError: (e) {
+        print("Error updating document $e");
+      });
     }
   }
 
@@ -624,11 +678,11 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       primary: photos.length + photoUrls.length >= 8
-                          ? Colors.grey // Jeśli osiągnięto limit 8 zdjęć, przycisk jest szary
-                          : Color.fromARGB(255, 50, 134, 252), // W przeciwnym razie, kolor przycisku jest niebieski
+                          ? Colors.grey
+                          : Color.fromARGB(255, 50, 134, 252),
                     ),
                     onPressed: photos.length + photoUrls.length >= 8
-                        ? null // Jeśli osiągnięto limit 8 zdjęć, przycisk jest nieaktywny
+                        ? null
                         : () {
                       _showPicker(context);
                     },
@@ -639,120 +693,6 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                     ),
                   ),
                 ),
-                // GestureDetector(
-                //   onTap: () {
-                //     //_showPicker(context);
-                //   },
-                //   child: Container(
-                //     width: size.width,
-                //     height: size.height * 0.22,
-                //     child: SingleChildScrollView(
-                //       scrollDirection: Axis.horizontal,
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //         children: [
-                //           ...photos.asMap().entries.map(
-                //                 (entry) => Padding(
-                //               padding: const EdgeInsets.all(4.0),
-                //               child: Stack(
-                //                 children: [
-                //                   ClipRRect(
-                //                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                //                     child: Image.file(
-                //                       entry.value,
-                //                       width: 160,
-                //                       height: 160,
-                //                       fit: BoxFit.cover,
-                //                     ),
-                //                   ),
-                //                   Positioned(
-                //                     top: 5,
-                //                     right: 5,
-                //                     child: Container(
-                //                       width: 30,
-                //                       height: 30,
-                //                       decoration: BoxDecoration(
-                //                         color: Colors.white,
-                //                         shape: BoxShape.circle,
-                //                       ),
-                //                       child: IconButton(
-                //                         iconSize: 15,
-                //                         icon: Icon(Icons.close),
-                //                         color: Colors.grey[800],
-                //                         onPressed: () async {
-                //                           removePhoto(entry.key);
-                //                         },
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ],
-                //               ),
-                //             ),
-                //           ),
-                //           ...photoUrls.asMap().entries.map(
-                //                 (entry) => Padding(
-                //               padding: const EdgeInsets.all(4.0),
-                //               child: Stack(
-                //                 children: [
-                //                   ClipRRect(
-                //                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                //                     child: Image.network(
-                //                       entry.value,
-                //                       width: 160,
-                //                       height: 160,
-                //                       fit: BoxFit.cover,
-                //                     ),
-                //                   ),
-                //                   Positioned(
-                //                     top: 5,
-                //                     right: 5,
-                //                     child: Container(
-                //                       width: 30,
-                //                       height: 30,
-                //                       decoration: BoxDecoration(
-                //                         color: Colors.white,
-                //                         shape: BoxShape.circle,
-                //                       ),
-                //                       child: IconButton(
-                //                         iconSize: 15,
-                //                         icon: Icon(Icons.close),
-                //                         color: Colors.grey[800],
-                //                         onPressed: () async {
-                //                           removePhoto(entry.key + photos.length);
-                //                         },
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ],
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(height: 5),
-                // Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: 20),
-                //   child: ElevatedButton.icon(
-                //     style: ElevatedButton.styleFrom(
-                //       minimumSize: Size.fromHeight(50),
-                //       shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(10),
-                //       ),
-                //       primary: Color.fromARGB(255, 50, 134, 252),
-                //     ),
-                //     onPressed: () {
-                //       _showPicker(context);
-                //     },
-                //     icon: Icon(Icons.camera_alt, size: 0),
-                //     label: Text(
-                //       tr('Add other photo'),
-                //       style: TextStyle(fontSize: 18),
-                //     ),
-                //   ),
-                // ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -1188,7 +1128,7 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
                         backgroundColor:
                             const Color.fromARGB(255, 50, 134, 252)),
                     onPressed: () {
-                      updateAccommodation(widget.id, pickedFile);
+                      updateAccommodation(context, widget.id, pickedFile);
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
                     label: Text(tr('Update Accommodation'),
