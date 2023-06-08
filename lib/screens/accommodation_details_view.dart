@@ -521,6 +521,8 @@ class _DetailScreenState extends State<DetailScreen> {
                         return CalendarScreen(
                           bookedDates: widget.accommodation!.bookedDates!,
                           onChooseDate: getDates,
+                          startDate: widget.start_date,
+                          endDate:widget.end_date ,
                         );
                       });
                 },

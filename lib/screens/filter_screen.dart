@@ -99,15 +99,15 @@ class _FiltersScreenState extends State<FiltersScreen> {
     }
   }
 
-  Future<void> getAccommodations(String city,
-      [String? country]) async {
+  Future<void> getAccommodations(String city, [String? country]) async {
     var x;
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection("Accommodations")
           .where("city", isEqualTo: city)
           .get();
-      List<Acommodation> snapshots = snapshot.docs.map((doc) =>  Acommodation.fromSnapshot(doc)).toList();
+      List<Acommodation> snapshots =
+          snapshot.docs.map((doc) => Acommodation.fromSnapshot(doc)).toList();
       List<String> a = [];
       snapshots.forEach((element) {
         a.add(element.id!);
@@ -120,7 +120,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
 
         return accommComp;
       });
-      accommodations_id=a;
+      accommodations_id = a;
     } catch (error) {
       print(error);
 
@@ -165,7 +165,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
     guest_number = widget.guests;
   }
 
-  
   @override
   Widget build(BuildContext context) {
     var size = AppLayout.getSize(context);
@@ -374,7 +373,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
               );
             }).toList(),
           ),
-          
           Divider(
             color: Styles.greyColor,
             height: 30,
@@ -417,7 +415,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
             onPressed: () async => {
               await getBookings(currentstartDate.add(Duration(days: -90)),
                   currentendDate.add(Duration(days: 365))),
-               await getAccommodations(searchCity.text),
+              await getAccommodations(searchCity.text),
               widget.onApplyFilters(
                 _filters,
                 _priceRange,
@@ -435,84 +433,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
     );
   }
 
-
-  List<Acommodation> getFilteredList(
-      List<Acommodation> accommodationList, List<Booking> bookingsList) {
-    List<Acommodation> list = getAccommodationsFreeTimeSlots(
-        //pobieram liste z obiektami wolnymi w zadanych datach
-        bookingsList,
-        accommodationList,
-        currentstartDate,
-        currentendDate);
-
-    // var bookingResults = bookingsList;
-    if (searchCity.text.isEmpty) {
-    } else {
-      list = list
-          .where((i) =>
-              ((i.city == searchCity.text || i.country == searchCity.text)))
-          .toList();
-    }
-    if (_priceRange.start >= 0 && _priceRange.end <= 2000) {
-      list = list
-          .where((i) =>
-              i.price_per_night! >= _priceRange.start &&
-              i.price_per_night! <= _priceRange.end)
-          .toList();
-    }
-
-    if (_filters == AccommodationTypeFilter.All) {
-      list = list;
-    }
-    if (_filters.contains(AccommodationTypeFilter.Apartment.name)) {
-      list = list.where((i) => i.type == "Apartment").toList();
-    }
-    if (_filters.contains(AccommodationTypeFilter.Villa.name)) {
-      list = list.where((i) => i.type == "Villa").toList();
-    }
-    if (_filters.contains(AccommodationTypeFilter.Hotel.name)) {
-      list = list.where((i) => i.type == "Hotel").toList();
-    }
-    if (_filters.contains(AccommodationTypeFilter.Hostel.name)) {
-      list = list.where((i) => i.type == "Hostel").toList();
-    }
-    if (_filters.contains(AccommodationTypeFilter.Cabin.name)) {
-      list = list.where((i) => i.type == "Cabin").toList();
-    }
-    if (_filters.contains(AccommodationTypeFilter.Bungalow.name)) {
-      list = list.where((i) => i.type == "Bungalow").toList();
-    }
-    if (_filters.contains(AccommodationTypeFilter.Room.name)) {
-      list = list.where((i) => i.type == "Room").toList();
-    }
-    if (_filters.contains(AmenitiesFilter.wifi.name)) {
-      list = list.where((i) => i.wifi == true).toList();
-    }
-    if (_filters.contains(AmenitiesFilter.TV.name)) {
-      list = list.where((i) => i.tv == true).toList();
-    }
-    if (_filters.contains(AmenitiesFilter.AC.name)) {
-      list = list.where((i) => i.air_conditioning == true).toList();
-    }
-    if (_filters.contains(AmenitiesFilter.Kitchen.name)) {
-      list = list.where((i) => i.kitchen == true).toList();
-    }
-
-    return list;
-    // bookingResults = unifyList(bookingResults);
-
-    // for (Booking booking in bookingResults) {
-    //   for (Acommodation accommodation in accommodationList) {
-    //     if (booking.accommodationId == accommodation.id &&
-    //         accommodation.max_guests! >= widget.guests) {
-    //       list.add(accommodation);
-    //     }
-    //   }
-    // }
-
-    // return list;
-  }
-
+ 
   List<Booking> unifyList(List<Booking> list) {
     if (list.isEmpty) {
       return list;
@@ -540,49 +461,228 @@ class _FiltersScreenState extends State<FiltersScreen> {
   }
 
   bool isBetween(DateTime checkDate, DateTime dateStart, DateTime dateEnd) {
-    return checkDate >= dateStart && checkDate <= dateEnd;
+    String sds = dateStart.toString().substring(0, 10);
+    String eds = dateEnd.toString().substring(0, 10);
+    DateTime sdt = DateTime.parse(sds);
+    DateTime edt = DateTime.parse(eds);
+
+    if (sdt > edt) {
+      print("isBetween: bad timespan start:$dateStart end:$dateEnd");
+      return false;
+    }
+
+    bool result = checkDate > sdt;
+    result = result && (checkDate < edt);
+    return result;
+  }
+
+  bool isOverlapped(DateTime checkStartDate, DateTime checkEndDate,
+      DateTime dateStart, DateTime dateEnd) {
+    String cksds = checkStartDate.toString().substring(0, 10);
+    String ckeds = checkEndDate.toString().substring(0, 10);
+    String sds = dateStart.toString().substring(0, 10);
+    String eds = dateEnd.toString().substring(0, 10);
+    DateTime cksdt = DateTime.parse(cksds);
+    DateTime ckedt = DateTime.parse(ckeds);
+    DateTime sdt = DateTime.parse(sds);
+    DateTime edt = DateTime.parse(eds);
+
+    if (sdt > edt) {
+      print("isOverlapped: bad timespan start:$sdt end:$edt");
+      return false;
+    }
+    if (cksdt > ckedt) {
+      print("isOverlapped: bad check timespan start:$cksdt end:$ckedt");
+      return false;
+    }
+    if (isBetween(
+        cksdt, sdt, edt)) //początek zawiera się w istniejącym zakresie
+      return true;
+    if (isBetween(ckedt, sdt, edt)) //koniec zawiera się w istniejącym zakresie
+      return true;
+    if (isBetween(sdt, cksdt, ckedt)) //rezerwacja juz istniejaca jest w "środku" zadanych dat
+      return true;
+    if (isBetween(edt, cksdt,ckedt)) //rezerwacja juz istniejaca jest w "środku" zadanych dat
+      return true;
+    if (cksdt == sdt &&
+        ckedt == edt) //koniec i początek obu zakresów są sobie równe
+      return true;
+
+    return false;
+  }
+
+  
+  List<Acommodation> getFilteredList(
+      List<Acommodation> accommodationList, List<Booking> bookingsList) {
+    List<Acommodation> result = getFilteredAccommodationList(accommodationList,
+        searchCity.text, _priceRange, _filters, widget.guests);
+    if (result.isEmpty) {
+      return result;
+    }
+    result = getAccommodationsFreeTimeSlots(
+        bookingsList, result, currentstartDate, currentendDate);
+    return result;
+  }
+
+  List<Acommodation> getFilteredAccommodationList(
+      List<Acommodation> allAccommodations,
+      String city,
+      RangeValues priceRange,
+      List<String> filters,
+      int guests) {
+    List<Acommodation> filteredAccommodations = []; // = allAccommodations;
+
+    if (guests > 0) {
+      for (Acommodation accommodation in allAccommodations) {
+        if (accommodation.max_guests! >= widget.guests) {
+          filteredAccommodations.add(accommodation);
+        }
+      }
+    } else {
+      filteredAccommodations = allAccommodations;
+    }
+
+    if (city.isEmpty) {
+    } else {
+      filteredAccommodations = filteredAccommodations
+          .where((i) => ((i.city == city || i.country == city)))
+          .toList();
+    }
+    if (priceRange.start >= 0 && priceRange.end <= 2000) {
+      filteredAccommodations = filteredAccommodations
+          .where((i) =>
+              i.price_per_night! >= priceRange.start &&
+              i.price_per_night! <= priceRange.end)
+          .toList();
+    }
+
+    if (filters == AccommodationTypeFilter.All) {
+      filteredAccommodations = filteredAccommodations;
+    }
+    if (filters.contains(AccommodationTypeFilter.Apartment.name)) {
+      filteredAccommodations =
+          filteredAccommodations.where((i) => i.type == "Apartment").toList();
+    }
+    if (filters.contains(AccommodationTypeFilter.Villa.name)) {
+      filteredAccommodations =
+          filteredAccommodations.where((i) => i.type == "Villa").toList();
+    }
+    if (filters.contains(AccommodationTypeFilter.Hotel.name)) {
+      filteredAccommodations =
+          filteredAccommodations.where((i) => i.type == "Hotel").toList();
+    }
+    if (filters.contains(AccommodationTypeFilter.Hostel.name)) {
+      filteredAccommodations =
+          filteredAccommodations.where((i) => i.type == "Hostel").toList();
+    }
+    if (filters.contains(AccommodationTypeFilter.Cabin.name)) {
+      filteredAccommodations =
+          filteredAccommodations.where((i) => i.type == "Cabin").toList();
+    }
+    if (filters.contains(AccommodationTypeFilter.Bungalow.name)) {
+      filteredAccommodations =
+          filteredAccommodations.where((i) => i.type == "Bungalow").toList();
+    }
+    if (filters.contains(AccommodationTypeFilter.Room.name)) {
+      filteredAccommodations =
+          filteredAccommodations.where((i) => i.type == "Room").toList();
+    }
+    if (filters.contains(AmenitiesFilter.wifi.name)) {
+      filteredAccommodations =
+          filteredAccommodations.where((i) => i.wifi == true).toList();
+    }
+    if (filters.contains(AmenitiesFilter.TV.name)) {
+      filteredAccommodations =
+          filteredAccommodations.where((i) => i.tv == true).toList();
+    }
+    if (filters.contains(AmenitiesFilter.AC.name)) {
+      filteredAccommodations = filteredAccommodations
+          .where((i) => i.air_conditioning == true)
+          .toList();
+    }
+    if (filters.contains(AmenitiesFilter.Kitchen.name)) {
+      filteredAccommodations =
+          filteredAccommodations.where((i) => i.kitchen == true).toList();
+    }
+    return filteredAccommodations;
   }
 
   List<Acommodation> getAccommodationsFreeTimeSlots(List<Booking> bookings,
       List<Acommodation> accommodations, DateTime dtStart, DateTime dtEnd) {
     List<Acommodation> result = [];
-    if (bookings.isEmpty) {
-      return result;
-    }
-    String accommId = bookings[0].accommodationId!;
-    for (int i = 0; i < bookings.length - 1; i++) {
-      Booking b1 = bookings[i];
-      if (b1.accommodationId != accommId) //punkt zmiany accommodation_id
-      {
-        accommId = b1.accommodationId!;
-      }
-      Booking b2 = bookings[i + 1];
-      if (b1.accommodationId !=
-          b2.accommodationId) //punkt zmiany accommodation_id
-      {
-        //przypadek,gdy jest tylko jedna rezerwacja (b1), a po niej nie ma zadnej innej rezerwacji z tym samym accommodation_id
-        bool match = isBetween(dtStart, b1.startDate!, b1.endDate!) ||
-            isBetween(dtEnd, b1.startDate!, b1.endDate!);
-        if (!match) {
-          Acommodation x =
-              getAccommodationById(accommodations, b1.accommodationId!);
-          if (x.id != "") {
-            result.add(x);
-          }
-        }
+
+    for (int j = 0; j < accommodations.length; j++) {
+      Acommodation currentAccommodation = accommodations[j];
+      String accommId = currentAccommodation.id!;
+      List<Booking> accommodationBookings = bookings
+          .where((element) => element.accommodationId == accommId)
+          .toList();
+      if (accommodationBookings.isEmpty) {
+        result.add(currentAccommodation);
         continue;
       }
-      bool match = isBetween(dtStart, b1.endDate!, b2.startDate!) &&
-          isBetween(dtEnd, b1.endDate!, b2.startDate!);
-      if (match) {
-        Acommodation x =
-            getAccommodationById(accommodations, b1.accommodationId!);
-        if (x.id != "") {
-          result.add(x);
-        }
+      accommodationBookings
+          .sort((a, b) => a.startDate!.compareTo(b.startDate!));
+
+      if (bookingPossibleInTimeSlot(accommodationBookings, dtStart, dtEnd)) {
+        result.add(currentAccommodation);
       }
     }
     return result;
+  }
+
+  bool bookingPossibleInTimeSlot(
+      List<Booking> bookings, DateTime dtStart, DateTime dtEnd) {
+    bool timeSlotFound = false;
+    Booking currentBooking;
+    Booking nextBooking;
+    if (bookings.length == 1) {
+      currentBooking = bookings[0];
+      if (isOverlapped(
+          dtStart, dtEnd, currentBooking.startDate!, currentBooking.endDate!)) {
+        return false;
+      }
+      bool match = isBetween(
+          dtStart, currentBooking.startDate!, currentBooking.endDate!);
+      match = match &&
+          isBetween(dtEnd, currentBooking.startDate!, currentBooking.endDate!);
+      if (!match) {
+        timeSlotFound = true;
+        return timeSlotFound;
+      }
+    }
+    for (int i = 0; i < bookings.length; i++) {
+      currentBooking = bookings[i];
+      if (isOverlapped(
+          dtStart, dtEnd, currentBooking.startDate!, currentBooking.endDate!)) {
+        return false;
+      }
+      if (i == bookings.length - 1) {
+        bool match = isBetween(
+            dtStart, currentBooking.startDate!, currentBooking.endDate!);
+        match = match &&
+            isBetween(
+                dtEnd, currentBooking.startDate!, currentBooking.endDate!);
+        if (!match) {
+          timeSlotFound = true;
+          return timeSlotFound;
+        }
+      } else {
+        nextBooking = bookings[i + 1];
+        bool match =
+            isBetween(dtStart, currentBooking.endDate!, nextBooking.startDate!);
+
+        match = match &&
+            isBetween(dtEnd, currentBooking.endDate!, nextBooking.startDate!);
+        if (!match) {
+          continue;
+        } else {
+          timeSlotFound = true;
+          return timeSlotFound;
+        }
+      }
+    }
+    return timeSlotFound;
   }
 
   Acommodation getAccommodationById(
