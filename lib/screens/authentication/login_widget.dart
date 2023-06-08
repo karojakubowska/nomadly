@@ -340,48 +340,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                       )
                     ]),
               ),
-              const SizedBox(height: 40),
-              const Text(
-                "OR",
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Color.fromARGB(255, 57, 57, 57)),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(60),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    side: const BorderSide(
-                        width: 1.0, color: Color.fromARGB(255, 204, 204, 204)),
-                    elevation: 0,
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255)),
-                onPressed: signIn, //funkcja logująca przez google
-                icon: const Icon(Icons.lock_open, size: 0),
-                label: const Text('Sign In with Google',
-                    style: TextStyle(
-                        fontSize: 16, color: Color.fromARGB(255, 57, 57, 57))),
-              ),
-              const SizedBox(height: 40),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(60),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    side: const BorderSide(
-                        width: 1.0, color: Color.fromARGB(255, 204, 204, 204)),
-                    elevation: 0,
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255)),
-                onPressed: signIn, //funkcja logująca przez Facebook
-                icon: const Icon(Icons.lock_open, size: 0),
-                label: const Text('Sign In with Facebook',
-                    style: TextStyle(
-                        fontSize: 16, color: Color.fromARGB(255, 57, 57, 57))),
-              ),
+              const SizedBox(height: 40)
             ],
           ),
         ),
