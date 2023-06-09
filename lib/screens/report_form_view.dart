@@ -36,6 +36,7 @@ class _ReportFormViewState extends State<ReportFormView> {
         'text': text,
         'userId': FirebaseAuth.instance.currentUser!.uid,
         'otherUserId': widget.otherUserId,
+        'isRead': false,
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

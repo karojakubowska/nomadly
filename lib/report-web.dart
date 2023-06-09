@@ -66,6 +66,8 @@ class ReportWeb extends StatelessWidget {
                     itemCount: reports.length,
                     itemBuilder: (context, index) {
                       final reportData = reports[index].data() as Map<String, dynamic>;
+                      final isRead = reportData['isRead'] ?? false; // Check if isRead property exists and default to false
+
                       return InkWell(
                         onTap: () {
                           Navigator.push(
@@ -84,7 +86,7 @@ class ReportWeb extends StatelessWidget {
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
+                            color: isRead ? Colors.white : Colors.blue, // Change color based on isRead value
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.withOpacity(0.5),
