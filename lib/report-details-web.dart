@@ -141,7 +141,3 @@ class ReportDetails extends StatelessWidget {
     );
   }
 }
-
-void onLogoutClicked() {
-  FirebaseAuth.instance.signOut();
-}

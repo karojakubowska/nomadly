@@ -1,11 +1,8 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:nomadly_app/home-web.dart';
-
-// void main() => runApp(MyWebView());
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +17,9 @@ class MyWebView extends StatelessWidget {
       title: 'Login Page',
       home: Scaffold(
         body: Center(
-          child: LoginPage(onClickedSignUp: () {  },),
+          child: LoginPage(
+            onClickedSignUp: () {},
+          ),
         ),
       ),
     );
@@ -30,8 +29,7 @@ class MyWebView extends StatelessWidget {
 class LoginPage extends StatefulWidget {
   final VoidCallback onClickedSignUp;
 
-  const LoginPage({Key? key, required this.onClickedSignUp})
-      : super(key: key);
+  const LoginPage({Key? key, required this.onClickedSignUp}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -104,17 +102,27 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(55),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      backgroundColor:
-                      const Color.fromARGB(255, 50, 134, 252)),
+                    minimumSize: const Size.fromHeight(55),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    backgroundColor: const Color.fromARGB(255, 50, 134, 252),
+                  ),
                   onPressed: () {
                     signIn();
                   },
                   icon: const Icon(Icons.lock_open, size: 0),
-                  label: const Text('Log in',
-                      style: TextStyle(fontSize: 18)),
+                  label: const Text(
+                    'Log in',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                _errorMessage,
+                style: const TextStyle(
+                  color: Colors.red,
                 ),
               ),
             ],
@@ -124,16 +132,25 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
-  Future signIn() async {
-
+  Future<void> signIn() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim());
+      final email = emailController.text.trim();
+      final password = passwordController.text.trim();
 
-      // Check if user is an adminr
-      final user = FirebaseAuth.instance.currentUser;
+      if (email.isEmpty || password.isEmpty) {
+        setState(() {
+          _errorMessage = 'Please enter email and password';
+        });
+        return;
+      }
+
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = userCredential.user;
       if (user != null) {
         final userDoc = await FirebaseFirestore.instance
             .collection('Users')
@@ -143,14 +160,21 @@ class _LoginPageState extends State<LoginPage> {
         final accountType = userData?['AccountType'];
         if (accountType == 'Admin') {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: ((context) => const HomeWeb(
-                  ))));
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeWeb(),
+            ),
+          );
+        } else {
+          setState(() {
+            _errorMessage = 'Invalid account type';
+          });
         }
       }
     } on FirebaseAuthException catch (e) {
-      print(e);
+      setState(() {
+        _errorMessage = e.message!;
+      });
     }
   }
 }
