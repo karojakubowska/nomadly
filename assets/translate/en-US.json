@@ -135,5 +135,6 @@
   "No messages. Write something!": "No messages. Write something!",
   "The photo has been successfully deleted": "The photo has been successfully deleted",
   "Cannot update accommodation without photos": "Cannot update accommodation without photos",
-  "Accommodation successfully updated!": "Accommodation successfully updated!"
+  "Accommodation successfully updated!": "Accommodation successfully updated!",
+  "You have been blocked. Please contact the administration.": "You have been blocked. Please contact the administration."
 }

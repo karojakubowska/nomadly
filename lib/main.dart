@@ -203,8 +203,8 @@ class LoginPage extends StatelessWidget {
                     if (user.isBlocked) {
                       // Konto jest zablokowane
                       return AlertDialog(
-                        title: const Text('Error'),
-                        content: const Text('You have been blocked. Please contact the administration.'),
+                        title: Text(tr('Error')),
+                        content: Text(tr('You have been blocked. Please contact the administration.')),
                         actions: [
                           TextButton(
                             onPressed: () {
