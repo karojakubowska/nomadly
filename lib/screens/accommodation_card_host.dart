@@ -9,6 +9,7 @@ import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';
 import '../utils/app_styles.dart';
 import 'accommodation_details_view.dart';
+import 'host/accommodations_details_view_host.dart';
 
 class AccommodationCardHost extends StatefulWidget {
   final Acommodation accomodation;
@@ -35,7 +36,7 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
         context,
         MaterialPageRoute(
             builder: ((context) =>
-                DetailScreen(
+                DetailsHostScreen(
                   accommodation: accommodation,
                 ))));
   }
