@@ -1,11 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/screens/accommodation_review_view.dart';
+import 'package:nomadly_app/screens/card_validation/payment_details.dart';
 import 'package:nomadly_app/screens/chat_single_view.dart';
-import 'package:nomadly_app/screens/payment.dart';
+import 'package:workmanager/workmanager.dart';
 
 import '../models/Accomodation.dart';
 import '../models/Booking.dart';
@@ -134,19 +136,21 @@ class _BookingDetailsState extends State<BookingDetails> {
                       child: statusButtonSwitch()),
                   if (widget.booking.isAccommodationRated == false)
                     ElevatedButton(
-                      onPressed: () { Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChatSingleView(
-                            userId: widget.booking.userId!,
-                            otherUserId: widget.booking.hostId!,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChatSingleView(
+                              userId: widget.booking.userId!,
+                              otherUserId: widget.booking.hostId!,
+                            ),
                           ),
-                        ),
-                      );},
+                        );
+                      },
                       style: ButtonStyle(
                         elevation: MaterialStateProperty.all(0),
                         backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
+                            MaterialStateProperty.all<Color>(Colors.white),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             side: const BorderSide(
                                 color: Color.fromARGB(255, 50, 134, 252),
@@ -154,7 +158,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                                 style: BorderStyle.solid),
                             borderRadius: BorderRadius.circular(10))),
                         minimumSize:
-                        MaterialStateProperty.all(const Size(320, 50)),
+                            MaterialStateProperty.all(const Size(320, 50)),
                       ),
                       child: Text(
                         tr('Contact with host'),
@@ -173,7 +177,7 @@ class _BookingDetailsState extends State<BookingDetails> {
       ),
     );
   }
-
+ 
   Widget statusButtonSwitch() {
     if (widget.booking.status == "Finished" &&
         widget.booking.isAccommodationRated == false) {
@@ -234,7 +238,9 @@ class _BookingDetailsState extends State<BookingDetails> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: ((context) => PaymentDetailsScreen())));
+                  builder: ((context) => PaymentDetailsScreen(
+                        booking: widget.booking,
+                      ))));
         },
         style: ButtonStyle(
           elevation: MaterialStateProperty.all(0),
