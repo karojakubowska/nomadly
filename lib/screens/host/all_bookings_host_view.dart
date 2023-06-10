@@ -8,6 +8,7 @@ import 'package:nomadly_app/screens/host/booking_card_host.dart';
 
 import '../../models/Accomodation.dart';
 import '../../models/Booking.dart';
+import '../../services/booking_provider.dart';
 import '../../utils/app_layout.dart';
 import '../../utils/app_styles.dart';
 
@@ -19,9 +20,35 @@ class AllBookingsHostScreen extends StatefulWidget {
 }
 
 class _AllBookingsScreenState extends State<AllBookingsHostScreen> {
+  BookingProvider bookingProvider = BookingProvider();
+  List<Booking> bookings = [];
+  void fetchBookings(String userId) async {
+    bookings = await bookingProvider.getBookingsByHostId(userId);
+  }
+void changeStatus(List<Booking> bookings) {
+    DateTime today = DateTime.now();
+    for (var booking in bookings) {
+      if (booking.status == "Paid") {
+        if (booking.endDate!.isAfter(today)) {
+          continue;
+        } else {
+          FirebaseFirestore.instance
+              .collection('Bookings')
+              .doc(booking.id)
+              .update({"status": "Finished"});
+        }
+      }
+    }
+  }
+  void checkIfStatusChanged() {
+    setState(() {
+      changeStatus(bookings);
+    });
+  }
   Query query = FirebaseFirestore.instance.collection("Bookings");
   @override
   Widget build(BuildContext context) {
+    fetchBookings(FirebaseAuth.instance.currentUser!.uid);
     final locale = context.locale;
 
     final FirebaseAuth auth = FirebaseAuth.instance;
