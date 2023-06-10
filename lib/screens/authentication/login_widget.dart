@@ -174,35 +174,6 @@ class _LoginWidgetState extends State<LoginWidget> {
             .signInWithEmailAndPassword(
             email: emailController.text.trim(),
             password: passwordController.text.trim());
-
-        if (user != null) {
-          // Check if user's account is blocked
-          if (user.user!.AccountStatus == "Blocked") {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Blocked Account'),
-                content: Text('You cannot log in. Please contact the administration.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('OK'),
-                  ),
-                ],
-              ),
-            );
-            return;
-          }
-
-          // Navigate to the home screen after successful login
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomeView()),
-          );
-
-          emailController.clear();
-          passwordController.clear();
-        }
       } on FirebaseAuthException catch (e) {
         setState(() {
           _errorMessage = e.message ?? 'An error occurred';

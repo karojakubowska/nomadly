@@ -5,6 +5,7 @@ class UserModel {
   String? email;
   String? accountType;
   String? accountImage;
+  String? accountStatus;
   num? rate;
   num? opinionsNumber;
 
@@ -15,6 +16,7 @@ class UserModel {
         'AccountImage': accountImage,
         'rate': rate,
         'opinionsNumber': opinionsNumber,
+        'AccountStatus': accountStatus,
       };
 
   Future<String> convertPathToURL(String path) {
@@ -28,6 +30,7 @@ class UserModel {
     accountImage = json['AccountImage'];
     rate = json['rate'];
     opinionsNumber = json['opinionsNumber'];
+    accountStatus = json['AccountStatus'];
   }
   UserModel.fromSnapshot(snapshot)
       : name = snapshot.data()['Name'],
@@ -35,12 +38,16 @@ class UserModel {
         accountType = snapshot.data()['AccountType'],
         accountImage = snapshot.data()['AccountImage'],
         rate = snapshot.data()['rate'],
-        opinionsNumber = snapshot.data()['opinionsNumber'];
+        opinionsNumber = snapshot.data()['opinionsNumber'],
+        accountStatus = snapshot.data()['AccountStatus'];
   UserModel(snapshot)
       : name = snapshot.data()['Name'],
         email = snapshot.data()['Email'],
         accountType = snapshot.data()['AccountType'],
         accountImage = snapshot.data()['AccountImage'],
         rate = snapshot.data()['rate'],
-        opinionsNumber = snapshot.data()['opinionsNumber'];
+        opinionsNumber = snapshot.data()['opinionsNumber'],
+       accountStatus = snapshot.data()['AccountStatus'];
+  bool get isBlocked => accountStatus == 'Blocked';
+
 }

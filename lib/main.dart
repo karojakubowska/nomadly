@@ -196,9 +196,32 @@ class LoginPage extends StatelessWidget {
                   if (snapshot.hasError) {
                     return const Text("Something went wrong.");
                   }
+                  // Wewnątrz funkcji LoginPage
                   if (snapshot.connectionState == ConnectionState.done) {
                     UserModel user = UserModel.fromSnapshot(snapshot.data);
+
+                    if (user.isBlocked) {
+                      // Konto jest zablokowane
+                      return AlertDialog(
+                        title: const Text('Error'),
+                        content: const Text('You have been blocked. Please contact the administration.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              FirebaseAuth.instance.signOut();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => LoginPage()),
+                              );
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    }
+
                     if (user.accountType == 'Client') {
+                      // Widok dla klienta
                       return NewBottomNavBar(
                         screens: [
                           HomeTest(),
@@ -206,21 +229,19 @@ class LoginPage extends StatelessWidget {
                           AllBookingsScreen(),
                           TravelView(),
                           Chat(),
-                          // PaymentDetailsScreen(),
-                          //CheckoutConfirmedScreen(),
-                          //CheckoutScreen(),
-                          //CalendarScreen(),
-                          UserProfileScreen()
+                          UserProfileScreen(),
                         ],
                       );
                     }
+
+                    // Widok dla hosta
                     return NewBottomNavBarHost(
                       screens: const [
                         HomeHostScreen(),
                         AllBookingsHostScreen(),
                         AddAccommodationScreen(),
                         Chat(),
-                        UserProfileScreen()
+                        UserProfileScreen(),
                       ],
                     );
                   }
