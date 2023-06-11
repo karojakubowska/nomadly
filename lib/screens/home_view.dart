@@ -82,17 +82,23 @@ class _HomeTestState extends State<HomeTest> {
       body: ListView(
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 20),
-                    Text('Hello!', style: Styles.headLineStyle),
-                    SizedBox(height: 10),
-                    Text('What are you looking for?', style: Styles.headLineStyle2),
-                  ],
-                ),
+              Row(
+                children: [
+                  Gap(30),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 20),
+                        Text('Hello!', style: Styles.headLineStyle),
+                        SizedBox(height: 10),
+                        Text('What are you looking for?', style: Styles.headLineStyle2),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               GestureDetector(
                 onTap: () {
