@@ -22,10 +22,12 @@ class AllBookingsHostScreen extends StatefulWidget {
 class _AllBookingsScreenState extends State<AllBookingsHostScreen> {
   BookingProvider bookingProvider = BookingProvider();
   List<Booking> bookings = [];
+
   void fetchBookings(String userId) async {
     bookings = await bookingProvider.getBookingsByHostId(userId);
   }
-void changeStatus(List<Booking> bookings) {
+
+  void changeStatus(List<Booking> bookings) {
     DateTime today = DateTime.now();
     for (var booking in bookings) {
       if (booking.status == "Paid") {
@@ -40,12 +42,15 @@ void changeStatus(List<Booking> bookings) {
       }
     }
   }
+
   void checkIfStatusChanged() {
     setState(() {
       changeStatus(bookings);
     });
   }
+
   Query query = FirebaseFirestore.instance.collection("Bookings");
+
   @override
   Widget build(BuildContext context) {
     fetchBookings(FirebaseAuth.instance.currentUser!.uid);
@@ -78,11 +83,11 @@ void changeStatus(List<Booking> bookings) {
                         child: StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
                               .collection("Bookings")
-                              .where('host_id',
-                                  isEqualTo: userID)
+                              .where('host_id', isEqualTo: userID)
                               .snapshots(),
                           builder: (context, snapshot) {
-                            if (!snapshot.hasData) return Text(tr("Loading..."));
+                            if (!snapshot.hasData)
+                              return Text(tr("Loading..."));
                             if (snapshot.data!.docs.isEmpty) {
                               return Container(
                                 child: Column(
@@ -95,10 +100,11 @@ void changeStatus(List<Booking> bookings) {
                                     ),
                                     SizedBox(height: 20),
                                     Text(
-                                     tr("Find your new bookings!"),
+                                      tr("Find your new bookings!"),
                                       textAlign: TextAlign.center,
                                       style: GoogleFonts.roboto(
-                                        color: const Color.fromARGB(255, 24, 24, 24),
+                                        color: const Color.fromARGB(
+                                            255, 24, 24, 24),
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -129,7 +135,8 @@ void changeStatus(List<Booking> bookings) {
                                         Booking booking = Booking.fromJson(
                                             snapshot.data!.docs[index].data()
                                                 as Map<String, dynamic>);
-                                                booking.id=snapshot.data!.docs[index].id;
+                                        booking.id =
+                                            snapshot.data!.docs[index].id;
 
                                         return BookingCardHost(
                                           booking: booking,

@@ -302,22 +302,6 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
           _photo = null;
           _selectedType = null;
         });
-        titleController.clear();
-        countryController.clear();
-        cityController.clear();
-        streetController.clear();
-        descriptionController.clear();
-        price_per_nightController.clear();
-        addressController.clear();
-        bedController.clear();
-        bathroomController.clear();
-        bedroomController.clear();
-        number_max_peopleController.clear();
-        kitchen = false;
-        wifi = false;
-        tv = false;
-        air_conditioning = false;
-        photos.clear();
       }, onError: (e) {
         print("Error updating document $e");
       });
@@ -408,22 +392,6 @@ class _UpdateAccommodationScreenState extends State<UpdateAccommodationScreen> {
           _photo = null;
           _selectedType = null;
         });
-        titleController.clear();
-        countryController.clear();
-        cityController.clear();
-        streetController.clear();
-        descriptionController.clear();
-        price_per_nightController.clear();
-        addressController.clear();
-        bedController.clear();
-        bathroomController.clear();
-        bedroomController.clear();
-        number_max_peopleController.clear();
-        kitchen = false;
-        wifi = false;
-        tv = false;
-        air_conditioning = false;
-        photos.clear();
       }, onError: (e) {
         print("Error updating document $e");
       });

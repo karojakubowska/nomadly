@@ -70,7 +70,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
+                    return tr('Please enter your email');
                   }
                   return null;
                 },
@@ -181,7 +181,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         });
       } on FirebaseAuthException catch (e) {
         setState(() {
-          _errorMessage = e.message ?? 'An error occurred';
+          _errorMessage = e.message ?? tr('An error occurred');
         });
       }
       Navigator.pop(context);
@@ -190,7 +190,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           context: context,
           builder: (context) =>
               AlertDialog(
-                title: const Text('Error'),
+                title: Text(tr('Error')),
                 content: Text(_errorMessage),
                 actions: [
                   TextButton(

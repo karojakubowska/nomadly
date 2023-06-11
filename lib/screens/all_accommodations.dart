@@ -138,7 +138,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                       Container(
                         width:size.width*0.7,
                           child: Text(
-                            '  Search places',
+                            tr('  Search places'),
                             style: TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.w400,
@@ -204,7 +204,6 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                     scrollDirection: Axis.vertical,
                     child: Column(children: <Widget>[
                       if (results.isEmpty)
-                      //Container(child: Text("Nothing found"),)
                         SizedBox(
                             height: size.height * 0.78,
                             width: size.width * 0.9,

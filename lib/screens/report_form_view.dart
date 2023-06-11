@@ -39,8 +39,8 @@ class _ReportFormViewState extends State<ReportFormView> {
         'isRead': false,
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Report added successfully.'),
+        SnackBar(
+          content: Text(tr('Report added successfully.')),
         ),
       );
       Navigator.of(context).pop();

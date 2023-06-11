@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/app_layout.dart';
@@ -43,19 +44,19 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
                             //   isEqualTo: searchText.text,
                            // );
                           }),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             border: InputBorder.none,
                             errorBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             contentPadding: EdgeInsets.all(15),
                             prefixIcon: Icon(Icons.search_outlined),
-                            hintText: 'Search places',
+                            hintText: tr('Search places'),
                           ),
                         ),
                       
           ElevatedButton(
-            child: const Text('Search'),
+            child: Text(tr('Search')),
             onPressed: () => {
               widget.onQueryChanged(buildFilterQuery()),
               Navigator.pop(context)

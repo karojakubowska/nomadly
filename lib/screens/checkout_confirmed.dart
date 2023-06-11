@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,13 +19,6 @@ class _CheckoutConfirmedScreenState extends State<CheckoutConfirmedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
-      // appBar: AppBar(
-      //   //  leading: BackButton(color: Colors.black),
-      //   backgroundColor: Styles.backgroundColor,
-      //   title: Text('Secure payment', style: Styles.headLineStyle4),
-      //   elevation: 0,
-      //   centerTitle: true,
-   //   ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -35,7 +29,7 @@ class _CheckoutConfirmedScreenState extends State<CheckoutConfirmedScreen> {
                 Image.asset('assets/images/check 1.png'),
                 const Gap(30),
                 Text(
-                  "Booking confirmed!",
+                  tr("Booking confirmed!"),
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
                       color: const Color.fromARGB(255, 24, 24, 24),
@@ -58,7 +52,7 @@ class _CheckoutConfirmedScreenState extends State<CheckoutConfirmedScreen> {
                 minimumSize: MaterialStateProperty.all(const Size(180, 50)),
               ),
               child: Text(
-                'Back to home',
+                tr('Back to home'),
                 style: GoogleFonts.roboto(
                     textStyle: const TextStyle(
                         fontSize: 16.0,

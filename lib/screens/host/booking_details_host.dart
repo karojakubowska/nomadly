@@ -8,6 +8,7 @@ import 'package:nomadly_app/models/Booking.dart';
 import 'package:intl/intl.dart';
 import 'package:nomadly_app/models/User.dart';
 import 'package:nomadly_app/screens/user_opinions_view.dart';
+import 'package:nomadly_app/utils/app_layout.dart';
 import '../../utils/app_styles.dart';
 import '../chat_single_view.dart';
 import '../report_form_view.dart';
@@ -28,6 +29,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
   late UserModel userModel;
   @override
   Widget build(BuildContext context) {
+    var size = AppLayout.getSize(context);
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
@@ -37,9 +39,14 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: Container(
-        padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
-        child: Column(
+      body: SingleChildScrollView(
+        child: Container(
+          height: size.height,
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
+          child: Column(
+            children: [
+          Expanded(
+          child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,7 +134,6 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
               ],
             ),
             Container(
-              height: 300,
               padding: const EdgeInsets.only(
                 top: 60,
               ),
@@ -191,7 +197,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
           ],
         ),
       ),
-    );
+    ]))));
   }
 
   Widget statusButtonSwitch(UserModel user) {

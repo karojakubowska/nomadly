@@ -70,7 +70,7 @@ class _BookingDetailsState extends State<BookingDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Check-out", style: Styles.bookingDetailsStyle),
+                Text(tr("Check-out"), style: Styles.bookingDetailsStyle),
                 Text(DateFormat.yMMMMd('en_US').format(widget.booking.endDate!),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(

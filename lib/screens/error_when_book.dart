@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,7 +20,7 @@ class ErrorWhileBooking extends StatelessWidget {
                 height: 70,
                 width: 260,
                 child: Text(
-                  "Something went wrong.",
+                  tr("Something went wrong."),
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
                       color: Color.fromARGB(255, 24, 24, 24),

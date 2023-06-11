@@ -18,18 +18,21 @@ class BookingCardHost extends StatefulWidget {
   Booking booking;
   int index;
   Acommodation accommodation;
+
   //const BookingCardHost({super.key});
   BookingCardHost(
       {super.key,
       required this.booking,
       required this.index,
       required this.accommodation});
+
   @override
   State<BookingCardHost> createState() => _BookingCardState();
 }
 
 class _BookingCardState extends State<BookingCardHost> {
   var user;
+
   navigateToDetail(Acommodation accommodation, Booking booking) {
     Navigator.push(
         context,

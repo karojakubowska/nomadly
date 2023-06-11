@@ -23,10 +23,12 @@ class AllBookingsScreen extends StatefulWidget {
 class _AllBookingsScreenState extends State<AllBookingsScreen> {
   BookingProvider bookingProvider = BookingProvider();
   List<Booking> bookings = [];
+
   void fetchBookings(String userId) async {
     bookings = await bookingProvider.getBookingsByUserId(userId);
   }
-void changeStatus(List<Booking> bookings) {
+
+  void changeStatus(List<Booking> bookings) {
     DateTime today = DateTime.now();
     for (var booking in bookings) {
       if (booking.status == "Paid") {
@@ -41,6 +43,7 @@ void changeStatus(List<Booking> bookings) {
       }
     }
   }
+
   void checkIfStatusChanged() {
     setState(() {
       changeStatus(bookings);
@@ -152,6 +155,4 @@ void changeStatus(List<Booking> bookings) {
           ],
         ));
   }
-
-  
 }

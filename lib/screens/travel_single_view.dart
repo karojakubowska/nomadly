@@ -55,10 +55,7 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                       if (snapshot.hasData) {
                         return Image(
                           height: 400,
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width,
+                          width: MediaQuery.of(context).size.width,
                           fit: BoxFit.cover,
                           image: NetworkImage(snapshot.data.toString()),
                         );

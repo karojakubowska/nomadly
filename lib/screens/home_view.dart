@@ -22,7 +22,6 @@ class HomeTest extends StatefulWidget {
 }
 
 class _HomeTestState extends State<HomeTest> {
-  String svg = 'assets/images/notification-svgrepo-com.svg';
   late Future<QuerySnapshot<Object>> accommodations;
   navigateToDetail(Acommodation accommodation) {
     Navigator.push(
@@ -94,9 +93,9 @@ class _HomeTestState extends State<HomeTest> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 20),
-                        Text('Hello!', style: Styles.headLineStyle),
+                        Text(tr('Hello!'), style: Styles.headLineStyle),
                         SizedBox(height: 10),
-                        Text('What are you looking for?', style: Styles.headLineStyle2),
+                        Text(tr('What are you looking for?'), style: Styles.headLineStyle2),
                       ],
                     ),
                   ),
@@ -159,7 +158,7 @@ class _HomeTestState extends State<HomeTest> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('Popular', style: Styles.headLineStyle3),
+                      Text(tr('Popular'), style: Styles.headLineStyle3),
                     ]),
               )
             ],
@@ -194,7 +193,7 @@ class _HomeTestState extends State<HomeTest> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('Highest rated', style: Styles.headLineStyle3),
+                  Text(tr('Highest rated'), style: Styles.headLineStyle3),
                 ]),
           ),
           SingleChildScrollView(

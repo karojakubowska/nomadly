@@ -80,7 +80,7 @@ String _message='';
             },
           ),
           title: Text(
-            ('Forgot Password'),
+           tr('Forgot Password'),
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -120,7 +120,7 @@ String _message='';
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
+                        return tr('Please enter your email');
                       }
                       return null;
                     },

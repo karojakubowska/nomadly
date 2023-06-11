@@ -27,7 +27,7 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
 
   int guestNumber = 2;
-  List<String> photoUrls = []; // Lista URL-ów zdjęć
+  List<String> photoUrls = [];
   void getDates(DateTime start, DateTime end) {
     setState(() {
       widget.start_date = start;
@@ -423,7 +423,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   const Gap(20),
                   Text(
-                    "Images",
+                    tr("Images"),
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 15,
@@ -476,11 +476,8 @@ class _DetailScreenState extends State<DetailScreen> {
                                           return Dialog(
                                             child: InteractiveViewer(
                                               panEnabled: true,
-                                              // Wyłącz możliwość przesuwania obrazu
                                               minScale: 0.5,
-                                              // Minimalne przybliżenie
                                               maxScale: 4.0,
-                                              // Maksymalne przybliżenie
                                               child: Image.network(
                                                   photoUrls[index]),
                                             ),
@@ -529,7 +526,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         );
                       });
                 },
-                child: Text("Choose dates",
+                child: Text(tr("Choose dates"),
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 15,

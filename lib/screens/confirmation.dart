@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -45,7 +46,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                 height: 70,
                 width: 260,
                 child: Text(
-                  "We are confirming your booking...",
+                  tr("We are confirming your booking..."),
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
                       color: Color.fromARGB(255, 24, 24, 24),

@@ -66,7 +66,7 @@ class _HomeHostScreenState extends State<HomeHostScreen> {
                       child: Column(
                         children: <Widget>[
                           SizedBox(
-                            height: size.height,
+                            height: size.height * 0.83,
                             width: size.width * 0.9,
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,

@@ -388,11 +388,10 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
+                    return Text(tr('Error') +': ${snapshot.error}');
                   } else if (snapshot.hasData) {
                     List<String> photoUrls =
                         snapshot.data?.cast<String>() ?? [];
-                    // Dodajemy URL-e do listy photoUrls
                     return Container(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
@@ -414,11 +413,8 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                                           return Dialog(
                                             child: InteractiveViewer(
                                               panEnabled: true,
-                                              // Wyłącz możliwość przesuwania obrazu
                                               minScale: 0.5,
-                                              // Minimalne przybliżenie
                                               maxScale: 4.0,
-                                              // Maksymalne przybliżenie
                                               child: Image.network(
                                                   photoUrls[index]),
                                             ),

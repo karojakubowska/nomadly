@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -45,7 +46,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 height: 70,
                 width: 260,
                 child: Text(
-                  "We are processing your payment...",
+                  tr("We are processing your payment..."),
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
                       color: Color.fromARGB(255, 24, 24, 24),

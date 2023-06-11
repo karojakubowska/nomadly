@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -111,11 +112,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ],
             ),
             ElevatedButton(
-              child: const Text('Search'),
+              child: Text(tr('Search')),
               onPressed: () => {
-                if (_startDate == "Minimal reservation time is one night" ||
+                if (_startDate == tr("Minimal reservation time is one night") ||
                     _startDate ==
-                        "Sorry these dates are already taken. Choose different dates.")
+                        tr("Sorry these dates are already taken. Choose different dates."))
                   {null}
                 else
                   {
@@ -195,35 +196,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Container(child: const Text("Info")),
+              title: Container(child: Text(tr("Info"))),
               content: Text(_startDate),
               actions: <Widget>[
                 TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('close'))
+                    child: Text(tr('Close')))
               ],
             );
           });
     }
-    // if (_startDate == "Minimal reservation time is one night") {
-    //   showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) {
-    //         return AlertDialog(
-    //           title: Container(child: const Text("Info")),
-    //           content: Text(_startDate),
-    //           actions: <Widget>[
-    //             TextButton(
-    //                 onPressed: () {
-    //                   Navigator.of(context).pop();
-    //                 },
-    //                 child: const Text('close'))
-    //           ],
-    //         );
-    //       });
-    // }
   }
 
   List<DateTime> toListOfDates(List<BookDate> bookedDates) {
