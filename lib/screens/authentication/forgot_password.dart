@@ -17,7 +17,6 @@ class _ChangePasswordPageState extends State<ForgotPasswordPage> {
 String _errorMessage = '';
 String _message='';
   void _ResetPassword() async {
-    //FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     showDialog(
           context: context,
           builder: (context) =>
@@ -28,11 +27,11 @@ String _message='';
            
       } on FirebaseAuthException catch (e) {
         setState(() {
-          _errorMessage = e.message ?? 'An error occurred';
+          _errorMessage = e.message ?? tr('An error occurred');
         });
       }
       setState(() {
-          _message = "Reset link was sent to your e-mail.";
+          _message = tr("Reset link was sent to your e-mail.");
         });
       Navigator.pop(context);
       if (_errorMessage.isEmpty) {
@@ -45,7 +44,7 @@ String _message='';
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+                child: Text('OK'),
               ),
             ],
           ),
@@ -54,12 +53,12 @@ String _message='';
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Error'),
+            title: Text(tr('Error')),
             content: Text(_errorMessage),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+                child: Text('OK'),
               ),
             ],
           ),
@@ -142,22 +141,6 @@ String _message='';
                     icon: const Icon(Icons.lock_open, size: 0),
                     label: Text(tr('Send'), style: TextStyle(fontSize: 24)),
                   ),
-                  // ElevatedButton(
-                  //   style: ElevatedButton.styleFrom(
-                  //     minimumSize: const Size.fromHeight(55),
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(20.0),
-                  //     ),
-                  //     backgroundColor: const Color.fromARGB(255, 50, 134, 252),
-                  //   ),
-                  //   onPressed: _ResetPassword,
-                  //   child: Text(('Send'),
-                  //       style: TextStyle(
-                  //           fontSize: 18.0,
-                  //           height: 1.2,
-                  //           color: Colors.white,
-                  //           fontWeight: FontWeight.w500)),
-                  // ),
                 ),
               ]))
             ]));
