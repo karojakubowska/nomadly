@@ -47,3 +47,49 @@ class AppWeb extends StatelessWidget {
 void main() {
   runApp(AppWeb());
 }
+
+
+// import 'package:flutter/material.dart';
+//
+// class AppWeb extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: Text('Przykład przycisków'),
+//         ),
+//         body: Center(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               ElevatedButton.icon(
+//                 onPressed: () {
+//                   // Akcja po naciśnięciu przycisku "Pobierz aplikację"
+//                   print('Pobierz aplikację');
+//                 },
+//                 icon: Icon(Icons.download),
+//                 label: Text('Pobierz aplikację'),
+//                 style: ElevatedButton.styleFrom(
+//                   minimumSize: Size(200, 100),
+//                 ),
+//               ),
+//               SizedBox(height: 20),
+//               ElevatedButton.icon(
+//                 onPressed: () {
+//                   // Akcja po naciśnięciu przycisku "Panel administracyjny"
+//                   print('Panel administracyjny');
+//                 },
+//                 icon: Icon(Icons.admin_panel_settings),
+//                 label: Text('Panel administracyjny'),
+//                 style: ElevatedButton.styleFrom(
+//                   minimumSize: Size(200, 100),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
