@@ -81,7 +81,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
           children: [
             Column(
               children: [
-                const Gap(20),
+                const Gap(10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -137,15 +137,13 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                       const Icon(Icons.search_outlined),
                       Container(
                         width:size.width*0.7,
-                        child: Center(
                           child: Text(
-                            'Search places',
+                            '  Search places',
                             style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w400,
                               color: Styles.greyColor,
                             ),
-                          ),
                         ),
                       ),
                       const Gap(10),

@@ -1,5 +1,6 @@
 import 'package:basics/basics.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -186,11 +187,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
       child: Column(
         children: [
           const Gap(80),
-          const Text("When",
+          const Text("Where",
               style: TextStyle(
                   fontSize: 20,
                   color: Color.fromARGB(255, 24, 24, 24),
                   fontWeight: FontWeight.w500)),
+          const Gap(20),
           TextField(
             controller: searchCity,
             onChanged: (val) => setState(() {
@@ -200,11 +202,14 @@ class _FiltersScreenState extends State<FiltersScreen> {
               // );
             }),
             decoration: const InputDecoration(
-              border: InputBorder.none,
-              errorBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              contentPadding: EdgeInsets.all(15),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(
+                    width: 1, color: Color.fromARGB(255, 217, 217, 217)),
+              ),
+              filled: true,
+              fillColor: Color.fromARGB(255, 249, 250, 250),
+              contentPadding: EdgeInsets.all(10),
               prefixIcon: Icon(Icons.search_outlined),
               hintText: 'Search places',
             ),
@@ -221,7 +226,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   fontSize: 20,
                   color: Color.fromARGB(255, 24, 24, 24),
                   fontWeight: FontWeight.w500)),
-          const Gap(20),
+          const Gap(10),
           Row(
             children: [
               Expanded(
@@ -281,6 +286,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
             indent: 25,
             endIndent: 25,
           ),
+          const Text("People",
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Color.fromARGB(255, 24, 24, 24),
+                  fontWeight: FontWeight.w500)),
+          Gap(10),
           Container(
             width: 60,
             decoration: BoxDecoration(
@@ -379,7 +390,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
             indent: 25,
             endIndent: 25,
           ),
-          const Gap(20),
+          const Gap(10),
           const Text("Amenities",
               style: TextStyle(
                 fontSize: 20,
@@ -408,25 +419,55 @@ class _FiltersScreenState extends State<FiltersScreen> {
               );
             }).toList(),
           ),
-          const Gap(20),
-          ElevatedButton(
-            child: const Text('Search'),
-            onPressed: () async => {
-              await getBookings(currentstartDate.add(Duration(days: -90)),
-                  currentendDate.add(Duration(days: 365))),
-              await getAccommodations(searchCity.text),
-              widget.onApplyFilters(
-                _filters,
-                _priceRange,
-                searchCity.text,
-                getFilteredList(accommodationList, sortedBookings),
-                widget.guests,
-                currentstartDate,
-                currentendDate,
-              ),
-              Navigator.pop(context),
-            },
-          )
+          const Gap(10),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  backgroundColor:
+                  const Color.fromARGB(255, 50, 134, 252)),
+              onPressed: () async => {
+                await getBookings(currentstartDate.add(Duration(days: -90)),
+                    currentendDate.add(Duration(days: 365))),
+                await getAccommodations(searchCity.text),
+                widget.onApplyFilters(
+                  _filters,
+                  _priceRange,
+                  searchCity.text,
+                  getFilteredList(accommodationList, sortedBookings),
+                  widget.guests,
+                  currentstartDate,
+                  currentendDate,
+                ),
+                Navigator.pop(context),
+              },
+              icon: const Icon(Icons.lock_open, size: 0),
+              label: Text(tr('Search'),
+                  style: TextStyle(fontSize: 20)),
+            ),
+          ),
+
+          // ElevatedButton(
+          //   child: const Text('Search'),
+          //   onPressed: () async => {
+          //     await getBookings(currentstartDate.add(Duration(days: -90)),
+          //         currentendDate.add(Duration(days: 365))),
+          //     await getAccommodations(searchCity.text),
+          //     widget.onApplyFilters(
+          //       _filters,
+          //       _priceRange,
+          //       searchCity.text,
+          //       getFilteredList(accommodationList, sortedBookings),
+          //       widget.guests,
+          //       currentstartDate,
+          //       currentendDate,
+          //     ),
+          //     Navigator.pop(context),
+          //   },
+          // )
         ],
       ),
     );
