@@ -180,6 +180,9 @@ class _BookingCardState extends State<BookingCard> {
       return Styles.pinColor;
     } else if (widget.booking.status == "Waiting for confirmation") {
       return Colors.yellow.shade700;
+    }
+    else if (widget.booking.status == "Canceled") {
+      return Colors.red.shade700;
     } else {
       return Colors.green.shade600;
     }

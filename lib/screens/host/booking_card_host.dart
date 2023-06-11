@@ -20,7 +20,8 @@ class BookingCardHost extends StatefulWidget {
   Acommodation accommodation;
   //const BookingCardHost({super.key});
   BookingCardHost(
-      {super.key, required this.booking,
+      {super.key,
+      required this.booking,
       required this.index,
       required this.accommodation});
   @override
@@ -107,13 +108,12 @@ class _BookingCardState extends State<BookingCardHost> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        tr("User")+": ${widget.booking.username!}",
+                        tr("User") + ": ${widget.booking.username!}",
                         style: GoogleFonts.roboto(
                             color: const Color.fromARGB(255, 24, 24, 24),
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
-                      
                     ],
                   ),
                 ],
@@ -126,7 +126,8 @@ class _BookingCardState extends State<BookingCardHost> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    tr("Date")+": ${DateFormat("dd.MM.yyyy").format(widget.booking.startDate!)}-${DateFormat("dd.MM.yyyy").format(widget.booking.endDate!)}",
+                    tr("Date") +
+                        ": ${DateFormat("dd.MM.yyyy").format(widget.booking.startDate!)}-${DateFormat("dd.MM.yyyy").format(widget.booking.endDate!)}",
                     style: GoogleFonts.roboto(
                         color: const Color.fromARGB(255, 24, 24, 24),
                         fontSize: 18,
@@ -148,12 +149,13 @@ class _BookingCardState extends State<BookingCardHost> {
                       decoration: BoxDecoration(
                           color: statusColorSwitch(),
                           shape: BoxShape.rectangle,
-                          borderRadius: const BorderRadius.all(Radius.circular(5))),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            tr("Status")+": ${widget.booking.status!}",
+                            tr("Status") + ": ${widget.booking.status!}",
                             style: GoogleFonts.roboto(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -190,6 +192,8 @@ class _BookingCardState extends State<BookingCardHost> {
       return Styles.pinColor;
     } else if (widget.booking.status == "Waiting for confirmation") {
       return Colors.yellow.shade700;
+    } else if (widget.booking.status == "Canceled") {
+      return Colors.red.shade700;
     } else {
       return Colors.green.shade600;
     }

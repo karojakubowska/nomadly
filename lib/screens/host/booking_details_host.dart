@@ -7,10 +7,11 @@ import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/models/Booking.dart';
 import 'package:intl/intl.dart';
 import 'package:nomadly_app/models/User.dart';
+import 'package:nomadly_app/screens/user_opinions_view.dart';
 import '../../utils/app_styles.dart';
 import '../chat_single_view.dart';
 import '../report_form_view.dart';
-import '../user_review_view.dart';
+import '../add_user_opinion_view.dart';
 
 class BookingDetailsHostScreen extends StatefulWidget {
   Acommodation accommodation;
@@ -143,7 +144,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
                             if (!snap.hasData) return Text(tr("Loading..."));
                             userModel = UserModel.fromJson(snap.data!.docs[0]
                                 .data() as Map<String, dynamic>);
-                            return statusButtonSwitch();
+                            return statusButtonSwitch(userModel);
                           })),
                   Container(
                     padding: const EdgeInsets.only(
@@ -193,7 +194,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
     );
   }
 
-  Widget statusButtonSwitch() {
+  Widget statusButtonSwitch(UserModel user) {
     //print('Document data: ${documentSnapshot.data()}');
     if (widget.booking.status == "Finished" &&
         widget.booking.isUserRated == false) {
@@ -258,30 +259,89 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
       );
     }
     if (widget.booking.status == "Waiting for confirmation") {
-      return ElevatedButton(
-        onPressed: () {
-          FirebaseFirestore.instance
-              .collection('Bookings')
-              .doc(widget.booking.id)
-              .update({'status': 'Confirmed'});
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              FirebaseFirestore.instance
+                  .collection('Bookings')
+                  .doc(widget.booking.id)
+                  .update({'status': 'Confirmed'});
               Navigator.pop(context);
-        },
-        style: ButtonStyle(
-          elevation: MaterialStateProperty.all(0),
-          backgroundColor: MaterialStateProperty.all<Color>(
-              const Color.fromARGB(255, 50, 134, 252)),
-          shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-          minimumSize: MaterialStateProperty.all(const Size(320, 50)),
-        ),
-        child: Text(
-          tr('Confirm'),
-          style: GoogleFonts.roboto(
-              textStyle: const TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700)),
-        ),
+            },
+            style: ButtonStyle(
+              elevation: MaterialStateProperty.all(0),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color.fromARGB(255, 50, 134, 252)),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10))),
+              minimumSize: MaterialStateProperty.all(const Size(320, 50)),
+            ),
+            child: Text(
+              tr('Confirm'),
+              style: GoogleFonts.roboto(
+                  textStyle: const TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700)),
+            ),
+          ),
+          Gap(30),
+           ElevatedButton(
+            onPressed: () {
+              FirebaseFirestore.instance
+                  .collection('Bookings')
+                  .doc(widget.booking.id)
+                  .update({'status': 'Canceled'});
+              Navigator.pop(context);
+            },
+            style: ButtonStyle(
+              elevation: MaterialStateProperty.all(0),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Color.fromARGB(255, 217, 32, 32)),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10))),
+              minimumSize: MaterialStateProperty.all(const Size(320, 50)),
+            ),
+            child: Text(
+              tr('Cancel'),
+              style: GoogleFonts.roboto(
+                  textStyle: const TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700)),
+            ),
+          ),
+          Gap(30),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => UserOpinionsScreen(
+                          booking: widget.booking,
+                          userId: widget.booking.userId!,
+                          user: user))));
+            },
+            style: ButtonStyle(
+              elevation: MaterialStateProperty.all(0),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color.fromARGB(255, 50, 134, 252)),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10))),
+              minimumSize: MaterialStateProperty.all(const Size(320, 50)),
+            ),
+            child: Text(
+              tr('Check user opinions'),
+              style: GoogleFonts.roboto(
+                  textStyle: const TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700)),
+            ),
+          )
+        ],
       );
     }
     return Container();

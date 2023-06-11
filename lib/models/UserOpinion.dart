@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserOpinion {
   String? hostId;
   String? userId;
-  String? accommodationId;
+  String? hostName;
   String? opinionText;
   num? rate;
   Timestamp? date;
@@ -11,7 +11,7 @@ class UserOpinion {
   UserOpinion({
     required this.hostId,
     required this.userId,
-    required this.accommodationId,
+    required this.hostName,
     required this.opinionText,
     required this.rate,
     required this.date,
@@ -20,8 +20,8 @@ class UserOpinion {
   UserOpinion.fromJson(Map<String, dynamic> json) {
     hostId = json['hostId'];
     userId = json['userId'];
-    accommodationId = json['accommodationId'];
-    opinionText = json['reviewText'];
+    hostName = json['hostName'];
+    opinionText = json['opinionText'];
     rate = json['rate'];
     date = json['pub_date'];
   }

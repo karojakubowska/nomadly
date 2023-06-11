@@ -120,6 +120,7 @@ class UserReviewScreen extends StatelessWidget {
         FirebaseFirestore.instance.collection('UserOpinions');
 
     return opinion.add({
+      'hostName':user.name,
       'hostId':FirebaseAuth.instance.currentUser!.uid,
       'opinionText': descriptionController.text,
       'rate': userRating,
