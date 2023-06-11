@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nomadly_app/utils/app_layout.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -196,6 +197,7 @@ class _AddTravelViewState extends State<AddTravelView> {
 
   @override
   Widget build(BuildContext context) {
+    final size = AppLayout.getSize(context);
     return Scaffold(
       backgroundColor: Styles.backgroundColor,
       appBar: AppBar(
@@ -240,14 +242,14 @@ class _AddTravelViewState extends State<AddTravelView> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(top: 0.0),
+                  padding: const EdgeInsets.only(bottom: 10, right: 20, left: 20),
                   child: GestureDetector(
                     onTap: () {
                       _showPicker(context);
                     },
                     child: Container(
-                      width: 150,
-                      height: 150,
+                      width: size.width,
+                      height: size.height * 0.22,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 249, 250, 250),
                         borderRadius:
