@@ -159,7 +159,7 @@ class _HomeTestState extends State<HomeTest> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('Highest Rated', style: Styles.headLineStyle3),
+                      Text('Popular', style: Styles.headLineStyle3),
                     ]),
               )
             ],
@@ -177,10 +177,10 @@ class _HomeTestState extends State<HomeTest> {
                       child:
                           ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: highestRatedAccommodations.length,
+                              itemCount: popularAccommodations.length,
                               itemBuilder: (context, index) {
                                 Acommodation model =
-                                    highestRatedAccommodations[index];
+                                    popularAccommodations[index];
                                 return ForYouCard(
                                   accomodation: model,
                                   index: index,
@@ -194,7 +194,7 @@ class _HomeTestState extends State<HomeTest> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('Popular', style: Styles.headLineStyle3),
+                  Text('Highest rated', style: Styles.headLineStyle3),
                 ]),
           ),
           SingleChildScrollView(
@@ -205,9 +205,9 @@ class _HomeTestState extends State<HomeTest> {
                   width: size.width * 0.9,
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemCount: popularAccommodations.length,
+                    itemCount: highestRatedAccommodations.length,
                     itemBuilder: (context, index) {
-                      Acommodation model = popularAccommodations[index];
+                      Acommodation model = highestRatedAccommodations[index];
                       return PopularCard(
                         accomodation: model,
                         accommodationCity: model.city!,

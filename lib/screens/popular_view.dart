@@ -1,5 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:gap/gap.dart';
 
 import '../models/Accomodation.dart';
 import '../utils/app_layout.dart';
@@ -77,7 +79,21 @@ class _PopularCardState extends State<PopularCard> {
                   widget.accommodationCity,
                   style: Styles.popularNameStyle,
                 ),
-                Text("01.01.2023-08.01.2023", style: Styles.popularDateStyle)
+                Row(
+                  children: [Text(widget.accomodation.rate.toString()),
+                  Gap(10),
+                    RatingBarIndicator(
+                                rating:widget.accomodation.rate!.toDouble(),//rating: user.rate!.toDouble(),
+                                itemBuilder: (context, index) => const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                itemCount: 5,
+                                itemSize: 10.0,
+                                direction: Axis.horizontal,
+                              ),
+                  ],
+                ),
               ],
             ),
           ],
@@ -87,24 +103,5 @@ class _PopularCardState extends State<PopularCard> {
         navigateToDetail(widget.accomodation);
       },
     );
-    // final size = AppLayout.getSize(context);
-    // return SizedBox(
-    //   width: size.width,
-    //   height: 80,
-    //   child: Container(
-    //       padding: const EdgeInsets.all(16),
-    //       child: Row(
-    //         children: [
-    //           Container(
-    //             decoration: BoxDecoration(
-    //                 borderRadius: BorderRadius.circular(12),
-    //                 image: const DecorationImage(
-    //                     image: AssetImage(
-    //                         "assets/images/eiffel-tower-in-paris-with-gorgeous-colors 1.png"))),
-    //           ),
-    //           const Gap(60),
-    //         ],
-    //       )),
-    // );
   }
 }
