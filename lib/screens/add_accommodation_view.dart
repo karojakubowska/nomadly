@@ -277,7 +277,7 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
     }).then((value) {
       print("DocumentSnapshot successfully updated!");
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('New accommodation added')),
+        SnackBar(content: Text(tr('New accommodation added'))),
       );
       setState(() {
         _photo = null;

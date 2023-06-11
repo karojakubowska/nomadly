@@ -432,9 +432,12 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
+                  const Gap(10),
                 ],
               ),
             ),
+            const SizedBox(height: 10),
+            const Gap(10),
             SingleChildScrollView(
               child: FutureBuilder<List<dynamic>>(
                 future: Future.wait(
@@ -452,7 +455,6 @@ class _DetailScreenState extends State<DetailScreen> {
                   } else if (snapshot.hasData) {
                     List<String> photoUrls =
                         snapshot.data?.cast<String>() ?? [];
-                    // Dodajemy URL-e do listy photoUrls
                     return Container(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
@@ -487,7 +489,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                       );
                                     },
                                     child: Container(
-                                      margin: const EdgeInsets.only(right: 10),
+                                      margin: const EdgeInsets.only(right: 10, bottom:10),
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
@@ -511,6 +513,8 @@ class _DetailScreenState extends State<DetailScreen> {
                 },
               ),
             ),
+            const SizedBox(height: 10),
+            const Gap(10),
             GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
