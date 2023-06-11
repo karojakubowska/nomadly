@@ -214,7 +214,19 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       print('error occured');
     }
     ;
-    List<BookDate>bookedDates=[BookDate(date: DateTime.now().add(Duration(days:-32)),hour:"14"),BookDate(date: DateTime.now().add(Duration(days:-31)),hour:"11")];
+    DateTime d1=DateTime.now().add(Duration(days:-32));
+    DateTime d2=DateTime.now().add(Duration(days:-31));
+    String s1 = d1.toString().substring(0, 10);
+    String s2=d2.toString().substring(0, 10);
+     DateTime sd1 = DateTime.parse(s1);
+      DateTime sd2 = DateTime.parse(s2);
+    BookDate b1=BookDate(date: sd1,hour:"14");
+    BookDate b2=BookDate(date: sd2,hour:"11");
+    
+   
+    List<BookDate>bookedDates=[];
+    bookedDates.add(b1);
+    bookedDates.add(b2);
     List<String> otherPhotoURLs = [];
     for (var photo in photos) {
       String otherPhotoDateTime = DateTime.now().toString();
@@ -259,7 +271,9 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       'air_conditioning': air_conditioning ? true : false,
       'type': _selectedType,
       'reservations_count':0,
-      'booked_dates':bookedDates,
+      'booked_dates':bookedDates.map((e) => e.toJson()).toList(),
+      
+      
     }).then((value) {
       print("DocumentSnapshot successfully updated!");
       ScaffoldMessenger.of(context).showSnackBar(

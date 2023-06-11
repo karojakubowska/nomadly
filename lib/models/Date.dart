@@ -21,4 +21,7 @@ class BookDate {
     int cmpVal= this.date!.compareTo(date);
     return cmpVal==0;
   }
+  Map<String, dynamic> toJson() => {
+        'date':date,
+        'hour':hour };
 }
