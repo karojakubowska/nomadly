@@ -138,14 +138,14 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: const Color.fromARGB(255, 50, 134, 252),
                   ),
                   onPressed: () {
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => AppPage()),
-                    // );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => AppWeb()),
+                    );
                   },
                   icon: const Icon(Icons.lock_open, size: 0),
                   label: const Text(
-                    'Log in',
+                    'Download App',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),

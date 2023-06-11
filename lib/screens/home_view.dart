@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/screens/all_accommodations.dart';
 import 'package:nomadly_app/screens/accommodation_details_view.dart';
@@ -123,49 +125,41 @@ class _HomeTestState extends State<HomeTest> {
                             guests: guestNumber);
                       });
                 },
-                child: Container(
-                  height: 50,
-                  margin: const EdgeInsets.only(top: 28, left: 28, right: 28),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      const Gap(10),
-                      const Icon(Icons.search_outlined),
-                      const Gap(10),
-                      Center(
-                        child: Text(
-                          'Search places',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold,
-                            color: Styles.greyColor,
-                          ),
+                child:
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 10.0),
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(50),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          backgroundColor:
+                          const Color.fromARGB(211, 211, 211, 211)),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    AllAccommodationsScreen())));
+                      },
+                      icon: const Icon(Icons.lock_open, size: 0),
+                      label: Text(tr('Search place'),
+                        style: GoogleFonts.roboto(
+                          color: Color.fromARGB(
+                              130, 30, 30, 30),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+              ),
               ),
               Container(
-                padding: const EdgeInsets.only(top: 25, left: 30, right: 28),
+                padding: const EdgeInsets.only(top: 25, left: 30, right: 28, bottom: 10),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text('Highest Rated', style: Styles.headLineStyle3),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const AllAccommodationsScreen()),
-                          );
-                        },
-                        child: Text('See more', style: Styles.viewAllStyle),
-                      ),
                     ]),
               )
             ],
@@ -181,16 +175,6 @@ class _HomeTestState extends State<HomeTest> {
                       height: 210,
                       width: size.width,
                       child:
-                          //  FutureBuilder<QuerySnapshot>(
-                          //     future: accommodations,
-                          //     builder: (context, snapshot) {
-                          //       if (snapshot.data == null) {
-                          //         return const Center(
-                          //           child: Text('Loading'),
-                          //         );
-                          //       }
-
-                          // return
                           ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: highestRatedAccommodations.length,
@@ -206,29 +190,18 @@ class _HomeTestState extends State<HomeTest> {
                     )
                   ])),
           Container(
-            padding: const EdgeInsets.only(left: 30, right: 28),
+            padding: const EdgeInsets.only(left: 30, right: 28, bottom: 10),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('Popular', style: Styles.headLineStyle3),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const AllAccommodationsScreen()),
-                      );
-                    },
-                    child: Text('See more', style: Styles.viewAllStyle),
-                  ),
                 ]),
           ),
           SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(children: <Widget>[
                 SizedBox(
-                  height: 210,
+                  height: 400,
                   width: size.width * 0.9,
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,

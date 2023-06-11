@@ -1,63 +1,49 @@
-// import 'dart:html' as html;
-// import 'package:flutter/material.dart';
-//
-// class AppPage extends StatefulWidget {
-//   @override
-//   _AppPageState createState() => _AppPageState();
-// }
-//
-// class _AppPageState extends State<AppPage> {
-//   late html.FileUploadInputElement _fileInput;
-//   String? _downloadUrl;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _fileInput = html.FileUploadInputElement();
-//     _fileInput.accept = '.apk';
-//     _fileInput.onChange.listen((event) {
-//       final files = _fileInput.files;
-//       if (files != null && files.isNotEmpty) {
-//         final file = files[0];
-//         setState(() {
-//           _downloadUrl = html.Url.createObjectUrl(file);
-//         });
-//       }
-//     });
-//   }
-//
-//   @override
-//   void dispose() {
-//     super.dispose();
-//     html.Url.revokeObjectUrl(_downloadUrl!); // Clean up the object URL
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('APK Uploader'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             ElevatedButton(
-//               onPressed: () {
-//                 _fileInput.click();
-//               },
-//               child: const Text('Select APK File'),
-//             ),
-//             if (_downloadUrl != null)
-//               ElevatedButton(
-//                 onPressed: () {
-//                   html.window.open(_downloadUrl!, '_blank');
-//                 },
-//                 child: const Text('Download APK'),
-//               ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+
+class AppWeb extends StatelessWidget {
+  final String apkStorageLink =
+      'gs://nomady-ae4b6.appspot.com/app/android/app-release.apk';
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'APK Download',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('APK Download'),
+        ),
+        body: Center(
+          child: ElevatedButton(
+            child: Text('Pobierz APK'),
+            onPressed: () {
+              _launchURL(apkStorageLink);
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _launchURL(String url) async {
+    if (url.startsWith('gs://')) {
+      String downloadURL = await firebase_storage.FirebaseStorage.instance
+          .refFromURL(url)
+          .getDownloadURL();
+      url = downloadURL;
+    }
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Nie można otworzyć adresu $url';
+    }
+  }
+}
+
+void main() {
+  runApp(AppWeb());
+}
