@@ -26,7 +26,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
   String city = "";
   RangeValues priceRange = const RangeValues(0, 2000);
   List<Acommodation> results = [];
- int guest_number=0;
+ int guest_number=1;
    DateTime  startDate=DateTime.now();
    DateTime endDate=DateTime.now();
   //String searchText="";
@@ -53,6 +53,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     final Stream<QuerySnapshot> searchStream = FirebaseFirestore.instance
         .collection('Accommodations')
         .where(
@@ -65,6 +66,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
 
     List<Acommodation> accommodationList =
         Provider.of<List<Acommodation>>(context);
+       
     var size = AppLayout.getSize(context);
     return Scaffold(
         backgroundColor: Styles.backgroundColor,
@@ -91,12 +93,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                     //       borderRadius: BorderRadius.circular(10)),
                     //   child: TextField(
                     //     controller: searchText,
-                    //     onChanged: (val) => setState(() {
-                    //       // query = query.where(
-                    //       //   'city',
-                    //       //   isEqualTo: searchText.text,
-                    //      // );
-                    //     }),
+                    //     
                     //     decoration: const InputDecoration(
                     //       border: InputBorder.none,
                     //       errorBorder: InputBorder.none,
@@ -108,33 +105,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                     //     ),
                     //   ),
                     // ),
-                    //  GestureDetector(
-                    //     onTap: () {
-                    //       showModalBottomSheet<dynamic>(
-                    //           backgroundColor: Colors.transparent,
-                    //           isScrollControlled: true,
-                    //           context: context,
-                    //           builder: (BuildContext bc) {
-                    //             return SearchBarScreen(
-                    //               onQueryChanged: updateQuery,
-                    //             );
-                    //           });
-                    //     },
-                    //      child: Container(
-                    //       height: 50.0,
-                    //       width: 50.0,
-                    //       decoration: BoxDecoration(
-                    //           color: Styles.pinColor,
-                    //           borderRadius: BorderRadius.circular(10)),
-                    //       child: Center(
-                    //         child: SvgPicture.asset(
-                    //           "assets/images/sliders.svg",
-                    //           color: Colors.white,
-                    //           width: 20,
-                    //           height: 20,
-                    //         ),
-                    //       ),
-                    //     )),
+                    
                     GestureDetector(
                         onTap: () {
                           showModalBottomSheet<dynamic>(
@@ -154,21 +125,49 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                                     guests:guest_number);
                               });
                         },
-                        child: Container(
-                          height: 50.0,
-                          width: 50.0,
-                          decoration: BoxDecoration(
-                              color: Styles.pinColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              "assets/images/sliders.svg",
-                              color: Colors.white,
-                              width: 20,
-                              height: 20,
+                        child:Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                   // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      const Gap(10),
+                      const Icon(Icons.search_outlined),
+                      Container(
+                        width:size.width*0.7,
+                        child: Center(
+                          child: Text(
+                            'Search places',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                              color: Styles.greyColor,
                             ),
                           ),
-                        ))
+                        ),
+                      ),
+                      const Gap(10),
+                    ],
+                  ),
+                ),
+                        // child: Container(
+                        //   height: 50.0,
+                        //   width: 50.0,
+                        //   decoration: BoxDecoration(
+                        //       color: Styles.pinColor,
+                        //       borderRadius: BorderRadius.circular(10)),
+                        //   child: Center(
+                        //     child: SvgPicture.asset(
+                        //       "assets/images/sliders.svg",
+                        //       color: Colors.white,
+                        //       width: 20,
+                        //       height: 20,
+                        //     ),
+                        //   ),
+                        // )
+                        )
                   ],
                 ),
                 const Gap(30),
@@ -207,6 +206,7 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                     scrollDirection: Axis.vertical,
                     child: Column(children: <Widget>[
                       if (results.isEmpty)
+                      //Container(child: Text("Nothing found"),)
                         SizedBox(
                             height: size.height * 0.78,
                             width: size.width * 0.9,

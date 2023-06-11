@@ -30,7 +30,7 @@ enum AmenitiesFilter { wifi, TV, AC, Kitchen }
 
 class FiltersScreen extends StatefulWidget {
   List<String> currentFilters = [];
-  int guests = 0;
+  int guests = 1;
   RangeValues currentPriceRange = const RangeValues(0, 2000);
   String currentCity = "";
   List<Acommodation> resultList;
@@ -132,8 +132,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: currentstartDate ?? DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(Duration(days: 365)));
     if (picked != null && picked != currentstartDate) {
       setState(() {
         currentstartDate = picked;
@@ -145,8 +145,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: currentendDate ?? DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(Duration(days: 365)));
     if (picked != null && picked != currentendDate) {
       setState(() {
         currentendDate = picked;
@@ -173,8 +173,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
     List<Booking> bookingsList = Provider.of<List<Booking>>(context);
 
     return Container(
-      height: size.height, //size.height * 0.8,
-      width: size.width, //size.width * 0.8,
+      height: size.height, 
+      width: size.width, 
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -292,8 +292,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
               children: [
                 GestureDetector(
                     onTap: () => setState(() {
-                          widget.guests == 0
-                              ? print('guests at 0')
+                          widget.guests == 1
+                              ? print('guests at 1')
                               : widget.guests--;
                         }),
                     child: const Icon(Icons.remove)),
@@ -301,7 +301,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 GestureDetector(
                     onTap: () {
                       setState(() {
-                        print('set');
                         widget.guests++;
                       });
                     },

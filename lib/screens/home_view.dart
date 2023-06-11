@@ -85,7 +85,7 @@ class _HomeTestState extends State<HomeTest> {
             children: [
               Container(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 20),
                     Text('Hello!', style: Styles.headLineStyle),
