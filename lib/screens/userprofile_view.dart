@@ -187,12 +187,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                       _buildProfileSection(
                         context,
-                        title: (tr('Notifications')),
-                        icon: Icons.notifications_active_outlined,
-                        onPressed: () {},
-                      ),
-                      _buildProfileSection(
-                        context,
                         title: (tr('Terms and Conditions')),
                         icon: Icons.security,
                         onPressed: () {

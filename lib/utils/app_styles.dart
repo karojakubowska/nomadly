@@ -13,8 +13,8 @@ class Styles {
   static TextStyle textStyle =
       TextStyle(fontSize: 16, color: textColor, fontWeight: FontWeight.w500);
   static TextStyle headLineStyle = GoogleFonts.roboto(
-    fontSize: 45,
-    fontWeight: FontWeight.w700,
+    fontSize: 35,
+    fontWeight: FontWeight.w600,
   );
   static TextStyle headLineStyle2 = GoogleFonts.roboto(
       fontSize: 24,

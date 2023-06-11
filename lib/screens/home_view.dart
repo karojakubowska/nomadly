@@ -66,17 +66,6 @@ class _HomeTestState extends State<HomeTest> {
       query = newQuery;
     });
   }
-  // @override
-  // void initState() {
-  //   accommodations = fetchAccommodations();
-  //   super.initState();
-  // }
-
-  // Future<QuerySnapshot<Object>> fetchAccommodations() async {
-  //   var value =
-  //       FirebaseFirestore.instance.collectionGroup('Accommodations').get();
-  //   return value;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -94,27 +83,16 @@ class _HomeTestState extends State<HomeTest> {
         children: [
           Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Gap(5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Gap(20),
-                      Text('Hello!', style: Styles.headLineStyle),
-                      const Gap(20),
-                      Text('What are you looking for?',
-                          style: Styles.headLineStyle2),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 40,
-                    child: SvgPicture.asset(svg,
-                        color: Colors.black, height: 40, width: 40),
-                  ),
-                  const Gap(10),
-                ],
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20),
+                    Text('Hello!', style: Styles.headLineStyle),
+                    SizedBox(height: 10),
+                    Text('What are you looking for?', style: Styles.headLineStyle2),
+                  ],
+                ),
               ),
               GestureDetector(
                 onTap: () {
@@ -186,9 +164,10 @@ class _HomeTestState extends State<HomeTest> {
               )
             ],
           ),
-          const Gap(20),
+         // const Gap(10),
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(left: 10),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[

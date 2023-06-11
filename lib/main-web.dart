@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:nomadly_app/app-web.dart';
 import 'package:nomadly_app/home-web.dart';
 
 void main() async {
@@ -123,6 +124,30 @@ class _LoginPageState extends State<LoginPage> {
                 _errorMessage,
                 style: const TextStyle(
                   color: Colors.red,
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(55),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    backgroundColor: const Color.fromARGB(255, 50, 134, 252),
+                  ),
+                  onPressed: () {
+                    // Navigator.pushReplacement(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => AppPage()),
+                    // );
+                  },
+                  icon: const Icon(Icons.lock_open, size: 0),
+                  label: const Text(
+                    'Log in',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ),
             ],
