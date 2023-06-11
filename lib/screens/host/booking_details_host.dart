@@ -66,7 +66,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
               children: [
                 Text(tr("Check-in"), style: Styles.bookingDetailsStyle),
                 Text(
-                    DateFormat.yMMMMd('en_US')
+                    DateFormat.yMMMMd(tr('en_US'))
                         .format(widget.booking.startDate!),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
@@ -80,7 +80,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsHostScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(tr("Check-out"), style: Styles.bookingDetailsStyle),
-                Text(DateFormat.yMMMMd('en_US').format(widget.booking.endDate!),
+                Text(DateFormat.yMMMMd(tr('en_US')).format(widget.booking.endDate!),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
                             fontSize: 16.0,

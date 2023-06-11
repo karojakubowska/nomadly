@@ -438,6 +438,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                               ),
                             ),
                           ),
+                          const SizedBox(height: 10),
                         ],
                       ),
                     );

@@ -74,12 +74,12 @@ class _ForYouCardState extends State<ForYouCard> {
             const Gap(8),
             Container(
               color: Styles.backgroundColor,
-              margin: const EdgeInsets.only(left: 15),
+              margin: const EdgeInsets.only(left: 10),
               child: Text(widget.accomodation.title!,
                   style: Styles.houseNameStyle),
             ),
             Container(
-              padding: const EdgeInsets.only(left: 20, top: 3),
+              padding: const EdgeInsets.only(left: 10, top: 3),
               child: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(

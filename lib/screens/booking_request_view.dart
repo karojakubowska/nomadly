@@ -89,7 +89,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(tr("Check-in"), style: Styles.bookingDetailsStyle),
-                Text(DateFormat.yMMMMd('en_US').format(widget.startDate),
+                Text(DateFormat.yMMMMd(tr('en_US')).format(widget.startDate),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
                             fontSize: 16.0,
@@ -102,7 +102,7 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(tr("Check-out"), style: Styles.bookingDetailsStyle),
-                Text(DateFormat.yMMMMd('en_US').format(widget.endDate),
+                Text(DateFormat.yMMMMd(tr('en_US')).format(widget.endDate),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
                             fontSize: 16.0,

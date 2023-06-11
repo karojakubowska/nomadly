@@ -25,9 +25,9 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-
   int guestNumber = 2;
   List<String> photoUrls = [];
+
   void getDates(DateTime start, DateTime end) {
     setState(() {
       widget.start_date = start;
@@ -47,7 +47,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Future addToFavorites(String accommodationId) async {
     var userId = FirebaseAuth.instance.currentUser?.uid;
     CollectionReference wishlist =
-    FirebaseFirestore.instance.collection("Wishlists");
+        FirebaseFirestore.instance.collection("Wishlists");
     return wishlist
         .doc(userId)
         .collection("favs")
@@ -81,8 +81,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return wishlist;
   }
 
-
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -177,19 +176,24 @@ class _DetailScreenState extends State<DetailScreen> {
                             .collection("Wishlists")
                             .doc(FirebaseAuth.instance.currentUser?.uid)
                             .collection("favs")
-                            .where("accommodationId", isEqualTo: widget.accommodation?.id)
+                            .where("accommodationId",
+                                isEqualTo: widget.accommodation?.id)
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.data == null) return Text(tr("No data"));
                           return IconButton(
                             onPressed: () async {
                               snapshot.data!.docs.length == 0
-                                  ? await addToFavorites(widget.accommodation!.id.toString())
-                                  : deleteFromFavorites(widget.accommodation!.id.toString());
+                                  ? await addToFavorites(
+                                      widget.accommodation!.id.toString())
+                                  : deleteFromFavorites(
+                                      widget.accommodation!.id.toString());
                             },
                             icon: snapshot.data!.docs.length == 0
-                                ? Icon(Icons.favorite_border_outlined, size: 30) // Increase the size to 30
-                                : Icon(Icons.favorite, size: 30), // Increase the size to 30
+                                ? Icon(Icons.favorite_border_outlined,
+                                    size: 30) // Increase the size to 30
+                                : Icon(Icons.favorite,
+                                    size: 30), // Increase the size to 30
                           );
                         },
                       ),
@@ -228,9 +232,11 @@ class _DetailScreenState extends State<DetailScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(right: 7, left: 7, top: 4, bottom: 4),
+                            padding: const EdgeInsets.only(
+                                right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bedroom?.toString() ?? '0'} " + tr("bedroom"),
+                              " ${widget.accommodation?.bedroom?.toString() ?? '0'} " +
+                                  tr("bedroom"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
                                 fontSize: 14,
@@ -251,9 +257,11 @@ class _DetailScreenState extends State<DetailScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(right: 7, left: 7, top: 4, bottom: 4),
+                            padding: const EdgeInsets.only(
+                                right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bed?.toString() ?? '0'} " + tr("bed"),
+                              " ${widget.accommodation?.bed?.toString() ?? '0'} " +
+                                  tr("bed"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
                                 fontSize: 14,
@@ -274,9 +282,11 @@ class _DetailScreenState extends State<DetailScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(right: 7, left: 7, top: 4, bottom: 4),
+                            padding: const EdgeInsets.only(
+                                right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bathroom?.toString() ?? '0'} " + tr("bathroom"),
+                              " ${widget.accommodation?.bathroom?.toString() ?? '0'} " +
+                                  tr("bathroom"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
                                 fontSize: 14,
@@ -307,10 +317,12 @@ class _DetailScreenState extends State<DetailScreen> {
                               decoration: const BoxDecoration(
                                 color: Color.fromARGB(255, 50, 134, 252),
                                 shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   const Icon(
                                     Icons.star,
@@ -330,7 +342,9 @@ class _DetailScreenState extends State<DetailScreen> {
                             ),
                             const Gap(10),
                             Text(
-                              "(${widget.accommodation!.reviews.toString()} " + tr("reviews") + ")",
+                              "(${widget.accommodation!.reviews.toString()} " +
+                                  tr("reviews") +
+                                  ")",
                               style: GoogleFonts.roboto(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
@@ -341,7 +355,8 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                       Text(
-                        "\$${widget.accommodation!.price_per_night!}/" + tr("night"),
+                        "\$${widget.accommodation!.price_per_night!}/" +
+                            tr("night"),
                         style: GoogleFonts.roboto(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
@@ -383,7 +398,9 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   const Gap(10),
                   Text(
-                    "- " + tr("Kitchen") + ": ${widget.accommodation?.kitchen == true ? tr('Yes') : tr('No')}",
+                    "- " +
+                        tr("Kitchen") +
+                        ": ${widget.accommodation?.kitchen == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 13,
@@ -393,7 +410,9 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   const Gap(10),
                   Text(
-                    "- " + tr("TV") + ": ${widget.accommodation?.tv == true ? tr('Yes') : tr('No')}",
+                    "- " +
+                        tr("TV") +
+                        ": ${widget.accommodation?.tv == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 13,
@@ -403,7 +422,9 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   const Gap(10),
                   Text(
-                    "- " + tr("Wifi") + ": ${widget.accommodation?.wifi == true ? tr('Yes') : tr('No')}",
+                    "- " +
+                        tr("Wifi") +
+                        ": ${widget.accommodation?.wifi == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 13,
@@ -413,7 +434,9 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   const Gap(10),
                   Text(
-                    "- " + tr("Air Conditioning") + ": ${widget.accommodation?.air_conditioning == true ? tr('Yes') : tr('No')}",
+                    "- " +
+                        tr("Air Conditioning") +
+                        ": ${widget.accommodation?.air_conditioning == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 13,
@@ -431,13 +454,11 @@ class _DetailScreenState extends State<DetailScreen> {
                       color: const Color.fromARGB(255, 135, 135, 135),
                     ),
                   ),
-                  const SizedBox(height: 10),
                   const Gap(10),
                 ],
               ),
             ),
             const SizedBox(height: 10),
-            const Gap(10),
             SingleChildScrollView(
               child: FutureBuilder<List<dynamic>>(
                 future: Future.wait(
@@ -486,7 +507,8 @@ class _DetailScreenState extends State<DetailScreen> {
                                       );
                                     },
                                     child: Container(
-                                      margin: const EdgeInsets.only(right: 10, bottom:10),
+                                      margin: const EdgeInsets.only(
+                                          right: 10, bottom: 10),
                                       width: 150,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
@@ -510,8 +532,52 @@ class _DetailScreenState extends State<DetailScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 10),
             const Gap(10),
+            if (widget.start_date != null && widget.end_date != null) ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    tr("Selected date:"),
+                    textAlign: TextAlign.start,
+                    style: GoogleFonts.roboto(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: const Color.fromARGB(200, 32, 32, 32),
+                    ),
+                  ),
+                  Gap(10),
+                  Text(
+                      DateFormat.yMMMMd(tr('en_US'))
+                          .format(widget.start_date!)
+                          .toString(),
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.roboto(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: const Color.fromARGB(200, 32, 32, 32),
+                      )),
+                  const SizedBox(width: 10),
+                  Text("-"),
+                  const SizedBox(width: 10),
+                  Text(
+                    DateFormat.yMMMMd(tr('en_US'))
+                        .format(widget.end_date!)
+                        .toString(),
+                    textAlign: TextAlign.start,
+                    style: GoogleFonts.roboto(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: const Color.fromARGB(200, 32, 32, 32),
+                    ),
+                  ),
+                ],
+              ),
+              const Gap(10),
+            ] else ...[
+              Container()
+            ],
+            const Gap(5),
             GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
@@ -522,51 +588,33 @@ class _DetailScreenState extends State<DetailScreen> {
                           bookedDates: widget.accommodation!.bookedDates!,
                           onChooseDate: getDates,
                           startDate: widget.start_date,
-                          endDate:widget.end_date ,
+                          endDate: widget.end_date,
                         );
                       });
                 },
-                child: Text(tr("Choose dates"),
+                child: Container(
+                  padding: const EdgeInsets.only(
+                      left: 110, right: 110, top: 15, bottom: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: const Color.fromARGB(200, 32, 32, 32),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    tr("Choose dates"),
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
-                      fontSize: 15,
+                      fontSize: 18,
                       fontWeight: FontWeight.w700,
-                      color: const Color.fromARGB(255, 135, 135, 135),
-                    ))),
-            if (widget.start_date != null && widget.end_date != null) ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                      DateFormat.yMMMMd('en_US')
-                          .format(widget.start_date!)
-                          .toString(),
-                      textAlign: TextAlign.start,
-                      style: GoogleFonts.roboto(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: const Color.fromARGB(255, 135, 135, 135),
-                      )),
-                       const SizedBox(
-                width: 10,
-              ),
-              Text(
-                DateFormat.yMMMMd('en_US').format(widget.end_date!).toString(),
-                textAlign: TextAlign.start,
-                style: GoogleFonts.roboto(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: const Color.fromARGB(255, 135, 135, 135),
-                ),
-              ),
-                ],
-              ),
-             
-            ] else ...[
-              Container()
-            ],
+                      color: const Color.fromARGB(200, 32, 32, 32),
+                    ),
+                  ),
+                )),
             Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.only(
+                  left: 50, right: 50, top: 15, bottom: 15),
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50),
@@ -597,7 +645,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   }
                 },
                 icon: const Icon(Icons.lock_open, size: 0),
-                label: Text( tr('Book now'), style: TextStyle(fontSize: 18)),
+                label: Text(tr('Book now'), style: TextStyle(fontSize: 18)),
               ),
             ),
           ],
@@ -606,4 +654,3 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 }
-

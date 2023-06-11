@@ -125,33 +125,39 @@ class _HomeTestState extends State<HomeTest> {
                       });
                 },
                 child:
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 10.0),
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(50),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          backgroundColor:
-                          const Color.fromARGB(211, 211, 211, 211)),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    AllAccommodationsScreen())));
-                      },
-                      icon: const Icon(Icons.lock_open, size: 0),
-                      label: Text(tr('Search place'),
-                        style: GoogleFonts.roboto(
-                          color: Color.fromARGB(
-                              130, 30, 30, 30),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+                Padding(
+                  padding: EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 10.0),
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        // side: BorderSide(
+                        //   color: Colors.grey,
+                        //   width: 0.5,
+                        // ),
+                      ),
+                      backgroundColor: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: ((context) => AllAccommodationsScreen()),
                         ),
+                      );
+                    },
+                    icon: const Icon(Icons.lock_open, size: 0),
+                    label: Text(
+                      tr('Search place'),
+                      style: GoogleFonts.roboto(
+                        color: Color.fromARGB(220, 30, 30, 30),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-              ),
+                ),
               ),
               Container(
                 padding: const EdgeInsets.only(top: 25, left: 30, right: 28, bottom: 10),

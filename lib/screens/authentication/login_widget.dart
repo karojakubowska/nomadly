@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nomadly_app/screens/home_view.dart';
 
 import '../../main.dart';
+import 'forgot_password.dart';
 
 class LoginWidget extends StatefulWidget {
   final VoidCallback onClickedSignUp;
@@ -117,7 +118,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => ForgotPasswordPage(
+                              ))));
+                    },
                     child: Text(
                       tr('Forgot Password?'),
                       style: TextStyle(

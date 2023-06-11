@@ -170,7 +170,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final users = db.collection("Users").doc(id);
     users.update({
       'AccountImage': imageURL.toString(),
-    }).then((value) => print("DocumentSnapshot successfully updated!"),
+    }).then((value) =>
+        print("DocumentSnapshot successfully updated!"),
         onError: (e) => print("Error updating document $e"));
   }
 
@@ -380,7 +381,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       const EdgeInsets.symmetric(horizontal: 20.0),
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      minimumSize: const Size.fromHeight(45),
+                                      minimumSize: const Size.fromHeight(50),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),

@@ -13,8 +13,10 @@ class CalendarScreen extends StatefulWidget {
   List<BookDate> bookedDates;
   DateTime? startDate;
   DateTime? endDate;
+
   //List<DateTime> bookedDates;
   final void Function(DateTime, DateTime) onChooseDate;
+
   CalendarScreen(
       {super.key,
       required this.bookedDates,
@@ -89,7 +91,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
         backgroundColor: const Color(0x00171a21),
         body: Container(
           height: size.height,
-          width: size.width, //size.width * 0.8,
+          width: size.width,
+          //size.width * 0.8,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           decoration: const BoxDecoration(
             color: Colors.white,
@@ -103,31 +106,61 @@ class _CalendarScreenState extends State<CalendarScreen> {
               height: 370,
               child: ListView(children: <Widget>[cardView]),
             ),
+            Text(tr('Selected date:')),
+            Gap(10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(_startDate),
-                const Gap(10),
+                const SizedBox(width: 10),
                 Text(_endDate),
               ],
             ),
-            ElevatedButton(
-              child: Text(tr('Search')),
-              onPressed: () => {
-                if (_startDate == tr("Minimal reservation time is one night") ||
-                    _startDate ==
-                        tr("Sorry these dates are already taken. Choose different dates."))
-                  {null}
-                else
-                  {
-                    widget.onChooseDate(
-                      start,
-                      end,
-                    ),
-                    Navigator.pop(context),
-                  }
-              },
-            )
+            // ElevatedButton(
+            //   child: Text(tr('Search')),
+            //   onPressed: () => {
+            //     if (_startDate == tr("Minimal reservation time is one night") ||
+            //         _startDate ==
+            //             tr("Sorry these dates are already taken. Choose different dates."))
+            //       {null}
+            //     else
+            //       {
+            //         widget.onChooseDate(
+            //           start,
+            //           end,
+            //         ),
+            //         Navigator.pop(context),
+            //       }
+            //   },
+            // )
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 50, right: 50, top: 15, bottom: 15),
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    backgroundColor: const Color.fromARGB(255, 50, 134, 252)),
+                onPressed: () => {
+                  if (_startDate ==
+                          tr("Minimal reservation time is one night") ||
+                      _startDate ==
+                          tr("Sorry these dates are already taken. Choose different dates."))
+                    {null}
+                  else
+                    {
+                      widget.onChooseDate(
+                        start,
+                        end,
+                      ),
+                      Navigator.pop(context),
+                    }
+                },
+                icon: const Icon(Icons.lock_open, size: 0),
+                label: Text(tr('Search'), style: TextStyle(fontSize: 20)),
+              ),
+            ),
           ]),
         ));
   }
@@ -160,11 +193,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
         for (DateTime date in list) {
           if (date.isAfter(args.value.startDate) &&
               date.isBefore(args.value.endDate ?? args.value.startDate)) {
-            _startDate =
-                "Sorry this dates are already taken :( Choose different dates";
+            _startDate = tr(
+                "Sorry these dates are already taken. Choose different dates.");
             //_endDate = "+1";
           } else if (args.value.startDate == args.value.endDate) {
-            _startDate = "Minimal reservation time is one night";
+            _startDate = tr("Minimal reservation time is one night");
             // _endDate = "+1";
             start = args.value.startDate;
 
@@ -174,13 +207,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
       }
       if (args.value.startDate ==
           (args.value.endDate ?? args.value.startDate)) {
-        _startDate = "Minimal reservation time is one night";
+        _startDate = tr("Minimal reservation time is one night");
         _endDate = "";
 
         end = args.value.endDate ?? args.value.startDate;
       } else {
-        _startDate = DateFormat.yMMMMd('en_US').format(args.value.startDate);
-        _endDate = DateFormat.yMMMMd('en_US')
+        _startDate =
+            DateFormat.yMMMMd(tr('en_US')).format(args.value.startDate);
+        _endDate = DateFormat.yMMMMd(tr('en_US'))
             .format(args.value.endDate ?? args.value.startDate)
             .toString();
       }
@@ -191,7 +225,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       // }
     });
     if (_startDate ==
-        "Sorry this dates are already taken :( Choose different dates") {
+        tr("Sorry these dates are already taken. Choose different dates.")) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
