@@ -168,7 +168,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     if (_startDate ==
                         tr("Minimal reservation time is one night") ||
                         _startDate ==
-                            tr("Sorry these dates are already taken. \n Choose different dates."))
+                            tr("Sorry these dates are already taken."))
                       {null}
                     else
                       {
@@ -217,7 +217,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           if (date.isAfter(args.value.startDate) &&
               date.isBefore(args.value.endDate ?? args.value.startDate)) {
             _startDate = tr(
-                "Sorry these dates are already taken. Choose different dates.");
+                "Sorry these dates are already taken.");
             _endDate = "";
             break;
           } else if (args.value.startDate == args.value.endDate) {
