@@ -12,8 +12,10 @@ class Acommodation {
   int? price_per_night;
   String? street;
   String? city;
+  String? cityLower;
   String? post_code;
   String? country;
+  String? countryLower;
   String? check_in;
   String? check_out;
   String? description;
@@ -39,8 +41,10 @@ class Acommodation {
     this.id,
     this.title,
     this.city,
+    this.cityLower,
     this.photo,
     this.country,
+    this.countryLower,
     this.rate,
     this.price_per_night,
     this.description,
@@ -76,8 +80,10 @@ class Acommodation {
         'street': street,
         'address': address,
         'city': city,
+        'city_lower': cityLower,
         'post_code': post_code,
         'country': country,
+        'country_lower': countryLower,
         'check_in': check_in,
         'check_out': check_out,
         'description': description,
@@ -107,8 +113,10 @@ class Acommodation {
     price_per_night=json['price_per_night'];
     street=json['street'];
     city=json['city'];
+     cityLower=json['city_lower'];
     post_code=json['post_code'];
     country=json['country'];
+    countryLower=json['country_lower'];
     check_in=json['check_in'];
     check_out=json['check_out'];
     description=json['description'];

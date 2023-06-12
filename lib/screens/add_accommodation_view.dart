@@ -256,7 +256,9 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
     return accommodation.add({
       'title': titleController.text,
       'country': countryController.text,
+       'country_lower': countryController.text.toLowerCase(),
       'city': cityController.text,
+      'city_lower':cityController.text.toLowerCase(),
       'street': streetController.text,
       'description': descriptionController.text,
       'address': addressController.text,

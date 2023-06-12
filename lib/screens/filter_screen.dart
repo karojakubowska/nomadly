@@ -571,7 +571,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
     if (city.isEmpty) {
     } else {
       filteredAccommodations = filteredAccommodations
-          .where((i) => ((i.city == city || i.country == city)))
+          .where((i) => ((i.city == city || i.country == city||i.cityLower==city||i.countryLower==city)))
           .toList();
     }
     if (priceRange.start >= 0 && priceRange.end <= 2000) {
