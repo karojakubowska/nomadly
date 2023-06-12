@@ -1,9 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:nomadly_app/app-web.dart';
-import 'package:nomadly_app/home-web.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+
+import 'login-web.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,188 +21,158 @@ class MyWebView extends StatelessWidget {
       title: 'Login Page',
       home: Scaffold(
         body: Center(
-          child: LoginPage(
-            onClickedSignUp: () {},
-          ),
+          child: AppWeb(),
         ),
       ),
     );
   }
 }
 
-class LoginPage extends StatefulWidget {
-  final VoidCallback onClickedSignUp;
-
-  const LoginPage({Key? key, required this.onClickedSignUp}) : super(key: key);
-
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  String _errorMessage = '';
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
+void _launchURL(String url) async {
+  if (url.startsWith('gs://')) {
+    String downloadURL = await firebase_storage.FirebaseStorage.instance
+        .refFromURL(url)
+        .getDownloadURL();
+    url = downloadURL;
   }
 
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Nie można otworzyć adresu $url';
+  }
+}
+
+class AppWeb extends StatelessWidget {
+  final String apkStorageLink =
+      'gs://nomady-ae4b6.appspot.com/app/android/app-release.apk';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: Center(
-        child: Container(
-          width: 400,
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                blurRadius: 5,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                child: const Text(
-                  'Panel Admin',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+      body: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 40.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(
+                    'assets/icons/travel.png',
+                    width: 60.0,
+                    height: 60.0,
                   ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  hintText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  hintText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(55),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                  SizedBox(height: 120.0),
+                  Text(
+                    "Find your next",
+                    style: GoogleFonts.roboto(
+                      fontSize: 45,
+                      fontWeight: FontWeight.w800,
+                      color: const Color.fromARGB(251, 251, 117, 122),
                     ),
-                    backgroundColor: const Color.fromARGB(255, 50, 134, 252),
                   ),
-                  onPressed: () {
-                    signIn();
-                  },
-                  icon: const Icon(Icons.lock_open, size: 0),
-                  label: const Text(
-                    'Log in',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                _errorMessage,
-                style: const TextStyle(
-                  color: Colors.red,
-                ),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(55),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                  Text(
+                    "Adventure with Nomadly!",
+                    style: GoogleFonts.roboto(
+                      fontSize: 50,
+                      fontWeight: FontWeight.w900,
+                      color: Color.fromARGB(255, 13, 150, 151),
                     ),
-                    backgroundColor: const Color.fromARGB(255, 50, 134, 252),
                   ),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => AppWeb()),
-                    );
-                  },
-                  icon: const Icon(Icons.lock_open, size: 0),
-                  label: const Text(
-                    'Download App',
-                    style: TextStyle(fontSize: 18),
+                  SizedBox(height: 30.0),
+                  Text(
+                    'Nomadly is a mobile application that enables convenient booking of accommodations and travel planning. Find the perfect place to stay, discover new destinations, and enjoy a unique travel experience. You will find a wide range of accommodation options tailored to your preferences and budget.',
+                    style: GoogleFonts.roboto(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(180, 32, 32, 32),
+                      height: 1.5,
+                    ),
                   ),
-                ),
+                  SizedBox(height: 50.0),
+                  Container(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _launchURL(apkStorageLink);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 20.0),
+                        backgroundColor: Color.fromARGB(255, 13, 150, 151),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                      ),
+                      child: Text(
+                        'Download App',
+                        style: GoogleFonts.roboto(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.topRight,
+              child: Stack(
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            '/images/ian-dooley-TevqnfbI0Zc-unsplash.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 20,
+                    right: 20,
+                    child: Container(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage(
+                                onClickedSignUp: () {
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(20.0),
+                          backgroundColor: Color.fromARGB(251, 251, 117, 122),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        child: Text(
+                          'Admin Panel',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
-  }
-
-  Future<void> signIn() async {
-    try {
-      final email = emailController.text.trim();
-      final password = passwordController.text.trim();
-
-      if (email.isEmpty || password.isEmpty) {
-        setState(() {
-          _errorMessage = 'Please enter email and password';
-        });
-        return;
-      }
-
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      final user = userCredential.user;
-      if (user != null) {
-        final userDoc = await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(user.uid)
-            .get();
-        final userData = userDoc.data();
-        final accountType = userData?['AccountType'];
-        if (accountType == 'Admin') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomeWeb(),
-            ),
-          );
-        } else {
-          setState(() {
-            _errorMessage = 'Invalid account type';
-          });
-        }
-      }
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        _errorMessage = e.message!;
-      });
-    }
   }
 }
