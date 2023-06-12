@@ -174,7 +174,20 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
 
   CollectionReference accommodation =
       FirebaseFirestore.instance.collection('Accommodations');
-
+ List<BookDate> prepareBookDateList(){
+  List<BookDate> result=[];
+  DateTime d1=DateTime.now().add(Duration(days:-32));
+    DateTime d2=DateTime.now().add(Duration(days:-31));
+    String s1 = d1.toString().substring(0, 10);
+    String s2=d2.toString().substring(0, 10);
+     DateTime sd1 = DateTime.parse(s1);
+      DateTime sd2 = DateTime.parse(s2);
+    BookDate b1=BookDate(date: sd1,hour:"14");
+    BookDate b2=BookDate(date: sd2,hour:"11");
+    result.add(b1);
+    result.add(b2);
+    return result;
+ }
   Future<void> addAccommodation(BuildContext context, pickedFile) async {
     if (titleController.text.isEmpty ||
         countryController.text.isEmpty ||
@@ -214,19 +227,11 @@ class _AddAccommodationScreenState extends State<AddAccommodationScreen> {
       print('error occured');
     }
     ;
-    DateTime d1=DateTime.now().add(Duration(days:-32));
-    DateTime d2=DateTime.now().add(Duration(days:-31));
-    String s1 = d1.toString().substring(0, 10);
-    String s2=d2.toString().substring(0, 10);
-     DateTime sd1 = DateTime.parse(s1);
-      DateTime sd2 = DateTime.parse(s2);
-    BookDate b1=BookDate(date: sd1,hour:"14");
-    BookDate b2=BookDate(date: sd2,hour:"11");
+    
     
    
-    List<BookDate>bookedDates=[];
-    bookedDates.add(b1);
-    bookedDates.add(b2);
+    List<BookDate>bookedDates=prepareBookDateList();
+   
     List<String> otherPhotoURLs = [];
     for (var photo in photos) {
       String otherPhotoDateTime = DateTime.now().toString();
