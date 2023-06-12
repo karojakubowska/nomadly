@@ -198,17 +198,14 @@ class _AccommodationCardHostState extends State<AccommodationCardHost> {
   void deleteAccommodation(
       String documentId, String imageId, List<String> photoUrls) async {
     try {
-      // Delete the main photo
       await FirebaseStorage.instance.refFromURL(imageId).delete();
       print('Main photo successfully deleted!');
 
-      // Delete other photos
       for (String photoUrl in photoUrls) {
         await FirebaseStorage.instance.refFromURL(photoUrl).delete();
         print('Photo successfully deleted!');
       }
 
-      // Delete the accommodation document
       await FirebaseFirestore.instance
           .collection('Accommodations')
           .doc(documentId)

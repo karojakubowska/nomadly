@@ -181,7 +181,7 @@ class _AddTravelViewState extends State<AddTravelView> {
     }).then((value) {
       print("DocumentSnapshot successfully updated!");
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('New travel added')),
+        SnackBar(content: Text(tr('New travel added'))),
       );
     }, onError: (e) {
       print("Error updating document $e");

@@ -14,8 +14,10 @@ class PopularCard extends StatefulWidget {
   String accommodationCity = '';
   String accommodationPhoto = '';
   int index;
+
   PopularCard(
-      {super.key, required this.accomodation,
+      {super.key,
+      required this.accomodation,
       required this.accommodationCity,
       required this.accommodationName,
       required this.accommodationPhoto,
@@ -26,7 +28,7 @@ class PopularCard extends StatefulWidget {
 }
 
 class _PopularCardState extends State<PopularCard> {
-   navigateToDetail(Acommodation accommodation) {
+  navigateToDetail(Acommodation accommodation) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -34,13 +36,14 @@ class _PopularCardState extends State<PopularCard> {
                   accommodation: accommodation,
                 ))));
   }
+
   @override
   Widget build(BuildContext context) {
     final size = AppLayout.getSize(context);
     return InkWell(
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
-        width: size.width ,
+        width: size.width,
         height: 90,
         decoration: BoxDecoration(
           color: Styles.whiteColor,
@@ -55,22 +58,24 @@ class _PopularCardState extends State<PopularCard> {
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
                   //photo = (widget.accommodationPhoto);
-                   return Container(
-              margin: const EdgeInsets.only(left: 10, right: 10,),
-              height: 65,
-              width: 70,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  image:  DecorationImage(
-                     image: NetworkImage(snapshot.data.toString()),
-                         fit: BoxFit.cover,
-                  )));
+                  return Container(
+                      margin: const EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                      ),
+                      height: 65,
+                      width: 70,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          image: DecorationImage(
+                            image: NetworkImage(snapshot.data.toString()),
+                            fit: BoxFit.cover,
+                          )));
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
               },
             ),
-           
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,18 +85,20 @@ class _PopularCardState extends State<PopularCard> {
                   style: Styles.popularNameStyle,
                 ),
                 Row(
-                  children: [Text(widget.accomodation.rate.toString()),
-                  Gap(10),
+                  children: [
+                    Text(widget.accomodation.rate.toString()),
+                    Gap(10),
                     RatingBarIndicator(
-                                rating:widget.accomodation.rate!.toDouble(),//rating: user.rate!.toDouble(),
-                                itemBuilder: (context, index) => const Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                itemCount: 5,
-                                itemSize: 10.0,
-                                direction: Axis.horizontal,
-                              ),
+                      rating: widget.accomodation.rate!.toDouble(),
+                      //rating: user.rate!.toDouble(),
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      itemCount: 5,
+                      itemSize: 10.0,
+                      direction: Axis.horizontal,
+                    ),
                   ],
                 ),
               ],
@@ -99,7 +106,7 @@ class _PopularCardState extends State<PopularCard> {
           ],
         ),
       ),
-        onTap: () {
+      onTap: () {
         navigateToDetail(widget.accomodation);
       },
     );

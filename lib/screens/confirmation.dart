@@ -27,13 +27,6 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
     
     return Scaffold(
         backgroundColor: Styles.backgroundColor,
-        // appBar: AppBar(
-
-        //   backgroundColor: Styles.backgroundColor,
-        //   title: Text('Secure payment', style: Styles.headLineStyle4),
-        //   elevation: 0,
-        //   centerTitle: true,
-        // ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

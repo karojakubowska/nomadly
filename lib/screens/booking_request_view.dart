@@ -215,12 +215,6 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
 
   void BookingTransaction(DateTime startDate, DateTime endDate) {
     List<BookDate> listOfDates = listAllDates(startDate, endDate);
-    // List<BookDate> listOfDates = [
-    //   BookDate(date: DateTime(2023, 06, 23), hour: "14"),
-    //   BookDate(date: DateTime(2023, 06, 24), hour: "12"),
-    //   //BookDate(date: DateTime(2023, 06, 16), hour: "12"),
-    //   BookDate(date: DateTime(2023, 06, 25), hour: "11")
-    // ];
     if (listOfDates.isEmpty) {
       throw ProviderNullException;
     }
@@ -274,43 +268,6 @@ class _BookingRequestScreenState extends State<BookingRequestScreen> {
       },
     );
   }
-
-  // void batchWrite() {
-  //   var db = FirebaseFirestore.instance;
-  //   final batch = db.batch();
-  //   var reservationsCountRef =
-  //       db.collection("Accommodations").doc(widget.accommodation.id);
-  //   batch.update(
-  //       reservationsCountRef, {"reservations_count": FieldValue.increment(1)});
-
-  //   var bookingRef = db.collection("Bookings").doc();
-  //   batch.set(bookingRef, {
-  //     'accommodation_id': widget.accommodation.id,
-  //     'host_id': widget.accommodation.host_id,
-  //     'user_id': FirebaseAuth.instance.currentUser!.uid,
-  //     'start_date': widget.startDate,
-  //     'end_date': widget.endDate,
-  //     'guest_number': widget.guestNumber,
-  //     'total_price': totalPrice,
-  //     'status': "Waiting for confirmation",
-  //     'username': FirebaseAuth.instance.currentUser!
-  //         .displayName, //nie wiem czy to bedzie dzialalo czy trzeba nasz model tu podstawic
-  //     'isAccommodationRated': false,
-  //     'isUserRated': false,
-  //     'city': widget.accommodation.city,
-  //     'country': widget.accommodation.country,
-  //   });
-  //   batch.commit().then(
-  //     (_) {
-  //       Navigator.push(context,
-  //           MaterialPageRoute(builder: ((context) => CheckoutScreen())));
-  //     },
-  //     onError: (e) => {
-  //       Navigator.push(context,
-  //           MaterialPageRoute(builder: ((context) => ErrorWhileBooking())))
-  //     },
-  //   );
-  // }
 
   bool x(DocumentSnapshot snapshot, List<BookDate> datesToBook) {
     var startd = datesToBook.first;

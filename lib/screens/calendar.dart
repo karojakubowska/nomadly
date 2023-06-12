@@ -214,8 +214,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             break;
           } else {
             _startDate =
-                DateFormat.yMMMMd('en_US').format(args.value.startDate);
-            _endDate = DateFormat.yMMMMd('en_US')
+                DateFormat.yMMMMd(tr('en_US')).format(args.value.startDate);
+            _endDate = DateFormat.yMMMMd(tr('en_US'))
                 .format(args.value.endDate ?? args.value.startDate)
                 .toString();
           }

@@ -70,6 +70,7 @@ class _HomeTestState extends State<HomeTest> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     final size = AppLayout.getSize(context);
     const String locationsvg = 'assets/images/location-pin-svgrepo-com.svg';
     List<Acommodation> accommodationList =
@@ -217,7 +218,6 @@ class _HomeTestState extends State<HomeTest> {
         result.add(allAccommodations[i]);
       }
     } else {
-     // print("List is empty. Cannot find maximum objects.");
     }
     return result;
   }

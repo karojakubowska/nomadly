@@ -18,7 +18,6 @@ class BookingCard extends StatefulWidget {
   int index;
   Acommodation accommodation;
 
-  //const BookingCardHost({super.key});
   BookingCard(
       {super.key,
       required this.booking,

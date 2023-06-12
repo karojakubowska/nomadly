@@ -170,8 +170,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final users = db.collection("Users").doc(id);
     users.update({
       'AccountImage': imageURL.toString(),
-    }).then((value) =>
-        print("DocumentSnapshot successfully updated!"),
+    }).then((value) => print("DocumentSnapshot successfully updated!"),
         onError: (e) => print("Error updating document $e"));
   }
 
@@ -218,7 +217,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       height: 150,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 249, 250, 250),
-                        borderRadius: const BorderRadius.all(Radius.circular(100)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(100)),
                         border: Border.all(
                           color: const Color.fromARGB(255, 217, 217, 217),
                           width: 0.5,
@@ -237,19 +237,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             )
                           : _photoUrl.isNotEmpty
                               ? ClipRRect(
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(100)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(100)),
                                   child: Image.network(
                                     _photoUrl,
                                     fit: BoxFit.cover,
                                   ))
                               : Container(
                                   decoration: BoxDecoration(
-                                    color: const Color.fromARGB(255, 249, 250, 250),
-                                    borderRadius:
-                                        const BorderRadius.all(Radius.circular(100)),
+                                    color: const Color.fromARGB(
+                                        255, 249, 250, 250),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(100)),
                                     border: Border.all(
-                                      color: const Color.fromARGB(255, 217, 217, 217),
+                                      color: const Color.fromARGB(
+                                          255, 217, 217, 217),
                                       width: 0.5,
                                     ),
                                   ),
@@ -299,7 +301,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       updateImage(widget.id, pickedFile);
                     },
                     icon: const Icon(Icons.lock_open, size: 0),
-                    label: Text( tr('Save Image'),
+                    label: Text(tr('Save Image'),
                         style: TextStyle(
                             fontSize: 18.0,
                             height: 1.2,
@@ -314,7 +316,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
+                            return const Center(
+                                child: CircularProgressIndicator());
                           }
                           final userDoc = snapshot.data!;
                           final accountImage = userDoc.get('AccountImage');
@@ -351,8 +354,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   height: 20,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
                                   child: TextField(
                                     controller: emailController,
                                     cursorColor: Colors.white,
@@ -377,8 +379,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   height: 30,
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 20.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0),
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       minimumSize: const Size.fromHeight(50),
@@ -390,7 +392,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           255, 50, 134, 252),
                                     ),
                                     onPressed: _updateUserProfile,
-                                    child: Text( tr('Save'),
+                                    child: Text(tr('Save'),
                                         style: TextStyle(
                                             fontSize: 18.0,
                                             height: 1.2,

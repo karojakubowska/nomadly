@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nomadly_app/utils/app_layout.dart';
 import 'package:nomadly_app/utils/app_styles.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -118,7 +119,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 const SizedBox(height: 8.0),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title:  Text(tr('Gallery')),
+                  title: Text(tr('Gallery')),
                   onTap: () {
                     imgFromGallery(pickedFile);
                     Navigator.of(context).pop();
@@ -172,8 +173,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
         'photo': imageOld.toString(),
       }).then((value) => print("DocumentSnapshot successfully updated!"),
           onError: (e) => print("Error updating document $e"));
-    }
-    else {
+    } else {
       FirebaseStorage.instance.refFromURL(imageOld).delete().then((_) {
         print("Image successfully deleted!");
       }).catchError((error) {
@@ -184,8 +184,9 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
       final destination = uniqueFileName;
 
       try {
-        final ref =
-        firebase_storage.FirebaseStorage.instance.ref(destination).child('');
+        final ref = firebase_storage.FirebaseStorage.instance
+            .ref(destination)
+            .child('');
         await ref.putFile(_photo!);
         imageURL = ("gs://nomady-ae4b6.appspot.com/" + destination.toString())
             .toString();
@@ -211,6 +212,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
 
   @override
   Widget build(BuildContext context) {
+    final size = AppLayout.getSize(context);
     return Scaffold(
         backgroundColor: Styles.backgroundColor,
         appBar: AppBar(
@@ -233,13 +235,15 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          centerTitle: true, toolbarTextStyle: const TextTheme(
+          centerTitle: true,
+          toolbarTextStyle: const TextTheme(
             subtitle1: TextStyle(
               color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
-          ).bodyText2, titleTextStyle: const TextTheme(
+          ).bodyText2,
+          titleTextStyle: const TextTheme(
             subtitle1: TextStyle(
               color: Colors.black,
               fontSize: 20,
@@ -251,14 +255,14 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
           SingleChildScrollView(
               child: Column(children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 0.0),
+              padding: const EdgeInsets.only(bottom: 10, right: 20, left: 20),
               child: GestureDetector(
                 onTap: () {
                   _showPicker(context);
                 },
                 child: Container(
-                  width: 150,
-                  height: 150,
+                  width: size.width,
+                  height: size.height * 0.22,
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 249, 250, 250),
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -269,7 +273,8 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                   ),
                   child: _photo != null
                       ? ClipRRect(
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
                           child: Image.file(
                             _photo!,
                             width: 150,
@@ -291,7 +296,8 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 217, 217, 217),
+                                  color:
+                                      const Color.fromARGB(255, 217, 217, 217),
                                   width: 0.5,
                                 ),
                               ),
@@ -308,23 +314,23 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 ),
               ),
             ),
-                const SizedBox(
-                  height: 10,
+            const SizedBox(
+              height: 10,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  tr("Click to edit photo"),
+                  style: GoogleFonts.roboto(
+                      textStyle: const TextStyle(
+                          fontSize: 14.0,
+                          height: 1.2,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w400)),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      tr("Click to edit photo"),
-                      style: GoogleFonts.roboto(
-                          textStyle: const TextStyle(
-                              fontSize: 14.0,
-                              height: 1.2,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w400)),
-                    ),
-                  ],
-                ),
+              ],
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -515,7 +521,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
                 },
                 icon: const Icon(Icons.lock_open, size: 0),
                 label:
-                      Text(tr('Update Travel'), style: TextStyle(fontSize: 20)),
+                    Text(tr('Update Travel'), style: TextStyle(fontSize: 20)),
               ),
             )
           ]))

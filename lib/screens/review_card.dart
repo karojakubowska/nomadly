@@ -11,17 +11,10 @@ class ReviewCard extends StatelessWidget {
   UserModel user;
   Review review;
 
-  //CircleAvatar avatar;
-  // final String name;
-  // final String date;
-
   ReviewCard({
     Key? key,
     required this.user,
     required this.review,
-    //required this.avatar,
-    // required this.name,
-    // required this.date,
   }) : super(key: key);
 
   @override

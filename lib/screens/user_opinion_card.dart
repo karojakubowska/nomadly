@@ -12,17 +12,10 @@ class UserOpinionCard extends StatefulWidget {
   UserModel user;
   UserOpinion opinon;
 
-  //CircleAvatar avatar;
-  // final String name;
-  // final String date;
-
   UserOpinionCard({
     Key? key,
     required this.user,
     required this.opinon,
-    //required this.avatar,
-    // required this.name,
-    // required this.date,
   }) : super(key: key);
 
   @override

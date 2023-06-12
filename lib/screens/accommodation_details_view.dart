@@ -579,18 +579,33 @@ class _DetailScreenState extends State<DetailScreen> {
               Container()
             ],
             const Gap(5),
-            Container(
-                child: Row(
-              children: [
-                Text('Tu podpis co to jest np. liczba gości  '),
-                if (widget.guest_number == null) ...[
-                  Text('1')
-                ] else ...[
-                  Text('${widget.guest_number}')
-                ]
-              ],
-            )),
-            const Gap(5),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(tr('Number of people') + ": ", style: GoogleFonts.roboto(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: const Color.fromARGB(200, 32, 32, 32),
+                  ),),
+                  if (widget.guest_number == null)
+                    ...[
+                      Text('1', style: GoogleFonts.roboto(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: const Color.fromARGB(200, 32, 32, 32))),
+                    ]
+                  else
+                    ...[
+                      Text('${widget.guest_number}', style: GoogleFonts.roboto(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: const Color.fromARGB(200, 32, 32, 32)))
+                    ]
+                ],
+              ),
+            ),
+            const Gap(10),
             GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
