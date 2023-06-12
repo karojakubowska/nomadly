@@ -16,7 +16,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
    @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 10)).then((value) {
+    Future.delayed(Duration(seconds: 5)).then((value) {
         Navigator.push(context,
             MaterialPageRoute(builder: ((context) => CheckoutConfirmedScreen())));
       
