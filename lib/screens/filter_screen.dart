@@ -297,10 +297,10 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   fontWeight: FontWeight.w500)),
           Gap(10),
           Container(
-            width: 60,
+            width: 100,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey,
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.grey.shade300,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -24,8 +24,7 @@ class CalendarScreen extends StatefulWidget {
       required this.onChooseDate,
       this.startDate,
       this.endDate,
-      this.guest_number
-      });
+      this.guest_number});
 
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
@@ -47,8 +46,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   void initState() {
     start = DateTime.now();
     end = DateTime.now().add(Duration(days: 1));
-    if(widget.guest_number==null){
-      widget.guest_number=1;
+    if (widget.guest_number == null) {
+      widget.guest_number = 1;
     }
     super.initState();
   }
@@ -95,87 +94,104 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
     return Scaffold(
         backgroundColor: const Color(0x00171a21),
-        body: Container(
-          height: size.height,
-          width: size.width,
-          //size.width * 0.8,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25.0),
-              topRight: Radius.circular(25.0),
-            ),
+      body: Container(
+        height: size.height,
+        width: size.width,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25.0),
+            topRight: Radius.circular(25.0),
           ),
-          child: Column(children: <Widget>[
-            SizedBox(
-              height: 370,
-              child: ListView(children: <Widget>[cardView]),
-            ),
-            Container(
-            width: 60,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                    onTap: () => setState(() {
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 340,
+                child: ListView(children: <Widget>[cardView]),
+              ),
+              Gap(5),
+              Text(tr('Number of people') + ": "),
+              Gap(5),
+              Container(
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.grey.shade300,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                        onTap: () => setState(() {
                           widget.guest_number == 1
                               ? print('guests at 1')
-                              : widget.guest_number=widget.guest_number!-1;
+                              : widget.guest_number =
+                              widget.guest_number! - 1;
                         }),
-                    child: const Icon(Icons.remove)),
-                Text('${widget.guest_number}'),
-                GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        widget.guest_number=widget.guest_number!+1;
-                      });
-                    },
-                    child: const Icon(Icons.add)),
-              ],
-            ),
+                        child: const Icon(Icons.remove)),
+                    Text('${widget.guest_number}'),
+                    GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            widget.guest_number = widget.guest_number! + 1;
+                          });
+                        },
+                        child: const Icon(Icons.add)),
+                  ],
+                ),
+              ),
+              Gap(10),
+              Text(tr('Selected date:')),
+              Gap(10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(width: 10),
+                  Text(_startDate),
+                  const SizedBox(width: 10),
+                  Text(_endDate),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 50, right: 50, top: 10, bottom: 0),
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(40),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      backgroundColor: const Color.fromARGB(255, 50, 134, 252)),
+                  onPressed: () => {
+                    if (_startDate ==
+                        tr("Minimal reservation time is one night") ||
+                        _startDate ==
+                            tr("Sorry these dates are already taken. \n Choose different dates."))
+                      {null}
+                    else
+                      {
+                        widget.onChooseDate(start, end, widget.guest_number!),
+                        Navigator.pop(context),
+                      }
+                  },
+                  icon: const Icon(Icons.lock_open, size: 0),
+                  label: Text(tr('Search'), style: TextStyle(fontSize: 18)),
+                ),
+              ),
+            ],
           ),
-            Text(tr('Selected date:')),
-            Gap(10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(_startDate),
-                const SizedBox(width: 10),
-                Text(_endDate),
-              ],
-            ),
-            ElevatedButton(
-              child: const Text('Search'),
-              onPressed: () => {
-                if (_startDate == tr("Minimal reservation time is one night") ||
-                    _startDate ==
-                        tr("Sorry these dates are already taken. Choose different dates."))
-                  {null}
-                else
-                  {
-                    widget.onChooseDate(
-                      start,
-                      end,
-                      widget.guest_number!
-                    ),
-                    Navigator.pop(context),
-                  }
-              },
-            )
-          ]),
-        ));
+        ),
+      ),
+    );
   }
 
   SfDateRangePicker _getBlackoutDatePicker() {
     return SfDateRangePicker(
       selectionMode: DateRangePickerSelectionMode.range,
       toggleDaySelection: true,
-      showTodayButton: true,
+      //showTodayButton: true,
       maxDate: DateTime.now().add(const Duration(days: 365)),
       minDate: DateTime.now(),
       enablePastDates: false,
@@ -200,17 +216,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
           DateTime date = widget.bookedDates[i].date!;
           if (date.isAfter(args.value.startDate) &&
               date.isBefore(args.value.endDate ?? args.value.startDate)) {
-            _startDate =
-                tr("Sorry these dates are already taken. Choose different dates.");
-                _endDate="";
+            _startDate = tr(
+                "Sorry these dates are already taken. Choose different dates.");
+            _endDate = "";
             break;
           } else if (args.value.startDate == args.value.endDate) {
             _startDate = tr("Minimal reservation time is one night");
-            _endDate="";
+            _endDate = "";
             break;
-          } else if (_startDate==_endDate) {
+          } else if (_startDate == _endDate) {
             _startDate = tr("Minimal reservation time is one night");
-            _endDate="";
+            _endDate = "";
             break;
           } else {
             _startDate =
