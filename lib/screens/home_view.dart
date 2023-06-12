@@ -101,30 +101,7 @@ class _HomeTestState extends State<HomeTest> {
                   ),
                 ],
               ),
-              GestureDetector(
-                onTap: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: ((context) => AllAccommodationsScreen())));
-                  showModalBottomSheet<dynamic>(
-                      backgroundColor: Colors.transparent,
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (BuildContext bc) {
-                        return FiltersScreen(
-                            onApplyFilters: getFilter,
-                            onQueryChanged: updateQuery,
-                            currentFilters: filters,
-                            currentPriceRange: priceRange,
-                            currentCity: city,
-                            resultList: results,
-                            start: startDate,
-                            end: endDate,
-                            guests: guestNumber);
-                      });
-                },
-                child:
+             
                 Padding(
                   padding: EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 10.0),
                   child: ElevatedButton.icon(
@@ -158,7 +135,7 @@ class _HomeTestState extends State<HomeTest> {
                     ),
                   ),
                 ),
-              ),
+              
               Container(
                 padding: const EdgeInsets.only(top: 25, left: 30, right: 28, bottom: 10),
                 child: Row(

@@ -37,9 +37,10 @@ class FiltersScreen extends StatefulWidget {
   List<Acommodation> resultList;
   DateTime start;
   DateTime end;
+  String infoMessage="";
   final QueryCallback onQueryChanged;
   final void Function(List<String>, RangeValues, String, List<Acommodation>,
-      int, DateTime, DateTime) onApplyFilters;
+      int, DateTime, DateTime,String) onApplyFilters;
   FiltersScreen(
       {super.key,
       required this.onApplyFilters,
@@ -50,7 +51,8 @@ class FiltersScreen extends StatefulWidget {
       required this.resultList,
       required this.start,
       required this.end,
-      required this.guests});
+      required this.guests,
+      required this.infoMessage});
   @override
   State<FiltersScreen> createState() => _FiltersScreenState();
 }
@@ -64,6 +66,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
   List<String> _filters = <String>[];
   List<String> accommodations_id = <String>[];
   List<Booking> sortedBookings = [];
+  String info="";
 
   Future<void> getBookings(DateTime startDate, DateTime endDate) async {
     var x;
@@ -164,6 +167,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
     _priceRange = widget.currentPriceRange;
     searchCity.text = widget.currentCity;
     guest_number = widget.guests;
+    info=widget.infoMessage;
   }
 
   @override
@@ -441,6 +445,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   widget.guests,
                   currentstartDate,
                   currentendDate,
+                  info
                 ),
                 Navigator.pop(context),
               },
@@ -449,25 +454,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   style: TextStyle(fontSize: 20)),
             ),
           ),
-
-          // ElevatedButton(
-          //   child: const Text('Search'),
-          //   onPressed: () async => {
-          //     await getBookings(currentstartDate.add(Duration(days: -90)),
-          //         currentendDate.add(Duration(days: 365))),
-          //     await getAccommodations(searchCity.text),
-          //     widget.onApplyFilters(
-          //       _filters,
-          //       _priceRange,
-          //       searchCity.text,
-          //       getFilteredList(accommodationList, sortedBookings),
-          //       widget.guests,
-          //       currentstartDate,
-          //       currentendDate,
-          //     ),
-          //     Navigator.pop(context),
-          //   },
-          // )
         ],
       ),
     );
@@ -668,6 +654,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
         result.add(currentAccommodation);
       }
     }
+     if(result.isEmpty){
+      info="No result found";}
     return result;
   }
 

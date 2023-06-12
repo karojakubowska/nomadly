@@ -26,22 +26,30 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
   String city = "";
   RangeValues priceRange = const RangeValues(0, 2000);
   List<Acommodation> results = [];
- int guest_number=1;
-   DateTime  startDate=DateTime.now();
-   DateTime endDate=DateTime.now();
-  //String searchText="";
+  int guest_number = 1;
+  DateTime startDate = DateTime.now();
+  DateTime endDate = DateTime.now();
+  String infoMessage = "";
   TextEditingController searchText = TextEditingController();
 
-  void getFilter(List<String> currentfilters, RangeValues priceRangeFilter,
-      String currentCity, List<Acommodation> resultList,int guests,DateTime start,DateTime end) {
+  void getFilter(
+      List<String> currentfilters,
+      RangeValues priceRangeFilter,
+      String currentCity,
+      List<Acommodation> resultList,
+      int guests,
+      DateTime start,
+      DateTime end,
+      String info) {
     setState(() {
       filters = currentfilters;
       priceRange = priceRangeFilter;
       city = currentCity;
       results = resultList;
-      guest_number=guests;
-       startDate=start;
-      endDate=end;
+      guest_number = guests;
+      startDate = start;
+      endDate = end;
+      infoMessage = info;
     });
   }
 
@@ -53,20 +61,9 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
-    final Stream<QuerySnapshot> searchStream = FirebaseFirestore.instance
-        .collection('Accommodations')
-        .where(
-          'city',
-          isEqualTo: searchText.text,
-        )
-        .snapshots();
-    List<Stream<QuerySnapshot>> combineList = [searchStream, query.snapshots()];
-    var totalRef = CombineLatestStream.list(combineList);
-
     List<Acommodation> accommodationList =
         Provider.of<List<Acommodation>>(context);
-       
+
     var size = AppLayout.getSize(context);
     return Scaffold(
         backgroundColor: Styles.backgroundColor,
@@ -85,125 +82,60 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    // Container(
-                    //   height: 50,
-                    //   width: size.width * 0.7,
-                    //   decoration: BoxDecoration(
-                    //       color: Colors.white,
-                    //       borderRadius: BorderRadius.circular(10)),
-                    //   child: TextField(
-                    //     controller: searchText,
-                    //     
-                    //     decoration: const InputDecoration(
-                    //       border: InputBorder.none,
-                    //       errorBorder: InputBorder.none,
-                    //       enabledBorder: InputBorder.none,
-                    //       focusedBorder: InputBorder.none,
-                    //       contentPadding: EdgeInsets.all(15),
-                    //       prefixIcon: Icon(Icons.search_outlined),
-                    //       hintText: 'Search places',
-                    //     ),
-                    //   ),
-                    // ),
-                    
                     GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet<dynamic>(
-                              backgroundColor: Colors.transparent,
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (BuildContext bc) {
-                                return FiltersScreen(
-                                    onApplyFilters: getFilter,
-                                    onQueryChanged: updateQuery,
-                                    currentFilters: filters,
-                                    currentPriceRange: priceRange,
-                                    currentCity: city,
-                                    resultList: results,
-                                    start: startDate ,
-                                    end:endDate ,
-                                    guests:guest_number);
-                              });
-                        },
-                        child:Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Row(
-                   // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      const Gap(10),
-                      const Icon(Icons.search_outlined),
-                      Container(
-                        width:size.width*0.7,
-                          child: Text(
-                            tr('  Search places'),
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w400,
-                              color: Styles.greyColor,
+                      onTap: () {
+                        showModalBottomSheet<dynamic>(
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext bc) {
+                              return FiltersScreen(
+                                onApplyFilters: getFilter,
+                                onQueryChanged: updateQuery,
+                                currentFilters: filters,
+                                currentPriceRange: priceRange,
+                                currentCity: city,
+                                resultList: results,
+                                start: startDate,
+                                end: endDate,
+                                guests: guest_number,
+                                infoMessage: infoMessage,
+                              );
+                            });
+                      },
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          children: <Widget>[
+                            const Gap(10),
+                            const Icon(Icons.search_outlined),
+                            Container(
+                              width: size.width * 0.7,
+                              child: Text(
+                                tr('  Search places'),
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Styles.greyColor,
+                                ),
+                              ),
                             ),
+                            const Gap(10),
+                          ],
                         ),
                       ),
-                      const Gap(10),
-                    ],
-                  ),
-                ),
-                        // child: Container(
-                        //   height: 50.0,
-                        //   width: 50.0,
-                        //   decoration: BoxDecoration(
-                        //       color: Styles.pinColor,
-                        //       borderRadius: BorderRadius.circular(10)),
-                        //   child: Center(
-                        //     child: SvgPicture.asset(
-                        //       "assets/images/sliders.svg",
-                        //       color: Colors.white,
-                        //       width: 20,
-                        //       height: 20,
-                        //     ),
-                        //   ),
-                        // )
-                        )
+                    )
                   ],
                 ),
                 const Gap(30),
-                // SingleChildScrollView(
-                //     scrollDirection: Axis.vertical,
-                //     child: Column(children: <Widget>[
-                //         SizedBox(
-                //           height: size.height * 0.78,
-                //           width: size.width * 0.9,
-                //           child: StreamBuilder<QuerySnapshot>(
-                //               stream: query.snapshots(),
-                //               builder: (context, snapshot) {
-                //                 if (snapshot.connectionState ==
-                //                     ConnectionState.waiting) {
-                //                   return Center(
-                //                       child: CircularProgressIndicator());
-                //                 }
-                //                 if (snapshot.hasError) {
-                //                   return Center(
-                //                       child: Text("Error: ${snapshot.error}"));
-                //                 }
-                //                 return ListView.builder(
-                //                     itemCount: snapshot.data!.docs.length,
-                //                     itemBuilder: (context, index) {
-                //                       Acommodation model = Acommodation.fromJson(
-                //                           snapshot.data!.docs[index].data()!
-                //                               as Map<String, dynamic>);
-                //                       model.id = snapshot.data!.docs[index].id;
-                //                       return AccommodationCard(
-                //                           accomodation: model, index: index);
-                //                     });
-                //               }),
-                //         )
-//alternatywna wersja XD
                 SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(children: <Widget>[
-                      if (results.isEmpty)
+                      if (results.isEmpty) ...[
+                        Text(infoMessage),
                         SizedBox(
                             height: size.height * 0.78,
                             width: size.width * 0.9,
@@ -215,10 +147,9 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                                   return AccommodationCard(
                                     accomodation: model,
                                     index: index,
-                                    
                                   );
                                 }))
-                      else
+                      ] else
                         SizedBox(
                             height: size.height * 0.78,
                             width: size.width * 0.9,
@@ -230,51 +161,11 @@ class _AllAccommodationsScreenState extends State<AllAccommodationsScreen> {
                                   return AccommodationCard(
                                     accomodation: model,
                                     index: index,
-                                    start_date:  startDate,
+                                    start_date: startDate,
                                     end_date: endDate,
-                                    guest_number: guest_number ,
+                                    guest_number: guest_number,
                                   );
                                 }))
-
-                      // SizedBox(
-                      //   height: size.height * 0.78,
-                      //   width: size.width * 0.9,
-                      //   child: StreamBuilder<List<QuerySnapshot>>(
-                      //       stream: totalRef,
-                      //       // stream: query.snapshots(),
-                      //       builder: (context,
-                      //           AsyncSnapshot<List<QuerySnapshot>>
-                      //               snapshotList) {
-                      //         List<QuerySnapshot<Object?>>? querySnapshot =
-                      //             snapshotList.data;
-                      //         if (snapshotList.connectionState ==
-                      //             ConnectionState.waiting) {
-                      //           return Center(
-                      //               child: CircularProgressIndicator());
-                      //         }
-                      //         if (snapshotList.hasError) {
-                      //           return Center(
-                      //               child:
-                      //                   Text("Error: ${snapshotList.error}"));
-                      //         }
-                      //         List<DocumentSnapshot> listOfDocumentSnapshot =
-                      //             [];
-
-                      //         querySnapshot!.forEach((queries) {
-                      //           listOfDocumentSnapshot.addAll(queries.docs);
-                      //         });
-                      //         return ListView.builder(
-                      //             itemCount: listOfDocumentSnapshot.length,
-                      //             itemBuilder: (context, index) {
-                      //               Acommodation model = Acommodation.fromJson(
-                      //                   listOfDocumentSnapshot[index].data()!
-                      //                       as Map<String, dynamic>);
-                      //               model.id = listOfDocumentSnapshot[index].id;
-                      //               return AccommodationCard(
-                      //                   accomodation: model, index: index);
-                      //             });
-                      //       }),
-                      // )
                     ])),
               ],
             ),

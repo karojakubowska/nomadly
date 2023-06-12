@@ -28,10 +28,11 @@ class _DetailScreenState extends State<DetailScreen> {
   int guestNumber = 2;
   List<String> photoUrls = [];
 
-  void getDates(DateTime start, DateTime end) {
+  void getDates(DateTime start, DateTime end, int guests) {
     setState(() {
       widget.start_date = start;
       widget.end_date = end;
+      widget.guest_number = guests;
     });
   }
 
@@ -578,6 +579,18 @@ class _DetailScreenState extends State<DetailScreen> {
               Container()
             ],
             const Gap(5),
+            Container(
+                child: Row(
+              children: [
+                Text('Tu podpis co to jest np. liczba gości  '),
+                if (widget.guest_number == null) ...[
+                  Text('1')
+                ] else ...[
+                  Text('${widget.guest_number}')
+                ]
+              ],
+            )),
+            const Gap(5),
             GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
@@ -622,16 +635,35 @@ class _DetailScreenState extends State<DetailScreen> {
                         borderRadius: BorderRadius.circular(10.0)),
                     backgroundColor: const Color.fromARGB(255, 50, 134, 252)),
                 onPressed: () {
-                  if (widget.guest_number == null) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => BookingRequestScreen(
-                                  startDate: widget.start_date!,
-                                  endDate: widget.end_date!,
-                                  guestNumber: guestNumber,
-                                  accommodation: widget.accommodation!,
-                                ))));
+                  if (widget.start_date == null && widget.end_date == null) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              title: Text(tr('Error')),
+                              content: Text(tr('No dates selected.')),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+
+                                    showModalBottomSheet(
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return CalendarScreen(
+                                            bookedDates: widget
+                                                .accommodation!.bookedDates!,
+                                            onChooseDate: getDates,
+                                            startDate: widget.start_date,
+                                            endDate: widget.end_date,
+                                          );
+                                        });
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ]);
+                        });
                   } else {
                     Navigator.push(
                         context,

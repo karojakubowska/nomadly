@@ -13,16 +13,19 @@ class CalendarScreen extends StatefulWidget {
   List<BookDate> bookedDates;
   DateTime? startDate;
   DateTime? endDate;
+  int? guest_number;
 
   //List<DateTime> bookedDates;
-  final void Function(DateTime, DateTime) onChooseDate;
+  final void Function(DateTime, DateTime, int) onChooseDate;
 
   CalendarScreen(
       {super.key,
       required this.bookedDates,
       required this.onChooseDate,
       this.startDate,
-      this.endDate});
+      this.endDate,
+      this.guest_number
+      });
 
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
@@ -43,7 +46,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     start = DateTime.now();
-    end = DateTime.now();
+    end = DateTime.now().add(Duration(days: 1));
+    if(widget.guest_number==null){
+      widget.guest_number=1;
+    }
     super.initState();
   }
 
@@ -106,10 +112,41 @@ class _CalendarScreenState extends State<CalendarScreen> {
               height: 370,
               child: ListView(children: <Widget>[cardView]),
             ),
+            Container(
+            width: 60,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                    onTap: () => setState(() {
+                          widget.guest_number == 1
+                              ? print('guests at 1')
+                              : widget.guest_number=widget.guest_number!-1;
+                        }),
+                    child: const Icon(Icons.remove)),
+                Text('${widget.guest_number}'),
+                GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        widget.guest_number=widget.guest_number!+1;
+                      });
+                    },
+                    child: const Icon(Icons.add)),
+              ],
+            ),
+          ),
+            Text(tr('Selected date:')),
+            Gap(10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(_startDate),
+                const SizedBox(width: 10),
+                Text(_endDate),
               ],
             ),
             ElevatedButton(
@@ -124,6 +161,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     widget.onChooseDate(
                       start,
                       end,
+                      widget.guest_number!
                     ),
                     Navigator.pop(context),
                   }
@@ -164,9 +202,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
               date.isBefore(args.value.endDate ?? args.value.startDate)) {
             _startDate =
                 tr("Sorry these dates are already taken. Choose different dates.");
+                _endDate="";
             break;
           } else if (args.value.startDate == args.value.endDate) {
             _startDate = tr("Minimal reservation time is one night");
+            _endDate="";
+            break;
+          } else if (_startDate==_endDate) {
+            _startDate = tr("Minimal reservation time is one night");
+            _endDate="";
             break;
           } else {
             _startDate =
