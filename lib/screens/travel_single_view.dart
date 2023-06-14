@@ -297,8 +297,8 @@ class _SingleTravelPageState extends State<SingleTravelPage> {
                 child: TextField(
                   controller: noteController,
                   enabled: false,
-                  maxLines: 5,
                   textInputAction: TextInputAction.done,
+                  maxLines: null,
                   decoration: InputDecoration(
                     labelText: tr('Note'),
                     border: OutlineInputBorder(

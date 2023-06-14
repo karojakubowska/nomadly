@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:nomadly_app/models/Accomodation.dart';
 import 'package:nomadly_app/screens/booking_request_view.dart';
 import 'package:nomadly_app/screens/calendar.dart';
+import 'package:nomadly_app/screens/chat_single_view.dart';
 import 'package:nomadly_app/screens/reviews_view.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -27,6 +28,14 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   int guestNumber = 2;
   List<String> photoUrls = [];
+  String id = "";
+
+  @override
+  void initState() {
+    super.initState();
+    final currentUser = FirebaseAuth.instance.currentUser;
+    id = FirebaseAuth.instance.currentUser!.uid.toString();
+  }
 
   void getDates(DateTime start, DateTime end, int guests) {
     setState(() {
@@ -695,6 +704,41 @@ class _DetailScreenState extends State<DetailScreen> {
                 label: Text(tr('Book now'), style: TextStyle(fontSize: 18)),
               ),
             ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatSingleView(
+                      userId: id,
+                      otherUserId: widget.accommodation!.host_id!,
+                    ),
+                  ),
+                );
+              },
+              style: ButtonStyle(
+                elevation: MaterialStateProperty.all(0),
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    side: const BorderSide(
+                        color: Color.fromARGB(255, 50, 134, 252),
+                        width: 1,
+                        style: BorderStyle.solid),
+                    borderRadius: BorderRadius.circular(10))),
+                minimumSize:
+                MaterialStateProperty.all(const Size(320, 50)),
+              ),
+              child: Text(
+                tr('Contact with host'),
+                style: GoogleFonts.roboto(
+                    textStyle: const TextStyle(
+                        fontSize: 16.0,
+                        color: Color.fromARGB(255, 50, 134, 252),
+                        fontWeight: FontWeight.w700)),
+              ),
+            ),
+            Gap(10),
           ],
         ),
       ),
