@@ -56,6 +56,7 @@ class _BookingDetailsState extends State<BookingDetails> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(tr("Check-in"), style: Styles.bookingDetailsStyle),
+                Gap(50),
                 Text(
                     DateFormat.yMMMMd(tr('en_US'))
                         .format(widget.booking.startDate!),
@@ -63,7 +64,13 @@ class _BookingDetailsState extends State<BookingDetails> {
                         textStyle: const TextStyle(
                             fontSize: 16.0,
                             color: Color.fromARGB(255, 24, 24, 24),
-                            fontWeight: FontWeight.w700)))
+                            fontWeight: FontWeight.w700))),
+                Text(DateFormat.Hm().format(DateTime(2023, 05, 23, 14)),
+                    style: GoogleFonts.roboto(
+                        textStyle: const TextStyle(
+                            fontSize: 16.0,
+                            color: Color.fromARGB(255, 24, 24, 24),
+                            fontWeight: FontWeight.w700))),
               ],
             ),
             Styles.divider,
@@ -71,12 +78,21 @@ class _BookingDetailsState extends State<BookingDetails> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(tr("Check-out"), style: Styles.bookingDetailsStyle),
-                Text(DateFormat.yMMMMd(tr('en_US')).format(widget.booking.endDate!),
+                Gap(50),
+                Text(
+                    DateFormat.yMMMMd(tr('en_US'))
+                        .format(widget.booking.endDate!),
                     style: GoogleFonts.roboto(
                         textStyle: const TextStyle(
                             fontSize: 16.0,
                             color: Color.fromARGB(255, 24, 24, 24),
-                            fontWeight: FontWeight.w700)))
+                            fontWeight: FontWeight.w700))),
+                Text(DateFormat.Hm().format(DateTime(2023, 05, 23, 11)),
+                    style: GoogleFonts.roboto(
+                        textStyle: const TextStyle(
+                            fontSize: 16.0,
+                            color: Color.fromARGB(255, 24, 24, 24),
+                            fontWeight: FontWeight.w700))),
               ],
             ),
             Styles.divider,
@@ -177,7 +193,7 @@ class _BookingDetailsState extends State<BookingDetails> {
       ),
     );
   }
- 
+
   Widget statusButtonSwitch() {
     if (widget.booking.status == "Finished" &&
         widget.booking.isAccommodationRated == false) {

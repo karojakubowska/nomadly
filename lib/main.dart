@@ -34,57 +34,6 @@ import 'package:easy_localization/easy_localization.dart';
 
 int? initScreen;
 
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await EasyLocalization.ensureInitialized();
-//
-//   if (kIsWeb) {
-//     WidgetsFlutterBinding.ensureInitialized();
-//     await Firebase.initializeApp(
-//         options: DefaultFirebaseOptions.currentPlatform);
-//     runApp(
-//         MaterialApp(
-//           debugShowCheckedModeBanner: false,
-//           home: Scaffold(
-//             body: Container(
-//               child: MyWebView(),
-//             ),
-//           ),
-//         )
-//     );
-//   }
-//   else {
-//     WidgetsFlutterBinding.ensureInitialized();
-//     SharedPreferences preferences = await SharedPreferences.getInstance();
-//     initScreen = preferences.getInt('initScreen');
-//     await preferences.setInt('initScreen', 1); //if already shown  1 else 0
-//     await Firebase.initializeApp(
-//         options: DefaultFirebaseOptions.currentPlatform);
-//     runApp(MultiProvider(providers: [
-//       Provider<AuthenticationProvider>(
-//         create: (_) => AuthenticationProvider(FirebaseAuth.instance),
-//       ),
-//       StreamProvider(
-//         create: (context) =>
-//         context
-//             .read<AuthenticationProvider>()
-//             .authState,
-//         initialData: null,
-//       ),
-//       StreamProvider<List<Acommodation>>.value(
-//         value: AccommodationProvider().allAccommodations,
-//         initialData: const [],
-//         child: const HomeTest(),
-//       ),
-//       StreamProvider<List<Booking>>.value(
-//         value: BookingProvider().allBookings,
-//         initialData: const [],
-//         child: const HomeTest(),
-//       ),
-//     ], child: const MyApp()));
-//   }
-// }
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
