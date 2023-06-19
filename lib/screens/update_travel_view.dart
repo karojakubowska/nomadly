@@ -68,7 +68,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
   Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: startDate ?? DateTime.now(),
+        initialDate: startDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != startDate) {
@@ -81,7 +81,7 @@ class _UpdateTravelViewState extends State<UpdateTravelView> {
   Future<void> _selectEndDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: endDate ?? DateTime.now(),
+        initialDate: endDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != endDate) {

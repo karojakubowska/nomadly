@@ -42,7 +42,7 @@ class _AddTravelViewState extends State<AddTravelView> {
   Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: startDate ?? DateTime.now(),
+        initialDate: startDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != startDate) {
@@ -59,7 +59,7 @@ class _AddTravelViewState extends State<AddTravelView> {
   Future<void> _selectEndDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: endDate ?? DateTime.now(),
+        initialDate: endDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != endDate) {
@@ -166,8 +166,7 @@ class _AddTravelViewState extends State<AddTravelView> {
           .toString();
     } catch (e) {
       print('error occured');
-    }
-    ;
+    };
     return travel.add({
       'name': nameController.text,
       'note': noteController.text,

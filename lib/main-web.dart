@@ -18,7 +18,7 @@ class MyWebView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login Page',
+      title: 'Nomadly',
       home: Scaffold(
         body: Center(
           child: AppWeb(),
@@ -128,7 +128,7 @@ class AppWeb extends StatelessWidget {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(
-                            '/images/ian-dooley-TevqnfbI0Zc-unsplash.jpg'),
+                            'assets/images/ian-dooley-TevqnfbI0Zc-unsplash.jpg'),
                         fit: BoxFit.cover,
                       ),
                     ),

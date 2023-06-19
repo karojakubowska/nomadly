@@ -135,7 +135,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
   Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: currentstartDate ?? DateTime.now(),
+        initialDate: currentstartDate,
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 365)));
     if (picked != null && picked != currentstartDate) {
@@ -148,7 +148,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
   Future<void> _selectEndDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: currentendDate ?? DateTime.now(),
+        initialDate: currentendDate,
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 365)));
     if (picked != null && picked != currentendDate) {

@@ -37,7 +37,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
               children: [
                 FutureBuilder(
                   future: FirebaseStorage.instance
-                      .refFromURL((widget.accommodation!.photo!))
+                      .refFromURL((widget.accommodation.photo!))
                       .getDownloadURL(),
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -108,7 +108,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                     children: [
                       Expanded(
                         child: Text(
-                          widget.accommodation!.title!,
+                          widget.accommodation.title!,
                           style: GoogleFonts.roboto(
                             color: const Color.fromARGB(255, 24, 24, 24),
                             fontSize: 22,
@@ -122,7 +122,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                   Row(
                     children: [
                       Text(
-                        "${widget.accommodation!.city!},",
+                        "${widget.accommodation.city!},",
                         style: GoogleFonts.roboto(
                           color: const Color.fromARGB(255, 24, 24, 24),
                           fontSize: 14,
@@ -131,7 +131,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                       ),
                       const SizedBox(width: 1),
                       Text(
-                        widget.accommodation!.country!,
+                        widget.accommodation.country!,
                         style: GoogleFonts.roboto(
                           color: const Color.fromARGB(255, 24, 24, 24),
                           fontSize: 14,
@@ -154,7 +154,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                             padding: const EdgeInsets.only(
                                 right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bedroom?.toString() ?? '0'} " +
+                              " ${widget.accommodation.bedroom?.toString() ?? '0'} " +
                                   tr("bedroom"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
@@ -179,7 +179,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                             padding: const EdgeInsets.only(
                                 right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bed?.toString() ?? '0'} " +
+                              " ${widget.accommodation.bed?.toString() ?? '0'} " +
                                   tr("bed"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
@@ -204,7 +204,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                             padding: const EdgeInsets.only(
                                 right: 7, left: 7, top: 4, bottom: 4),
                             child: Text(
-                              " ${widget.accommodation?.bathroom?.toString() ?? '0'} " +
+                              " ${widget.accommodation.bathroom?.toString() ?? '0'} " +
                                   tr("bathroom"),
                               textAlign: TextAlign.start,
                               style: GoogleFonts.roboto(
@@ -247,7 +247,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                                     size: 25,
                                   ),
                                   Text(
-                                    widget.accommodation!.rate!.toString(),
+                                    widget.accommodation.rate!.toString(),
                                     style: GoogleFonts.roboto(
                                       fontSize: 19,
                                       fontWeight: FontWeight.w600,
@@ -259,7 +259,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                             ),
                             const Gap(10),
                             Text(
-                              "(${widget.accommodation!.reviews.toString()} " +
+                              "(${widget.accommodation.reviews.toString()} " +
                                   tr("reviews") +
                                   ")",
                               style: GoogleFonts.roboto(
@@ -272,7 +272,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                         ),
                       ),
                       Text(
-                        "\$${widget.accommodation!.price_per_night!}/" +
+                        "\$${widget.accommodation.price_per_night!}/" +
                             tr("night"),
                         style: GoogleFonts.roboto(
                           fontSize: 20,
@@ -293,7 +293,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                     ),
                   ),
                   Text(
-                    widget.accommodation!.description!,
+                    widget.accommodation.description!,
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 14,
@@ -317,7 +317,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                   Text(
                     "- " +
                         tr("Kitchen") +
-                        ": ${widget.accommodation?.kitchen == true ? tr('Yes') : tr('No')}",
+                        ": ${widget.accommodation.kitchen == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 13,
@@ -329,7 +329,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                   Text(
                     "- " +
                         tr("TV") +
-                        ": ${widget.accommodation?.tv == true ? tr('Yes') : tr('No')}",
+                        ": ${widget.accommodation.tv == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 13,
@@ -341,7 +341,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                   Text(
                     "- " +
                         tr("Wifi") +
-                        ": ${widget.accommodation?.wifi == true ? tr('Yes') : tr('No')}",
+                        ": ${widget.accommodation.wifi == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 13,
@@ -353,7 +353,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
                   Text(
                     "- " +
                         tr("Air Conditioning") +
-                        ": ${widget.accommodation?.air_conditioning == true ? tr('Yes') : tr('No')}",
+                        ": ${widget.accommodation.air_conditioning == true ? tr('Yes') : tr('No')}",
                     textAlign: TextAlign.start,
                     style: GoogleFonts.roboto(
                       fontSize: 13,
@@ -378,7 +378,7 @@ class _DetailsHostScreenState extends State<DetailsHostScreen> {
             SingleChildScrollView(
               child: FutureBuilder<List<dynamic>>(
                 future: Future.wait(
-                  widget.accommodation!.photoUrl!.map((photo) => FirebaseStorage
+                  widget.accommodation.photoUrl!.map((photo) => FirebaseStorage
                       .instance
                       .refFromURL(photo)
                       .getDownloadURL()),

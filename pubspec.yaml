@@ -66,6 +66,8 @@ dependencies:
   easy_localization: ^3.0.0
   flutter_launcher_icons: ^0.13.1
   fluttertoast: ^8.2.2
+  google_sign_in_web: ^0.10.2
+
   
   workmanager: ^0.5.1
   get_it: ^7.6.0

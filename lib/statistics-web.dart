@@ -113,9 +113,9 @@ class StatsWeb extends StatelessWidget {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        _buildDataItem('Total Users', totalUsers.toString(), '/images/profile.png'),
-                                        _buildDataItem('Total Hosts', totalHosts.toString(), '/images/users.png'),
-                                        _buildDataItem('Total Clients', totalClients.toString(), '/images/group.png'),
+                                        _buildDataItem('Total Users', totalUsers.toString(), 'assets/images/profile.png'),
+                                        _buildDataItem('Total Hosts', totalHosts.toString(), 'assets/images/users.png'),
+                                        _buildDataItem('Total Clients', totalClients.toString(), 'assets/images/group.png'),
                                       ],
                                     ),
                                   ),
@@ -125,9 +125,9 @@ class StatsWeb extends StatelessWidget {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        _buildDataItem('Total Accommodations', totalAccommodations.toString(), '/images/homepage.png'),
-                                        _buildDataItem('Total Reviews', totalReviews.toString(), '/images/feedback.png'),
-                                        _buildDataItem('Total Bookings', totalBookings.toString(), '/images/booking.png'),
+                                        _buildDataItem('Total Accommodations', totalAccommodations.toString(), 'assets/images/homepage.png'),
+                                        _buildDataItem('Total Reviews', totalReviews.toString(), 'assets/images/feedback.png'),
+                                        _buildDataItem('Total Bookings', totalBookings.toString(), 'assets/images/booking.png'),
                                       ],
                                     ),
                                   ),
