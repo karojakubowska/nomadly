@@ -82919,7 +82919,7 @@ p=b.b
 if(p==null)return B.bR
 s=J.o6(p).length
 p=t.p
-return A.fl(A.a([new A.bZ(B.lx,A.jN(A.a([A.Gi("Total Users",B.f.k(r.a),"/images/profile.png"),A.Gi("Total Hosts",B.f.k(r.b),"/images/users.png"),A.Gi("Total Clients",B.f.k(r.c),"/images/group.png")],p),B.a0,B.iW,B.a2,q),q),B.el,new A.bZ(B.lx,A.jN(A.a([A.Gi("Total Accommodations",B.f.k(r.d),"/images/homepage.png"),A.Gi("Total Reviews",B.f.k(r.e),"/images/feedback.png"),A.Gi("Total Bookings",B.f.k(s),"/images/booking.png")],p),B.a0,B.iW,B.a2,q),q)],p),B.a0,B.O,B.a2)},
+return A.fl(A.a([new A.bZ(B.lx,A.jN(A.a([A.Gi("Total Users",B.f.k(r.a),"assets/images/profile.png"),A.Gi("Total Hosts",B.f.k(r.b),"assets/images/users.png"),A.Gi("Total Clients",B.f.k(r.c),"assets/images/group.png")],p),B.a0,B.iW,B.a2,q),q),B.el,new A.bZ(B.lx,A.jN(A.a([A.Gi("Total Accommodations",B.f.k(r.d),"assets/images/homepage.png"),A.Gi("Total Reviews",B.f.k(r.e),"assets/images/feedback.png"),A.Gi("Total Bookings",B.f.k(s),"assets/images/booking.png")],p),B.a0,B.iW,B.a2,q),q)],p),B.a0,B.O,B.a2)},
 $S:126}
 A.aa2.prototype={
 Bc(a){$.by().l(0,this,a)}}
