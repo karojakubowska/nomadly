@@ -158,7 +158,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                           MaterialPageRoute(
                             builder: (context) => ChatSingleView(
                               userId: widget.booking.userId!,
-                              otherUserId: widget.booking.hostId!,
+                              otherUserId: widget.accommodation.host_id!,
                             ),
                           ),
                         );

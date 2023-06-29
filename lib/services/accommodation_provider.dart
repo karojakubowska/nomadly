@@ -49,6 +49,7 @@ class AccommodationProvider {
                 photoUrl: photoUrls,
                 bookedDates: dates,
                 reservationsCount: documentSnapshot["reservations_count"],
+                type:documentSnapshot["type"]
               );
             }).toList());
     return list;

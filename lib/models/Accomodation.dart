@@ -53,7 +53,7 @@ class Acommodation {
     this.wifi,
     this.tv,
     this.max_guests,
-
+    this.type,
     this.bedroom,
     this.bathroom,
     this.bed,
